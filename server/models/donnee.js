@@ -10,7 +10,7 @@ var donnee = new Schema({
  
  
 //Definition du modèle
-var donneeModele = mongoose.modele('donnee', donnee);
+var donneeModele = mongoose.model('donnee', donnee);
  
 // Export du modèle
 exports.donneeModele = donneeModele;
