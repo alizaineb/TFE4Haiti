@@ -32,6 +32,7 @@ var bodyParser = require('body-parser');
 var logger = require('./logger');
 var config = require('./config');
 const token = require('./token');
+var mongod = require('./mongod');
 
 // Routes
 
