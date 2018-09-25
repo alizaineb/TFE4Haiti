@@ -36,13 +36,18 @@ var winston = require('winston');
 var logger = winston.createLogger({
     level: 'info',
     format: winston.format.json(),
-	transports: [
-		new winston.transports.Console({colorize: true, timestamp: true})
-	],
-	exceptionHandlers: [
-		new winston.transports.Console({colorize: true, timestamp: true})
-	],
-	exitOnError: false
+    transports: [
+        new winston.transports.Console({
+			format: winston.format.combine(
+                winston.format.colorize(),
+                winston.format.simple()
+            )
+        })
+    ],
+    exceptionHandlers: [
+        new winston.transports.Console({format: winston.format.simple(), colorize: true, timestamp: true})
+    ],
+    exitOnError: false
 });
 
 
