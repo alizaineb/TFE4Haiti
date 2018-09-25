@@ -48,7 +48,8 @@ var server;
 
 var _configureDB = function () {
 	//Connect to mongoDB server
-    mongoose.connect('mongodb://localhost/TFE4Haiti');
+    let url = 'mongodb://'+config.database.host + ':' +config.database.port +'/' + config.database.name;
+    mongoose.connect(url, { useNewUrlParser: true });
     mongoose.set('debug', true);
 	//Require the models
     require('./../models/utilisateur'); //HERE
