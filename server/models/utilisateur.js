@@ -12,7 +12,7 @@ var Utilisateur = new Schema({
  
  
 //Definition du modèle
-var UtilisateurModele = mongoose.modele('Utilisateur', Utilisateur);
+var UtilisateurModele = mongoose.model('Utilisateur', Utilisateur);
  
 // Export du modèle
 exports.UtilisateurModele = UtilisateurModele;
