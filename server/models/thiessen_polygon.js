@@ -9,7 +9,7 @@ var thiessenPolygone = new Schema({
  
  
 //Definition du modèle
-var thiessenPolygoneModele = mongoose.model('thiessenPolygone', thiessenPolygone);
+var thiessenPolygoneModele = mongoose.model(config.database.collections.thiessenPolygon, thiessenPolygone);
  
 // Export du modèle
 exports.thiessenPolygoneModele = thiessenPolygoneModele;

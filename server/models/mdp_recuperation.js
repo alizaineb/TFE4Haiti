@@ -10,7 +10,7 @@ var recupPwd = new Schema({
  
  
 //Definition du modèle
-var recupPwdModele = mongoose.model('recupPwd', recupPwd);
+var recupPwdModele = mongoose.model(config.database.collections.pwdRecovery, recupPwd);
  
 // Export du modèle
 exports.recupPwdModele = recupPwdModele;

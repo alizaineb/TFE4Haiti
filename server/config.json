@@ -9,7 +9,11 @@
     "port": "27017",
     "name": "TFE4Haiti",
     "collections": {
-      "users" : "users"
+      "users" : "utilistateur",
+      "data" : "donnee",
+      "pwdRecovery" : "recupPwd",
+      "station" : "station",
+      "thiessenPolygon": "thiessenPolygone"
     },
     "login": "",
     "password": ""

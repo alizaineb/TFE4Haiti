@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var config = require('./../modules/config');
  
 // schema d'un utilisateur
 var Schema = mongoose.Schema;
@@ -12,7 +13,7 @@ var Utilisateur = new Schema({
  
  
 //Definition du modèle
-var UtilisateurModele = mongoose.model('Utilisateur', Utilisateur);
+var UtilisateurModele = mongoose.model(config.database.collections.user, Utilisateur);
  
 // Export du modèle
 exports.UtilisateurModele = UtilisateurModele;
