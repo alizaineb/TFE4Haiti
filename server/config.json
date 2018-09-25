@@ -1,4 +1,3 @@
-
 {
   "jwt_private_key": "somethingsomethingjsontoken",
   "server": {
@@ -6,9 +5,12 @@
     "port" : "3000"
   },
   "database": {
-      "DB_host": "localhost",
-      "login": "d4rk694",
-      "DB_Name": "c9",
-      "password": ""
+    "host": "localhost",
+    "port": "27017",
+    "collections": {
+      "users" : "users"
+    },
+    "login": "",
+    "password": ""
   }
 }
