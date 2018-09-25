@@ -1,4 +1,9 @@
 'use strict';
+var config = require('./../modules/config');
+
+
+var UsersModel = require('./../models/utilisateur');
+
 module.exports = {
     login : function(user, res) {
         //TODO connect to mongodb
@@ -6,8 +11,11 @@ module.exports = {
     },
 
     get : function(res) {
+        UsersModel.UtilisateurModele.find({}).then(function (users) {
+            res.status(200).send({message: users});
+        })
         //TODO connect to mongodb
-        res.status(200).send({message: "Method to implements"});
+
     },
     getById : function(id, res){
         //TODO connect to mongodb
@@ -19,8 +27,16 @@ module.exports = {
 
     },
     create : function(user, res) {
-        //TODO connect to mongodb
-        res.status(200).send({message: "Method to implements"});
+
+        console.log(user);
+        let uTmp = new UsersModel.UtilisateurModele();
+        uTmp.mail = user.mail;
+        uTmp.mdp = user.mdp;
+        uTmp.type = 'admin';
+        uTmp.save().then(() => {
+            res.status(200).send({message: uTmp});
+        })
+
     },
 
     update : function(user, res) {
