@@ -1,15 +1,45 @@
 'use strict';
 
+/**
+ * =============================
+ *
+ * Mongoddb
+ * This is the file where we can get a connection to the mongodb instance
+ *
+ * =============================
+ *
+ * Attributes : /
+ *
+ * Methods :
+ *  - getconnexion
+ *  - stop
+ *
+ * Events : /
+ *
+ * =============================
+ */
+
+var logger = require('./logger');
+
 var mongoClient = require('mongodb').MongoClient,
     assert = require('assert'),
     config = require('./../config.json');
-var url = 'mongodb://localhost:27017';
+
+var dbhost = config.database.host, dbport = config.database.port;
+var url = 'mongodb://'+ dbhost + ':' + dbport+'/TFE4Haiti';
 
 var myDb;
-var musiques = config.collection.musiques;
 
-var connect = mongoClient.connect(url, function(err, db) {
-    assert(err==null, "Le serveur rencontre un souci Ã  l'url: "+url);//aucune erreur dÃ©tectÃ©e
+var connect = mongoClient.connect(url, { useNewUrlParser: true }, function(err, db) {
+    if (err) throw err;
+    console.log("Database connected!");
+    //TODO Create collection if doesn't exist??
+    var dbo = db.db("TFE4Haiti");
+    //create collection for users
+    dbo.createCollection(config.database.collections.users, function(err, res) {
+        if (err) throw err;
+        console.log("Collection created!");
+    });
     myDb = db;
 });
 
