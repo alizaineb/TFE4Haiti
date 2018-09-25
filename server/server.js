@@ -2,6 +2,8 @@
 const express = require('express');
 const app = express();
 
+var bodyParser = require('body-parser');
+
 //Enable bodyParser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
