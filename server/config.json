@@ -8,7 +8,7 @@
     "host": "localhost",
     "port": "27017",
     "name": "TFE4Haiti",
-    "login": "",
-    "password": ""
+    "password": "",
+    "login": ""
   }
 }

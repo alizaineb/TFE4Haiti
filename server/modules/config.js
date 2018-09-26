@@ -98,44 +98,36 @@ function checkCfg(callback) {
   var cfgModified = false;
   nconf.file(fullConfigFileName);
   if (typeof nconf.get('jwt_private_key') === "undefined") {
-    setDefaultCfg('jwt_private_key', 'somethingsomethingjsontoken', function(err, result) {
-      cfgModified = result;
-    });
+    nconf.set('jwt_private_key', 'somethingsomethingjsontoken')
+    cfgModified = true;
   }
   if (typeof nconf.get('server:host') === "undefined") {
-    setDefaultCfg('server:host', '0.0.0.0', function(err, result) {
-      cfgModified = result;
-    });
+    nconf.set('server:host', '0.0.0.0');
+    cfgModified = true;
   }
   if (typeof nconf.get('server:port') === "undefined") {
-    setDefaultCfg('server:port', '3000', function(err, result) {
-      cfgModified = result;
-    });
+    nconf.set('server:port', '3000');
+    cfgModified = true;
   }
   if (typeof nconf.get('database:host') === "undefined") {
-    setDefaultCfg('database:host', 'localhost', function(err, result) {
-      cfgModified = result;
-    });
+    nconf.set('database:host', 'localhost');
+    cfgModified = true;
   }
   if (typeof nconf.get('database:port') === "undefined") {
-    setDefaultCfg('database:port', '27017', function(err, result) {
-      cfgModified = result;
-    });
+    nconf.set('database:port', '27017');
+    cfgModified = true;
   }
   if (typeof nconf.get('database:name') === "undefined") {
-    setDefaultCfg('database:name', 'TFE4Haiti', function(err, result) {
-      cfgModified = result;
-    });
+    nconf.set('database:name', 'TFE4Haiti');
+    cfgModified = true;
   }
   if (typeof nconf.get('database:login') === "undefined") {
-    setDefaultCfg('database:login', '', function(err, result) {
-      cfgModified = result;
-    });
+    nconf.set('database:login', '');
+    cfgModified = true;
   }
   if (typeof nconf.get('database:password') === "undefined") {
-    setDefaultCfg('database:password', '', function(err, result) {
-      cfgModified = result;
-    });
+    nconf.set('database:password', '');
+    cfgModified = true;
   }
 
   // La configuration a été changée
@@ -153,12 +145,6 @@ function checkCfg(callback) {
   } else {
     callback(null);
   }
-}
-
-
-function setDefaultCfg(name, value, callback) {
-  nconf.set(name, value);
-  callback(null, true);
 }
 /**
  * Exports
