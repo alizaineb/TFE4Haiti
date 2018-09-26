@@ -25,7 +25,8 @@
  * Load modules
  */
 
-const fs  = require('fs');
+const fs = require('fs');
+const fs = require('nconf');
 const logger = require('./logger.js');
 
 /**
@@ -40,38 +41,47 @@ const file = 'config.json';
  *
  * @param callback return an error or null
  */
-const load = function (callback) {
-	// Start loading config
-	logger.info('[Config] Start loading config file: ' + file);
-	// Read file content
-	fs.readFile(file, 'utf8', function (err, fileContents) {
-		// If an error occured
-		if (err) {
-			//TODO Generate a default config file
-			if (callback) callback(new Error('[Config] Unable to read the configuration file ' + file + ': ' + err.message));
-			return;
-		}
-		
-		// If file read
-		try {
-			// Populate config
-			var parsedConfig = JSON.parse(fileContents);
-			for (let key in parsedConfig) {
-				exports[key] = parsedConfig[key];
-			}
-			
-			// Done
-			logger.info('[Config] Config file ' + file + ' loaded');
-			if (callback) callback(null);
-		} catch (err) {
-			if (callback) callback(new Error('[Config] Unable to parse the configuration file ' + file + ': ' + err.message));
-		}
-	});
-};
+const load = function(callback) {
+    // Vérification que le fichier de config existe
+    if (fs.exists(__dirname + '/cofnig.json', function(exists) {
+        // Créer la config
+        if (!exists) {
 
-/**
- * Exports
- */
+        } else {
+          // Vérifier la config
 
-// Methods
-exports.load = load;
+        }))
+      // Start loading config
+      logger.info('[Config] Start loading config file: ' + file);
+      // Read file content
+      fs.readFile(file, 'utf8', function(err, fileContents) {
+        // If an error occured
+        if (err) {
+          //TODO Generate a default config file
+          if (callback) callback(new Error('[Config] Unable to read the configuration file ' + file + ': ' + err.message));
+          return;
+        }
+
+        // If file read
+        try {
+          // Populate config
+          var parsedConfig = JSON.parse(fileContents);
+          for (let key in parsedConfig) {
+            exports[key] = parsedConfig[key];
+          }
+
+          // Done
+          logger.info('[Config] Config file ' + file + ' loaded');
+          if (callback) callback(null);
+        } catch (err) {
+          if (callback) callback(new Error('[Config] Unable to parse the configuration file ' + file + ': ' + err.message));
+        }
+      });
+    };
+
+    /**
+     * Exports
+     */
+
+    // Methods
+    exports.load = load;

@@ -13,19 +13,17 @@ const server = require('./modules/server');
 
 
 function startWebServer() {
-
-    server.start();
+  // Vérification de la config
+  server.start();
 }
 
 process.chdir(__dirname);
 
 config.load(function(e) {
-    if (e) {
-        logger.error(e);
+  if (e) {
+    logger.error(e);
 
-        return;
-    }
-
-
-    startWebServer();
+    return;
+  }
+  startWebServer();
 });
