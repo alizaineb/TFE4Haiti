@@ -52,7 +52,13 @@ var _configureDB = function () {
     mongoose.connect(url, { useNewUrlParser: true });
     mongoose.set('debug', true);
 	//Require the models
-    require('./../models/utilisateur'); //HERE
+    // Import and use model in mongoose
+    // require('./../models/donnee');
+    // require('./../models/mdp_recuperation');
+    // require('./../models/station');
+    require('./../models/thiessen_polygon');
+    require('./../models/utilisateur');
+
 };
 /**
  * Configure application:
