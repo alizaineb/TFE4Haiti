@@ -1,0 +1,13 @@
+GET         /api/station/fullInfo/:id
+DELETE      /api/station/:id                      [LOGGED]
+GET         /api/station/summary/:id
+POST        /api/signin
+GET         /api/lougout
+POST        /api/register
+GET         /api/station/getAllAwaiting           [LOGGED]
+POST        /api/station/acceptAwaiting           [LOGGED]
+POST        /api/station/deleteAwaiting           [LOGGED]
+GET         /api/station/getAll                   [LOGGED]
+POST        /api/station/create                   [LOGGED]
+POST        /api/station/delete                   [LOGGED]
+GET         /api/station/:type/:dateDebut/:dateFin
