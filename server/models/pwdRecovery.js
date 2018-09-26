@@ -11,7 +11,7 @@ var PwdRecovery = new Schema({
 
 
 //Definition du modèle
-var PwdRecoverynModel = mongoose.model(config.database.collections.pwdRecovery, PwdRecovery);
+var PwdRecoverynModel = mongoose.model("pwdRecovery", PwdRecovery);
 
 // Export du modèle
 exports.PwdRecoverynModel = PwdRecoverynModel;

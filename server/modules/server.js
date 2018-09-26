@@ -27,13 +27,12 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var nconf = require('nconf');
 
 // Custom
 var logger = require('./logger');
 var config = require('./config');
 const token = require('./token');
-
-
 
 
 // Routes
@@ -48,7 +47,7 @@ var server;
 
 var _configureDB = function() {
   //Connect to mongoDB server
-  let url = 'mongodb://' + config.database.host + ':' + config.database.port + '/' + config.database.name;
+  let url = 'mongodb://' + nconf.get('database:host') + ':' + nconf.get('database:port') + '/' + nconf.get('database:name');
   mongoose.connect(url, { useNewUrlParser: true });
   mongoose.set('debug', true);
   //Require the models
@@ -56,8 +55,8 @@ var _configureDB = function() {
   // require('./../models/donnee');
   // require('./../models/mdp_recuperation');
   // require('./../models/station');
-  require('./../models/thiessen_polygon');
-  require('./../models/utilisateur');
+  require('./../models/thiessenPolygon');
+  require('./../models/users');
 
 };
 /**
@@ -108,8 +107,8 @@ var start = function(callback) {
   _configureServer();
   _configureRoutes();
 
-  server = app.listen(config.server.port, config.server.host, function() {
-    logger.info('[Server] Web server listening on ' + config.server.host + ':' + config.server.port);
+  server = app.listen(nconf.get('server:port'), nconf.get('server:host'), function() {
+    logger.info('[Server] Web server listening on ' + nconf.get('server:host') + ':' + nconf.get('server:port'));
     if (callback) callback();
   });
 };
@@ -122,10 +121,10 @@ var start = function(callback) {
 var stop = function(callback) {
   if (server && typeof server.close === 'function') {
     server.close();
-    logger.warn('[Server] Web server no more listening on ' + config.server.host + ':' + process.env.PORT);
+    logger.warn('[Server] Web server no more listening on ' + nconf.get('server:host') + ':' + process.env.PORT);
     if (callback) callback();
   } else {
-    logger.warn('[Server] Cannot stop web server listening on ' + config.server.host + ':' + process.env.PORT);
+    logger.warn('[Server] Cannot stop web server listening on ' + nconf.get('server:host') + ':' + process.env.PORT);
     if (callback) callback();
   }
 };

@@ -8,13 +8,6 @@
     "host": "localhost",
     "port": "27017",
     "name": "TFE4Haiti",
-    "collections": {
-      "user": "user",
-      "rainData": "rainData",
-      "pwdRecovery": "pwdRecovery",
-      "station": "station",
-      "thiessenPolygon": "thiessenPolygon"
-    },
     "login": "",
     "password": ""
   }

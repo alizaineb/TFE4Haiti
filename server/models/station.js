@@ -17,7 +17,7 @@ var Station = new Schema({
 
 
 //Definition du modèle
-var stationModel = mongoose.model(config.database.collections.station, Station);
+var stationModel = mongoose.model("station", Station);
 
 // Export du modèle
 exports.stationModel = stationModel;

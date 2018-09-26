@@ -11,7 +11,7 @@ var RainData = new Schema({
 
 
 //Definition du modèle
-var rainDataModel = mongoose.model(config.database.collections.data, RainData);
+var rainDataModel = mongoose.model("rainData", RainData);
 
 // Export du modèle
 exports.rainDataModel = rainDataModel;

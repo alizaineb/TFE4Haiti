@@ -13,7 +13,7 @@ var User = new Schema({
 
 
 //Definition du modèle
-var userModel = mongoose.model(config.database.collections.user, User);
+var userModel = mongoose.model("user", User);
 
 // Export du modèle
 exports.userModel = userModel;

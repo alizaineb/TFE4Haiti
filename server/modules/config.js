@@ -35,6 +35,7 @@ const logger = require('./logger.js');
 
 // An array of files that will be used to find the bootstrap.properties file
 const configFileName = 'config.json';
+const fullConfigFileName = __dirname + '/../' + configFileName;
 
 /**
  * Load configuration found in the config file.
@@ -43,66 +44,121 @@ const configFileName = 'config.json';
  */
 var load = function(callback) {
   // Vérification que le fichier de config existe
-  fs.exists(__dirname + '/../' + configFileName, function(exists) {
+  fs.exists(fullConfigFileName, function(exists) {
     // Créer la config
     if (!exists) {
-      createDefaultCfgFile();
+      createDefaultCfgFile(function(err) {
+        if (err) {
+          logger.error('[Config] Erreur lors de la création du fichier de configuration');
+          callback(err);
+        } else {
+          callback(null);
+        }
+      });
     } else {
       // Vérifier la config
-
-    }
-  });
-  // Start loading config
-  logger.info('[Config] Start loading config file: ' + configFileName);
-  // Read file content
-  fs.readFile(configFileName, 'utf8', function(err, fileContents) {
-    // If an error occured
-    if (err) {
-      if (callback) callback(new Error('[Config] Unable to read the configuration file ' + configFileName + ': ' + err.message));
-      return;
-    }
-
-    // If file read
-    try {
-      // Populate config
-      var parsedConfig = JSON.parse(fileContents);
-      for (let key in parsedConfig) {
-        exports[key] = parsedConfig[key];
-      }
-
-      // Done
-      logger.info('[Config] Config file ' + configFileName + ' loaded');
-      if (callback) callback(null);
-    } catch (err) {
-      if (callback) callback(new Error('[Config] Unable to parse the configuration file ' + configFileName + ': ' + err.message));
+      checkCfg(function(err) {
+        if (err) {
+          logger.error('[Config] Erreur lors de la vérification du fichier de configuration');
+          callback(err);
+        } else {
+          logger.info('[Config] Fichier de configuration vérifié');
+          callback(null);
+        }
+      });
     }
   });
 };
 
 function createDefaultCfgFile(callback) {
   console.log('[Info] Création d\'un nouveau fichier de configuration');
-  nconf.argv().env().file({ file: __dirname + "/../" + configFileName });
+  nconf.argv().env().file({ file: fullConfigFileName });
   nconf.set('jwt_private_key', 'somethingsomethingjsontoken');
   nconf.set('server:host', '0.0.0.0');
   nconf.set('server:port', '3000');
   nconf.set('database:host', 'localhost');
   nconf.set('database:port', '27017');
   nconf.set('database:name', 'TFE4Haiti');
-  nconf.set('database:collections:user', 'user');
-  nconf.set('database:collections:rainData', 'rainData');
-  nconf.set('database:collections:pwdRecovery', 'pwdRecovery');
-  nconf.set('database:collections:station', 'station');
-  nconf.set('database:collections:thiessenPolygon', 'thiessenPolygon');
   nconf.set('database:login', '');
   nconf.set('database:password', '');
 
   nconf.save(function(err) {
-    fs.readFile(__dirname + "/../" + configFileName, function(err, data) {
+    fs.readFile(fullConfigFileName, function(err, data) {
       if (err) {
-        console.error("Erreur durant la création du fichier de configuration :  \n" + error);
+        callback(err);
+      } else {
+        callback(null);
       }
     });
   });
+}
+
+function checkCfg(callback) {
+  logger.info('[Config] Vérification du fichier de configuration');
+  var cfgModified = false;
+  nconf.file(fullConfigFileName);
+  if (typeof nconf.get('jwt_private_key') === "undefined") {
+    setDefaultCfg('jwt_private_key', 'somethingsomethingjsontoken', function(err, result) {
+      cfgModified = result;
+    });
+  }
+  if (typeof nconf.get('server:host') === "undefined") {
+    setDefaultCfg('server:host', '0.0.0.0', function(err, result) {
+      cfgModified = result;
+    });
+  }
+  if (typeof nconf.get('server:port') === "undefined") {
+    setDefaultCfg('server:port', '3000', function(err, result) {
+      cfgModified = result;
+    });
+  }
+  if (typeof nconf.get('database:host') === "undefined") {
+    setDefaultCfg('database:host', 'localhost', function(err, result) {
+      cfgModified = result;
+    });
+  }
+  if (typeof nconf.get('database:port') === "undefined") {
+    setDefaultCfg('database:port', '27017', function(err, result) {
+      cfgModified = result;
+    });
+  }
+  if (typeof nconf.get('database:name') === "undefined") {
+    setDefaultCfg('database:name', 'TFE4Haiti', function(err, result) {
+      cfgModified = result;
+    });
+  }
+  if (typeof nconf.get('database:login') === "undefined") {
+    setDefaultCfg('database:login', '', function(err, result) {
+      cfgModified = result;
+    });
+  }
+  if (typeof nconf.get('database:password') === "undefined") {
+    setDefaultCfg('database:password', '', function(err, result) {
+      cfgModified = result;
+    });
+  }
+
+  // La configuration a été changée
+  if (cfgModified) {
+    logger.info('[Config] Le fichier de configuration a été modifié');
+    nconf.save(function(err) {
+      fs.readFile(fullConfigFileName, function(err, data) {
+        if (err) {
+          logger.error("[Config] Erreur durant la vérification du fichier de configuration :  \n" + error);
+        } else {
+          callback(null);
+        }
+      });
+    });
+  } else {
+    callback(null);
+  }
+}
+
+
+function setDefaultCfg(name, value, callback) {
+  nconf.set(name, value);
+  callback(null, true);
 }
 /**
  * Exports
