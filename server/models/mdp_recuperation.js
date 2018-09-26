@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var config = require('./../modules/config');
  
 // schema pour récupérer un mot de passe
 var Schema = mongoose.Schema;
