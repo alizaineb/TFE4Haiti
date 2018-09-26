@@ -9,7 +9,7 @@ module.exports = {
   },
 
   get: function(res) {
-    UsersModel.UtilisateurModele.find({}).then(function(users) {
+    UsersModel.userModel.find({}).then(function(users) {
       res.status(200).send({ message: users });
     })
     //TODO connect to mongodb
@@ -27,7 +27,7 @@ module.exports = {
   create: function(user, res) {
 
     console.log(user);
-    let uTmp = new UsersModel.UtilisateurModele();
+    let uTmp = new UsersModel.userModel();
     uTmp.mail = user.mail;
     uTmp.mdp = user.mdp;
     uTmp.type = 'admin';
