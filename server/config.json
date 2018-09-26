@@ -2,18 +2,18 @@
   "jwt_private_key": "somethingsomethingjsontoken",
   "server": {
     "host": "0.0.0.0",
-    "port" : "3000"
+    "port": "3000"
   },
   "database": {
     "host": "localhost",
     "port": "27017",
     "name": "TFE4Haiti",
     "collections": {
-      "user" : "utilistateur",
-      "data" : "donnee",
-      "pwdRecovery" : "recupPwd",
-      "station" : "station",
-      "thiessenPolygon": "thiessenPolygone"
+      "user": "user",
+      "rainData": "rainData",
+      "pwdRecovery": "pwdRecovery",
+      "station": "station",
+      "thiessenPolygon": "thiessenPolygon"
     },
     "login": "",
     "password": ""

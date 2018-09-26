@@ -22,7 +22,6 @@ process.chdir(__dirname);
 config.load(function(e) {
   if (e) {
     logger.error(e);
-
     return;
   }
   startWebServer();
