@@ -27,10 +27,10 @@ const logger = require('../modules/logger');
 const jwt = require('jsonwebtoken');
 
 //custom
-var config = require('./config');
+const nconf = require('nconf');
 
 var createKey = function(){
-	return  config.jwt_private_key;
+	return  nconf.get("jwt_private_key");
 }
 
 
@@ -40,7 +40,7 @@ var createKey = function(){
  
 var createToken = function(user){
 	var key = createKey();
-	return jwt.sign({id: user.id, email: user.email}, key, {expiresIn: 1440}); //encode the user and set the expiration time in 1 hour
+	return jwt.sign({id: user._id, mail: user.mail, role: user.type}, key, {expiresIn: 1440}); //encode the user and set the expiration time in 1 hour
 }
 
 
