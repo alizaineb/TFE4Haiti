@@ -6,7 +6,7 @@ let logger = require('../modules/logger');
 
 
 
-server.registerRoute('GET', '/server/stop', function(request, response) {
+server.registerAuthRoute('GET', '/server/stop', function(request, response) {
 		logger.info('[ROUTES] ' + request.method + ' ' + request.path);
 		logger.info('[SHUTDOWN] Server shuting down by ' + request.token_decoded.email);
 		response.status(200).json({message: "Server Shutting down..."});
