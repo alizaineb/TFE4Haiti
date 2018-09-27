@@ -87,8 +87,9 @@ var _configureServer = function() {
  */
 var _configureRoutes = function() {
 
-  require("../routes/server")
+  require("../routes/server");
   require('../routes/user');
+  require('../routes/login');
 
   app.use("*", function(req, res) {
     res.status(404).send({ message: '404' });
