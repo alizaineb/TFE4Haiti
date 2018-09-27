@@ -42,6 +42,7 @@ const token = require('./token');
  */
 // Server
 var app = express();
+var api = express.Router();
 var server;
 
 
@@ -90,6 +91,9 @@ var _configureRoutes = function() {
   require("../routes/server");
   require('../routes/user');
   require('../routes/login');
+
+  // prefix of api url 
+  app.use('/api', api);
 
   app.use("*", function(req, res) {
     res.status(404).send({ message: '404' });
@@ -142,11 +146,11 @@ exports.stop = stop;
 
 exports.registerRoute = function(method, path, handler) {
   logger.info('[Server] Registering route ' + method + ' ' + path);
-  return app[method.toLowerCase()](path, handler);
+  return api[method.toLowerCase()](path, handler);
 };
 
 exports.registerAuthRoute = function(method, path, handler) {
   logger.info('[Server] Registering Auth route ');
-  app[method.toLowerCase()](path, token.validateToken);
+  api[method.toLowerCase()](path, token.validateToken);
   return exports.registerRoute(method, path, handler);
 };
