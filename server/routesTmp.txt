@@ -1,3 +1,4 @@
+POST        /api/login
 GET         /api/station/fullInfo/:id
 DELETE      /api/station/:id                      [LOGGED]
 GET         /api/station/summary/:id

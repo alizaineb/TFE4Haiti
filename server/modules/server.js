@@ -11,8 +11,8 @@
  * Attributes : /
  *
  * Methods :
- *		- start([callback])
- *		- stop([callback])
+ *    - start([callback])
+ *    - stop([callback])
  *
  * Events : /
  *
@@ -33,6 +33,7 @@ var nconf = require('nconf');
 var logger = require('./logger');
 var config = require('./config');
 const token = require('./token');
+var permission = require('./permission');
 
 
 // Routes
@@ -62,7 +63,7 @@ var _configureDB = function() {
 };
 /**
  * Configure application:
- *		- parse json bodies
+ *    - parse json bodies
  */
 var _configureServer = function() {
   app.use(bodyParser.json());
@@ -135,7 +136,6 @@ var stop = function(callback) {
 };
 
 
-
 /**
  * Exports
  */
@@ -149,8 +149,10 @@ exports.registerRoute = function(method, path, handler) {
   return api[method.toLowerCase()](path, handler);
 };
 
-exports.registerAuthRoute = function(method, path, handler) {
+exports.registerAuthRoute = function(method, path, handler, roles) {
   logger.info('[Server] Registering Auth route ');
   api[method.toLowerCase()](path, token.validateToken);
+
+  api[method.toLowerCase()](path, permission.isAllowed(roles));
   return exports.registerRoute(method, path, handler);
 };
