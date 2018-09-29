@@ -11,6 +11,16 @@ var User = new Schema({
   type: { type: String, enum: ['admin', 'lamba'], required: true }
 });
 
+User.methods.toJson = function() {
+  return {
+    _id: this._id,
+    mail: this.mail,
+    type: this.type,
+    created_at: this.created_at,
+    last_seen: this.last_seen
+  };
+};
+
 
 //Definition du modèle
 var userModel = mongoose.model("user", User);
