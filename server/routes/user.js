@@ -1,32 +1,18 @@
 'use strict';
-
-const server = require('../modules/server');
+const express = require('express');
+const router = express.Router();
 
 const logger = require('../modules/logger');
+var permission = require('../modules/permission');
+var token = require('../modules/token');
 
 var userController = require("../controllers/UserCtrl");
 
-server.registerRoute('GET', '/users', function(request, response) {
-  logger.info('[ROUTES] ' + request.method + ' ' + request.path);
-  userController.get(response);
+
+router.get('/',token.validateToken, permission.isAllowed('admin'), function(req, res, next) {
+  logger.info('[ROUTES] ' + req.method + ' ' + req.path);
+  userController.get(res);
 });
 
-server.registerRoute('GET', '/users/:id', function(request, response) {
-  logger.info('[ROUTES] ' + request.method + ' ' + request.path);
-  userController.getById(request.params.id, response);
-});
 
-server.registerAuthRoute('POST', '/users/', function(request, response) {
-  logger.info('[ROUTES] ' + request.method + ' ' + request.path);
-  userController.create(request.body, response);
-}, ['admin', "user"]);
-
-server.registerAuthRoute('PUT', '/users/', function(request, response) {
-  logger.info('[ROUTES] ' + request.method + ' ' + request.path);
-  userController.update(request.body, response);
-});
-
-server.registerAuthRoute('DELETE', '/users/:email', function(request, response) {
-  logger.info('[ROUTES] ' + request.method + ' ' + request.path);
-  userController.delete(request.params.email, response);
-});
+module.exports = router;

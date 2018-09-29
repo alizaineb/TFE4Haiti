@@ -1,12 +1,13 @@
 'use strict';
 
-const server = require('../modules/server');
-
 const logger = require('../modules/logger');
+const router = require('express').Router();
 
-const usrCtrl = require('../controllers/UserCtrl');
+var userController = require("../controllers/UserCtrl");
 
-server.registerRoute('POST', '/login', function(request, response) {
-	logger.info('[ROUTES]' + request.method + ' ' + request.path);
-	usrCtrl.login(request.body, response);
-})
+router.post('/', function(req, res, next) {
+  logger.info('[ROUTES] ' + req.method + ' ' + req.path);
+  userController.login(req.body, res);
+});
+
+module.exports = router;

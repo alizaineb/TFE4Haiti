@@ -89,12 +89,13 @@ var _configureServer = function() {
  */
 var _configureRoutes = function() {
 
-  require("../routes/server");
+/*  require("../routes/server");
   require('../routes/user');
-  require('../routes/login');
+  require('../routes/login');*/
+
 
   // prefix of api url 
-  app.use('/api', api);
+  app.use('/api', require('../routes'));
 
   app.use("*", function(req, res) {
     res.status(404).send({ message: '404' });
@@ -144,15 +145,15 @@ var stop = function(callback) {
 exports.start = start;
 exports.stop = stop;
 
-exports.registerRoute = function(method, path, handler) {
-  logger.info('[Server] Registering route ' + method + ' ' + path);
-  return api[method.toLowerCase()](path, handler);
-};
+// exports.registerRoute = function(method, path, handler) {
+//   logger.info('[Server] Registering route ' + method + ' ' + path);
+//   return api[method.toLowerCase()](path, handler);
+// };
 
-exports.registerAuthRoute = function(method, path, handler, roles) {
-  logger.info('[Server] Registering Auth route ');
-  api[method.toLowerCase()](path, token.validateToken);
-
-  api[method.toLowerCase()](path, permission.isAllowed(roles));
-  return exports.registerRoute(method, path, handler);
-};
+// exports.registerAuthRoute = function(method, path, handler, roles) {
+//   logger.info('[Server] Registering Auth route ');
+//   api[method.toLowerCase()](path, token.validateToken);
+//
+//   api[method.toLowerCase()](path, permission.isAllowed(roles));
+//   return exports.registerRoute(method, path, handler);
+// };
