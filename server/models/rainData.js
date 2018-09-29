@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 var RainData = new Schema({
   id_station: { type: String, required: true },
   date: { type: Date, required: true },
-  valeur: { type: Number, required: true, min: 0 }
+  value: { type: Number, required: true, min: 0 }
 });
 
 
