@@ -14,5 +14,10 @@ router.get('/',token.validateToken, permission.isAllowed('admin'), function(req,
   userController.get(res);
 });
 
+router.post('/',token.validateToken, permission.isAllowed('admin'), function(req, res, next) {
+  logger.info('[ROUTES] ' + req.method + ' ' + req.path);
+  userController.create(req.body, res);
+});
+
 
 module.exports = router;
