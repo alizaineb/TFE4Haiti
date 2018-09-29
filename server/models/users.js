@@ -5,9 +5,9 @@ var config = require('./../modules/config');
 var Schema = mongoose.Schema;
 var User = new Schema({
   mail: { type: String, required: true },
-  mdp: { type: String, required: true },
-  date_creation: { type: Date, default: Date.now },
-  derniere_connexion: { type: Date, default: Date.now },
+  pwd: { type: String, required: true },
+  created_at: { type: Date, default: Date.now },
+  last_seen: { type: Date, default: Date.now },
   type: { type: String, enum: ['admin', 'lamba'], required: true }
 });
 

@@ -8,7 +8,7 @@ var Station = new Schema({
   latitude: { type: Number, required: true, min: -90, max: 90 },
   longitude: { type: Number, required: true, min: -180, max: 180 },
   type: { type: String, enum: ['hydro', 'limni'], required: true },
-  date_creation: { type: Date, required: true, default: Date.now },
+  created_at: { type: Date, required: true, default: Date.now },
   derniere_utilisation: { type: Date },
   photo: { type: String }, // Url vers la photo
   utilisateurs: { type: [String], required: true },
