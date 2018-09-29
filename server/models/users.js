@@ -11,7 +11,7 @@ var User = new Schema({
   type: { type: String, enum: ['admin', 'lamba'], required: true }
 });
 
-User.methods.toJson = function() {
+User.methods.toDto = function() {
   return {
     _id: this._id,
     mail: this.mail,

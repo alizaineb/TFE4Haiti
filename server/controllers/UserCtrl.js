@@ -11,14 +11,16 @@ module.exports = {
         res.status(404).send({ error: err });
       } else {
         var token = jwt.createToken(result);
-        res.status(200).send({ "result": result, "user": user, "token": token });
+        res.status(200).send({current: result.toDto(), token: token });
       }
     })
   },
 
   get: function(res) {
     UsersModel.userModel.find({}).then(function(users) {
-      res.status(200).send({ message: users });
+      let tabU = [];
+      users.forEach(user => tabU.push(user.toDto()));
+      res.status(200).send({ message: tabU });
     })
   },
   getById: function(id, res) {
@@ -36,7 +38,7 @@ module.exports = {
     uTmp.pwd = user.pwd;
     uTmp.type = user.type;
     uTmp.save().then(() => {
-      res.status(200).send({ message: uTmp });
+      res.status(200).send({ message: uTmp.toDto() });
     })
 
   },
