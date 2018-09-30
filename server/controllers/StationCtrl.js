@@ -6,6 +6,9 @@ module.exports = {
   get: function(res) {
     Station.stationModel.find({}).then(function(results) {
       res.status(200).send({ message: results });
+    }).catch(function (err) {
+        logger.error(err);
+        res.status(500).send(err);
     })
   },
   getById: function(id, res) {
@@ -28,6 +31,9 @@ module.exports = {
 
     sTmp.save().then(() => {
       res.status(200).send({ message: sTmp });
+    }).catch(function (err) {
+        logger.error(err);
+        res.status(500).send(err);
     })
 
   },
