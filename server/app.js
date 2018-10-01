@@ -53,16 +53,22 @@ var configureDB = function() {
 };
 
 function startWebServer() {
+  // Configure le serveur
   configureServer();
+
+  //Configure la base de données
   configureDB();
-  // Vérification de la config
+
+  // Gestion des routes
   require('./routes/index')(app);
 
+  // Lancement du serveur
   app.listen(nconf.get('server').port)
 }
 
 process.chdir(__dirname);
 
+// Vérification de la config
 config.load(function(e) {
   if (e) {
     logger.error(e);
