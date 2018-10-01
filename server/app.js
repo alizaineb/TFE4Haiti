@@ -1,4 +1,7 @@
 'use strict';
+var express = require('express');
+var app = express();
+var nconf = require('nconf');
 /**
  * =============================
  *
@@ -14,7 +17,9 @@ const server = require('./modules/server');
 
 function startWebServer() {
   // Vérification de la config
-  server.start();
+  require('./routes/index')(app);
+
+  app.listen(nconf.get('server').port)
 }
 
 process.chdir(__dirname);

@@ -1,0 +1,16 @@
+[{
+    "id": 0,
+    "uri": "*",
+    "method": "GET"
+  },
+  {
+    "id": 1,
+    "uri": "/api/login",
+    "method": "POST"
+  },
+  {
+    "id": 2,
+    "uri": "/api/lougout",
+    "method": "GET"
+  }
+]

@@ -43,7 +43,7 @@ var permission = require('./permission');
  */
 // Server
 var app = express();
-var api = express.Router();
+//var api = express.Router();
 var server;
 
 
@@ -89,12 +89,12 @@ var _configureServer = function() {
  */
 var _configureRoutes = function() {
 
-/*  require("../routes/server");
-  require('../routes/user');
-  require('../routes/login');*/
+  /*  require("../routes/server");
+    require('../routes/user');
+    require('../routes/login');*/
 
 
-  // prefix of api url 
+  // prefix of api url
   app.use('/api', require('../routes'));
 
   app.use("*", function(req, res) {
@@ -114,10 +114,6 @@ var start = function(callback) {
   _configureServer();
   _configureRoutes();
 
-  server = app.listen(nconf.get('server:port'), nconf.get('server:host'), function() {
-    logger.info('[Server] Web server listening on ' + nconf.get('server:host') + ':' + nconf.get('server:port'));
-    if (callback) callback();
-  });
 };
 
 /**
