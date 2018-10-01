@@ -71,8 +71,9 @@ var load = function(callback) {
 };
 
 function createDefaultCfgFile(callback) {
-  console.log('[Info] Création d\'un nouveau fichier de configuration');
+  logger.warn('[Config]  Création d\'un nouveau fichier de configuration');
   nconf.argv().env().file({ file: fullConfigFileName });
+  nconf.set('development', true);
   nconf.set('jwt_private_key', 'somethingsomethingjsontoken');
   nconf.set('server:host', '0.0.0.0');
   nconf.set('server:port', '3000');
@@ -97,6 +98,10 @@ function checkCfg(callback) {
   logger.info('[Config] Vérification du fichier de configuration');
   var cfgModified = false;
   nconf.file(fullConfigFileName);
+  if (typeof nconf.get('development') === "undefined") {
+    nconf.set('development', true)
+    cfgModified = true;
+  }
   if (typeof nconf.get('jwt_private_key') === "undefined") {
     nconf.set('jwt_private_key', 'somethingsomethingjsontoken')
     cfgModified = true;
@@ -136,7 +141,7 @@ function checkCfg(callback) {
     nconf.save(function(err) {
       fs.readFile(fullConfigFileName, function(err, data) {
         if (err) {
-          logger.error("[Config] Erreur durant la vérification du fichier de configuration :  \n" + error);
+          logger.error("[Config] Erreur durant la vérification du fichier de configuration :  \n" + err);
         } else {
           callback(null);
         }

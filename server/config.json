@@ -1,4 +1,5 @@
 {
+  "development": true,
   "jwt_private_key": "somethingsomethingjsontoken",
   "server": {
     "host": "0.0.0.0",
@@ -8,7 +9,7 @@
     "host": "localhost",
     "port": "27017",
     "name": "TFE4Haiti",
-    "password": "",
-    "login": ""
+    "login": "",
+    "password": ""
   }
 }
