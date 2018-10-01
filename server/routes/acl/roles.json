@@ -1,9 +1,9 @@
 [{
     "id": 1,
-    "tole": "admin"
+    "role": "admin"
   },
   {
     "id": 2,
-    "tole": "worker"
+    "role": "trusted"
   }
 ]

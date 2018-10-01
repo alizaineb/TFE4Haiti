@@ -34,8 +34,7 @@ var routes = [
     path: _.findWhere(routesJson, { id: 4 }).uri,
     httpMethod: _.findWhere(routesJson, { id: 4 }).method,
     middleWare: [controllers.users.get]
-  },
-
+  }
   //
 ];
 

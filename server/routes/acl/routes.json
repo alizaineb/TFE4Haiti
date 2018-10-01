@@ -25,7 +25,7 @@
   },
   {
     "id": 999,
-    "uri": "/api/exemple",
+    "uri": "/api/exemple/:id",
     "method": "GET",
     "roles": [1, 2]
   }
