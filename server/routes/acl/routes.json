@@ -5,12 +5,29 @@
   },
   {
     "id": 1,
-    "uri": "/api/login",
+    "uri": "/api/user/login",
     "method": "POST"
   },
   {
     "id": 2,
-    "uri": "/api/lougout",
+    "uri": "/api/user/login",
     "method": "GET"
+  },
+  {
+    "id": 3,
+    "uri": "/api/user/create",
+    "method": "POST"
+  },
+  {
+    "id": 4,
+    "uri": "/api/user/get",
+    "method": "GET"
+  },
+  {
+    "id": 999,
+    "uri": "/api/exemple",
+    "method": "GET",
+    "roles": [1, 2]
   }
+
 ]

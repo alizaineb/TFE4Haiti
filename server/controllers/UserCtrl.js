@@ -53,14 +53,15 @@ exports.getByEmail = function(req, res) {
 
 exports.create = function(req, res) {
   let uTmp = new UsersModel.userModel();
+  let user = req.body
   uTmp.mail = user.mail;
   uTmp.pwd = user.pwd;
   uTmp.type = user.type;
   uTmp.save().then(() => {
-    res.status(200).send({ message: uTmp.toDto() });
+    return res.status(200).send({ message: uTmp.toDto() });
   }).catch(function(err) {
     logger.error(err);
-    res.status(500).send(err);
+    return res.status(500).send(err);
   })
 }
 
@@ -70,6 +71,11 @@ exports.update = function(req, res) {
 }
 
 exports.delete = function(req, res) {
+  //TODO connect to mongodb
+  res.status(200).send({ message: "Method to implements" });
+}
+
+exports.logout = function(req, res) {
   //TODO connect to mongodb
   res.status(200).send({ message: "Method to implements" });
 }
