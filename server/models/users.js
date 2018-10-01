@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var config = require('./../modules/config');
 
 // schema d'un utilisateur
 var Schema = mongoose.Schema;

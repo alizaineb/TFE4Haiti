@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var config = require('./../modules/config');
 
 // schema pour l'affichage de la heathmap
 var Schema = mongoose.Schema;

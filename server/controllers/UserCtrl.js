@@ -1,12 +1,18 @@
 'use strict';
-var logger = require('../modules/logger');
+var logger = require('../config/logger');
 var UsersModel = require('./../models/users');
-const jwt = require('../modules/token');
+var jsonwebtoken = require('jsonwebtoken');
+var nconf = require('nconf');
+var secret = nconf.get('jwt_private_key');
 
 exports.login = function(req, res) {
-  console.log("OK");
-  res.sendStatus(200);
-  /*UsersModel.userModel.findOne({ mail: user.mail, pwd: user.pwd }, function(err, result) {
+  var mail = req.body.mail || '';
+  var pwd = req.body.pwd || '';
+  if (!mail || !pwd) {
+    res.sendStatus(400, "Information manquante(s)");
+  }
+
+  UsersModel.userModel.findOne({ mail: mail, pwd: pwd }, function(err, result) {
     if (err) {
       res.status(404).send({ error: err });
       return;
@@ -15,19 +21,22 @@ exports.login = function(req, res) {
       res.status(404).send({ error: "Login et/ou mot de passe incorrect." })
 
     } else {
-      var token = jwt.createToken(result);
-      if (!token) {
-        res.status(200).send({ current: result.toDto(), token: token });
+      var token = jsonwebtoken.sign({ id: result._id }, secret, { expiresIn: 60 });
+      console.log(token);
+      if (token) {
+        return res.json({
+          token: token
+        });
       } else {
         const err = "the server was unable to create a token.";
         logger.error(err);
-        res.status(500).send(err);
+        res.status(500, err);
       }
     }
   }).catch(function(err) {
     logger.error(err);
     res.status(500).send(err);
-  });*/
+  });
 }
 
 exports.get = function(req, res) {

@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var config = require('./../modules/config');
 
 // schema concernant les données pluviométriques
 var Schema = mongoose.Schema;

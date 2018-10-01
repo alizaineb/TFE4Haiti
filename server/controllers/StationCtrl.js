@@ -1,5 +1,5 @@
 'use strict';
-var logger = require('../modules/logger');
+var logger = require('../config/logger');
 var Station = require('./../models/station');
 
 exports.get = function(req, res) {

@@ -1,6 +1,8 @@
 const express = require('express');
 var routesJson = require('./acl/routes.json');
+var jsonwebtoken = require('jsonwebtoken');
 var _ = require('underscore');
+var nconf = require('nconf');
 
 
 // Tous les controllers de l'application
@@ -8,7 +10,6 @@ var controllers = {};
 controllers.users = require('../controllers/UserCtrl');
 controllers.stations = require('../controllers/StationCtrl');
 // Route par défaut récupère l'index
-
 // controllers.angular = function(req, res) { res.sendFile(path.join(__dirname, '../public/index.html')); };
 
 var routes = [
@@ -70,8 +71,12 @@ module.exports = function(app) {
 }
 
 function ensureAuthorized(req, res, next) {
-  console.log("AUTORIZED");
-  console.log(req.body);
-  // TODO check droits
+  // Ici on récup le token
+
+  // Check le token
+
+  // Check le droit de l'utiliasteur en le gettant dans la db (son id est dans le token)
+
+  // Compare sa la personne a accès à la route, si non res.sendStatus(403);
   return next();
 }

@@ -42,7 +42,7 @@ const fullConfigFileName = __dirname + '/../' + configFileName;
  *
  * @param callback return an error or null
  */
-var load = function(callback) {
+exports.load = function(callback) {
   // Vérification que le fichier de config existe
   fs.exists(fullConfigFileName, function(exists) {
     // Créer la config
@@ -151,9 +151,3 @@ function checkCfg(callback) {
     callback(null);
   }
 }
-/**
- * Exports
- */
-
-// Methods
-exports.load = load;

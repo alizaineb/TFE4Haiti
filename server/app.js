@@ -12,11 +12,10 @@ var mongoose = require('mongoose');
  * =============================
  */
 
-const config = require('./modules/config');
-const logger = require('./modules/logger');
-const server = require('./modules/server');
+const config = require('./config/config');
+const logger = require('./config/logger')
 
-var configureServer = function() {
+function configureServer() {
   // Parser
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
@@ -37,7 +36,7 @@ var configureServer = function() {
   });
 };
 
-var configureDB = function() {
+function configureDB() {
   //Connect to mongoDB server
   let url = 'mongodb://' + nconf.get('database:host') + ':' + nconf.get('database:port') + '/' + nconf.get('database:name');
   mongoose.connect(url, { useNewUrlParser: true });
@@ -60,7 +59,7 @@ function startWebServer() {
   configureDB();
 
   // Gestion des routes
-  require('./routes/index')(app);
+  require('./routes/routes')(app);
 
   // Lancement du serveur
   app.listen(nconf.get('server').port)
