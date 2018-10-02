@@ -21,8 +21,9 @@
 // Built-in
 const logger = require('./logger');
 const jwt = require('jsonwebtoken');
-//custom
 const nconf = require('nconf');
+
+//custom
 var key = nconf.get("token:privateKey")
 var expiration = nconf.get("token:expiration")
 /**
@@ -54,13 +55,3 @@ exports.validateToken = function(req, res, next) {
     });
   }
 };
-
-exports.getToken = function(header) {
-
-}
-
-exports.decodeToken = function(token) {
-
-}
-
-// Directement une méthode get user ? Mais je pense pas il doit que gerer le token ce truc ici
