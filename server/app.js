@@ -59,7 +59,7 @@ function startWebServer() {
   configureDB();
 
   // Gestion des routes
-  require('./routes/routes')(app);
+  require('./routes/server')(app);
 
   // Lancement du serveur
   app.listen(nconf.get('server').port)

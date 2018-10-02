@@ -1,10 +1,3 @@
-const express = require('express');
-var routesJson = require('./acl/routes.json');
-var jsonwebtoken = require('jsonwebtoken');
-var _ = require('underscore');
-var nconf = require('nconf');
-
-
 // Tous les controllers de l'application
 var controllers = {};
 controllers.users = require('../controllers/UserCtrl');
@@ -12,70 +5,39 @@ controllers.stations = require('../controllers/StationCtrl');
 // Route par défaut récupère l'index
 // controllers.angular = function(req, res) { res.sendFile(path.join(__dirname, '../public/index.html')); };
 
-var routes = [
+exports.routes = [
   // API routes
+  /* Exemple
+   * {
+   * path : Le chemin, commence  par /api/
+   *        ensuite vient le domaine auquel la route va être liée (p. ex. user/)
+   *        enfin l'obejectif de la route
+   * httpMethod : GET,POST, DELETE, PUT. Toute autre méthode ne sera pas reconnue
+   * middleWare : C'est ici, que le token sera vérifié (si nécessaire) via l'ajout de [jwt({secret: secret})], tokenManager.verifyToken,
+   *              Ensuite, spécifier la méthode à laquelle la route est liée
+   * access : Spécification des roles (si nécessaire), p. ex. [1,2,3]
+   * }
+   */
   // login
   {
-    path: _.findWhere(routesJson, { id: 1 }).uri,
-    httpMethod: _.findWhere(routesJson, { id: 1 }).method,
+    path: "/api/user/login",
+    httpMethod: "POST",
     middleWare: [controllers.users.login]
   },
   {
-    path: _.findWhere(routesJson, { id: 2 }).uri,
-    httpMethod: _.findWhere(routesJson, { id: 2 }).method,
+    path: "/api/user/logout",
+    httpMethod: "GET",
     middleWare: [controllers.users.logout]
   },
   {
-    path: _.findWhere(routesJson, { id: 3 }).uri,
-    httpMethod: _.findWhere(routesJson, { id: 3 }).method,
+    path: "/api/user/create",
+    httpMethod: "POST",
     middleWare: [controllers.users.create]
   },
   {
-    path: _.findWhere(routesJson, { id: 4 }).uri,
-    httpMethod: _.findWhere(routesJson, { id: 4 }).method,
+    path: "/api/user/get",
+    httpMethod: "GET",
     middleWare: [controllers.users.get]
   }
   //
 ];
-
-
-// Applique les middleWare de vérification de sécurité
-//  redirige selon le type de méthode
-// Vérifie que le type de méthode existe (GET,POST, ...)
-module.exports = function(app) {
-  _.each(routes, function(route) {
-    // Vérification des droits
-    route.middleWare.unshift(ensureAuthorized);
-    var args = _.flatten([route.path, route.middleWare]);
-
-    // ToUpperCase au pour s'assurer que si qqun écrit get ça soit correct (GET normalement)
-    switch (route.httpMethod.toUpperCase()) {
-      case 'GET':
-        app.get.apply(app, args);
-        break;
-      case 'POST':
-        app.post.apply(app, args);
-        break;
-      case 'PUT':
-        app.put.apply(app, args);
-        break;
-      case 'DELETE':
-        app.delete.apply(app, args);
-        break;
-      default:
-        throw new Error('Type de requête inconnue pour la route ' + route.path);
-        break;
-    }
-  });
-}
-
-function ensureAuthorized(req, res, next) {
-  // Ici on récup le token
-
-  // Check le token
-
-  // Check le droit de l'utiliasteur en le gettant dans la db (son id est dans le token)
-
-  // Compare sa la personne a accès à la route, si non res.sendStatus(403);
-  return next();
-}
