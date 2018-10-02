@@ -27,7 +27,8 @@ exports.login = function(req, res) {
       console.log(token);
       if (token) {
         return res.json({
-          token: token
+          token: token,
+          current: result.toDto()
         });
       } else {
         const err = "the server was unable to create a token.";
@@ -45,7 +46,7 @@ exports.get = function(req, res) {
   UsersModel.userModel.find({}).then(function(users) {
     let tabU = [];
     users.forEach(user => tabU.push(user.toDto()));
-    res.status(200).send({ message: tabU });
+    res.status(200).send(tabU);
   }).catch(function(err) {
     logger.error(err);
     res.status(500).send(err);
