@@ -8,8 +8,10 @@ import {AlertService, AuthenticationService} from '../../_services/index';
 @Component({templateUrl: 'login.component.html'})
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  registerForm: FormGroup;
   loading = false;
-  submitted = false;
+  loginSubmitted = false;
+  registerSubmitted = false;
   returnUrl: string;
 
   constructor(
@@ -25,6 +27,11 @@ export class LoginComponent implements OnInit {
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
+    this.registerForm = this.formBuilder.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required]
+    });
+
 
     // reset login status
     this.authenticationService.logout();
@@ -38,8 +45,12 @@ export class LoginComponent implements OnInit {
     return this.loginForm.controls;
   }
 
-  onSubmit() {
-    this.submitted = true;
+  get r(){
+    return this.registerForm.controls;
+  }
+
+  onLogin() {
+    this.loginSubmitted = true;
 
     // stop here if form is invalid
     if (this.loginForm.invalid) {
@@ -52,6 +63,31 @@ export class LoginComponent implements OnInit {
       .subscribe(
         data => {
           this.router.navigate([this.returnUrl]);
+          this.loading = false;
+        },
+        error => {
+          this.alertService.error(error);
+          this.loading = false;
+        });
+  }
+
+  onRegister() {
+    this.registerSubmitted = true;
+
+    // stop here if form is invalid
+    if (this.registerForm.invalid) {
+      return;
+    }
+
+    this.loading = true;
+    const self = this;
+    this.authenticationService.register(this.r.username.value, this.r.password.value)
+      .pipe(first())
+      .subscribe(
+        data => {
+          this.router.navigate(["/login"]);
+          this.alertService.success("Votre compte a été créé! Vous pouvez vous connectez.");
+          this.loading = false;
         },
         error => {
           this.alertService.error(error);
