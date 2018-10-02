@@ -47,13 +47,13 @@ exports.routes = [
   {
     path: "/api/user/someSecureRouteAdminOnly",
     httpMethod: "GET",
-    middleWare: [tokenManager.validateToken, controllers.users.useless],
+    middleWare: [controllers.users.useless],
     access: ['admin']
   },
   {
     path: "/api/user/someSecureRouteNotAccessible",
     httpMethod: "GET",
-    middleWare: [tokenManager.validateToken, controllers.users.useless],
+    middleWare: [controllers.users.useless],
     access: ['NO_ONE']
   }
   //
