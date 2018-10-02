@@ -1,9 +1,14 @@
+// Modules node
 const express = require('express');
 var jsonwebtoken = require('jsonwebtoken');
 var _ = require('underscore');
 var nconf = require('nconf');
+
+// Nos modules
 var routesJs = require('./routes')
 var routes = routesJs.routes
+var tokenManager = require('./../config/tokenManager')
+
 
 // Applique les middleWare de vérification de sécurité
 //  redirige selon le type de méthode
@@ -36,6 +41,11 @@ module.exports = function(app) {
 }
 
 function ensureAuthorized(req, res, next) {
+  // Si la route c'est /* tout le monde a accès
+  if (req.route.path == "*") {
+    return next();
+  }
+  var token = tokenManager.getToken(req.headers);
   // Ici on récup le token
 
   // Check le token

@@ -19,27 +19,25 @@
  * Load modules
  */
 // Built-in
-const logger = require('../modules/logger');
+const logger = require('./logger');
 const jwt = require('jsonwebtoken');
 //custom
 const nconf = require('nconf');
-var createKey = function() {
-  return nconf.get("jwt_private_key");
-}
+var key = nconf.get("token:privateKey")
+var expiration = nconf.get("token:expiration")
 /**
  * Initialize logger
  */
-var createToken = function(user) {
-  var key = createKey();
-  if (!user)
+exports.createToken = function(user) {
+  if (!user) {
     return undefined;
-  return jwt.sign({ id: user._id, mail: user.mail, role: user.type }, key, { expiresIn: 1440 }); //encode the user and set the expiration time in 1 hour
+  }
+  return jwt.sign({ id: user._id }, key, { expiresIn: expiration }); //encode the user and set the expiration time in 1 hour
 }
-var validateToken = function(req, res, next) {
+exports.validateToken = function(req, res, next) {
   var token = req.query.token || req.headers['x-access-token'];
   if (token) {
     // verifies secret and checks exp
-    var key = createKey();
     jwt.verify(token, key, function(err, decoded) {
       if (err) {
         return res.json({ "error": true, "message": 'Failed to authenticate token.' });
@@ -56,9 +54,13 @@ var validateToken = function(req, res, next) {
     });
   }
 };
-/**
- * Exports
- */
-// Methods
-exports.createToken = createToken;
-exports.validateToken = validateToken;
+
+exports.getToken = function(header) {
+
+}
+
+exports.decodeToken = function(token) {
+
+}
+
+// Directement une méthode get user ? Mais je pense pas il doit que gerer le token ce truc ici

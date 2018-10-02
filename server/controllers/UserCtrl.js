@@ -1,9 +1,11 @@
 'use strict';
+// Modules node
+var nconf = require('nconf');
+
+// Nos modules
 var logger = require('../config/logger');
 var UsersModel = require('./../models/users');
-var jsonwebtoken = require('jsonwebtoken');
-var nconf = require('nconf');
-var secret = nconf.get('jwt_private_key');
+var tokenManager = require('./../config/tokenManager')
 
 exports.login = function(req, res) {
   var mail = req.body.mail || '';
@@ -21,7 +23,7 @@ exports.login = function(req, res) {
       res.status(404).send({ error: "Login et/ou mot de passe incorrect." })
 
     } else {
-      var token = jsonwebtoken.sign({ id: result._id }, secret, { expiresIn: 60 });
+      var token = tokenManager.createToken(result);
       console.log(token);
       if (token) {
         return res.json({

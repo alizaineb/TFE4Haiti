@@ -74,7 +74,8 @@ function createDefaultCfgFile(callback) {
   logger.warn('[Config]  Création d\'un nouveau fichier de configuration');
   nconf.argv().env().file({ file: fullConfigFileName });
   nconf.set('development', true);
-  nconf.set('jwt_private_key', 'somethingsomethingjsontoken');
+  nconf.set('token:privateKey', 'somethingsomethingjsontoken'); // 1h
+  nconf.set('token:expiration', 1440); // 1h
   nconf.set('server:host', '0.0.0.0');
   nconf.set('server:port', '3000');
   nconf.set('database:host', 'localhost');
@@ -100,10 +101,6 @@ function checkCfg(callback) {
   nconf.file(fullConfigFileName);
   if (typeof nconf.get('development') === "undefined") {
     nconf.set('development', true)
-    cfgModified = true;
-  }
-  if (typeof nconf.get('jwt_private_key') === "undefined") {
-    nconf.set('jwt_private_key', 'somethingsomethingjsontoken')
     cfgModified = true;
   }
   if (typeof nconf.get('server:host') === "undefined") {
@@ -134,7 +131,14 @@ function checkCfg(callback) {
     nconf.set('database:password', '');
     cfgModified = true;
   }
-
+  if (typeof nconf.get('token:privateKey') === "undefined") {
+    nconf.set('token:privateKey', 'somethingsomethingjsontoken');
+    cfgModified = true;
+  }
+  if (typeof nconf.get('token:expiration') === "undefined") {
+    nconf.set('token:expiration', 1440);
+    cfgModified = true;
+  }
   // La configuration a été changée
   if (cfgModified) {
     logger.info('[Config] Le fichier de configuration a été modifié');

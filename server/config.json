@@ -1,6 +1,5 @@
 {
   "development": true,
-  "jwt_private_key": "somethingsomethingjsontoken",
   "server": {
     "host": "0.0.0.0",
     "port": "3000"
@@ -11,5 +10,9 @@
     "name": "TFE4Haiti",
     "login": "",
     "password": ""
+  },
+  "token": {
+    "privateKey": "somethingsomethingjsontoken",
+    "expiration": 1440
   }
 }
