@@ -31,8 +31,6 @@ function configureServer() {
     if (request.method === 'OPTIONS') {
       return response.sendStatus(200);
     }
-    logger.info('[Server] next()');
-    console.log(request.body);
     return next();
   });
 };

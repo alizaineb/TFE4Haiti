@@ -8,8 +8,6 @@ var UsersModel = require('./../models/users');
 var tokenManager = require('./../config/tokenManager')
 
 exports.login = function(req, res) {
-  console.log("Body user ctrl :");
-  console.log(req.body);
   var mail = req.body.mail || '';
   var pwd = req.body.pwd || '';
   if (!mail || !pwd) {
