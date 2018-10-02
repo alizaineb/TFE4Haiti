@@ -84,8 +84,16 @@ exports.update = function(req, res) {
 }
 
 exports.delete = function(req, res) {
+  let id = req.params.id;
+  console.log(id);
+  let user = UsersModel.userModel.deleteOne({_id: id}).then(() =>{
+    return res.status(200).send({deleted: "ok"})
+  }).catch(function(err) {
+    logger.error(err);
+    return res.status(500).send(err);
+  });
   //TODO connect to mongodb
-  res.status(200).send({ message: "Method to implements" });
+  //res.status(200).send({ message: "Method to implements" });
 }
 
 exports.logout = function(req, res) {

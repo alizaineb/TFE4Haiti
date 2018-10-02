@@ -39,6 +39,11 @@ exports.routes = [
     httpMethod: "GET",
     middleWare: [controllers.users.get]
   },
+  {
+    path: "/api/user/:id",
+    httpMethod: "DELETE",
+    middleWare: [controllers.users.delete]
+  },
 
   // Routes used to test
   {
