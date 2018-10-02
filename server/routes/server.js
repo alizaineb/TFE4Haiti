@@ -15,8 +15,10 @@ var db = require("./../models/users")
 // Vérifie que le type de méthode existe (GET,POST, ...)
 module.exports = function(app) {
   _.each(routes, function(route) {
-    // Vérification des droits
-    route.middleWare.unshift(ensureAuthorized);
+    // Si la route contient des accès, il faut la vérifier
+    if (route.access) {
+      route.middleWare.unshift(ensureAuthorized);
+    }
     var args = _.flatten([route.path, route.middleWare]);
 
     // ToUpperCase au pour s'assurer que si qqun écrit get ça soit correct (GET normalement)
