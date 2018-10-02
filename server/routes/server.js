@@ -43,10 +43,6 @@ module.exports = function(app) {
 }
 
 function ensureAuthorized(req, res, next) {
-  // Si la route c'est * tout le monde a accès
-  if (req.route.path == "*") {
-    return next();
-  }
   tokenManager.validateToken(req, res, function() {
     // Ici on récup l'utilisateur
     var token = req.token_decoded;
