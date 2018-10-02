@@ -26,7 +26,7 @@ function configureServer() {
 
     response.header('Access-Control-Allow-Origin', '*');
     response.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    response.header('Access-Control-Allow-Headers', 'Authorization, Content-Type');
+    response.header('Access-Control-Allow-Headers', 'Authorization, Content-Type, x-access-token');
 
     if (request.method === 'OPTIONS') {
       response.sendStatus(200);
