@@ -1,5 +1,5 @@
 // Tous les controllers de l'application
-var tokenManager = require('../config/tokenManager');
+var roles = require('../config/roles');
 var controllers = {};
 controllers.users = require('../controllers/UserCtrl');
 controllers.stations = require('../controllers/StationCtrl');
@@ -40,21 +40,18 @@ exports.routes = [
     middleWare: [controllers.users.get]
   },
 
-
-
-
   // Routes used to test
   {
-    path: "/api/user/someSecureRouteAdminOnly",
+    path: "/api/someSecureRouteAdminOnly",
     httpMethod: "GET",
     middleWare: [controllers.users.useless],
-    access: ['admin']
+    access: [roles.ADMIN]
   },
   {
-    path: "/api/user/someSecureRouteNotAccessible",
+    path: "/api/someSecureRouteNotAccessible",
     httpMethod: "GET",
     middleWare: [controllers.users.useless],
-    access: ['NO_ONE']
+    access: [roles.NO_ONE]
   }
   //
 ];

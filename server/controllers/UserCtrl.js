@@ -5,7 +5,8 @@ var nconf = require('nconf');
 // Nos modules
 var logger = require('../config/logger');
 var UsersModel = require('./../models/users');
-var tokenManager = require('./../config/tokenManager')
+var tokenManager = require('./../config/tokenManager');
+const roles = require('../config/roles');
 
 exports.login = function(req, res) {
   var mail = req.body.mail || '';
@@ -67,7 +68,8 @@ exports.create = function(req, res) {
   let user = req.body
   uTmp.mail = user.mail;
   uTmp.pwd = user.pwd;
-  uTmp.type = user.type;
+  console.log(roles);
+  uTmp.type = roles.ADMIN; //TODO Change to VIEWER, it's admin for the developpement
   uTmp.save().then(() => {
     return res.status(200).send({ message: uTmp.toDto() });
   }).catch(function(err) {
