@@ -1,4 +1,5 @@
 // Tous les controllers de l'application
+var tokenManager = require('../config/tokenManager');
 var controllers = {};
 controllers.users = require('../controllers/UserCtrl');
 controllers.stations = require('../controllers/StationCtrl');
@@ -38,16 +39,21 @@ exports.routes = [
     httpMethod: "GET",
     middleWare: [controllers.users.get]
   },
+
+
+
+
+  // Routes used to test
   {
     path: "/api/user/someSecureRouteAdminOnly",
     httpMethod: "GET",
-    middleWare: [controllers.users.useless],
+    middleWare: [tokenManager.validateToken, controllers.users.useless],
     access: ['admin']
   },
   {
     path: "/api/user/someSecureRouteNotAccessible",
     httpMethod: "GET",
-    middleWare: [controllers.users.useless],
+    middleWare: [tokenManager.validateToken, controllers.users.useless],
     access: ['NO_ONE']
   }
   //

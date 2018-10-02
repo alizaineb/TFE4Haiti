@@ -41,33 +41,41 @@ module.exports = function(app) {
 }
 
 function ensureAuthorized(req, res, next) {
-  // Si la route c'est /* tout le monde a accès
+  // Si la route c'est * tout le monde a accès
   if (req.route.path == "*") {
     return next();
   }
-  // Check le token
-  var token = tokenManager.validateToken(req, res, function() {
-    // Ici on récup l'utilisateur
-    var token = req.token_decoded;
-    if (token && token.id) {
-      // Check le droit de l'utiliasteur en le gettant dans la db (son id est dans le token)
-      db.userModel.findOne({ _id: token.id }, function(err, user) {
-        // Compare sa la personne a accès à la route, si non res.sendStatus(403);
-        if (user) {
-          var access = _.findWhere(routes, {
-            path: req.route.path
-          }).access;
-          if (access.indexOf(user.type) > -1) {
-            return next();
-          } else {
-            return res.sendStatus(403, "Non autorisé");
-          }
+  // Ici on récup l'utilisateur
+  var token = req.token_decoded;
+  if (token && token.id) {
+    // Check le droit de l'utiliasteur en le gettant dans la db (son id est dans le token)
+    db.userModel.findOne({ _id: token.id }, function(err, user) {
+      // Compare sa la personne a accès à la route, si non res.sendStatus(403);
+      if (user) {
+        var access = _.findWhere(routes, {
+          path: req.route.path,
+          httpMethod: req.route.stack[0].method.toUpperCase()
+        }).access;
+        if (access.indexOf(user.type) > -1) {
+          return next();
         } else {
-          return res.sendStatus(403, "Utilisateur inconnu");
+          return res.sendStatus(403, "Non autorisé");
         }
-      });
+      } else {
+        return res.sendStatus(403, "Utilisateur inconnu");
+      }
+    });
+  }
+  // Si l'utilisateur n'a pas de token
+  else {
+    var access = _.findWhere(routes, {
+      path: req.route.path,
+      httpMethod: req.route.stack[0].method.toUpperCase()
+    }).access;
+    if (!access) {
+      return next();
     } else {
-      return res.sendStatus(403, "Erreur lors de la validation du token");
+      return res.sendStatus(403, "Token manquant");
     }
-  });
+  }
 }

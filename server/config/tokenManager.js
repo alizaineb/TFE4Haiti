@@ -36,22 +36,20 @@ exports.createToken = function(user) {
   return jwt.sign({ id: user._id }, key, { expiresIn: expiration }); //encode the user and set the expiration time in 1 hour
 }
 exports.validateToken = function(req, res, next) {
+  console.log(req.body);
   var token = req.query.token || req.headers['x-access-token'];
   if (token) {
     // verifies secret and checks exp
     jwt.verify(token, key, function(err, decoded) {
       if (err) {
-        return res.json({ "error": true, "message": 'Failed to authenticate token.' });
+        return res.status(400).send({ "error": true, "message": 'Failed to authenticate token.' });
       }
       req.token_decoded = decoded;
-      next();
+      return next();
     });
-  } else {
-    // if there is no token
-    // return an error
-    return res.status(403).send({
-      "error": true,
-      "message": 'A token and email address must be provided.'
-    });
+  }
+  // Lorsque l'utilsateur n'a pas de token
+  else {
+    return next();
   }
 };

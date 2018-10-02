@@ -8,19 +8,20 @@ var UsersModel = require('./../models/users');
 var tokenManager = require('./../config/tokenManager')
 
 exports.login = function(req, res) {
+  console.log("Body user ctrl :");
+  console.log(req.body);
   var mail = req.body.mail || '';
   var pwd = req.body.pwd || '';
   if (!mail || !pwd) {
-    res.sendStatus(400, "Information manquante(s)");
+    return res.sendStatus(400, "Information manquante(s)");
   }
 
   UsersModel.userModel.findOne({ mail: mail, pwd: pwd }, function(err, result) {
     if (err) {
-      res.status(404).send({ error: err });
-      return;
+      return res.status(404).send({ error: err });
     }
     if (!result) {
-      res.status(404).send({ error: "Login et/ou mot de passe incorrect." })
+      return res.status(404).send({ error: "Login et/ou mot de passe incorrect." })
 
     } else {
       var token = tokenManager.createToken(result);
@@ -33,12 +34,12 @@ exports.login = function(req, res) {
       } else {
         const err = "the server was unable to create a token.";
         logger.error(err);
-        res.status(500, err);
+        return res.status(500, err);
       }
     }
   }).catch(function(err) {
     logger.error(err);
-    res.status(500).send(err);
+    return res.status(500).send(err);
   });
 }
 

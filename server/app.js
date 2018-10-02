@@ -29,11 +29,11 @@ function configureServer() {
     response.header('Access-Control-Allow-Headers', 'Authorization, Content-Type, x-access-token');
 
     if (request.method === 'OPTIONS') {
-      response.sendStatus(200);
-      return;
+      return response.sendStatus(200);
     }
     logger.info('[Server] next()');
-    next();
+    console.log(request.body);
+    return next();
   });
 };
 
