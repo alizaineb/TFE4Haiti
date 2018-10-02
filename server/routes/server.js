@@ -45,8 +45,6 @@ function ensureAuthorized(req, res, next) {
   if (req.route.path == "*") {
     return next();
   }
-  var token = tokenManager.getToken(req.headers);
-  // Ici on récup le token
 
   // Check le token
 
