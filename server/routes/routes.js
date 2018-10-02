@@ -18,7 +18,6 @@ exports.routes = [
    * access : Spécification des roles (si nécessaire), p. ex. [1,2,3]
    * }
    */
-  // login
   {
     path: "/api/user/login",
     httpMethod: "POST",
