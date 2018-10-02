@@ -5,10 +5,10 @@ var _ = require('underscore');
 var nconf = require('nconf');
 
 // Nos modules
-var routesJs = require('./routes')
-var routes = routesJs.routes
-var tokenManager = require('./../config/tokenManager')
-
+var routesJs = require('./routes');
+var routes = routesJs.routes;
+var tokenManager = require('./../config/tokenManager');
+var db = require("./../models/users")
 
 // Applique les middleWare de vérification de sécurité
 //  redirige selon le type de méthode
@@ -45,11 +45,29 @@ function ensureAuthorized(req, res, next) {
   if (req.route.path == "*") {
     return next();
   }
-
   // Check le token
-
-  // Check le droit de l'utiliasteur en le gettant dans la db (son id est dans le token)
-
-  // Compare sa la personne a accès à la route, si non res.sendStatus(403);
-  return next();
+  var token = tokenManager.validateToken(req, res, function() {
+    // Ici on récup l'utilisateur
+    var token = req.token_decoded;
+    if (token && token.id) {
+      // Check le droit de l'utiliasteur en le gettant dans la db (son id est dans le token)
+      db.userModel.findOne({ _id: token.id }, function(err, user) {
+        // Compare sa la personne a accès à la route, si non res.sendStatus(403);
+        if (user) {
+          var access = _.findWhere(routes, {
+            path: req.route.path
+          }).access;
+          if (access.indexOf(user.type) > -1) {
+            return next();
+          } else {
+            return res.sendStatus(403, "Non autorisé");
+          }
+        } else {
+          return res.sendStatus(403, "Utilisateur inconnu");
+        }
+      });
+    } else {
+      return res.sendStatus(403, "Erreur lors de la validation du token");
+    }
+  });
 }

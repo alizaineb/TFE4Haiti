@@ -37,6 +37,18 @@ exports.routes = [
     path: "/api/user/get",
     httpMethod: "GET",
     middleWare: [controllers.users.get]
+  },
+  {
+    path: "/api/user/someSecureRouteAdminOnly",
+    httpMethod: "GET",
+    middleWare: [controllers.users.useless],
+    access: ['admin']
+  },
+  {
+    path: "/api/user/someSecureRouteNotAccessible",
+    httpMethod: "GET",
+    middleWare: [controllers.users.useless],
+    access: ['NO_ONE']
   }
   //
 ];

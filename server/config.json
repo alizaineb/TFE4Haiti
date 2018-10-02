@@ -13,6 +13,6 @@
   },
   "token": {
     "privateKey": "somethingsomethingjsontoken",
-    "expiration": 1440
+    "expiration": 6000
   }
 }

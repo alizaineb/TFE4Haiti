@@ -24,8 +24,8 @@ const jwt = require('jsonwebtoken');
 const nconf = require('nconf');
 
 //custom
-var key = nconf.get("token:privateKey")
-var expiration = nconf.get("token:expiration")
+var key = nconf.get("token:privateKey");
+var expiration = nconf.get("token:expiration");
 /**
  * Initialize logger
  */

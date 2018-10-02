@@ -90,3 +90,7 @@ exports.logout = function(req, res) {
   //TODO connect to mongodb
   res.status(200).send({ message: "Method to implements" });
 }
+
+exports.useless = function(req, res) {
+  res.sendStatus(200, { message: "ok", error: "NON" });
+}
