@@ -56,7 +56,10 @@ function ensureAuthorized(req, res, next) {
           return res.sendStatus(403, "Non autorisé");
         }
       } else {
-        return res.sendStatus(403, "Utilisateur inconnu");
+        // j'ai remplacé la 403 ici par une 401 parce que je pense que si l'utilisateur n'est pas connu,
+        // ca veut dire que la personne n'est pas connecter et pas que sont role ne donne pas accès
+
+        return res.sendStatus(401, "Utilisateur inconnu");
       }
     });
   }
@@ -69,7 +72,7 @@ function ensureAuthorized(req, res, next) {
     if (!access) {
       return next();
     } else {
-      return res.sendStatus(403, "Token manquant");
+      return res.sendStatus(401, "Token manquant");
     }
   }
 }
