@@ -6,7 +6,7 @@ var nconf = require('nconf');
 var logger = require('../config/logger');
 var UsersModel = require('./../models/users');
 var tokenManager = require('./../config/tokenManager');
-const roles = require('../enums/role');
+const roles = require('../config/constants').roles;
 
 exports.login = function(req, res) {
   var mail = req.body.mail || '';

@@ -1,5 +1,5 @@
 // Tous les controllers de l'application
-var roles = require('../enums/role');
+var roles = require('../config/constants').roles;
 var controllers = {};
 controllers.users = require('../controllers/UserCtrl');
 controllers.stations = require('../controllers/StationCtrl');
