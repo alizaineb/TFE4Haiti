@@ -41,7 +41,7 @@ exports.validateToken = function(req, res, next) {
     // verifies secret and checks exp
     jwt.verify(token, key, function(err, decoded) {
       if (err) {
-        return res.status(400).send({ "error": true, "message": 'Failed to authenticate token.' });
+        return res.status(401).send({ "error": true, "message": 'Failed to authenticate token.' });
       }
       req.token_decoded = decoded;
       return next();
