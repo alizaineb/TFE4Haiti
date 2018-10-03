@@ -7,16 +7,17 @@ exports.get = function(req, res) {
     res.status(200).send({ message: results });
   }).catch(function(err) {
     logger.error(err);
-    res.status(500).send(err);
+    return res.status(500).send(err);
   })
-}
+};
 
 exports.getById = function(req, res) {
   //TODO connect to mongodb
-  res.status(200).send({ message: "Method to implements" });
-}
+  return res.status(200).send({ message: "Method to implements" });
+};
 
 exports.create = function(req, res) {
+  let station = req.body;
   //TODO connect to mongodb
   let sTmp = new Station.stationModel();
   sTmp.name = station.name;
@@ -29,22 +30,21 @@ exports.create = function(req, res) {
   // sTmp.picture = station.picture;
   sTmp.state = 'attente';
 
-
   sTmp.save().then(() => {
-    res.status(201).send({ message: sTmp });
+    return res.status(201).send({ message: sTmp });
   }).catch(function(err) {
     logger.error(err);
-    res.status(500).send(err);
+    return res.status(500).send(err);
   })
 
-}
+};
 
 exports.update = function(req, res) {
   //TODO connect to mongodb
-  res.status(200).send({ message: "Method to implements" });
-}
+  return res.status(200).send({ message: "Method to implements" });
+};
 
 exports.delete = function(req, res) {
   //TODO connect to mongodb
-  res.status(200).send({ message: "Method to implements" });
-}
+  return res.status(200).send({ message: "Method to implements" });
+};
