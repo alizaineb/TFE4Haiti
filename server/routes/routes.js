@@ -1,5 +1,5 @@
 // Tous les controllers de l'application
-var enums = require('../models/enum');
+var roles = require('../enums/role');
 var controllers = {};
 controllers.users = require('../controllers/UserCtrl');
 controllers.stations = require('../controllers/StationCtrl');
@@ -50,13 +50,13 @@ exports.routes = [
     path: "/api/someSecureRouteAdminOnly",
     httpMethod: "GET",
     middleWare: [controllers.users.useless],
-    access: [enums.roles.ADMIN]
+    access: [roles.ADMIN]
   },
   {
     path: "/api/someSecureRouteNotAccessible",
     httpMethod: "GET",
     middleWare: [controllers.users.useless],
-    access: [enums.roles.NO_ONE]
+    access: ["no_one"]
   }
   //
 ];

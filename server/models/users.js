@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-const enums = require('./enum');
+const roles = require('../enums/role');
 // schema d'un utilisateur
 var Schema = mongoose.Schema;
 var User = new Schema({
@@ -7,7 +7,7 @@ var User = new Schema({
   pwd: { type: String, required: true },
   created_at: { type: Date, default: Date.now },
   last_seen: { type: Date, default: Date.now },
-  type: { type: String, enum: [enums.roles.ADMIN, enums.roles.WORKER, enums.roles.VIEWER], required: true }
+  type: { type: String, enum: [roles.ADMIN, roles.WORKER, roles.VIEWER], required: true }
 });
 
 User.methods.toDto = function() {
