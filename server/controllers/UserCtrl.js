@@ -2,14 +2,14 @@
 // Modules node
 
 // Nos modules
-var logger = require('../config/logger');
-var UsersModel = require('./../models/users');
-var tokenManager = require('./../config/tokenManager');
+const logger = require('../config/logger');
+const UsersModel = require('./../models/users');
+const tokenManager = require('./../config/tokenManager');
 const roles = require('../config/constants').roles;
 
 exports.login = function(req, res) {
-  var mail = req.body.mail || '';
-  var pwd = req.body.pwd || '';
+  let mail = req.body.mail || '';
+  let pwd = req.body.pwd || '';
   if (!mail || !pwd) {
     return res.sendStatus(400, "Information manquante(s)");
   }

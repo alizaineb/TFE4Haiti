@@ -1,9 +1,9 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 const roles = require('../config/constants').roles;
 
 // schema d'un utilisateur
-var Schema = mongoose.Schema;
-var User = new Schema({
+const Schema = mongoose.Schema;
+const User = new Schema({
   mail: { type: String, required: true },
   pwd: { type: String, required: true },
   created_at: { type: Date, default: Date.now },
@@ -23,7 +23,7 @@ User.methods.toDto = function() {
 
 
 //Definition du modèle
-var userModel = mongoose.model("user", User);
+const userModel = mongoose.model("user", User);
 
 // Export du modèle
 exports.userModel = userModel;

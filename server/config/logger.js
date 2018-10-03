@@ -25,15 +25,13 @@
  */
 
 // Built-in
-var winston = require('winston');
-
+const winston = require('winston');
 
 
 /**
  * Initialize logger
  */
-
-var logger = winston.createLogger({
+const logger = winston.createLogger({
   level: 'info',
   format: winston.format.printf(info => info.message + '\n________________________________________________________\n' + JSON.stringify(info)),
   transports: [
@@ -49,7 +47,6 @@ var logger = winston.createLogger({
   ],
   exitOnError: false
 });
-
 
 
 /**

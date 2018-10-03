@@ -1,6 +1,6 @@
 'use strict';
-var logger = require('../config/logger');
-var Station = require('./../models/station');
+const logger = require('../config/logger');
+const Station = require('./../models/station');
 
 exports.get = function(req, res) {
   Station.stationModel.find({}).then(function(results) {

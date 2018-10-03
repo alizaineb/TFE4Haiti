@@ -1,8 +1,8 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 // schema pour récupérer un mot de passe
-var Schema = mongoose.Schema;
-var Station = new Schema({
+const Schema = mongoose.Schema;
+const Station = new Schema({
   name: { type: String, required: true },
   latitude: { type: Number, required: true, min: -90, max: 90 },
   longitude: { type: Number, required: true, min: -180, max: 180 },
@@ -16,7 +16,7 @@ var Station = new Schema({
 
 
 //Definition du modèle
-var stationModel = mongoose.model("station", Station);
+const stationModel = mongoose.model("station", Station);
 
 // Export du modèle
 exports.stationModel = stationModel;

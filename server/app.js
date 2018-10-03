@@ -1,9 +1,9 @@
 'use strict';
-var express = require('express');
-var app = express();
-var nconf = require('nconf');
-var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
+const express = require('express');
+const app = express();
+const nconf = require('nconf');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 /**
  * =============================
  *
@@ -33,7 +33,7 @@ function configureServer() {
     }
     return next();
   });
-};
+}
 
 function configureDB() {
   //Connect to mongoDB server
@@ -48,7 +48,7 @@ function configureDB() {
   require('./models/thiessenPolygon');
   require('./models/users');
 
-};
+}
 
 function startWebServer() {
   // Configure le serveur

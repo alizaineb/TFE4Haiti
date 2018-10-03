@@ -1,6 +1,6 @@
 // Tous les controllers de l'application
-var roles = require('../config/constants').roles;
-var controllers = {};
+const roles = require('../config/constants').roles;
+let controllers = {};
 controllers.users = require('../controllers/UserCtrl');
 controllers.stations = require('../controllers/StationCtrl');
 // Route par défaut récupère l'index

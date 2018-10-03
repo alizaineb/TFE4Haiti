@@ -1,8 +1,8 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 // schema pour récupérer un mot de passe
-var Schema = mongoose.Schema;
-var PwdRecovery = new Schema({
+const Schema = mongoose.Schema;
+const PwdRecovery = new Schema({
   user: { type: String, required: true },
   url: { type: String, required: true },
   expire: { type: Date, required: true }
@@ -10,7 +10,7 @@ var PwdRecovery = new Schema({
 
 
 //Definition du modèle
-var PwdRecoverynModel = mongoose.model("pwdRecovery", PwdRecovery);
+const PwdRecoverynModel = mongoose.model("pwdRecovery", PwdRecovery);
 
 // Export du modèle
 exports.PwdRecoverynModel = PwdRecoverynModel;
