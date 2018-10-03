@@ -31,7 +31,7 @@ exports.create = function(req, res) {
 
 
   sTmp.save().then(() => {
-    res.status(200).send({ message: sTmp });
+    res.status(201).send({ message: sTmp });
   }).catch(function(err) {
     logger.error(err);
     res.status(500).send(err);
@@ -40,7 +40,8 @@ exports.create = function(req, res) {
 }
 
 exports.update = function(req, res) {
-
+  //TODO connect to mongodb
+  res.status(200).send({ message: "Method to implements" });
 }
 
 exports.delete = function(req, res) {

@@ -16,7 +16,7 @@ exports.login = function(req, res) {
 
   UsersModel.userModel.findOne({ mail: mail, pwd: pwd }, function(err, result) {
     if (err) {
-      return res.status(404).send({ error: err });
+      return res.status(500).send({ error: err });
     }
     if (!result) {
       return res.status(404).send({ error: "Login et/ou mot de passe incorrect." })
@@ -69,7 +69,7 @@ exports.create = function(req, res) {
   uTmp.pwd = user.pwd;
   uTmp.type = roles.ADMIN; //TODO Change to VIEWER, it's admin for the developpement
   uTmp.save().then(() => {
-    return res.status(200).send({ message: uTmp.toDto() });
+    return res.status(201).send({ message: uTmp.toDto() });
   }).catch(function(err) {
     logger.error(err);
     return res.status(500).send(err);
@@ -85,7 +85,7 @@ exports.delete = function(req, res) {
   let id = req.params.id;
   console.log(id);
   let user = UsersModel.userModel.deleteOne({_id: id}).then(() =>{
-    return res.status(200).send({deleted: "ok"})
+    return res.status(204).send({deleted: "ok"}) //TODO remove body
   }).catch(function(err) {
     logger.error(err);
     return res.status(500).send(err);
