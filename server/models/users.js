@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 const roles = require('../config/constants').roles;
+
 // schema d'un utilisateur
 var Schema = mongoose.Schema;
 var User = new Schema({

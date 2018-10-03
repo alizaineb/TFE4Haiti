@@ -1,6 +1,5 @@
 'use strict';
 // Modules node
-var nconf = require('nconf');
 
 // Nos modules
 var logger = require('../config/logger');

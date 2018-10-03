@@ -1,8 +1,5 @@
 // Modules node
-const express = require('express');
-var jsonwebtoken = require('jsonwebtoken');
 var _ = require('underscore');
-var nconf = require('nconf');
 
 // Nos modules
 var routesJs = require('./routes');
