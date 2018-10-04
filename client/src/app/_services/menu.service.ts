@@ -26,9 +26,7 @@ export class MenuService {
   }
 
   getMenuLeft() {
-
     return this.menuleft;
-
     // const self = this;
     // const menu = [];
     // this.menuleft.forEach(function (value) {

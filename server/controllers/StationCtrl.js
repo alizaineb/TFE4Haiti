@@ -4,7 +4,7 @@ const Station = require('./../models/station');
 
 exports.get = function(req, res) {
   Station.stationModel.find({}).then(function(results) {
-    res.status(200).send({ message: results });
+    res.status(200).send(results);
   }).catch(function(err) {
     logger.error(err);
     return res.status(500).send(err);
