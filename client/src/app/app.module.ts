@@ -19,7 +19,10 @@ import {MenuComponent} from './_components/menu/menu.component';
 
 import {FooterComponent} from './_components/footer/footer.component';
 
-import {HomeComponent} from './_components/home/home.component'
+import {HomeComponent} from './_components/home/home.component'  ;
+import {HeatmapComponent} from './_components/heatmap/heatmap.component'  ;
+import {StationsComponent} from './_components/stations/stations.component' ;
+import {AdminPanelComponent} from './_components/admin-panel/admin-panel.component';
 
 @NgModule({
   imports: [
@@ -32,11 +35,14 @@ import {HomeComponent} from './_components/home/home.component'
     AppComponent,
     AlertComponent,
     UsersComponent,
-    LoginComponent
-    ,
+    LoginComponent,
     MenuComponent,
     FooterComponent,
-    HomeComponent],
+    HomeComponent,
+    HeatmapComponent
+    ,
+    StationsComponent,
+    AdminPanelComponent],
   providers: [
     AuthGuard,
     AlertService,
