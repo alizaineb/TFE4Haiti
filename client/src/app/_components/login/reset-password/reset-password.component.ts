@@ -13,7 +13,9 @@ export class ResetPasswordComponent implements OnInit {
   pwdSubmited = false;
   pwdNotMatch = false;
 
-  constructor(private formBuilder: FormBuilder, private authenticationService: AuthenticationService, private alertService: AlertService) {
+  constructor(private formBuilder: FormBuilder,
+              private authenticationService: AuthenticationService,
+              private alertService: AlertService) {
   }
 
   ngOnInit() {
@@ -36,6 +38,7 @@ export class ResetPasswordComponent implements OnInit {
     // Check que les mots de passe correspondent
     if (this.r.pwd.value != this.r.pwdConf.value) {
       this.pwdNotMatch = true;
+      //this.alertService.error("Les mot de passe ne correspondent pas");
       return;
     }
     //todo create methode in the _services/authenticationservice
