@@ -39,4 +39,8 @@ export class AuthenticationService {
         return user;
       }));
   }
+
+  resetPwd(pwd: String, confirmPwd: String) {
+
+  }
 }
