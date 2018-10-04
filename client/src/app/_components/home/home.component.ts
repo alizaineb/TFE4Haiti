@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 
 import * as L from 'leaflet';
-import {StationsService} from "../../_services/stations.service";
+import {StationsService} from '../../_services/stations.service';
 
 @Component({
   selector: 'app-home',
@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
 
-    let self = this;
+    const self = this;
     this.stationsService.getAll().subscribe(result => {
       self.stations = result;
       console.log(result);
@@ -29,7 +29,7 @@ export class HomeComponent implements OnInit {
         iconAnchor: [11, 34], // point of the icon which will correspond to marker's location
         popupAnchor: [-3, -38] // point from which the popup should open relative to the iconAnchor
       });
-      var stationHydro = L.layerGroup();
+      const stationHydro = L.layerGroup();
 
       self.stations.forEach(station => {
 
@@ -37,14 +37,14 @@ export class HomeComponent implements OnInit {
 
       });
 
-      var mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+      const mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
         '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
         'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>';
 
 
       // Maps usage : OpenStreetMap, OpenSurferMaps
 
-      var mapLayer1 = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+      const mapLayer1 = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
           id: 'mapbox.light',
           attribution: mbAttr
         }),
@@ -55,23 +55,24 @@ export class HomeComponent implements OnInit {
         mapLayer3 = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
           id: 'mapbox.streets',
           attribution: mbAttr
-        })
-      ;
+        }) ;
 
-      var map = L.map('mapid', {
+      const map = L.map('mapid', {
         center: [18.299041, -73.658473],
         zoom: 10,
+        minZoom: 8,
+        maxZoom: 18,
         layers: [mapLayer1, stationHydro]
       });
 
-      var baseLayers = {
-        "Grayscale": mapLayer1,
-        "Opentopomap": mapLayer2,
-        "OpenStreetMap": mapLayer3
+      const baseLayers = {
+        'Grayscale': mapLayer1,
+        'Opentopomap': mapLayer2,
+        'OpenStreetMap': mapLayer3
       };
 
-      var overlays = {
-        "Hydrographe": stationHydro
+      const overlays = {
+        'Hydrographe': stationHydro
       };
 
       L.control.layers(baseLayers, overlays).addTo(map);
