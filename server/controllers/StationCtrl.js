@@ -21,10 +21,10 @@ exports.create = function(req, res) {
   let sTmp = new Station.stationModel();
   console.log(req.body);
   sTmp.name = station.name;
-  sTmp.latitude = station.latitude;
-  sTmp.longitude = station.longitude;
-  sTmp.type = station.type;
-  sTmp.users = station.users;
+  // sTmp.latitude = station.latitude;
+  // sTmp.longitude = station.longitude;
+  // sTmp.type = station.type;
+  // sTmp.users = station.users;
   //sTmp.created_at = Date.now();
   //sTmp.last_update = Date.now();
   // TODO Picture
