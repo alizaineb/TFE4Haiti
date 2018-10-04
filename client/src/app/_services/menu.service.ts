@@ -7,17 +7,17 @@ export class MenuService {
 
   private currentUser;
   private menuleft = [
-    {name: 'heatmap', logged: false, adminOnly: false, path: 'heatmap'},
-    {name: 'stations', logged: true, adminOnly: false, path: 'stations'},
-    {name: 'users', logged: false, adminOnly: false, path: 'users'},
+    {name: 'Heatmap', logged: false, adminOnly: false, path: 'heatmap'},
+    {name: 'Stations', logged: true, adminOnly: false, path: 'stations'},
+    {name: 'Users', logged: false, adminOnly: false, path: 'users'},
 
   ];
 
   private menurigh = [
 
-    {name: 'dashboad', logged: true, adminOnly: true, path: 'admin'},
-    {name: 'login', logged: false, adminOnly: false, path: 'login'},
-    {name: 'logout', logged: true, adminOnly: false, path: 'logout'}
+    {name: 'Dashboard', logged: true, adminOnly: true, path: 'admin'},
+    {name: 'Login', logged: false, adminOnly: false, path: 'login'},
+    {name: 'Logout', logged: true, adminOnly: false, path: 'logout'}
 
   ];
 
@@ -26,9 +26,7 @@ export class MenuService {
   }
 
   getMenuLeft() {
-
     return this.menuleft;
-
     // const self = this;
     // const menu = [];
     // this.menuleft.forEach(function (value) {

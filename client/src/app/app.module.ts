@@ -24,6 +24,10 @@ import {HeatmapComponent} from './_components/heatmap/heatmap.component'  ;
 import {StationsComponent} from './_components/stations/stations.component' ;
 import {AdminPanelComponent} from './_components/admin-panel/admin-panel.component';
 
+;
+import {ResetPasswordComponent} from './_components/login/reset-password/reset-password.component'
+;
+import { FaqComponent } from './_components/faq/faq.component'
 @NgModule({
   imports: [
     BrowserModule,
@@ -42,7 +46,10 @@ import {AdminPanelComponent} from './_components/admin-panel/admin-panel.compone
     HeatmapComponent
     ,
     StationsComponent,
-    AdminPanelComponent],
+    AdminPanelComponent,
+    ResetPasswordComponent
+,
+    FaqComponent  ],
   providers: [
     AuthGuard,
     AlertService,

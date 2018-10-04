@@ -11,6 +11,5 @@
   "latitude": "18.303355",
   "longitude": "-73.663066",
   "type": "hydro",
-  "users": ["5bad30433306b7110c321706"],
-  "state": "validated"
+  "users": ["5bad30433306b7110c321706"]
 }

@@ -4,7 +4,7 @@ const Station = require('./../models/station');
 
 exports.get = function(req, res) {
   Station.stationModel.find({}).then(function(results) {
-    res.status(200).send({ message: results });
+    res.status(200).send(results);
   }).catch(function(err) {
     logger.error(err);
     return res.status(500).send(err);
@@ -21,9 +21,10 @@ exports.create = function(req, res) {
   let sTmp = new Station.stationModel();
   console.log(req.body);
   sTmp.name = station.name;
-  //sTmp.latitude = station.latitude;
-  //sTmp.longitude = station.longitude;
-  //sTmp.type = station.type;
+  sTmp.latitude = station.latitude;
+  sTmp.longitude = station.longitude;
+  // sTmp.type = station.type;
+  // sTmp.users = station.users;
   //sTmp.created_at = Date.now();
   //sTmp.last_update = Date.now();
   // TODO Picture

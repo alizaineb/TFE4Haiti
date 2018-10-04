@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import * as L from 'leaflet';
+import {StationsService} from "../../_services/stations.service";
 
 @Component({
   selector: 'app-home',
@@ -9,15 +10,25 @@ import * as L from 'leaflet';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  public stations = [];
+
+  constructor(private stationsService: StationsService) {
+  }
 
   ngOnInit() {
 
+    let self = this;
+    this.stationsService.getAll().subscribe( result => {
+      self.stations = result;
+      console.log(result);
+    });
+
+
     const icon1 = L.icon({
       iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/images/marker-icon.png',
-      iconSize:     [20, 35], // size of the icon
-      iconAnchor:   [11, 34], // point of the icon which will correspond to marker's location
-      popupAnchor:  [-3, -38] // point from which the popup should open relative to the iconAnchor
+      iconSize: [20, 35], // size of the icon
+      iconAnchor: [11, 34], // point of the icon which will correspond to marker's location
+      popupAnchor: [-3, -38] // point from which the popup should open relative to the iconAnchor
     });
     var cities = L.layerGroup();
 
@@ -33,9 +44,18 @@ export class HomeComponent implements OnInit {
 
     // Maps usage : OpenStreetMap, OpenSurferMaps
 
-    var mapLayer1   = L.tileLayer( 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {id: 'mapbox.light', attribution: mbAttr}),
-      mapLayer2  = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',     {id: 'mapbox.streets',   attribution: mbAttr}),
-      mapLayer3  = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png',     {id: 'mapbox.streets',   attribution: mbAttr})
+    var mapLayer1 = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+        id: 'mapbox.light',
+        attribution: mbAttr
+      }),
+      mapLayer2 = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+        id: 'mapbox.streets',
+        attribution: mbAttr
+      }),
+      mapLayer3 = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
+        id: 'mapbox.streets',
+        attribution: mbAttr
+      })
     ;
 
     var map = L.map('mapid', {
