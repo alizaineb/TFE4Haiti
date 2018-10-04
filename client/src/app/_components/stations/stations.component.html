@@ -5,8 +5,9 @@
 </label>
 
 <!-- Button trigger modal -->
-<i class="float-right fas fa-plus-circle fa-2x" data-toggle="modal" data-target="#addStationModal">
+<i class="float-right fas fa-plus-circle fa-2x" (click)="openModal()">
 </i>
+
 
 <table class="table table-striped table-bordered">
   <thead>
@@ -73,3 +74,23 @@
     </div>
   </div>
 </div>
+
+
+<div class="backdrop" [ngStyle]="{'display':display}"></div>
+<div class="modal" tabindex="-1" role="dialog"  [ngStyle]="{'display':display}">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addStationModalLabel2">Ajouter une station</h5>
+        <button type="button" class="close" aria-label="Close" (click)="onCloseHandled()"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <p>Trkil ou quoi ?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="onCloseHandled()" >Fermer</button>
+        <button type="button" class="btn btn-primary">Valider</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal !-->

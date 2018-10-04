@@ -13,12 +13,22 @@ export class StationsComponent implements OnInit {
   headers: string[];
   stations:Station[] = [];
 
+  display='none';
+
   constructor(private stationService: StationsService) {
     this.headers = ["Nom", "Latitude", "Longitude", "Type", "Etat", "Créé le", "Dernière modification"]
   }
 
   ngOnInit() {
     this.loadAllStations();
+  }
+
+  openModal(){
+    this.display='block';
+  }
+
+  onCloseHandled(){
+    this.display='none';
   }
 
   private loadAllStations(){
