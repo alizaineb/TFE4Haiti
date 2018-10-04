@@ -22,7 +22,7 @@ exports.login = function(req, res) {
       return res.status(404).send({ error: "Login et/ou mot de passe incorrect." });
     } else {
       result.comparePassword(pwd, function(match) {
-        if (match == true) {
+        if (match === true) {
           var token = tokenManager.createToken(result);
           console.log(token);
           if (token) {

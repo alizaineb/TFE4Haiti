@@ -44,6 +44,17 @@ exports.routes = [
     httpMethod: "DELETE",
     middleWare: [controllers.users.delete]
   },
+  {
+    path: "/api/stations",
+    httpMethod: "POST",
+    middleWare: [controllers.stations.create]
+  },
+
+
+
+
+
+
 
   // Routes used to test
   {
@@ -57,6 +68,7 @@ exports.routes = [
     httpMethod: "GET",
     middleWare: [controllers.users.useless],
     access: ["no_one"]
-  }
+  },
+
   //
 ];

@@ -18,14 +18,14 @@ exports.getById = function(req, res) {
 
 exports.create = function(req, res) {
   let station = req.body;
-  //TODO connect to mongodb
   let sTmp = new Station.stationModel();
+  console.log(req.body);
   sTmp.name = station.name;
-  sTmp.latitude = station.latitude;
-  sTmp.longitude = station.longitude;
-  sTmp.type = station.type;
-  sTmp.created_at = Date.now();
-  sTmp.last_update = Date.now();
+  //sTmp.latitude = station.latitude;
+  //sTmp.longitude = station.longitude;
+  //sTmp.type = station.type;
+  //sTmp.created_at = Date.now();
+  //sTmp.last_update = Date.now();
   // TODO Picture
   // sTmp.picture = station.picture;
   sTmp.state = 'attente';
@@ -38,6 +38,9 @@ exports.create = function(req, res) {
   })
 
 };
+
+
+
 
 exports.update = function(req, res) {
   //TODO connect to mongodb
