@@ -32,12 +32,10 @@ User.pre('save', function(next) {
 
     bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
       if (err) {
-        log.error(err);
         return next(err);
       }
       bcrypt.hash(user.pwd, salt, function(err, hash) {
         if (err) {
-          log.error(err);
           return next(err);
         }
         user.pwd = hash;
@@ -55,12 +53,10 @@ User.methods.hashPassword = function(password, callback) {
   //    console.log(user);
   bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
     if (err) {
-      log.error(err);
       return callback(err);
     }
     bcrypt.hash(password, salt, function(err, hash) {
       if (err) {
-        log.error(err);
         return callback(err);
       }
 
@@ -73,7 +69,6 @@ User.methods.hashPassword = function(password, callback) {
 User.methods.comparePassword = function(password, cb) {
   bcrypt.compare(password, this.pwd, function(err, isMatch) {
     if (err) {
-      log.error(err);
       return cb(err);
     }
     cb(isMatch);

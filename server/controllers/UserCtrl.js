@@ -14,26 +14,31 @@ exports.login = function(req, res) {
     return res.sendStatus(400, "Information manquante(s)", );
   }
 
-  UsersModel.userModel.findOne({ mail: mail, pwd: pwd }, function(err, result) {
+  UsersModel.userModel.findOne({ mail: mail }, function(err, result) {
     if (err) {
       return res.status(500, ).send({ error: "Impossible de créer cet utilisateur, veuillez contacter un administrateur." });
     }
     if (!result) {
-      return res.status(404).send({ error: "Login et/ou mot de passe incorrect." })
-
+      return res.status(404).send({ error: "Login et/ou mot de passe incorrect." });
     } else {
-      var token = tokenManager.createToken(result);
-      console.log(token);
-      if (token) {
-        return res.json({
-          token: token,
-          current: result.toDto()
-        });
-      } else {
-        const err = "the server was unable to create a token.";
-        logger.error(err);
-        return res.status(500, err);
-      }
+      result.comparePassword(pwd, function(match) {
+        if (match == true) {
+          var token = tokenManager.createToken(result);
+          console.log(token);
+          if (token) {
+            return res.json({
+              token: token,
+              current: result.toDto()
+            });
+          } else {
+            const err = "the server was unable to create a token.";
+            logger.error(err);
+            return res.status(500, err);
+          }
+        } else {
+          return res.status(404).send({ error: "Login et/ou mot de passe incorrect." });
+        }
+      });
     }
   }).catch(function(err) {
     logger.error(err);
