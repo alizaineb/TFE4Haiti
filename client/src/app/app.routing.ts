@@ -8,6 +8,7 @@ import {AdminPanelComponent} from "./_components/admin-panel/admin-panel.compone
 import {StationsComponent} from "./_components/stations/stations.component";
 import {HeatmapComponent} from "./_components/heatmap/heatmap.component";
 import {ResetPasswordComponent} from "./_components/login/reset-password/reset-password.component";
+import {FaqComponent} from "./_components/faq/faq.component";
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
@@ -18,7 +19,7 @@ const appRoutes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'login/reset', component: ResetPasswordComponent},
 
-  {path: 'faq', component: ResetPasswordComponent},
+  {path: 'faq', component: FaqComponent},
 
 
   // otherwise redirect to home
