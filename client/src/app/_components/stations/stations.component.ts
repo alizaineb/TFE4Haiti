@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import {first, map} from 'rxjs/operators';
+
+import {Station} from "../../_models";
+import {StationsService} from "../../_services/stations.service";
 
 @Component({
   selector: 'app-stations',
@@ -7,9 +11,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StationsComponent implements OnInit {
 
-  constructor() { }
+  headers: string[];
+  stations:Station[] = [];
 
-  ngOnInit() {
+  constructor(private stationService: StationsService) {
+    this.headers = ["Nom", "Latitude", "Longitude", "Type", "Etat", "Créé le", "Dernière modification"]
   }
 
+  ngOnInit() {
+
+    this.loadAllStations();
+  }
+
+  private loadAllStations(){
+    this.stationService.getAll()
+      .pipe(first())
+      .subscribe(result => {
+        this.stations = result;
+      });
+  }
 }

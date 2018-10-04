@@ -1,7 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {User} from "../_models";
+
 import {environment} from "../../environments/environment";
+import {Station} from "../_models";
+
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +13,7 @@ export class StationsService {
   }
 
   getAll() {
-    return this.http.get<any[]>(`${environment.apiUrl}/stations`);
+    return this.http.get<Station[]>(`${environment.apiUrl}/stations`);
   }
 
   getById(id: string) {

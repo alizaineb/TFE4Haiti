@@ -28,6 +28,7 @@ import {AdminPanelComponent} from './_components/admin-panel/admin-panel.compone
 import {ResetPasswordComponent} from './_components/login/reset-password/reset-password.component'
 ;
 import { FaqComponent } from './_components/faq/faq.component'
+import {StationsService} from "./_services/stations.service";
 @NgModule({
   imports: [
     BrowserModule,
@@ -43,8 +44,7 @@ import { FaqComponent } from './_components/faq/faq.component'
     MenuComponent,
     FooterComponent,
     HomeComponent,
-    HeatmapComponent
-    ,
+    HeatmapComponent,
     StationsComponent,
     AdminPanelComponent,
     ResetPasswordComponent
@@ -55,6 +55,7 @@ import { FaqComponent } from './_components/faq/faq.component'
     AlertService,
     AuthenticationService,
     UserService,
+    StationsService,
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
 
