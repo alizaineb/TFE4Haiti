@@ -26,7 +26,8 @@ import {AdminPanelComponent} from './_components/admin-panel/admin-panel.compone
 
 ;
 import {ResetPasswordComponent} from './_components/login/reset-password/reset-password.component'
-
+;
+import { FaqComponent } from './_components/faq/faq.component'
 @NgModule({
   imports: [
     BrowserModule,
@@ -47,7 +48,8 @@ import {ResetPasswordComponent} from './_components/login/reset-password/reset-p
     StationsComponent,
     AdminPanelComponent,
     ResetPasswordComponent
-  ],
+,
+    FaqComponent  ],
   providers: [
     AuthGuard,
     AlertService,

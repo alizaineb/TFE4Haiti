@@ -18,6 +18,8 @@ const appRoutes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'login/reset', component: ResetPasswordComponent},
 
+  {path: 'faq', component: ResetPasswordComponent},
+
 
   // otherwise redirect to home
   {path: '**', redirectTo: ''}
