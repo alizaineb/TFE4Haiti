@@ -4,7 +4,9 @@
   <input type="text">
 </label>
 
-<i class="float-right fas fa-plus-circle fa-2x" style="color:blue"></i>
+<!-- Button trigger modal -->
+<i class="float-right fas fa-plus-circle fa-2x" style="color:blue" data-toggle="modal" data-target="#exampleModal">
+</i>
 
 <table class="table table-striped table-bordered">
   <thead>
@@ -48,3 +50,26 @@
     </li>
   </ul>
 </nav>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Ajouter une station</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Trkil ou quoi ?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+        <button type="button" class="btn btn-primary">Valider</button>
+      </div>
+    </div>
+  </div>
+</div>

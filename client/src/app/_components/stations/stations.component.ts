@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {first, map} from 'rxjs/operators';
-
+import {first} from 'rxjs/operators';
 import {Station} from "../../_models";
 import {StationsService} from "../../_services/stations.service";
 
@@ -19,7 +18,6 @@ export class StationsComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.loadAllStations();
   }
 
