@@ -39,7 +39,9 @@ function configureDB() {
   //Connect to mongoDB server
   let url = 'mongodb://' + nconf.get('database:host') + ':' + nconf.get('database:port') + '/' + nconf.get('database:name');
   mongoose.connect(url, { useNewUrlParser: true });
-  mongoose.set('debug', true);
+  mongoose.set('debug', nconf.get('development'));
+  mongoose.set('useCreateIndex', true);
+
   //Require the models
   // Import and use model in mongoose
   // require('./../models/donnee');

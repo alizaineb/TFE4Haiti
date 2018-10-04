@@ -11,12 +11,12 @@ exports.login = function(req, res) {
   let mail = req.body.mail || '';
   let pwd = req.body.pwd || '';
   if (!mail || !pwd) {
-    return res.sendStatus(400, "Information manquante(s)",);
+    return res.sendStatus(400, "Information manquante(s)", );
   }
 
   UsersModel.userModel.findOne({ mail: mail, pwd: pwd }, function(err, result) {
     if (err) {
-      return res.status(500).send({ error: err });
+      return res.status(500, ).send({ error: "Impossible de créer cet utilisateur, veuillez contacter un administrateur." });
     }
     if (!result) {
       return res.status(404).send({ error: "Login et/ou mot de passe incorrect." })
