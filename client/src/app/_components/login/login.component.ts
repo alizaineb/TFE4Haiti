@@ -1,11 +1,14 @@
-﻿import {Component, OnInit} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {first} from 'rxjs/operators';
+﻿import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { first } from 'rxjs/operators';
 
-import {AlertService, AuthenticationService} from '../../_services/index';
+import { AlertService, AuthenticationService } from '../../_services/index';
 
-@Component({templateUrl: 'login.component.html'})
+@Component({
+  templateUrl: 'login.component.html',
+  styleUrls: ['./login.component.css']
+})
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   registerForm: FormGroup;
@@ -45,7 +48,7 @@ export class LoginComponent implements OnInit {
     return this.loginForm.controls;
   }
 
-  get r(){
+  get r() {
     return this.registerForm.controls;
   }
 
