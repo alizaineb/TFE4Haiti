@@ -10,7 +10,7 @@ export class AuthenticationService {
   }
 
   login(username: string, password: string) {
-    return this.http.post<any>(`${environment.apiUrl}/user/login`, {mail: username, pwd: password})
+    return this.http.post<any>(`${environment.apiUrl}/users/login`, {mail: username, pwd: password})
       .pipe(map(user => {
         // login successful if there's a jwt token in the response
         if (user && user.token) {
@@ -28,7 +28,7 @@ export class AuthenticationService {
   }
 
   register(username: string, password: string) {
-    return this.http.post<any>(`${environment.apiUrl}/user/create`, {mail: username, pwd: password})
+    return this.http.post<any>(`${environment.apiUrl}/users`, {mail: username, pwd: password})
       .pipe(map(user => {
         // login successful if there's a jwt token in the response
         if (user && user.token) {
