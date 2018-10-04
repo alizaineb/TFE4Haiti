@@ -103,6 +103,8 @@ exports.logout = function(req, res) {
   return res.status(200).send({ message: "Method to implements" });
 };
 
+
+
 exports.useless = function(req, res) {
   return res.sendStatus(200, { message: "ok", error: "NON" });
 };

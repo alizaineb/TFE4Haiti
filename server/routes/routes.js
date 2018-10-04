@@ -19,35 +19,61 @@ exports.routes = [
    * access : Spécification des roles (si nécessaire), p. ex. [1,2,3]
    * }
    */
+
+
+  // Méthodes liées aux utilisateurs
   {
-    path: "/api/user/login",
+    path: "/api/users/login",
     httpMethod: "POST",
     middleWare: [controllers.users.login]
   },
   {
-    path: "/api/user/logout",
+    path: "/api/users/logout",
     httpMethod: "GET",
     middleWare: [controllers.users.logout]
   },
   {
-    path: "/api/user/create",
+    path: "/api/users/",
     httpMethod: "POST",
     middleWare: [controllers.users.create]
   },
   {
-    path: "/api/user/get",
+    path: "/api/users/",
     httpMethod: "GET",
     middleWare: [controllers.users.get]
   },
   {
-    path: "/api/user/:id",
+    path: "/api/users/:id",
+    httpMethod: "GET",
+    middleWare: [controllers.users.getById]
+  },
+  {
+    path: "/api/users/:id",
     httpMethod: "DELETE",
     middleWare: [controllers.users.delete]
   },
+
+
+  // Méthodes liées aux stations
   {
     path: "/api/stations",
     httpMethod: "POST",
     middleWare: [controllers.stations.create]
+  },
+  {
+    path: "/api/stations",
+    httpMethod: "GET",
+    middleWare: [controllers.stations.get]
+  },
+  {
+    path: "/api/stations/:id",
+    httpMethod: "GET",
+    middleWare: [controllers.stations.getById]
+  },
+  {
+    path: "/api/stations/:id",
+    httpMethod: "DELETE",
+    middleWare: [controllers.stations.delete]
   },
 
 
