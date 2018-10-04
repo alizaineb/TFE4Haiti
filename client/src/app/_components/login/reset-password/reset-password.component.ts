@@ -11,6 +11,7 @@ import { first } from 'rxjs/operators';
 export class ResetPasswordComponent implements OnInit {
   pwdForm: FormGroup;
   pwdSubmited = false;
+  pwdNotMatch = false;
 
   constructor(private formBuilder: FormBuilder, private authenticationService: AuthenticationService, private alertService: AlertService) {
   }
@@ -32,7 +33,11 @@ export class ResetPasswordComponent implements OnInit {
     if (this.pwdForm.invalid) {
       return;
     }
-
+    // Check que les mots de passe correspondent
+    if (this.r.pwd.value != this.r.pwdConf.value) {
+      this.pwdNotMatch = true;
+      return;
+    }
     //todo create methode in the _services/authenticationservice
     this.authenticationService.resetPwd(this.r.pwd.value, this.r.pwdConf.value)
       .pipe(first())
