@@ -11,11 +11,7 @@ import {HeatmapComponent} from "./_components/heatmap/heatmap.component";
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'heatmap', component: HeatmapComponent},
-
-
-
   {path: 'admin', component: AdminPanelComponent, canActivate: [AuthGuard]},
-
   {path: 'stations', component: StationsComponent, canActivate: [AuthGuard]},
   {path: 'users', component: UsersComponent, canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent},
