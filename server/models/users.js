@@ -67,12 +67,16 @@ User.methods.hashPassword = function(password, callback) {
 
 //Password verification
 User.methods.comparePassword = function(password, cb) {
-  bcrypt.compare(password, this.pwd, function(err, isMatch) {
-    if (err) {
-      return cb(err);
-    }
-    cb(isMatch);
-  });
+  if (nconf.get('development')) {
+    cb(this.pwd == password);
+  } else {
+    bcrypt.compare(password, this.pwd, function(err, isMatch) {
+      if (err) {
+        return cb(err);
+      }
+      cb(isMatch);
+    });
+  }
 };
 
 
