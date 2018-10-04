@@ -1,8 +1,8 @@
-﻿import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {map} from 'rxjs/operators';
+﻿import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
-import {environment} from '../../environments/environment';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class AuthenticationService {
@@ -10,7 +10,7 @@ export class AuthenticationService {
   }
 
   login(username: string, password: string) {
-    return this.http.post<any>(`${environment.apiUrl}/users/login`, {mail: username, pwd: password})
+    return this.http.post<any>(`${environment.apiUrl}/users/login`, { mail: username, pwd: password })
       .pipe(map(user => {
         // login successful if there's a jwt token in the response
         if (user && user.token) {
@@ -28,7 +28,7 @@ export class AuthenticationService {
   }
 
   register(username: string, password: string) {
-    return this.http.post<any>(`${environment.apiUrl}/users`, {mail: username, pwd: password})
+    return this.http.post<any>(`${environment.apiUrl}/users`, { mail: username, pwd: password })
       .pipe(map(user => {
         // login successful if there's a jwt token in the response
         if (user && user.token) {
@@ -42,7 +42,7 @@ export class AuthenticationService {
 
   resetPwd(pwd: String, confirmPwd: String) {
     //TODO change url and param
-    return this.http.post<any>(`${environment.apiUrl}/users`, {mail: username, pwd: password})
+    return this.http.post<any>(`${environment.apiUrl}/users`, {})
       .pipe(map(user => {
         // login successful if there's a jwt token in the response
         if (user && user.token) {

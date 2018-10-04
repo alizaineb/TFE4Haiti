@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {AlertService, AuthenticationService} from "../../../_services";
-import {first} from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { AlertService, AuthenticationService } from "../../../_services";
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-reset-password',
@@ -9,31 +9,32 @@ import {first} from 'rxjs/operators';
   styleUrls: ['./../login.component.css']
 })
 export class ResetPasswordComponent implements OnInit {
-  resetForm: FormGroup;
+  pwdForm: FormGroup;
+  pwdSubmited = false;
 
   constructor(private formBuilder: FormBuilder, private authenticationService: AuthenticationService, private alertService: AlertService) {
   }
 
   ngOnInit() {
-    this.resetForm = this.formBuilder.group({
+    this.pwdForm = this.formBuilder.group({
       pwd: ['', Validators.required],
-      confirmPwd: ['', Validators.required],
+      pwdConf: ['', Validators.required],
     });
   }
 
   get r() {
-    return this.resetForm.controls;
+    return this.pwdForm.controls;
   }
 
   sendPwd() {
-
+    this.pwdSubmited = true;
     // stop here if form is invalid
-    if (this.resetForm.invalid) {
+    if (this.pwdForm.invalid) {
       return;
     }
 
     //todo create methode in the _services/authenticationservice
-    this.authenticationService.resetPwd(this.r.pwd.value, this.r.confirmPwd.value)
+    this.authenticationService.resetPwd(this.r.pwd.value, this.r.pwdConf.value)
       .pipe(first())
       .subscribe(
         data => {
