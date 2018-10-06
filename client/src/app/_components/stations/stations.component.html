@@ -33,7 +33,7 @@
       <td>
         <i class="fas fa-edit fa-fw fa-1x"></i>
         <i class="fas fa-file-download fa-fw fa-1x"></i>
-        <i class="fas fa-trash fa-fw fa-1x"></i>
+        <i class="fas fa-trash fa-fw fa-1x" (click)="assignStationToDelete(station)" data-toggle="modal" data-target="#deleteStationModal"></i>
       </td>
     </tr>
   </tbody>
@@ -61,4 +61,14 @@
     (sent)="loadAllStations($event)">
   ></app-add-station-modal>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteStationModal" tabindex="-1" role="dialog" aria-labelledby="deleteStationModalLabel" aria-hidden="true">
+  <app-delete-station-modal
+    [station] = stationToDelete.name
+    (selected)="deleteStation($event)"
+  ></app-delete-station-modal>
+</div>
+
+
 

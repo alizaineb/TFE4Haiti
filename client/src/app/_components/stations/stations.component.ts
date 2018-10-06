@@ -12,6 +12,7 @@ export class StationsComponent implements OnInit {
 
   headers: string[];
   stations:Station[] = [];
+  stationToDelete: Station;
 
   constructor(private stationService: StationsService) {
     this.headers = ["Nom", "Latitude", "Longitude", "Type", "Etat", "Créé le", "Dernière modification"]
@@ -19,13 +20,31 @@ export class StationsComponent implements OnInit {
 
   ngOnInit() {
     this.loadAllStations();
+    this.stationToDelete = new Station()
   }
 
-  private loadAllStations(){
+  loadAllStations(){
     this.stationService.getAll()
       .pipe(first())
       .subscribe(result => {
         this.stations = result;
       });
   }
+
+  assignStationToDelete(station: Station){
+    this.stationToDelete = station
+  }
+
+  deleteStation(choice: boolean){
+    if(choice){
+      this.stationService.delete(this.stationToDelete._id)
+        .pipe(first())
+        .subscribe(result => {
+          this.loadAllStations();
+        });
+    } else {
+      this.stationToDelete = new Station()
+    }
+  }
+
 }

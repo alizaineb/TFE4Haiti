@@ -38,7 +38,6 @@ exports.create = function(req, res) {
     logger.error(err);
     return res.status(500).send(err);
   })
-
 };
 
 
@@ -50,6 +49,12 @@ exports.update = function(req, res) {
 };
 
 exports.delete = function(req, res) {
-  //TODO connect to mongodb
-  return res.status(200).send({ message: "Method to implements" });
+  let id = req.params.id;
+  console.log(id);
+  let station = Station.stationModel.deleteOne({ _id: id }).then(() => {
+    return res.status(204).send({ deleted: "ok" }) //TODO remove body
+  }).catch(function(err) {
+    logger.error(err);
+    return res.status(500).send(err);
+  });
 };

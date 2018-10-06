@@ -16,9 +16,9 @@ export class AddStationModalComponent implements OnInit {
   @Output()
   sent = new EventEmitter<boolean>();
 
-  private addStationForm: FormGroup;
-  private stationSubmitted = false;
-  private loading = false;
+  addStationForm: FormGroup;
+  stationSubmitted = false;
+  loading = false;
 
   constructor(private formBuilder: FormBuilder,
               private stationService: StationsService,
@@ -39,6 +39,10 @@ export class AddStationModalComponent implements OnInit {
     return this.addStationForm.controls;
   }
 
+  resetForm(){
+    this.addStationForm.reset()
+  }
+
   sendStation(){
     this.stationSubmitted = true;
     // stop here if form is invalid
@@ -56,8 +60,12 @@ export class AddStationModalComponent implements OnInit {
       .subscribe(
         result => {
           this.loading = false;
-          //Fermer la page
+          //trigger sent
           this.sent.emit(true);
+
+          this.resetForm();
+
+          //Fermer la page
           let element: HTMLElement = document.getElementsByClassName('btn')[0] as HTMLElement;
           element.click();
         },
