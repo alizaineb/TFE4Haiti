@@ -20,7 +20,7 @@ export class StationsService {
     return this.http.get(`${environment.apiUrl}/stations/` + id);
   }
 
-  register(station) {
+  register(station:Station) {
     return this.http.post(`${environment.apiUrl}/stations`, station);
   }
 

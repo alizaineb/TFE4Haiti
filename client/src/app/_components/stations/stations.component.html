@@ -26,8 +26,8 @@
       <td>{{station.longitude}}</td>
       <td>{{station.type}}</td>
       <td>{{station.state}}</td>
-      <td>{{station.createdAt}}</td>
-      <td>{{station.updatedAt}}</td>
+      <td>{{station.createdAt | date: 'short'}}</td>
+      <td>{{station.updatedAt | date: 'short'}}</td>
       <td>
         <i class="fas fa-edit fa-fw fa-1x"></i>
         <i class="fas fa-file-download fa-fw fa-1x"></i>

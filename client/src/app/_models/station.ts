@@ -9,4 +9,6 @@ export class Station {
   updatedAt: Date;
   createdAt: Date;
   __v: number;
+
+  public constructor() {}
 }

@@ -1,17 +1,56 @@
 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
   <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title" id="addStationModalLabel">Ajouter une station</h5>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <p>Trkil ou quoi ?</p>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-      <button type="button" class="btn btn-primary">Valider</button>
-    </div>
+    <form [formGroup]="addStationForm" (ngSubmit)="sendStation()">
+      <div class="modal-header">
+        <h2 class="modal-title" id="addStationModalLabel">Ajouter une station</h2>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="form-group">
+            <label>Nom:</label>
+              <input type="text" placeholder="Nom" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': stationSubmitted && getAddStationForm.name.errors }" />
+              <div *ngIf="stationSubmitted && getAddStationForm.name.errors" class="invalid-feedback">
+                <div *ngIf="getAddStationForm.name.errors.required">Nom requis</div>
+              </div>
+          </div>
+          <label>Coordonnées GPS: </label>
+          <div class="form-inline">
+            <div class="form-group mb-2">
+              <input type="text" placeholder="Latitude" formControlName="latitude" class="form-control" [ngClass]="{ 'is-invalid': stationSubmitted && getAddStationForm.latitude.errors }" />
+              <div *ngIf="stationSubmitted && getAddStationForm.latitude.errors" class="invalid-feedback">
+                <div *ngIf="getAddStationForm.latitude.errors.required">Latitude requise</div>
+              </div>
+            </div>
+            <div class="form-group mx-sm-3 mb-2">
+              <input type="text" placeholder="Longitude" formControlName="longitude" class="form-control" [ngClass]="{ 'is-invalid': stationSubmitted && getAddStationForm.longitude.errors }" />
+              <div *ngIf="stationSubmitted && getAddStationForm.longitude.errors" class="invalid-feedback">
+                <div *ngIf="getAddStationForm.longitude.errors.required">Longitude requise</div>
+              </div>
+            </div>
+          </div>
+          <p></p>
+          <div class="form-group">
+            <label>Altitude:</label>
+            <input type="number" placeholder="Altitude" formControlName="altitude" class="form-control" [ngClass]="{ 'is-invalid': stationSubmitted && getAddStationForm.altitude.errors }" />
+            <div *ngIf="stationSubmitted && getAddStationForm.altitude.errors" class="invalid-feedback">
+              <div *ngIf="getAddStationForm.altitude.errors.required">Altitude requise</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Date de création:</label>
+            <input type="date" placeholder="Date" formControlName="date" class="form-control" [ngClass]="{ 'is-invalid': stationSubmitted && getAddStationForm.date.errors }" />
+            <div *ngIf="stationSubmitted && getAddStationForm.date.errors" class="invalid-feedback">
+              <div *ngIf="getAddStationForm.date.errors.required">Date de création requise</div>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+        <button type="submit" [disabled]="loading" class="btn btn-primary">Valider</button>
+        <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+      </div>
+    </form>
   </div>
 </div>
