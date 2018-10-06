@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, Output} from '@angular/core';
 import {first} from 'rxjs/operators';
 import {Station} from "../../_models";
 import {StationsService} from "../../_services/stations.service";
@@ -13,22 +13,12 @@ export class StationsComponent implements OnInit {
   headers: string[];
   stations:Station[] = [];
 
-  display='none';
-
   constructor(private stationService: StationsService) {
     this.headers = ["Nom", "Latitude", "Longitude", "Type", "Etat", "Créé le", "Dernière modification"]
   }
 
   ngOnInit() {
     this.loadAllStations();
-  }
-
-  openModal(){
-    this.display='block';
-  }
-
-  onCloseHandled(){
-    this.display='none';
   }
 
   private loadAllStations(){

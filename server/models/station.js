@@ -14,6 +14,19 @@ const Station = new Schema({
   state: { type: String, enum: ['attente', 'panne', "valide"], required: true }
 });
 
+Station.methods.toDto = function() {
+  return {
+    _id: this._id,
+    name: this.name,
+    latitude: this.latitude,
+    longitude: this.longitude,
+    type: this.type,
+    state: this.state,
+    createdAt: this.createdAt,
+    updatedAt: this.updatedAt
+  };
+};
+
 Station.plugin(timestamps);
 //Definition du modèle
 const stationModel = mongoose.model("station", Station);

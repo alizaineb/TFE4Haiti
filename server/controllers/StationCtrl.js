@@ -3,8 +3,10 @@ const logger = require('../config/logger');
 const Station = require('./../models/station');
 
 exports.get = function(req, res) {
-  Station.stationModel.find({}).then(function(results) {
-    res.status(200).send(results);
+  Station.stationModel.find({}).then(function(stations) {
+    let tabS = [];
+    stations.forEach(stations => tabS.push(stations.toDto()));
+    return res.status(200).send(tabS);
   }).catch(function(err) {
     logger.error(err);
     return res.status(500).send(err);
@@ -19,11 +21,10 @@ exports.getById = function(req, res) {
 exports.create = function(req, res) {
   let station = req.body;
   let sTmp = new Station.stationModel();
-  console.log(req.body);
   sTmp.name = station.name;
   sTmp.latitude = station.latitude;
   sTmp.longitude = station.longitude;
-  sTmp.type = station.type;
+  sTmp.type = 'hydro';
   // sTmp.users = station.users;
   //sTmp.created_at = Date.now();
   //sTmp.last_update = Date.now();

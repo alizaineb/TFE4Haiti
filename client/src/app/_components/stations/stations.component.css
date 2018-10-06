@@ -12,6 +12,7 @@
 
 .fa-plus-circle{
   color: blue;
+  cursor: pointer;
 }
 
 .backdrop{

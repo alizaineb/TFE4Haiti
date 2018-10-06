@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { StationsService} from "../../../_services/stations.service";
 import {Station} from "../../../_models";
@@ -12,6 +12,9 @@ import { AlertService} from "../../../_services";
   styleUrls: ['./add-station-modal.component.css']
 })
 export class AddStationModalComponent implements OnInit {
+
+  @Output()
+  sent = new EventEmitter<boolean>();
 
   private addStationForm: FormGroup;
   private stationSubmitted = false;
@@ -53,6 +56,10 @@ export class AddStationModalComponent implements OnInit {
       .subscribe(
         result => {
           this.loading = false;
+          //Fermer la page
+          this.sent.emit(true);
+          let element: HTMLElement = document.getElementsByClassName('btn')[0] as HTMLElement;
+          element.click();
         },
         error => {
           this.alertService.error(error);

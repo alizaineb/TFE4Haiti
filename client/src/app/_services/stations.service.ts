@@ -21,7 +21,13 @@ export class StationsService {
   }
 
   register(station:Station) {
-    return this.http.post(`${environment.apiUrl}/stations`, station);
+    return this.http.post(`${environment.apiUrl}/stations`,
+      {
+        name : station.name,
+        latitude : station.latitude,
+        longitude : station.longitude,
+        type : station.type
+      });
   }
 
   update(station) {
