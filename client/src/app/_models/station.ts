@@ -11,4 +11,6 @@ export class Station {
   __v: number;
 
   public constructor() {}
+
+
 }

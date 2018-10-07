@@ -15,7 +15,7 @@
     <tr>
       <th>#</th>
       <th *ngFor="let head of headers">{{head}}
-        <i class="fa fa-sort float-right" aria-hidden="true"></i>
+        <i class="fa fa-sort float-right" aria-hidden="true" (click)="sortData(head)"></i>
       </th>
       <th>Action</th>
     </tr>
@@ -53,8 +53,6 @@
   </ul>
 </nav>
 
-
-
 <!-- Modal -->
 <div class="modal fade" id="addStationModal" tabindex="-1" role="dialog" aria-labelledby="addStationModalLabel" aria-hidden="true">
   <app-add-station-modal
@@ -69,6 +67,8 @@
     (selected)="deleteStation($event)"
   ></app-delete-station-modal>
 </div>
+
+<button (click)="sortData()"></button>
 
 
 

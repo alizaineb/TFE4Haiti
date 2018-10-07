@@ -18,6 +18,10 @@
   cursor: pointer;
 }
 
+.fa-sort{
+  cursor: pointer;
+}
+
 .backdrop{
   background-color:rgba(0,0,0,0.6);
   position:fixed;
