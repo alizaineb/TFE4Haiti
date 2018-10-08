@@ -10,22 +10,31 @@ export class UserService {
   }
 
   getAll() {
-    return this.http.get<User[]>(`${environment.apiUrl}/users`);
+    return this.http.get<User[]>(environment.apiUrl + '/users');
+  }
+
+  getAllAwaiting() {
+    return this.http.get<User[]>(environment.apiUrl + '/users/getAllAwaiting');
   }
 
   getById(id: number) {
-    return this.http.get(`${environment.apiUrl}/users/` + id);
+    return this.http.get(environment.apiUrl + '/users/' + id);
   }
 
   register(user: User) {
-    return this.http.post(`${environment.apiUrl}/users`, user);
+    return this.http.post(environment.apiUrl + '/users', user);
   }
 
+  acceptUser(id: String) {
+    return this.http.post(`${environment.apiUrl}/users/acceptUser`, {id : id});
+  }
   update(user: User) {
-    return this.http.put(`${environment.apiUrl}/users/` + user._id, user);
+    return this.http.put(environment.apiUrl + '/users/' + user._id, user);
   }
 
   delete(id: number) {
-    return this.http.delete(`${environment.apiUrl}/users/` + id);
+    return this.http.delete(environment.apiUrl + '/users/' + id);
   }
+
+
 }
