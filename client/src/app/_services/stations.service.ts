@@ -21,20 +21,21 @@ export class StationsService {
   }
 
   register(station: Station) {
-    return this.http.post(environment.apiUrl + 'stations',
+    return this.http.post(environment.apiUrl + '/stations',
       {
         name: station.name,
         latitude: station.latitude,
         longitude: station.longitude,
-        interval: station.interval
+        interval: station.interval,
+        createdAt: station.createdAt
       });
   }
 
   update(station) {
-    return this.http.put(environment.apiUrl + 'stations/' + station._id, station);
+    return this.http.put(environment.apiUrl + '/stations/' + station._id, station);
   }
 
   delete(id: string) {
-    return this.http.delete(environment.apiUrl + 'stations/' + id);
+    return this.http.delete(environment.apiUrl + '/stations/' + id);
   }
 }

@@ -24,13 +24,15 @@ exports.create = function(req, res) {
   sTmp.name = station.name;
   sTmp.latitude = station.latitude;
   sTmp.longitude = station.longitude;
-  sTmp.users = [];
-  //sTmp.created_at = Date.now();
+  console.log(station.createdAt);
+  console.log(new Date(station.createdAt));
+  sTmp.createdAt = new Date(station.createdAt);
   //sTmp.last_update = Date.now();
   // TODO Picture
   // sTmp.picture = station.picture;
   sTmp.state = 'attente';
   sTmp.interval = station.interval;
+  sTmp.users = [];
 
   sTmp.save().then(() => {
     return res.status(201).send({ message: sTmp });
