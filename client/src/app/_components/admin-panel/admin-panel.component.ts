@@ -26,7 +26,7 @@ export class AdminPanelComponent implements OnInit {
       .pipe(first())
       .subscribe(res => {
         for (let usr of res) {
-          //  usr.niceDate = self.toNiceDate(new Date(usr.created_at));
+          usr.niceDate = self.toNiceDate(new Date(usr.created_at));
         }
         self.users = res;
       });
