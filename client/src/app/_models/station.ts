@@ -10,7 +10,7 @@ export class Station {
   interval: string;
   __v: number;
 
-  public constructor() {}
+  public constructor() { }
 
 
 }

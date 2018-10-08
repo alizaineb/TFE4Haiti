@@ -2,21 +2,27 @@ const mongoose = require('mongoose');
 const nconf = require('nconf');
 var bcrypt = require('bcryptjs');
 const roles = require('../config/constants').roles;
+const state = require('../config/constants').userState;
 var SALT_WORK_FACTOR = 4;
 
 // schema d'un utilisateur
 const Schema = mongoose.Schema;
 const User = new Schema({
+  first_name: { type: String, required: true },
+  last_name: { type: String, required: true },
   mail: { type: String, required: true, unique: true },
   pwd: { type: String, required: true },
   created_at: { type: Date, default: Date.now },
   last_seen: { type: Date, default: Date.now },
-  type: { type: String, enum: [roles.ADMIN, roles.WORKER, roles.VIEWER], required: true }
+  role: { type: String, enum: [roles.ADMIN, roles.WORKER, roles.VIEWER], required: true },
+  state: { type: String, enum: [state.AWAITING, state.PASSWORD_CREATION, state.OK, state.DELETED], required: true, default: state.AWAITING }
 });
 
 User.methods.toDto = function() {
   return {
     _id: this._id,
+    first_name: this.first_name,
+    last_name: this.last_name,
     mail: this.mail,
     type: this.type,
     created_at: this.created_at,

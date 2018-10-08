@@ -27,8 +27,8 @@ export class AuthenticationService {
     localStorage.removeItem('currentUser');
   }
 
-  register(username: string, password: string) {
-    return this.http.post<any>(`${environment.apiUrl}/users`, { mail: username, pwd: password })
+  register(first_name: string, last_name: string, username: string, password: string) {
+    return this.http.post<any>(`${environment.apiUrl}/users`, { first_name: first_name, last_name: last_name, mail: username, pwd: password })
       .pipe(map(user => {
         // login successful if there's a jwt token in the response
         if (user && user.token) {

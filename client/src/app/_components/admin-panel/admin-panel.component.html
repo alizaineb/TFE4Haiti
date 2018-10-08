@@ -1,3 +1,36 @@
-<p>
-  admin-panel works!
-</p>
+<h1>
+  Utilisateur(s) en attente de validation
+</h1>
+<table class="table table-striped table-bordered">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th *ngFor="let head of headers">
+
+        {{head}}
+        <i class="fa fa-sort float-right" aria-hidden="true" (click)="sortData(head)"></i>
+      </th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users; index as i;">
+      <td>{{i+1}}</td>
+      <td>{{user.first_name}}</td>
+      <td>{{user.last_name}}</td>
+      <td>{{user.mail}}</td>
+      <td>{{user.niceDate}}</td>
+      <td>
+        <i class="fas fa-check fa-fw fa-1x"></i>
+        <i class="fas fa-trash fa-fw fa-1x"></i>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<h1>
+  Station(s) en attente de validation
+</h1>
+
+<h1>
+  Donnée(s) en attente de validation
+</h1>
