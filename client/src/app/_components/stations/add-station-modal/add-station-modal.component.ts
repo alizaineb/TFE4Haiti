@@ -82,6 +82,7 @@ export class AddStationModalComponent implements OnInit{
 
   resetStation() {
     this.station = new Station('','',undefined,undefined,'',null, new Date(),'',[]);
+    this.datePicker.setDate(new Date())
   }
 
   sendStation(){
@@ -97,9 +98,9 @@ export class AddStationModalComponent implements OnInit{
           //trigger sent
           this.sent.emit(true);
           //Fermer la page
+          this.resetStation();
           let element: HTMLElement = document.getElementsByClassName('btn')[1] as HTMLElement;
           element.click();
-          this.resetStation()
         },
         error => {
           this.alertService.error(error);
