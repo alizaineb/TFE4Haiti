@@ -26,6 +26,8 @@
               </select>
               <div *ngIf="stationSubmitted && getAddStationForm.interval.errors" class="invalid-feedback">
                 <div *ngIf="getAddStationForm.interval.errors.required">Intervalle requise</div>
+                <div *ngIf="getAddStationForm.interval.errors.min">Valeur minimum: -90</div>
+                <div *ngIf="getAddStationForm.interval.errors.max">Valeur maximum: 90</div>
               </div>
             </div>
           </div>
@@ -68,3 +70,4 @@
     </form>
   </div>
 </div>
+-->

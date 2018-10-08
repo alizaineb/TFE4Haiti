@@ -33,8 +33,8 @@ export class AddStationModalComponent implements OnInit {
 
     this.addStationForm = this.formBuilder.group({
       name: ['', Validators.required],
-      latitude: ['', Validators.required],
-      longitude: ['', Validators.required],
+      latitude: [0, Validators.required, Validators.min(-90), Validators.max(90)],
+      longitude: [0, Validators.required, Validators.min(-180), Validators.max(180)],
       altitude: ['', Validators.required],
       date: ['', Validators.required],
       interval:['', Validators.required]
