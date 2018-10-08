@@ -41,15 +41,17 @@ export class AdminPanelComponent implements OnInit {
   }
 
   acceptUser(id: string) {
+    let self = this;
     this.userService.acceptUser(id)
       .pipe(first())
       .subscribe(result => {
-        this.loadAwaitingUsers();
+        self.loadAwaitingUsers();
       },
         error => {
           this.alertService.error(error);
         });
   }
+
   private toNiceDate(date: Date) {
     return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear() + " à " + date.getHours() + ":" + date.getMinutes();
   }
