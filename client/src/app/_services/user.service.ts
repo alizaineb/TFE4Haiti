@@ -25,6 +25,9 @@ export class UserService {
     return this.http.post(environment.apiUrl + '/users', user);
   }
 
+  acceptUser(id: String) {
+    return this.http.post(`${environment.apiUrl}/users/acceptUser`, id);
+  }
   update(user: User) {
     return this.http.put(environment.apiUrl + '/users/' + user._id, user);
   }

@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {first} from 'rxjs/operators';
-import {UserService} from "../../_services/user.service";
+import { Component, OnInit } from '@angular/core';
+import { first } from 'rxjs/operators';
+import { UserService } from "../../_services/user.service";
+import { AlertService } from '../../_services/index';
 
 @Component({
   selector: 'app-admin-panel',
@@ -11,8 +12,7 @@ export class AdminPanelComponent implements OnInit {
 
   headers: string[];
   users = [];
-
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private alertService: AlertService) {
     this.headers = ["Nom", "Prénom", "Adresse mail", "Date de création"];
   }
 
@@ -40,7 +40,17 @@ export class AdminPanelComponent implements OnInit {
 
   }
 
-  toNiceDate(date: Date) {
+  acceptUser(id: string) {
+    this.userService.acceptUser(id)
+      .pipe(first())
+      .subscribe(result => {
+        this.loadAwaitingUsers();
+      },
+        error => {
+          this.alertService.error(error);
+        });
+  }
+  private toNiceDate(date: Date) {
     return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear() + " à " + date.getHours() + ":" + date.getMinutes();
   }
 }

@@ -12,7 +12,7 @@ exports.login = function(req, res) {
   let mail = req.body.mail || '';
   let pwd = req.body.pwd || '';
   if (!mail || !pwd) {
-    return res.sendStatus(400, "Information manquante(s)", );
+    return res.sendStatus(400, "Information manquante(s)");
   }
 
   UsersModel.userModel.findOne({ mail: mail, state: userState.OK }, function(err, result) {
@@ -70,8 +70,6 @@ exports.getByEmail = function(req, res) {
 };
 
 exports.create = function(req, res) {
-  console.log(req.body);
-  // TODOadd nom et prénom
   let uTmp = new UsersModel.userModel();
   let user = req.body
   uTmp.first_name = user.first_name;
@@ -112,7 +110,7 @@ exports.logout = function(req, res) {
 exports.getAllAwaiting = function(req, res) {
   UsersModel.userModel.find({ state: userState.AWAITING }, function(err, result) {
     if (err) {
-      return res.status(500, ).send({ error: "Erreur lors de la récupération des utilisateurs en attente." });
+      return res.status(500).send({ error: "Erreur lors de la récupération des utilisateurs en attente." });
     }
     if (!result) {
       return res.status(204);
@@ -124,6 +122,40 @@ exports.getAllAwaiting = function(req, res) {
     }
   });
 }
+
+exports.acceptUser = function(req, res) {
+  let id = req.body.id || '';
+  if (!id) {
+    return res.status(400).send("Information manquante");
+  }
+
+  UsersModel.userModel.find({ _id: id, state: userState.AWAITING }, function(err, result) {
+    if (err) {
+      return res.status(500).send({ error: "Erreur lors de la récupération de l'utilisateur concerné." });
+    }
+
+    if (result.length > 1) {
+      return res.status(500).send({ error: "Ceci n'aurait jamais dû arriver." });
+    } else if (result.length == 0) {
+      return res.status(404).send({ error: "Aucun utilisateur correpsondant." });
+    } else {
+      result[0].state = userState.PASSWORD_CREATION;
+      result[0].save(function(err, userUpdt) {
+        if (err) {
+          return res.status(500).send({ error: "Erreur lors de la mise à jour de l'utilisateur concerné." });
+        }
+        return res.status(200).send();
+      });
+    }
+  });
+}
+
+
+
+
+
+
+
 
 exports.useless = function(req, res) {
   return res.sendStatus(200, { message: "ok", error: "NON" });
