@@ -3,6 +3,7 @@
   first_name: string;
   last_name: string;
   created_at: Date;
+  niceDate: string;
   mail: string;
   type: string;
 }
