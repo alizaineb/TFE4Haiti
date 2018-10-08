@@ -26,7 +26,7 @@ export class StationsService {
         name : station.name,
         latitude : station.latitude,
         longitude : station.longitude,
-        type : station.type
+        interval : station.interval
       });
   }
 

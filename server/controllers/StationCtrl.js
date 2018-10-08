@@ -24,13 +24,13 @@ exports.create = function(req, res) {
   sTmp.name = station.name;
   sTmp.latitude = station.latitude;
   sTmp.longitude = station.longitude;
-  sTmp.type = 'hydro';
-  // sTmp.users = station.users;
+  sTmp.users = [];
   //sTmp.created_at = Date.now();
   //sTmp.last_update = Date.now();
   // TODO Picture
   // sTmp.picture = station.picture;
   sTmp.state = 'attente';
+  sTmp.interval = station.interval;
 
   sTmp.save().then(() => {
     return res.status(201).send({ message: sTmp });
@@ -50,8 +50,7 @@ exports.update = function(req, res) {
 
 exports.delete = function(req, res) {
   let id = req.params.id;
-  console.log(id);
-  let station = Station.stationModel.deleteOne({ _id: id }).then(() => {
+  Station.stationModel.deleteOne({ _id: id }).then(() => {
     return res.status(204).send({ deleted: "ok" }) //TODO remove body
   }).catch(function(err) {
     logger.error(err);

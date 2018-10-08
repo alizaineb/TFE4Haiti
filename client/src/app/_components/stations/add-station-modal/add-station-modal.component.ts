@@ -20,18 +20,24 @@ export class AddStationModalComponent implements OnInit {
   stationSubmitted = false;
   loading = false;
 
+  intervals: string[];
+
   constructor(private formBuilder: FormBuilder,
               private stationService: StationsService,
               private alertService: AlertService) {
   }
 
   ngOnInit() {
+
+    this.intervals = ['1min','5min','10min','15min','30min','1h','2h','6h','12h','24h'];
+
     this.addStationForm = this.formBuilder.group({
       name: ['', Validators.required],
       latitude: ['', Validators.required],
       longitude: ['', Validators.required],
       altitude: ['', Validators.required],
-      date: ['', Validators.required]
+      date: ['', Validators.required],
+      interval:['', Validators.required]
     });
   }
 
@@ -40,7 +46,7 @@ export class AddStationModalComponent implements OnInit {
   }
 
   resetForm(){
-    this.addStationForm.reset()
+    this.addStationForm.reset();
   }
 
   sendStation(){
@@ -55,6 +61,7 @@ export class AddStationModalComponent implements OnInit {
     newStation.latitude = this.getAddStationForm.latitude.value;
     newStation.longitude = this.getAddStationForm.longitude.value;
     newStation.createdAt = this.getAddStationForm.date.value;
+    newStation.interval = this.getAddStationForm.interval.value;
     this.stationService.register(newStation)
       .pipe(first())
       .subscribe(
@@ -63,11 +70,11 @@ export class AddStationModalComponent implements OnInit {
           //trigger sent
           this.sent.emit(true);
 
-          this.resetForm();
-
           //Fermer la page
           let element: HTMLElement = document.getElementsByClassName('btn')[0] as HTMLElement;
           element.click();
+          this.resetForm();
+
         },
         error => {
           this.alertService.error(error);

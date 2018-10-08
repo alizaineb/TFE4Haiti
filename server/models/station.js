@@ -6,12 +6,12 @@ var timestamps = require('mongoose-timestamp');
 const Schema = mongoose.Schema;
 const Station = new Schema({
   name: { type: String, required: true },
-  latitude: { type: Number, required: true, min: -90, max: 90 },
-  longitude: { type: Number, required: true, min: -180, max: 180 },
-  type: { type: String, enum: ['hydro', 'limni'], required: true },
+  latitude: { type: Number, required: true, min: -90.0, max: 90.0 },
+  longitude: { type: Number, required: true, min: -180.0, max: 180.0 },
   //picture: { type: String }, // Url vers la photo
   users: { type: [String], required: true },
-  state: { type: String, enum: ['attente', 'panne', "valide"], required: true }
+  state: { type: String, enum: ['attente', 'panne', "valide"], required: true },
+  interval: {type: String, required: true, enum: ['1min','5min','10min','15min','30min','1h','2h','6h','12h','24h']}
 });
 
 Station.methods.toDto = function() {
@@ -20,10 +20,10 @@ Station.methods.toDto = function() {
     name: this.name,
     latitude: this.latitude,
     longitude: this.longitude,
-    type: this.type,
     state: this.state,
     createdAt: this.createdAt,
-    updatedAt: this.updatedAt
+    updatedAt: this.updatedAt,
+    interval: this.interval
   };
 };
 

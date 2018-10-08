@@ -4,10 +4,10 @@ export class Station {
   name: string;
   latitude: number;
   longitude: number;
-  type: string;
   state: string;
   updatedAt: Date;
   createdAt: Date;
+  interval: string;
   __v: number;
 
   public constructor() {}

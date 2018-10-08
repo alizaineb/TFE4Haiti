@@ -15,6 +15,20 @@
                 <div *ngIf="getAddStationForm.name.errors.required">Nom requis</div>
               </div>
           </div>
+          <div class="form-group">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01">Intervalle</label>
+              </div>
+              <select class="custom-select form-control" id="inputGroupSelect01" formControlName="interval" [ngClass]="{ 'is-invalid': stationSubmitted && getAddStationForm.interval.errors }">
+                <option selected></option>
+                <option *ngFor="let interval of intervals;">{{interval}}</option>
+              </select>
+              <div *ngIf="stationSubmitted && getAddStationForm.interval.errors" class="invalid-feedback">
+                <div *ngIf="getAddStationForm.interval.errors.required">Intervalle requise</div>
+              </div>
+            </div>
+          </div>
           <label>Coordonnées GPS: </label>
           <div class="form-inline">
             <div class="form-group mb-2">
