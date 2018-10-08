@@ -1,73 +1,87 @@
 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
   <div class="modal-content">
-    <form [formGroup]="addStationForm" (ngSubmit)="sendStation()">
-      <div class="modal-header">
-        <h2 class="modal-title" id="addStationModalLabel">Ajouter une station</h2>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-          <div class="form-group">
-            <label>Nom:</label>
-              <input type="text" placeholder="Nom" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': stationSubmitted && getAddStationForm.name.errors }" />
-              <div *ngIf="stationSubmitted && getAddStationForm.name.errors" class="invalid-feedback">
-                <div *ngIf="getAddStationForm.name.errors.required">Nom requis</div>
+    <div class="modal-header">
+      <h1 class="modal-title" id="addStationModalLabel">Ajouter une station</h1>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="container">
+          <form (ngSubmit)="onSubmit()" [formGroup]="addStationForm" #addStationFormNg="ngForm">
+
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input id="name" class="form-control"
+                     formControlName="name" required
+                     [(ngModel)]="station.name">
+              <div *ngIf="name.invalid && (name.dirty || name.touched)"
+                   class="alert alert-danger">
+                <div *ngIf="name.errors.required">
+                  Le nom est requis.
+                </div>
+                <div *ngIf="name.errors.maxlength">
+                  Le nom ne peut pas dépasser 20 caractères.
+                </div>
               </div>
-          </div>
-          <div class="form-group">
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <label class="input-group-text" for="inputGroupSelect01">Intervalle</label>
+            </div>
+
+            <div class="form-group">
+              <label for="latitude">Latitude</label>
+              <input type="number" class="form-control" id="latitude"
+                     formControlName="latitude" required [(ngModel)]="station.latitude">
+              <div *ngIf="latitude.invalid && (latitude.dirty || latitude.touched)" class="alert alert-danger">
+                <div *ngIf="latitude.errors.required">
+                  La latitude est requise
+                </div>
+                <div *ngIf="latitude.errors.min">
+                  La valeur est trop petite
+                </div>
+                <div *ngIf="latitude.errors.max">
+                  La valeur est trop grande
+                </div>
               </div>
-              <select class="custom-select form-control" id="inputGroupSelect01" formControlName="interval" [ngClass]="{ 'is-invalid': stationSubmitted && getAddStationForm.interval.errors }">
-                <option selected></option>
-                <option *ngFor="let interval of intervals;">{{interval}}</option>
+            </div>
+
+            <div class="form-group">
+              <label for="longitude">Longitude</label>
+              <input type="number" class="form-control" id="longitude"
+                     formControlName="longitude" required [(ngModel)]="station.longitude">
+              <div *ngIf="longitude.invalid && (longitude.dirty || longitude.touched)"
+                   class="alert alert-danger">
+                <div *ngIf="longitude.errors.required">
+                  La longitude est requise
+                </div>
+                <div *ngIf="longitude.errors.min">
+                  La valeur est trop petite
+                </div>
+                <div *ngIf="longitude.errors.max">
+                  La valeur est trop grande
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="interval">Intervalle</label>
+              <select class="form-control" id="interval"
+                      formControlName="interval" required [(ngModel)]="station.interval">
+                <option *ngFor="let i of intervals" [value]="i">{{i}}</option>
               </select>
-              <div *ngIf="stationSubmitted && getAddStationForm.interval.errors" class="invalid-feedback">
-                <div *ngIf="getAddStationForm.interval.errors.required">Intervalle requise</div>
-                <div *ngIf="getAddStationForm.interval.errors.min">Valeur minimum: -90</div>
-                <div *ngIf="getAddStationForm.interval.errors.max">Valeur maximum: 90</div>
+              <div *ngIf="interval.invalid && (interval.dirty || interval.touched)"
+                   class="alert alert-danger">
+                <div *ngIf="interval.errors.required">
+                  Une intervalle est requise
+                </div>
               </div>
             </div>
-          </div>
-          <label>Coordonnées GPS: </label>
-          <div class="form-inline">
-            <div class="form-group mb-2">
-              <input type="text" placeholder="Latitude" formControlName="latitude" class="form-control" [ngClass]="{ 'is-invalid': stationSubmitted && getAddStationForm.latitude.errors }" />
-              <div *ngIf="stationSubmitted && getAddStationForm.latitude.errors" class="invalid-feedback">
-                <div *ngIf="getAddStationForm.latitude.errors.required">Latitude requise</div>
-              </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" (click)="resetStation(); addStationFormNg.reset()">Reset station</button>
+              <button (click)="resetStation()" type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+              <button (click)="sendStation()" type="submit" class="btn btn-success" [disabled]="!addStationFormNg.form.valid">Envoyer</button>
             </div>
-            <div class="form-group mx-sm-3 mb-2">
-              <input type="text" placeholder="Longitude" formControlName="longitude" class="form-control" [ngClass]="{ 'is-invalid': stationSubmitted && getAddStationForm.longitude.errors }" />
-              <div *ngIf="stationSubmitted && getAddStationForm.longitude.errors" class="invalid-feedback">
-                <div *ngIf="getAddStationForm.longitude.errors.required">Longitude requise</div>
-              </div>
-            </div>
-          </div>
-          <p></p>
-          <div class="form-group">
-            <label>Altitude:</label>
-            <input type="number" placeholder="Altitude" formControlName="altitude" class="form-control" [ngClass]="{ 'is-invalid': stationSubmitted && getAddStationForm.altitude.errors }" />
-            <div *ngIf="stationSubmitted && getAddStationForm.altitude.errors" class="invalid-feedback">
-              <div *ngIf="getAddStationForm.altitude.errors.required">Altitude requise</div>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Date de création:</label>
-            <input type="date" placeholder="Date" formControlName="date" class="form-control" [ngClass]="{ 'is-invalid': stationSubmitted && getAddStationForm.date.errors }" />
-            <div *ngIf="stationSubmitted && getAddStationForm.date.errors" class="invalid-feedback">
-              <div *ngIf="getAddStationForm.date.errors.required">Date de création requise</div>
-            </div>
-          </div>
+          </form>
       </div>
-      <div class="modal-footer">
-        <button (click)="resetForm()" type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-        <button type="submit" [disabled]="loading" class="btn btn-primary">Valider</button>
-        <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-      </div>
-    </form>
+    </div>
   </div>
 </div>
--->

@@ -1,6 +1,7 @@
 ﻿import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {ReactiveFormsModule} from '@angular/forms';
+import { FormsModule }   from '@angular/forms';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 
 // used to create fake backend
@@ -25,7 +26,7 @@ import {ResetPasswordComponent} from './_components/login/reset-password/reset-p
 import { FaqComponent } from './_components/faq/faq.component'
 import {StationsService} from "./_services/stations.service";;
 import { AddStationModalComponent } from './_components/stations/add-station-modal/add-station-modal.component';
-import { DeleteStationModalComponent } from './_components/stations/delete-station-modal/delete-station-modal.component';
+import { DeleteStationModalComponent } from './_components/stations/delete-station-modal/delete-station-modal.component';;
 
 
 @NgModule({
@@ -33,7 +34,9 @@ import { DeleteStationModalComponent } from './_components/stations/delete-stati
     BrowserModule,
     ReactiveFormsModule,
     HttpClientModule,
-    routing
+    routing,
+    FormsModule
+
   ],
   declarations: [
     AppComponent,
@@ -49,7 +52,8 @@ import { DeleteStationModalComponent } from './_components/stations/delete-stati
     ResetPasswordComponent,
     FaqComponent ,
     AddStationModalComponent ,
-    DeleteStationModalComponent],
+    DeleteStationModalComponent
+  ],
   providers: [
     AuthGuard,
     AlertService,

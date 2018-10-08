@@ -1,85 +1,86 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { StationsService} from "../../../_services/stations.service";
-import {Station} from "../../../_models";
 import {first} from "rxjs/operators";
-import { AlertService} from "../../../_services";
-
+import {AlertService} from "../../../_services";
+import {StationsService} from "../../../_services/stations.service";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {Station} from "../../../_models";
 
 @Component({
   selector: 'app-add-station-modal',
   templateUrl: './add-station-modal.component.html',
   styleUrls: ['./add-station-modal.component.css']
 })
-export class AddStationModalComponent implements OnInit {
+export class AddStationModalComponent implements OnInit{
+
 
   @Output()
   sent = new EventEmitter<boolean>();
 
-  addStationForm: FormGroup;
-  stationSubmitted = false;
-  loading = false;
+  intervals = ['1min','5min','10min','15min','30min','1h','2h','6h','12h','24h'];
+  station:Station = new Station('','',undefined,undefined,'',null,null,'',[]);
+  submitted = false;
 
-  intervals: string[];
+  addStationForm:FormGroup;
 
-  constructor(private formBuilder: FormBuilder,
-              private stationService: StationsService,
-              private alertService: AlertService) {
+  constructor(private alertService:AlertService,
+              private stationService:StationsService){
+
   }
 
-  ngOnInit() {
-
-    this.intervals = ['1min','5min','10min','15min','30min','1h','2h','6h','12h','24h'];
-
-    this.addStationForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      latitude: [0, Validators.required, Validators.min(-90), Validators.max(90)],
-      longitude: [0, Validators.required, Validators.min(-180), Validators.max(180)],
-      altitude: ['', Validators.required],
-      date: ['', Validators.required],
-      interval:['', Validators.required]
-    });
+  ngOnInit(): void {
+    this.addStationForm = new FormGroup({
+      'name': new FormControl(this.station.name, [
+        Validators.required,
+        Validators.maxLength(20)
+      ]),
+      'latitude': new FormControl(this.station.latitude, [
+        Validators.required,
+        Validators.max(90),
+        Validators.min(-90)
+      ]),
+      'longitude': new FormControl(this.station.longitude, [
+        Validators.required,
+        Validators.max(180),
+        Validators.min(-180)
+      ]),
+      'interval': new FormControl(this.station.interval, [
+        Validators.required
+      ]),
+    })
   }
 
-  get getAddStationForm() {
-    return this.addStationForm.controls;
-  }
+  get name() { return this.addStationForm.get('name'); }
+  get latitude() { return this.addStationForm.get('latitude'); }
+  get longitude() { return this.addStationForm.get('longitude'); }
+  get interval() { return this.addStationForm.get('interval'); }
 
-  resetForm(){
-    this.addStationForm.reset();
+
+  onSubmit() { this.submitted = true; }
+
+  resetStation() {
+    this.station = new Station('','',undefined,undefined,'',null,null,'',[]);
   }
 
   sendStation(){
-    this.stationSubmitted = true;
+    this.submitted = true;
     // stop here if form is invalid
     if (this.addStationForm.invalid) {
       return;
     }
-    this.loading = true;
-    let newStation:Station = new Station();
-    newStation.name = this.getAddStationForm.name.value;
-    newStation.latitude = this.getAddStationForm.latitude.value;
-    newStation.longitude = this.getAddStationForm.longitude.value;
-    newStation.createdAt = this.getAddStationForm.date.value;
-    newStation.interval = this.getAddStationForm.interval.value;
-    this.stationService.register(newStation)
+
+    this.stationService.register(this.station)
       .pipe(first())
       .subscribe(
         result => {
-          this.loading = false;
           //trigger sent
           this.sent.emit(true);
-
           //Fermer la page
-          let element: HTMLElement = document.getElementsByClassName('btn')[0] as HTMLElement;
+          let element: HTMLElement = document.getElementsByClassName('btn')[1] as HTMLElement;
           element.click();
-          this.resetForm();
-
+          this.resetStation()
         },
         error => {
           this.alertService.error(error);
-          this.loading = false;
         });
   }
-
 }

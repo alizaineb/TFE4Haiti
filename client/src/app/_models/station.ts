@@ -1,16 +1,20 @@
 export class Station {
-  users: string[];
-  _id: string;
-  name: string;
-  latitude: number;
-  longitude: number;
-  state: string;
-  updatedAt: Date;
-  createdAt: Date;
-  interval: string;
-  __v: number;
-
-  public constructor() {}
 
 
+  public constructor(
+    public _id: string,
+    public name: string,
+    public latitude: number,
+    public longitude: number,
+    public state: string,
+    public updatedAt: Date,
+    public createdAt: Date,
+    public interval: string,
+    public users: string[],
+  ) {
+  }
 }
+
+//new Station('','',undefined,undefined,'',null,null,'',[]);
+
+
