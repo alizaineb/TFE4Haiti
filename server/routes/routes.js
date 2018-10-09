@@ -35,8 +35,7 @@ exports.routes = [
   {
     path: "/api/users/",
     httpMethod: "POST",
-    middleWare: [controllers.users.create],
-      access: [roles.ADMIN]
+    middleWare: [controllers.users.create]
   },
   {
     path: "/api/users/",
