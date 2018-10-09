@@ -28,7 +28,7 @@ export class MenuService {
   }
 
   getLeftAdminMenu() {
-    return this.getleftWorkerMenu().concat(this.bigMenuParent.left.admin).reverse();
+    return this.getleftWorkerMenu().concat(this.bigMenuParent.left.admin);
   }
 
   getleftWorkerMenu() {
@@ -52,9 +52,7 @@ export class MenuService {
   }
 
   getRightViewerMenu() {
-    let allTab = this.getMenuRight();
-    allTab.splice(0, 1);
-    return allTab.concat(this.bigMenuParent.right.viewer);
+    return this.getMenuRight().concat(this.bigMenuParent.right.viewer);
   }
 
   getMenuRight() {

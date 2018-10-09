@@ -12,7 +12,7 @@ export class LocalstorageService {
   constructor() {
     this.storage$ = this.storage.asObservable();
     this.lStorage = JSON.parse(localStorage.getItem("storage") || '{}');
-    localStorage.setItem("storage", JSON.stringify(this.lStorage));
+    this.updateLocalStorage();
   }
 
   getItem(key){
@@ -23,12 +23,20 @@ export class LocalstorageService {
     console.log(key, value); // I have data! Let's return it so subscribers can use it!
     // we can do stuff with data if we want
     this.lStorage[key] = value;
-    localStorage.setItem("storage", JSON.stringify(this.lStorage));
-    this.storage.next(this.lStorage);
+    this.updateLocalStorage();
   }
 
   removeItem(key: string) {
     delete this.lStorage[key];
+    this.updateLocalStorage();
+  }
+
+  private updateLocalStorage(){
+    localStorage.setItem("storage", JSON.stringify(this.lStorage));
     this.storage.next(this.lStorage);
+  }
+
+  getStorage() {
+    return this.lStorage;
   }
 }

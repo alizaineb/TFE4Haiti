@@ -38,11 +38,7 @@ export class LoginComponent implements OnInit {
       first_name: ['', Validators.required],
       last_name: ['', Validators.required]
     });
-
-
-    // reset login status
-    this.authenticationService.logout();
-
+    
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
