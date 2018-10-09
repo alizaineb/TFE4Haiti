@@ -1,0 +1,18 @@
+{
+  "development": true,
+  "server": {
+    "host": "0.0.0.0",
+    "port": "3000"
+  },
+  "database": {
+    "host": "localhost",
+    "port": "27017",
+    "name": "TFE4Haiti",
+    "login": "",
+    "password": ""
+  },
+  "token": {
+    "privateKey": "somethingsomethingjsontoken",
+    "expiration": "12h"
+  }
+}
