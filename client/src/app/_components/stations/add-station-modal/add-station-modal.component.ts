@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {AfterViewChecked, Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {first} from "rxjs/operators";
 import {AlertService} from "../../../_services";
 import {StationsService} from "../../../_services/stations.service";
@@ -15,7 +15,7 @@ import {LatLng} from "leaflet";
   templateUrl: './add-station-modal.component.html',
   styleUrls: ['./add-station-modal.component.css']
 })
-export class AddStationModalComponent implements OnInit{
+export class AddStationModalComponent implements OnInit, AfterViewChecked{
 
 
   @Output()
@@ -28,9 +28,11 @@ export class AddStationModalComponent implements OnInit{
   addStationForm:FormGroup;
   datePicker;
 
+  map;
+  mark;
+
   constructor(private alertService:AlertService,
               private stationService:StationsService){
-
   }
 
   ngOnInit(): void {
@@ -68,13 +70,14 @@ export class AddStationModalComponent implements OnInit{
       dateFormat: "d-m-Y"
     });
 
+    const self = this;
+
     const icon1 = L.icon({
       iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/images/marker-icon.png',
       iconSize: [20, 35], // size of the icon
       iconAnchor: [11, 34], // point of the icon which will correspond to marker's location
       popupAnchor: [-3, -38] // point from which the popup should open relative to the iconAnchor
     });
-    const stationHydro = L.layerGroup();
 
     const mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
       '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
@@ -102,27 +105,34 @@ export class AddStationModalComponent implements OnInit{
       'OpenStreetMap': mapLayer3
     };
 
-    const overlays = {
-      'Hydrographe': stationHydro
-    };
-
-    const map = L.map('mapid', {
+    this.map = L.map('mapid', {
       center: [19.099041, -72.658473],
       zoom: 8,
       minZoom: 8,
       maxZoom: 18,
-      layers: [mapLayer1, stationHydro]
+      layers: [mapLayer1]
     });
 
-    L.control.scale().addTo(map);
-    L.control.layers(baseLayers, overlays).addTo(map);
-    map.on('click', function(e){
+    L.control.scale().addTo(this.map);
+    L.control.layers(baseLayers).addTo(this.map);
+
+    this.map.on('click', function(e) {
       // @ts-ignore
-      let latln:LatLng = e.latlng;
-      let mark = L.marker([latln.lat, latln.lng], {icon: icon1}).addTo(map);
-
-
+      let latln: LatLng = e.latlng;
+      if (self.station.latitude == undefined || self.station.latitude == undefined) {
+        self.station.latitude = latln.lat;
+        self.station.longitude = latln.lng;
+        self.mark = L.marker([self.station.latitude, self.station.longitude], {icon: icon1}).addTo(self.map);
+      }else {
+        self.station.latitude = latln.lat;
+        self.station.longitude = latln.lng;
+        self.mark.setLatLng(latln);
+      }
     });
+  }
+
+  ngAfterViewChecked(): void {
+    this.map.invalidateSize()
   }
 
   updateCreatedDate(){
@@ -165,4 +175,5 @@ export class AddStationModalComponent implements OnInit{
         });
   }
 }
+
 
