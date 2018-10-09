@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
     const self = this;
     this.stationsService.getAll().subscribe(result => {
       self.stations = result;
-      console.log(result);
+      // console.log(result);
 
       const icon1 = L.icon({
         iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/images/marker-icon.png',

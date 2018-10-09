@@ -20,7 +20,7 @@ export class LocalstorageService {
   }
 
   setItem(key, value) {
-    console.log(key, value); // I have data! Let's return it so subscribers can use it!
+    // console.log(key, value); // I have data! Let's return it so subscribers can use it!
     // we can do stuff with data if we want
     this.lStorage[key] = value;
     this.updateLocalStorage();

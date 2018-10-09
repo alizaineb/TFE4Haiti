@@ -25,7 +25,7 @@ exports.login = function(req, res) {
         result.comparePassword(pwd, function(match) {
           if (match === true) {
             var token = tokenManager.createToken(result);
-            console.log(token);
+            // console.log(token);
             if (token) {
               return res.json({
                 token: token,
@@ -94,7 +94,7 @@ exports.update = function(req, res) {
 
 exports.delete = function(req, res) {
   let id = req.params.id;
-  console.log(id);
+  // console.log(id);
   let user = UsersModel.userModel.deleteOne({ _id: id }).then(() => {
     return res.status(204).send({ deleted: "ok" }) //TODO remove body
   }).catch(function(err) {
