@@ -70,7 +70,8 @@ exports.routes = [
   {
     path: "/api/stations",
     httpMethod: "POST",
-    middleWare: [controllers.stations.create]
+    middleWare: [controllers.stations.create],
+      access: [roles.ADMIN]
   },
   {
     path: "/api/stations",

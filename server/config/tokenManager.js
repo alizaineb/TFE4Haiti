@@ -36,7 +36,7 @@ exports.createToken = function(user) {
   return jwt.sign({ id: user._id }, key, { expiresIn: expiration }); //encode the user and set the expiration time in 1 hour
 }
 exports.validateToken = function(req, res, next) {
-  var token = req.query.token || req.headers['x-access-token'];
+  var token = req.headers['x-access-token'];
   if (token) {
     // verifies secret and checks exp
     jwt.verify(token, key, function(err, decoded) {

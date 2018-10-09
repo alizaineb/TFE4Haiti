@@ -50,7 +50,7 @@ function ensureAuthorized(req, res, next) {
           path: req.route.path,
           httpMethod: req.route.stack[0].method.toUpperCase()
         }).access;
-        if (access.indexOf(user.type) > -1) {
+        if (access.indexOf(user.role) > -1) {
           return next();
         } else {
           return res.sendStatus(403, "Non autorisé");
