@@ -7,43 +7,44 @@ const UsersModel = require('./../models/users');
 const tokenManager = require('./../config/tokenManager');
 const roles = require('../config/constants').roles;
 const userState = require('../config/constants').userState;
+const checkParam = require('./utils').checkParam;
 
 exports.login = function(req, res) {
-  let mail = req.body.mail || '';
-  let pwd = req.body.pwd || '';
-  if (!mail || !pwd) {
-    return res.sendStatus(400, "Information manquante(s)");
-  }
+  checkParam(req, res, ["mail", "pwd"], function() {
 
-  UsersModel.userModel.findOne({ mail: mail, state: userState.OK }, function(err, result) {
-    if (err) {
-      return res.status(500, ).send({ error: "Impossible de créer cet utilisateur, veuillez contacter un administrateur." });
-    }
-    if (!result) {
-      return res.status(404).send({ error: "Login et/ou mot de passe incorrect." });
-    } else {
-      result.comparePassword(pwd, function(match) {
-        if (match === true) {
-          var token = tokenManager.createToken(result);
-          console.log(token);
-          if (token) {
-            return res.json({
-              token: token,
-              current: result.toDto()
-            });
+    let mail = req.body.mail;
+    let pwd = req.body.pwd;
+
+    UsersModel.userModel.findOne({ mail: mail, state: userState.OK }, function(err, result) {
+      if (err) {
+        return res.status(500).send({ error: "Impossible de créer cet utilisateur, veuillez contacter un administrateur." });
+      }
+      if (!result) {
+        return res.status(404).send({ error: "Login et/ou mot de passe incorrect." });
+      } else {
+        result.comparePassword(pwd, function(match) {
+          if (match === true) {
+            var token = tokenManager.createToken(result);
+            console.log(token);
+            if (token) {
+              return res.json({
+                token: token,
+                current: result.toDto()
+              });
+            } else {
+              const err = "the server was unable to create a token.";
+              logger.error(err);
+              return res.status(500, err);
+            }
           } else {
-            const err = "the server was unable to create a token.";
-            logger.error(err);
-            return res.status(500, err);
+            return res.status(404).send({ error: "Login et/ou mot de passe incorrect." });
           }
-        } else {
-          return res.status(404).send({ error: "Login et/ou mot de passe incorrect." });
-        }
-      });
-    }
-  }).catch(function(err) {
-    logger.error(err);
-    return res.status(500).send(err);
+        });
+      }
+    }).catch(function(err) {
+      logger.error(err);
+      return res.status(500).send(err);
+    });
   });
 };
 
@@ -150,7 +151,9 @@ exports.acceptUser = function(req, res) {
   });
 }
 
-
+exports.deleteUser = function(req, res) {
+  res.status(200).send();
+}
 
 
 

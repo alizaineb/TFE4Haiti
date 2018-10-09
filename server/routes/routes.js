@@ -35,8 +35,7 @@ exports.routes = [
   {
     path: "/api/users/",
     httpMethod: "POST",
-    middleWare: [controllers.users.create],
-      access: [roles.ADMIN]
+    middleWare: [controllers.users.create]
   },
   {
     path: "/api/users/",
@@ -56,6 +55,12 @@ exports.routes = [
     access: [roles.ADMIN]
   },
   {
+    path: "/api/users/deleteUser",
+    httpMethod: "POST",
+    middleWare: [controllers.users.deleteUser],
+    access: [roles.ADMIN]
+  },
+  {
     path: "/api/users/:id",
     httpMethod: "GET",
     middleWare: [controllers.users.getById]
@@ -64,7 +69,7 @@ exports.routes = [
     path: "/api/users/:id",
     httpMethod: "DELETE",
     middleWare: [controllers.users.delete],
-      access: [roles.ADMIN]
+    access: [roles.ADMIN]
   },
 
 
@@ -73,7 +78,7 @@ exports.routes = [
     path: "/api/stations",
     httpMethod: "POST",
     middleWare: [controllers.stations.create],
-      access: [roles.ADMIN]
+    access: [roles.ADMIN]
   },
   {
     path: "/api/stations",
@@ -89,14 +94,14 @@ exports.routes = [
     path: "/api/stations/:id",
     httpMethod: "DELETE",
     middleWare: [controllers.stations.delete],
-      access: [roles.ADMIN]
+    access: [roles.ADMIN]
 
   },
   {
     path: "/api/stations/:id",
     httpMethod: "PUT",
     middleWare: [controllers.stations.update],
-      access: [roles.ADMIN]
+    access: [roles.ADMIN]
 
   },
 
