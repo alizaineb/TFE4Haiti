@@ -5,5 +5,5 @@
   created_at: Date;
   niceDate: string;
   mail: string;
-  type: string;
+  role: string;
 }

@@ -8,8 +8,8 @@ const tokenManager = require('./../config/tokenManager');
 const db = require("./../models/users");
 
 // Applique les middleWare de vérification de sécurité
-//  redirige selon le type de méthode
-// Vérifie que le type de méthode existe (GET,POST, ...)
+//  redirige selon le role de méthode
+// Vérifie que le role de méthode existe (GET,POST, ...)
 module.exports = function(app) {
   _.each(routes, function(route) {
     // Si la route contient des accès, il faut la vérifier
