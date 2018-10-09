@@ -29,13 +29,13 @@ export class MenuComponent implements OnInit {
       self.updateMenu(storage);
     });
     this.updateMenu(this.localStorageService.getStorage());
-    this.authenticationService.isLogged().subscribe(
+    /*this.authenticationService.isLogged().subscribe(
       value => {
         console.log('val : ', value);
       },
       err => {
         console.log('err', err);
-      });
+      });*/
   }
 
   private updateMenu(storage) {
@@ -43,7 +43,7 @@ export class MenuComponent implements OnInit {
     if (User && User.current) {
       let removelogin = true;
       const role = User.current.role;
-      console.log('role : ', role);
+      // console.log('role : ', role);
       switch (role) {
         case 'admin':
           this.menu.left = this.menuService.getLeftAdminMenu();
@@ -72,8 +72,8 @@ export class MenuComponent implements OnInit {
       this.menu.left = this.menuService.getMenuLeft();
       this.menu.right = this.menuService.getMenuRight();
     }
-    console.log('menuleft = ', this.menu.left);
-    console.log('menuRight = ', this.menu.right);
+    // console.log('menuleft = ', this.menu.left);
+    // console.log('menuRight = ', this.menu.right);
   }
   itemClick(path) {
     if (path === 'logout') {
