@@ -12,7 +12,12 @@ import {AuthenticationService} from '../../_services';
 export class MenuComponent implements OnInit {
   public menu = {right: [], left: []};
 
-  constructor(private  menuService: MenuService, private router: Router, private localStorageService: LocalstorageService, private authenticationService: AuthenticationService) {
+  constructor(
+    private  menuService: MenuService,
+    private router: Router,
+    private localStorageService: LocalstorageService,
+    private authenticationService: AuthenticationService
+    ) {
 
   }
 

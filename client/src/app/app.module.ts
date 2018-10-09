@@ -30,6 +30,9 @@ import { DeleteStationModalComponent } from './_components/stations/delete-stati
 import { UpdateSationModalComponent } from './_components/stations/update-sation-modal/update-sation-modal.component';;
 import { AskresetComponent } from './_components/login/askreset/askreset.component'
 
+import { ToastrModule} from "ngx-toastr";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+
 
 @NgModule({
   imports: [
@@ -37,7 +40,9 @@ import { AskresetComponent } from './_components/login/askreset/askreset.compone
     ReactiveFormsModule,
     HttpClientModule,
     routing,
-    FormsModule
+    FormsModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot()
 
   ],
   declarations: [

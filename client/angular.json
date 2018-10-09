@@ -27,7 +27,8 @@
               "src/assets/css/plugin.css",
               "src/assets/css/styles.css",
               "node_modules/flatpickr/dist/flatpickr.min.css",
-              "node_modules/leaflet/dist/leaflet.css"
+              "node_modules/leaflet/dist/leaflet.css",
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": []
           },
