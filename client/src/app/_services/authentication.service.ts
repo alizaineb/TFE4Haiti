@@ -18,10 +18,15 @@ export class AuthenticationService {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
           // localStorage.setItem('currentUser', JSON.stringify(user));
           this.localStorageService.setItem("currentUser", user);
-
         }
-
         return user;
+      }));
+  }
+
+  isLogged(){
+    return this.http.get<any>(environment.apiUrl + '/login/test')
+      .pipe(map(() => {
+        
       }));
   }
 

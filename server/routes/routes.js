@@ -113,6 +113,12 @@ exports.routes = [
 
   // Routes used to test
   {
+    path: "/api/login/test",
+    httpMethod: "GET",
+    middleWare: [controllers.users.useless],
+    access: [roles.VIEWER, roles.WORKER, roles.ADMIN]
+  },
+  {
     path: "/api/someSecureRouteAdminOnly",
     httpMethod: "GET",
     middleWare: [controllers.users.useless],

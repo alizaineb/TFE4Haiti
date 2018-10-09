@@ -23,10 +23,17 @@ export class MenuComponent implements OnInit {
     this.localStorageService.storage$.subscribe(storage => {
       self.updateMenu(storage);
     });
-    this.updateMenu(this.localStorageService.getStorage())
+    this.updateMenu(this.localStorageService.getStorage());
+    this.authenticationService.isLogged().subscribe(
+      value => {
+        console.log('val : ', value);
+      },
+      err => {
+        console.log('err', err);
+      });
   }
 
-  private updateMenu(storage){
+  private updateMenu(storage) {
     const User = storage.currentUser;
     if (User && User.current) {
       let removelogin = true;
