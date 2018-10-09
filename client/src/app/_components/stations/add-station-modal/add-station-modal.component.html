@@ -9,87 +9,147 @@
     <div class="modal-body">
       <div class="container">
         <form (ngSubmit)="onSubmit()" [formGroup]="addStationForm" #addStationFormNg="ngForm">
+          <div class="row">
+            <div class="col-md-6">
 
-          <div class="form-group">
-            <label for="name">Name</label>
-            <input id="name" class="form-control"
-                   formControlName="name" required
-                   [(ngModel)]="station.name">
-            <div *ngIf="name.invalid && (name.dirty || name.touched)"
-                 class="alert alert-danger">
-              <div *ngIf="name.errors.required">
-                Le nom est requis.
+
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input id="name" class="form-control"
+                       formControlName="name" required
+                       [(ngModel)]="station.name">
+                <div *ngIf="name.invalid && (name.dirty || name.touched)"
+                     class="alert alert-danger">
+                  <div *ngIf="name.errors.required">
+                    Le nom est requis.
+                  </div>
+                  <div *ngIf="name.errors.maxlength">
+                    Le nom ne peut pas dépasser 20 caractères.
+                  </div>
+                </div>
               </div>
-              <div *ngIf="name.errors.maxlength">
-                Le nom ne peut pas dépasser 20 caractères.
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="interval">Intervalle</label>
+                    <select class="form-control" id="interval"
+                            formControlName="interval" required [(ngModel)]="station.interval">
+                      <option *ngFor="let i of intervals" [value]="i">{{i}}</option>
+                    </select>
+                    <div *ngIf="interval.invalid && (interval.dirty || interval.touched)"
+                         class="alert alert-danger">
+                      <div *ngIf="interval.errors.required">
+                        Une intervalle est requise
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="row">
+                <div class="col-md">
+                  <div class="form-group">
+                    <label for="latitude">Latitude</label>
+                    <input type="number" class="form-control" id="latitude"
+                           formControlName="latitude" required [(ngModel)]="station.latitude">
+                    <div *ngIf="latitude.invalid && (latitude.dirty || latitude.touched)" class="alert alert-danger">
+                      <div *ngIf="latitude.errors.required">
+                        La latitude est requise
+                      </div>
+                      <div *ngIf="latitude.errors.min">
+                        La valeur est trop petite
+                      </div>
+                      <div *ngIf="latitude.errors.max">
+                        La valeur est trop grande
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md">
+                  <div class="form-group">
+                    <label for="longitude">Longitude</label>
+                    <input type="number" class="form-control" id="longitude"
+                           formControlName="longitude" required [(ngModel)]="station.longitude">
+                    <div *ngIf="longitude.invalid && (longitude.dirty || longitude.touched)"
+                         class="alert alert-danger">
+                      <div *ngIf="longitude.errors.required">
+                        La longitude est requise
+                      </div>
+                      <div *ngIf="longitude.errors.min">
+                        La valeur est trop petite
+                      </div>
+                      <div *ngIf="longitude.errors.max">
+                        La valeur est trop grande
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md">
+                  <div class="form-group">
+                    <!--TODO make your business here!! -->
+                    <label for="longitude">Altitde</label>
+                    <input type="number" class="form-control" id="longitude"
+                           formControlName="longitude" required [(ngModel)]="station.longitude">
+                    <div *ngIf="longitude.invalid && (longitude.dirty || longitude.touched)"
+                         class="alert alert-danger">
+                      <div *ngIf="longitude.errors.required">
+                        La longitude est requise
+                      </div>
+                      <div *ngIf="longitude.errors.min">
+                        La valeur est trop petite
+                      </div>
+                      <div *ngIf="longitude.errors.max">
+                        La valeur est trop grande
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md">
+                  <div class="form-group">
+                    <label for="createdAt">Date de création</label>
+                    <input id="createdAt" type="text" class="flatpickr flatpickr-input" formControlName="createdAt" required
+                           (change)="updateCreatedDate()">
+                  </div>
+                </div>
+                <div class="col-md">
+
+                </div>
+              </div>
+
+            </div>
+            <div class="col-md-6">
+              <div id="mapid">
               </div>
             </div>
           </div>
+          <div class="row">
+            <div class="col-sm">
+              <div class="form-group">
+                <!--TODO make your business here!! -->
+                <label for="longitude">Note</label>
+                <textarea rows="6" class="form-control" id="longitude"
+                          formControlName="longitude" required [(ngModel)]="station.longitude"></textarea>
 
-          <div class="form-group">
-            <label for="latitude">Latitude</label>
-            <input type="number" class="form-control" id="latitude"
-                   formControlName="latitude" required [(ngModel)]="station.latitude">
-            <div *ngIf="latitude.invalid && (latitude.dirty || latitude.touched)" class="alert alert-danger">
-              <div *ngIf="latitude.errors.required">
-                La latitude est requise
-              </div>
-              <div *ngIf="latitude.errors.min">
-                La valeur est trop petite
-              </div>
-              <div *ngIf="latitude.errors.max">
-                La valeur est trop grande
               </div>
             </div>
           </div>
-
-          <div class="form-group">
-            <label for="longitude">Longitude</label>
-            <input type="number" class="form-control" id="longitude"
-                   formControlName="longitude" required [(ngModel)]="station.longitude">
-            <div *ngIf="longitude.invalid && (longitude.dirty || longitude.touched)"
-                 class="alert alert-danger">
-              <div *ngIf="longitude.errors.required">
-                La longitude est requise
-              </div>
-              <div *ngIf="longitude.errors.min">
-                La valeur est trop petite
-              </div>
-              <div *ngIf="longitude.errors.max">
-                La valeur est trop grande
-              </div>
-            </div>
-          </div>
-
-          <div id="mapid">
-          </div>
-
-          <div class="form-group">
-            <label for="interval">Intervalle</label>
-            <select class="form-control" id="interval"
-                    formControlName="interval" required [(ngModel)]="station.interval">
-              <option *ngFor="let i of intervals" [value]="i">{{i}}</option>
-            </select>
-            <div *ngIf="interval.invalid && (interval.dirty || interval.touched)"
-                 class="alert alert-danger">
-              <div *ngIf="interval.errors.required">
-                Une intervalle est requise
-              </div>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="createdAt">Date de création</label>
-            <input id="createdAt" type="text" class="flatpickr flatpickr-input" formControlName="createdAt" required (change)="updateCreatedDate()">
-          </div>
-
 
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" (click)="resetStation(); addStationFormNg.reset()">Reset station</button>
-            <button (click)="resetStation()" type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-            <button (click)="sendStation()" type="submit" class="btn btn-success" [disabled]="!addStationFormNg.form.valid">Envoyer</button>
+            <button type="button" class="btn btn-primary" (click)="resetStation(); addStationFormNg.reset()">Reset
+              station
+            </button>
+            <button (click)="resetStation()" type="button" class="btn btn-secondary" data-dismiss="modal">Fermer
+            </button>
+            <button (click)="sendStation()" type="submit" class="btn btn-success"
+                    [disabled]="!addStationFormNg.form.valid">Envoyer
+            </button>
           </div>
         </form>
+
       </div>
     </div>
   </div>

@@ -25,3 +25,7 @@ button:disabled {
   height: 300px;
   width: 100%;
 }
+
+.modal-lg{
+  max-width: 75%;
+}
