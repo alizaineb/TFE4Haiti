@@ -21,3 +21,7 @@ button:disabled {
   box-shadow: none;
   opacity: .65;
 }
+#mapid{
+  height: 300px;
+  width: 100%;
+}
