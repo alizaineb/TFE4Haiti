@@ -36,7 +36,7 @@ export class MenuService {
     //
     //   if (self.currentUser) {
     //     if (value.logged) {
-    //       if (value.adminOnly && self.currentUser.type == 'admin') {
+    //       if (value.adminOnly && self.currentUser.role == 'admin') {
     //         menu.push(value);
     //       } else {
     //         menu.push(value);
@@ -59,7 +59,7 @@ export class MenuService {
     //
     //   if (self.currentUser) {
     //     if (value.logged) {
-    //       if (value.adminOnly && self.currentUser.type == 'admin') {
+    //       if (value.adminOnly && self.currentUser.role == 'admin') {
     //         menu.push(value);
     //       } else {
     //         menu.push(value);
