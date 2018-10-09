@@ -1,9 +1,10 @@
-﻿import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { first } from 'rxjs/operators';
+﻿import {Component, OnInit} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {first} from 'rxjs/operators';
 
-import { AlertService, AuthenticationService } from '../../_services/index';
+import {AlertService, AuthenticationService} from '../../_services/index';
+import {LocalstorageService} from "../../_services/localstorage.service";
 
 @Component({
   templateUrl: 'login.component.html',
@@ -22,7 +23,8 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
-    private alertService: AlertService) {
+    private alertService: AlertService,
+    private localStorageService: LocalstorageService) {
   }
 
   ngOnInit() {
@@ -36,11 +38,7 @@ export class LoginComponent implements OnInit {
       first_name: ['', Validators.required],
       last_name: ['', Validators.required]
     });
-
-
-    // reset login status
-    this.authenticationService.logout();
-
+    
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
@@ -56,6 +54,7 @@ export class LoginComponent implements OnInit {
 
   onLogin() {
     this.loginSubmitted = true;
+    const self = this;
 
     // stop here if form is invalid
     if (this.loginForm.invalid) {
@@ -67,12 +66,12 @@ export class LoginComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
-          this.router.navigate([this.returnUrl]);
-          this.loading = false;
+          self.router.navigate([this.returnUrl]);
+          self.loading = false;
         },
         error => {
-          this.alertService.error(error);
-          this.loading = false;
+          self.alertService.error(error);
+          self.loading = false;
         });
   }
 

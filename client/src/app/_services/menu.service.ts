@@ -1,72 +1,61 @@
 import {Injectable} from '@angular/core';
+import {LocalstorageService} from "./localstorage.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class MenuService {
 
+
   private currentUser;
-  private menuleft = [
-    {name: 'Heatmap', logged: false, adminOnly: false, path: 'heatmap'},
-    {name: 'Stations', logged: true, adminOnly: false, path: 'stations'},
-    {name: 'Users', logged: false, adminOnly: false, path: 'users'},
+  private bigMenuParent = {
+    left: {
+      all: [{name: 'Heatmap', path: 'heatmap'}],
+      viewer: [],
+      worker: [{name: 'Stations', path: 'stations'}],
+      admin: [{name: 'Users', path: 'users'}]
+    },
+    right: {
+      all: [{name: 'Login', path: 'login'}],
+      viewer: [{name: 'Logout', path: 'logout'}],
+      worker: [],
+      admin: [{name: 'Dashboard', path: 'admin'}]
+    }
+  }
 
-  ];
+  constructor(private localStorageService: LocalstorageService) {
+    this.currentUser = this.localStorageService.getItem('currentUser');
+  }
 
-  private menurigh = [
+  getLeftAdminMenu() {
+    return this.getleftWorkerMenu().concat(this.bigMenuParent.left.admin);
+  }
 
-    {name: 'Dashboard', logged: true, adminOnly: true, path: 'admin'},
-    {name: 'Login', logged: false, adminOnly: false, path: 'login'},
-    {name: 'Logout', logged: true, adminOnly: false, path: 'logout'}
+  getleftWorkerMenu() {
+    return this.getLeftViewerMenu().concat(this.bigMenuParent.left.worker);
+  }
 
-  ];
-
-  constructor() {
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  getLeftViewerMenu() {
+    return this.getMenuLeft().concat(this.bigMenuParent.left.viewer);
   }
 
   getMenuLeft() {
-    return this.menuleft;
-    // const self = this;
-    // const menu = [];
-    // this.menuleft.forEach(function (value) {
-    //   if (!value.logged) {
-    //     menu.push(value);
-    //   }
-    //
-    //   if (self.currentUser) {
-    //     if (value.logged) {
-    //       if (value.adminOnly && self.currentUser.role == 'admin') {
-    //         menu.push(value);
-    //       } else {
-    //         menu.push(value);
-    //       }
-    //     }
-    //   }
-    // });
-    // return menu;
+    return this.bigMenuParent.left.all;
+  }
+
+  getRightAdminMenu() {
+    return this.getRightWorkerMenu().concat(this.bigMenuParent.right.admin);
+  }
+
+  getRightWorkerMenu() {
+    return this.getRightViewerMenu().concat(this.bigMenuParent.right.worker);
+  }
+
+  getRightViewerMenu() {
+    return this.getMenuRight().concat(this.bigMenuParent.right.viewer);
   }
 
   getMenuRight() {
-
-    return this.menurigh;
-    // const self = this;
-    // const menu = [];
-    // this.menurigh.forEach(function (value) {
-    //   if (!value.logged) {
-    //     menu.push(value);
-    //   }
-    //
-    //   if (self.currentUser) {
-    //     if (value.logged) {
-    //       if (value.adminOnly && self.currentUser.role == 'admin') {
-    //         menu.push(value);
-    //       } else {
-    //         menu.push(value);
-    //       }
-    //     }
-    //   }
-    // });
-    // return menu;
+    return this.bigMenuParent.right.all;
   }
 }

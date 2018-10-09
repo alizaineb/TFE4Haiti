@@ -28,10 +28,23 @@ export class HomeComponent implements OnInit {
         iconAnchor: [11, 34], // point of the icon which will correspond to marker's location
         popupAnchor: [-3, -38] // point from which the popup should open relative to the iconAnchor
       });
+      const icon2 = L.icon({
+        iconUrl: 'assets/1.png',
+        iconSize: [32, 32]//, // size of the icon
+        // iconAnchor: [11, 34], // point of the icon which will correspond to marker's location
+        // popupAnchor: [-3, -38] // point from which the popup should open relative to the iconAnchor
+      });
       const stationHydro = L.layerGroup();
 
+      let cpt = 0;
       self.stations.forEach(station => {
-        L.marker([station.latitude, station.longitude], {icon: icon1}).bindPopup(station.name).addTo(stationHydro);
+        if(cpt %2 == 0){
+          L.marker([station.latitude, station.longitude], {icon: icon1}).bindPopup(station.name).addTo(stationHydro);
+        }else{
+          L.marker([station.latitude, station.longitude], {icon: icon2}).bindPopup(station.name).addTo(stationHydro);
+
+        }
+        cpt++;
       });
 
       const mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
@@ -66,8 +79,8 @@ export class HomeComponent implements OnInit {
 
 
       const baseLayers = {
-        'Grayscale': mapLayer1,
-        'Opentopomap': mapLayer2,
+        'Opentopomap': mapLayer1,
+        'Grayscale': mapLayer2,
         'OpenStreetMap': mapLayer3
       };
 

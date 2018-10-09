@@ -24,7 +24,7 @@ User.methods.toDto = function() {
     first_name: this.first_name,
     last_name: this.last_name,
     mail: this.mail,
-    type: this.type,
+    role: this.role,
     created_at: this.created_at,
     last_seen: this.last_seen
   };
