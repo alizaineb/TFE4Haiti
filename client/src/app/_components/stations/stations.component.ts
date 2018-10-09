@@ -13,6 +13,7 @@ export class StationsComponent implements OnInit {
   headers: string[];
   stations:Station[] = [];
   stationToDelete: Station;
+  stationToUpdate: Station;
 
   constructor(private stationService: StationsService) {
     this.headers = ["Nom", "Latitude", "Longitude", "Etat", "Créé le", "Dernière modification", "Intervalle"];
@@ -21,6 +22,7 @@ export class StationsComponent implements OnInit {
   ngOnInit() {
     this.loadAllStations();
     this.stationToDelete = new Station('','',undefined,undefined,'',null,null,'',[]);
+    this.stationToUpdate = null
   }
 
   loadAllStations(){
@@ -32,7 +34,12 @@ export class StationsComponent implements OnInit {
   }
 
   assignStationToDelete(station: Station){
-    this.stationToDelete = station
+    this.stationToDelete = station;
+  }
+
+  assignStationToUpdate(station: Station){
+    this.stationToUpdate = station;
+    console.log(this.stationToUpdate)
   }
 
   deleteStation(choice: boolean){

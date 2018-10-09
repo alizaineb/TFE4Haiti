@@ -42,12 +42,29 @@ exports.create = function(req, res) {
   })
 };
 
-
-
-
 exports.update = function(req, res) {
-  //TODO connect to mongodb
-  return res.status(200).send({ message: "Method to implements" });
+  let id = req.params.id;
+  console.log(id)
+/*
+  let station = req.body;
+  let sTmp = new Station.stationModel();
+  sTmp.name = station.name;
+  sTmp.latitude = station.latitude;
+  sTmp.longitude = station.longitude;
+  sTmp.createdAt = new Date(station.createdAt);
+  //sTmp.last_update = Date.now();
+  // TODO Picture
+  // sTmp.picture = station.picture;
+  sTmp.state = station.state;
+  sTmp.interval = station.interval;
+  sTmp.users = station.users;
+  sTmp.interval = station.interval;
+  sTmp.save().then(() => {
+    return res.status(201).send({ message: sTmp });
+  }).catch(function(err) {
+    logger.error(err);
+    return res.status(500).send(err);
+  })*/
 };
 
 exports.delete = function(req, res) {

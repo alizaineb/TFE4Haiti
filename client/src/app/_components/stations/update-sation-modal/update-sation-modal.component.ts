@@ -1,23 +1,24 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {first} from "rxjs/operators";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Station} from "../../../_models";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AlertService} from "../../../_services";
 import {StationsService} from "../../../_services/stations.service";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {Station} from "../../../_models";
 import flatpickr from "flatpickr";
-import { French} from "flatpickr/dist/l10n/fr";
-
+import {French} from "flatpickr/dist/l10n/fr";
+import {first} from "rxjs/operators";
 
 @Component({
-  selector: 'app-add-station-modal',
-  templateUrl: './add-station-modal.component.html',
-  styleUrls: ['./add-station-modal.component.css']
+  selector: 'app-update-sation-modal',
+  templateUrl: './update-sation-modal.component.html',
+  styleUrls: ['./update-sation-modal.component.css']
 })
-export class AddStationModalComponent implements OnInit{
+export class UpdateSationModalComponent implements OnInit {
 
+  @Input()
+  stationToUpdate:Station;
 
   @Output()
-  sent = new EventEmitter<boolean>();
+  updated = new EventEmitter<boolean>();
 
   intervals = ['1min','5min','10min','15min','30min','1h','2h','6h','12h','24h'];
   station:Station;
@@ -28,12 +29,10 @@ export class AddStationModalComponent implements OnInit{
 
   constructor(private alertService:AlertService,
               private stationService:StationsService){
-
   }
 
   ngOnInit(): void {
-    this.station = new Station('','',undefined,undefined,'',null, new Date(),'',[]);
-
+    this.station = this.stationToUpdate;
     this.addStationForm = new FormGroup({
       'name': new FormControl(this.station.name, [
         Validators.required,
@@ -81,8 +80,8 @@ export class AddStationModalComponent implements OnInit{
   onSubmit() { this.submitted = true; }
 
   resetStation() {
-    this.station = new Station('','',undefined,undefined,'',null, new Date(),'',[]);
-    this.datePicker.setDate(new Date())
+    this.station = this.stationToUpdate;
+    this.datePicker.setDate(this.stationToUpdate.createdAt)
   }
 
   sendStation(){
@@ -91,20 +90,16 @@ export class AddStationModalComponent implements OnInit{
     if (this.addStationForm.invalid) {
       return;
     }
-    this.stationService.register(this.station)
+    this.stationService.update(this.station)
       .pipe(first())
       .subscribe(
         result => {
           //trigger sent
-          this.sent.emit(true);
+          this.updated.emit(true);
           //Fermer la page
-          this.resetStation();
-          let element: HTMLElement = document.getElementsByClassName('btn')[1] as HTMLElement;
-          element.click();
         },
         error => {
           this.alertService.error(error);
         });
   }
 }
-

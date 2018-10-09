@@ -87,6 +87,11 @@ exports.routes = [
     httpMethod: "DELETE",
     middleWare: [controllers.stations.delete]
   },
+  {
+    path: "/api/stations/:id",
+    httpMethod: "PUT",
+    middleWare: [controllers.stations.update]
+  },
 
 
 

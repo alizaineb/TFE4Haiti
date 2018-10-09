@@ -31,7 +31,7 @@
       <td>{{station.updatedAt | date: 'd/MM/yyyy, h:mm a'}}</td>
       <td>{{station.interval}}</td>
       <td>
-        <i class="fas fa-edit fa-fw fa-1x"></i>
+        <i class="fas fa-edit fa-fw fa-1x" (click)="assignStationToUpdate(station)" data-toggle="modal" data-target="#updateStationModal"></i>
         <i class="fas fa-file-download fa-fw fa-1x"></i>
         <i class="fas fa-trash fa-fw fa-1x" (click)="assignStationToDelete(station)" data-toggle="modal" data-target="#deleteStationModal"></i>
       </td>
@@ -66,4 +66,14 @@
     [station] = stationToDelete.name
     (selected)="deleteStation($event)"
   ></app-delete-station-modal>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="updateStationModal" tabindex="-1" role="dialog" aria-labelledby="updateStationModalLabel" aria-hidden="true">
+  <div *ngIf="stationToUpdate != null">
+    <app-update-sation-modal
+      [stationToUpdate] = stationToUpdate
+      (updated)="loadAllStations($event)"
+    ></app-update-sation-modal>
+  </div>
 </div>
