@@ -28,7 +28,7 @@ import {StationsService} from "./_services/stations.service";;
 import { AddStationModalComponent } from './_components/stations/add-station-modal/add-station-modal.component';
 import { DeleteStationModalComponent } from './_components/stations/delete-station-modal/delete-station-modal.component';;
 import { UpdateSationModalComponent } from './_components/stations/update-sation-modal/update-sation-modal.component';;
-import { AskresetComponent } from './_components/askreset/askreset.component'
+import { AskresetComponent } from './_components/login/askreset/askreset.component'
 
 
 @NgModule({

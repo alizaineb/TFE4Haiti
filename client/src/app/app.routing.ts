@@ -9,7 +9,7 @@ import {StationsComponent} from "./_components/stations/stations.component";
 import {HeatmapComponent} from "./_components/heatmap/heatmap.component";
 import {ResetPasswordComponent} from "./_components/login/reset-password/reset-password.component";
 import {FaqComponent} from "./_components/faq/faq.component";
-import {AskresetComponent} from "./_components/askreset/askreset.component";
+import {AskresetComponent} from "./_components/login/askreset/askreset.component";
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
