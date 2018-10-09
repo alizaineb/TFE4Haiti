@@ -22,7 +22,6 @@ export class HomeComponent implements OnInit {
       self.stations = result;
       console.log(result);
 
-
       const icon1 = L.icon({
         iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/images/marker-icon.png',
         iconSize: [20, 35], // size of the icon
@@ -32,9 +31,7 @@ export class HomeComponent implements OnInit {
       const stationHydro = L.layerGroup();
 
       self.stations.forEach(station => {
-
         L.marker([station.latitude, station.longitude], {icon: icon1}).bindPopup(station.name).addTo(stationHydro);
-
       });
 
       const mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
@@ -58,12 +55,15 @@ export class HomeComponent implements OnInit {
         }) ;
 
       const map = L.map('mapid', {
-        center: [18.299041, -73.658473],
-        zoom: 10,
+        center: [19.099041, -72.658473],
+        zoom: 8,
         minZoom: 8,
         maxZoom: 18,
         layers: [mapLayer1, stationHydro]
       });
+
+      L.control.scale().addTo(map);
+
 
       const baseLayers = {
         'Grayscale': mapLayer1,
