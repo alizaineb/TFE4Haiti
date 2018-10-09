@@ -10,7 +10,7 @@ import {AuthenticationService} from '../../_services';
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit {
-  public menu = {right: {}, left: {}};
+  public menu = {right: [], left: []};
 
   constructor(private  menuService: MenuService, private router: Router, private localStorageService: LocalstorageService, private authenticationService: AuthenticationService) {
 
@@ -29,6 +29,7 @@ export class MenuComponent implements OnInit {
   private updateMenu(storage){
     const User = storage.currentUser;
     if (User && User.current) {
+      let removelogin = true;
       const role = User.current.role;
       console.log('role : ', role);
       switch (role) {
@@ -45,9 +46,16 @@ export class MenuComponent implements OnInit {
           this.menu.right = this.menuService.getRightViewerMenu();
           break;
         default:
+          removelogin = false;
           this.menu.left = this.menuService.getMenuLeft();
           this.menu.right = this.menuService.getMenuRight();
       }
+      if(removelogin){
+        // Ne pas déplacer le login a une autre place que la premiere,
+        // La recherche de l'objet contenant le login ne fonctionne pas pour une raison que j'ignore.
+        this.menu.right.splice(0, 1);
+      }
+      this.menu.right = this.menu.right.reverse();
     } else {
       this.menu.left = this.menuService.getMenuLeft();
       this.menu.right = this.menuService.getMenuRight();
