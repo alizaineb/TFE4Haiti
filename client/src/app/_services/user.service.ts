@@ -29,8 +29,8 @@ export class UserService {
     return this.http.post(environment.apiUrl + '/users/acceptUser', { id: id });
   }
 
-  refuseUser(id: String) {
-    return this.http.post(environment.apiUrl + '/users/refuse', {id: id});
+  refuseUser(id: String, reason: String) {
+    return this.http.post(environment.apiUrl + '/users/refuse', { id: id, reason: reason });
   }
 
   update(user: User) {

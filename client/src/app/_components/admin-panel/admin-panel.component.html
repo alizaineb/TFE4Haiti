@@ -22,7 +22,7 @@
       <td>{{user.niceDate}}</td>
       <td>
         <i class="fas fa-check fa-fw fa-1x" (click)="acceptUser(user._id)"></i>
-        <i class="fas fa-trash fa-fw fa-1x"></i>
+        <i class="fas fa-trash fa-fw fa-1x" data-toggle="modal" (click)="setCurrUser(user._id)" data-target=" #refuseUserModal"></i>
       </td>
     </tr>
   </tbody>
@@ -34,3 +34,8 @@
 <h1>
   Donnée(s) en attente de validation
 </h1>
+
+<!-- Modal refuse user -->
+<div class="modal fade" id="refuseUserModal" tabindex="-1" role="dialog" aria-labelledby="refuseUserModalLabel" aria-hidden="true">
+  <app-refuse-user-modal [currUser]=currUser (sent)="loadAwaitingUsers()"></app-refuse-user-modal>
+</div>
