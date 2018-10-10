@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {LocalstorageService} from "./localstorage.service";
+import { Injectable } from '@angular/core';
+import { LocalstorageService } from "./localstorage.service";
 
 @Injectable({
   providedIn: 'root'
@@ -12,14 +12,14 @@ export class MenuService {
     left: {
       all: [],
       viewer: [],
-      worker: [{name: 'Stations', path: 'stations'}],
-      admin: [{name: 'Users', path: 'users'}]
+      worker: [{ name: 'Mes stations', path: 'stations' }],
+      admin: [{ name: 'Gestion des Utilisateurs', path: 'users' }]
     },
     right: {
-      all: [{name: 'Login', path: 'login'}],
-      viewer: [{name: 'Logout', path: 'logout'}],
+      all: [{ name: 'Se connecter', path: 'login' }],
+      viewer: [{ name: 'Se déconnecter', path: 'logout' }],
       worker: [],
-      admin: [{name: 'Dashboard', path: 'admin'}]
+      admin: [{ name: 'Tableau d\'administration', path: 'admin' }]
     }
   }
 

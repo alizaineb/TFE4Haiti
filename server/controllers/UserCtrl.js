@@ -141,7 +141,7 @@ exports.acceptUser = function(req, res) {
     if (result.length > 1) {
       return res.status(500).send({ error: "Ceci n'aurait jamais dû arriver." });
     } else if (result.length == 0) {
-      return res.status(404).send({ error: "Aucun utilisateur correpsondant." });
+      return res.status(404).send({ error: "Aucun utilisateur correspondant." });
     } else {
       let currUser = result[0];
       var mailOptions = {
@@ -169,7 +169,49 @@ exports.acceptUser = function(req, res) {
 }
 
 exports.refuseUser = function(req, res) {
-  res.status(200).send();
+  checkParam(req, res, ["id"], () => {
+    // Récupérer l'utilisateur
+    if (req.body.reason == undefined) {
+      return res.status(400).send("Information manquante");
+    }
+    let id = req.body.id;
+    let reason = req.body.reason;
+    UsersModel.userModel.find({ _id: id, state: userState.AWAITING }, function(err, result) {
+      if (err) {
+        return res.status(500).send({ error: "Erreur lors de la récupération de l'utilisateur concerné." });
+      }
+
+      if (result.length > 1) {
+        return res.status(500).send({ error: "Ceci n'aurait jamais dû arriver." });
+      } else if (result.length == 0) {
+        return res.status(404).send({ error: "Aucun utilisateur correspondant." });
+      } else {
+        // Lui envoyer un mail
+        let currUser = result[0];
+        let text = 'Bonjour ' + currUser.first_name + ' ' + currUser.last_name + ',\n\nVotre demande de compte a été refusée.\nRaison :  \n"' + ((reason.trim().length > 0) ? reason : 'Pas de raison donnée par l\'administrateur') + '"\n\nLes informations vont concernant sont supprimées.\n\nBien à vous';
+        console.log(text);
+        var mailOptions = {
+          from: nconf.get('mail').user,
+          to: currUser.mail,
+          subject: nconf.get('mail').subjectCreationAccRefused,
+          text: text
+        };
+        mailTransporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            return res.status(500).send({ error: "Erreur lors de l'envoi du mail à l'utilisateur." });
+          } else {
+            // Le supprimer de la db
+            currUser.remove(function(err, userUpdt) {
+              if (err) {
+                return res.status(500).send({ error: "Erreur lors de la suppression de l'utilisateur concerné." });
+              }
+              return res.status(200).send();
+            });
+          }
+        });
+      }
+    });
+  });
 }
 
 

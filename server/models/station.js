@@ -9,13 +9,13 @@ const Station = new Schema({
   name: { type: String, required: true },
   latitude: { type: Number, required: true, min: -90.0, max: 90.0 },
   longitude: { type: Number, required: true, min: -180.0, max: 180.0 },
-  altitude: {type: Number, required: true},
+  altitude: { type: Number, required: true },
   //picture: { type: String }, // Url vers la photo
   users: { type: [String], required: true },
-  createdAt: { type: Date, required: true},
+  createdAt: { type: Date, required: true },
   state: { type: String, enum: [states.AWAITING, states.BROKEN, states.WORKING, states.DELETED], required: true },
-  interval: {type: String, required: true, enum: ['1min','5min','10min','15min','30min','1h','2h','6h','12h','24h']}
-},{
+  interval: { type: String, required: true, enum: ['1min', '5min', '10min', '15min', '30min', '1h', '2h', '6h', '12h', '24h'] }
+}, {
   timestamps: { createdAt: false, updatedAt: true }
 });
 
