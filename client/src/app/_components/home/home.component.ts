@@ -194,9 +194,12 @@ export class HomeComponent implements OnInit {
     const index = self.selectedStation.indexOf(station);
     if(index == -1){
       self.selectedStation.push(station);
+      self.centerMap = [station.latitude, station.longitude];
+      self.zoom =12;
     }else{
       self.selectedStation.splice(index, 1);
     }
+
     self.generateMap();
 
   }
