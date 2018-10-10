@@ -30,6 +30,7 @@ export class StationsService {
         name: station.name,
         latitude: station.latitude,
         longitude: station.longitude,
+        altitude: station.altitude,
         interval: station.interval,
         createdAt: station.createdAt
       });

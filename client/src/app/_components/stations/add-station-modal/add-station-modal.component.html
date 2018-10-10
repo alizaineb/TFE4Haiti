@@ -14,8 +14,7 @@
 
 
               <div class="form-group">
-                <label for="name">Name</label>
-                <input id="name" class="form-control"
+                <input id="name" class="form-control" placeholder="Nom"
                        formControlName="name" required
                        [(ngModel)]="station.name">
                 <div *ngIf="name.invalid && (name.dirty || name.touched)"
@@ -31,9 +30,9 @@
               <div class="row">
                 <div class="col-md-4">
                   <div class="form-group">
-                    <label for="interval">Intervalle</label>
                     <select class="form-control" id="interval"
                             formControlName="interval" required [(ngModel)]="station.interval">
+                      <option value="" disabled selected>Intervalle</option>
                       <option *ngFor="let i of intervals" [value]="i">{{i}}</option>
                     </select>
                     <div *ngIf="interval.invalid && (interval.dirty || interval.touched)"
@@ -50,8 +49,7 @@
               <div class="row">
                 <div class="col-md">
                   <div class="form-group">
-                    <label for="latitude">Latitude</label>
-                    <input type="number" class="form-control" id="latitude"
+                    <input type="number" class="form-control" id="latitude" placeholder="Latitude"
                            formControlName="latitude" required [(ngModel)]="station.latitude">
                     <div *ngIf="latitude.invalid && (latitude.dirty || latitude.touched)" class="alert alert-danger">
                       <div *ngIf="latitude.errors.required">
@@ -68,8 +66,7 @@
                 </div>
                 <div class="col-md">
                   <div class="form-group">
-                    <label for="longitude">Longitude</label>
-                    <input type="number" class="form-control" id="longitude"
+                    <input type="number" class="form-control" id="longitude" placeholder="Longitude"
                            formControlName="longitude" required [(ngModel)]="station.longitude">
                     <div *ngIf="longitude.invalid && (longitude.dirty || longitude.touched)"
                          class="alert alert-danger">
@@ -87,19 +84,17 @@
                 </div>
                 <div class="col-md">
                   <div class="form-group">
-                    <!--TODO make your business here!! -->
-                    <label for="longitude">Altitde</label>
-                    <input type="number" class="form-control" id="longitude"
-                           formControlName="longitude" required [(ngModel)]="station.longitude">
-                    <div *ngIf="longitude.invalid && (longitude.dirty || longitude.touched)"
+                    <input type="number" class="form-control" id="altitude" placeholder="Altitude"
+                           formControlName="altitude" required [(ngModel)]="station.altitude">
+                    <div *ngIf="altitude.invalid && (longitude.dirty || longitude.touched)"
                          class="alert alert-danger">
-                      <div *ngIf="longitude.errors.required">
+                      <div *ngIf="altitude.errors.required">
                         La longitude est requise
                       </div>
-                      <div *ngIf="longitude.errors.min">
+                      <div *ngIf="altitude.errors.min">
                         La valeur est trop petite
                       </div>
-                      <div *ngIf="longitude.errors.max">
+                      <div *ngIf="altitude.errors.max">
                         La valeur est trop grande
                       </div>
                     </div>
@@ -110,9 +105,7 @@
               <div class="row">
                 <div class="col-md">
                   <div class="form-group">
-                    <label for="createdAt">Date de création</label>
-                    <input id="createdAt" type="text" class="flatpickr flatpickr-input" formControlName="createdAt" required
-                           (change)="updateCreatedDate()">
+                    <input id="createdAt" placeholder="Date de création" type="text" class="flatpickr flatpickr-input" formControlName="createdAt" required>
                   </div>
                 </div>
                 <div class="col-md">
@@ -126,17 +119,18 @@
               </div>
             </div>
           </div>
-          <div class="row">
+
+          <!--<div class="row">
             <div class="col-sm">
               <div class="form-group">
-                <!--TODO make your business here!! -->
+                &lt;!&ndash;TODO make your business here!! &ndash;&gt;
                 <label for="longitude">Note</label>
                 <textarea rows="6" class="form-control" id="longitude"
                           formControlName="longitude" required [(ngModel)]="station.longitude"></textarea>
 
               </div>
             </div>
-          </div>
+          </div>-->
 
           <div class="modal-footer">
             <button type="button" class="btn btn-primary" (click)="resetStation(); addStationFormNg.reset()">Reset
