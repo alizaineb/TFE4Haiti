@@ -104,6 +104,25 @@ export class HomeComponent implements OnInit {
 
       L.control.scale().addTo(map);
 
+      let legend = L.control.attribution({position: 'bottomright'});
+
+      legend.onAdd = function (map) {
+
+        var div = L.DomUtil.create('div', 'info legend'),
+          grades = ['OK', 'En panne', 'Supprimée', 'A valider'],
+          color = ['#5cd65c', '#ffb84d', '#ff471a', '#1aa3ff'];
+
+        // loop through our density intervals and generate a label with a colored square for each interval
+        for (var i = 0; i < grades.length; i++) {
+          div.innerHTML +=
+            '<i style="background:' + color[i] + '"></i> ' +
+            grades[i]+ '<br>' ;
+        }
+
+        return div;
+      };
+
+      legend.addTo(map);
 
       const baseLayers = {
         'OpenStreetMap': mapLayerOpenStreetMap,
@@ -121,7 +140,10 @@ export class HomeComponent implements OnInit {
         'Supprimée': stationGroup.deleted
       };
 
+
       L.control.layers(baseLayers, overlays).addTo(map);
+
+
     });
 
 
