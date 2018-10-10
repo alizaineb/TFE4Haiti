@@ -10,6 +10,8 @@ import { AlertService } from '../../_services/index';
 })
 export class AdminPanelComponent implements OnInit {
 
+  currUser: string;
+
   headers: string[];
   users = [];
   constructor(private userService: UserService, private alertService: AlertService) {
@@ -38,6 +40,10 @@ export class AdminPanelComponent implements OnInit {
 
   loadAwaitingData() {
 
+  }
+
+  setCurrUser(id: string) {
+    this.currUser = id;
   }
 
   acceptUser(id: string) {
