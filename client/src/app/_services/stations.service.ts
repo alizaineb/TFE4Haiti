@@ -1,9 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-
 import {environment} from "../../environments/environment";
 import {Station} from "../_models";
-
 
 @Injectable({
   providedIn: 'root'
@@ -25,15 +23,7 @@ export class StationsService {
   }
 
   register(station: Station) {
-    return this.http.post(environment.apiUrl + '/stations',
-      {
-        name: station.name,
-        latitude: station.latitude,
-        longitude: station.longitude,
-        altitude: station.altitude,
-        interval: station.interval,
-        createdAt: station.createdAt
-      });
+    return this.http.post(environment.apiUrl + '/stations', JSON.stringify({station}));
   }
 
   update(station) {

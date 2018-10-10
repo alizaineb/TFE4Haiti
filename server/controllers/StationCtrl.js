@@ -21,7 +21,8 @@ exports.getById = function(req, res) {
 };
 
 exports.create = function(req, res) {
-  let station = req.body;
+  console.log(req);
+  let station = req.body.station;
   let sTmp = new Station.stationModel();
   sTmp.name = station.name;
   sTmp.latitude = station.latitude;

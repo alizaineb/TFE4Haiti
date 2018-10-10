@@ -22,7 +22,6 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked{
   sent = new EventEmitter<boolean>();
 
   intervals = ['1min','5min','10min','15min','30min','1h','2h','6h','12h','24h'];
-  station:Station;
   submitted = false;
 
   addStationForm:FormGroup;
@@ -36,31 +35,32 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked{
   }
 
   ngOnInit(): void {
-    this.station = Station.getEmptyStation();
     this.addStationForm = new FormGroup({
-      'name': new FormControl(this.station.name, [
+
+      'name': new FormControl('', [
         Validators.required,
         Validators.maxLength(20)
       ]),
-      'latitude': new FormControl(this.station.latitude, [
+
+      'latitude': new FormControl(undefined, [
         Validators.required,
         Validators.max(90),
         Validators.min(-90)
       ]),
-      'longitude': new FormControl(this.station.longitude, [
+      'longitude': new FormControl(undefined, [
         Validators.required,
         Validators.max(180),
         Validators.min(-180)
       ]),
-      'altitude': new FormControl(this.station.altitude, [
+      'altitude': new FormControl(undefined, [
         Validators.required,
         Validators.max(10000),
         Validators.min(0)
       ]),
-      'interval': new FormControl(this.station.interval, [
+      'interval': new FormControl('', [
         Validators.required
       ]),
-      'createdAt': new FormControl(this.station.createdAt, [
+      'createdAt': new FormControl(null, [
         Validators.required
       ])
       //Ajouter la méthode get è
@@ -82,7 +82,6 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked{
   onSubmit() { this.submitted = true; }
 
   resetStation() {
-    this.station = Station.getEmptyStation();
     this.datePicker.setDate(null);
     this.map.removeLayer(this.mark)
   }
@@ -93,7 +92,16 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked{
     if (this.addStationForm.invalid) {
       return;
     }
-    this.stationService.register(this.station)
+
+    let s = new Station();
+    s.name = this.addStationForm.controls['name'].value;
+    s.latitude = this.addStationForm.controls['latitude'].value;
+    s.longitude = this.addStationForm.controls['longitude'].value;
+    s.altitude = this.addStationForm.controls['altitude'].value;
+    s.interval = this.addStationForm.controls['interval'].value;
+    s.createdAt = this.addStationForm.controls['createdAt'].value;
+
+    this.stationService.register(s)
       .pipe(first())
       .subscribe(
         result => {
@@ -118,8 +126,8 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked{
       altFormat: "d-m-Y",
       dateFormat: "d-m-Y",
       onChange: function(selectedDates, dateStr, instance) {
-        self.station.createdAt = new Date(selectedDates[0])
-      },
+        self.addStationForm.controls['createdAt'].setValue(new Date(selectedDates[0]));
+      }
     });
 
     const icon1 = L.icon({
@@ -166,17 +174,18 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked{
     L.control.scale().addTo(this.map);
     L.control.layers(baseLayers).addTo(this.map);
 
-    if (self.station.latitude != undefined && self.station.latitude != undefined) {
+/*    if (self.station.latitude != undefined && self.station.latitude != undefined) {
       self.mark = L.marker([self.station.latitude, self.station.longitude], {icon: icon1}).addTo(self.map);
     }else {
       this.mark = L.marker([0, 0], {icon: icon1});
-    }
+    }*/
 
+    this.mark = L.marker([0, 0], {icon: icon1});
     this.map.on('click', function(e) {
       // @ts-ignore
       let latln: LatLng = e.latlng;
-      self.station.latitude = latln.lat;
-      self.station.longitude = latln.lng;
+      self.addStationForm.controls['latitude'].setValue(latln.lat);
+      self.addStationForm.controls['longitude'].setValue(latln.lng);
       self.mark.setLatLng(latln);
       self.mark.addTo(self.map);
     });
