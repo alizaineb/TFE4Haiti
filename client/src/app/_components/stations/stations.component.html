@@ -14,7 +14,9 @@
   <thead>
     <tr>
       <th>#</th>
-      <th *ngFor="let head of headers">{{head}}
+      <th *ngFor="let head of headers">
+
+        {{head}}
         <i class="fa fa-sort float-right" aria-hidden="true" (click)="sortData(head)"></i>
       </th>
       <th>Action</th>
@@ -55,25 +57,18 @@
 
 <!-- Modal -->
 <div class="modal fade" id="addStationModal" tabindex="-1" role="dialog" aria-labelledby="addStationModalLabel" aria-hidden="true">
-  <app-add-station-modal
-    (sent)="loadAllStations($event)">
-  ></app-add-station-modal>
+  <app-add-station-modal (sent)="loadAllStations($event)">
+    ></app-add-station-modal>
 </div>
 
 <!-- Modal -->
 <div class="modal fade" id="deleteStationModal" tabindex="-1" role="dialog" aria-labelledby="deleteStationModalLabel" aria-hidden="true">
-  <app-delete-station-modal
-    [station] = stationToDelete.name
-    (selected)="deleteStation($event)"
-  ></app-delete-station-modal>
+  <app-delete-station-modal [station]=stationToDelete.name (selected)="deleteStation($event)"></app-delete-station-modal>
 </div>
 
 <!-- Modal -->
 <div class="modal fade" id="updateStationModal" tabindex="-1" role="dialog" aria-labelledby="updateStationModalLabel" aria-hidden="true">
   <div *ngIf="stationToUpdate != null">
-    <app-update-sation-modal
-      [stationToUpdate] = stationToUpdate
-      (updated)="loadAllStations($event)"
-    ></app-update-sation-modal>
+    <app-update-sation-modal [stationToUpdate]=stationToUpdate (updated)="loadAllStations($event)"></app-update-sation-modal>
   </div>
 </div>
