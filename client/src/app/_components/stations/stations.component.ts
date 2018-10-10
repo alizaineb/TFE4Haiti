@@ -23,7 +23,7 @@ export class StationsComponent implements OnInit {
 
   ngOnInit() {
     this.loadAllStations();
-    this.stationToDelete = new Station('','',undefined,undefined,'',null,null,'',[]);
+    this.stationToDelete = Station.getEmptyStation();
     this.stationToUpdate = null
   }
 
@@ -52,7 +52,7 @@ export class StationsComponent implements OnInit {
           this.loadAllStations();
         });
     } else {
-      this.stationToDelete = new Station('','',undefined,undefined,'',null,null,'',[]);
+      this.stationToDelete = Station.getEmptyStation();
     }
   }
 
