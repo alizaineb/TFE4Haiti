@@ -1,3 +1,32 @@
-<p>
-  refuse-user-modal works!
-</p>
+<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+  <div class="modal-content">
+    <!-- Header -->
+    <div class="modal-header">
+      <h1 class="modal-title" id="refuseUserModalLabel">Refuser un utilisateur</h1>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body">
+      <div class="container">
+        <form [formGroup]="sendFeedbackForm" #sendFeedbackFormNg="ngForm">
+          <div class="form-group">
+            <textarea rows="6" class="form-control" id="note" formControlName="note" placeholder="Entrez ici la raison du refus ..."></textarea>
+          </div>
+          <p> Un mail sera envoyé à l'utilisateur concerné contenant la raison de son refus.</p>
+        </form>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      <button type="button" (click)="resetInterface()" class="btn btn-secondary" data-dismiss="modal">Annuler
+      </button>
+      <button (click)="refuseUser()" type="submit" class="btn btn-success" data-dismiss="modal"> Envoyer
+      </button>
+    </div>
+
+  </div>
+</div>
