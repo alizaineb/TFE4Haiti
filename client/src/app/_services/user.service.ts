@@ -1,8 +1,8 @@
-﻿import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+﻿import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
-import {environment} from '../../environments/environment';
-import {User} from '../_models';
+import { environment } from '../../environments/environment';
+import { User } from '../_models';
 
 @Injectable()
 export class UserService {
@@ -26,7 +26,11 @@ export class UserService {
   }
 
   acceptUser(id: String) {
-    return this.http.post(environment.apiUrl + '/users/acceptUser', {id: id});
+    return this.http.post(environment.apiUrl + '/users/acceptUser', { id: id });
+  }
+
+  refuseUser(id: String) {
+    return this.http.post(environment.apiUrl + '/users/refuse');
   }
 
   update(user: User) {

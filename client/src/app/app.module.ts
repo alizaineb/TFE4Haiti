@@ -30,7 +30,8 @@ import { UpdateSationModalComponent } from './_components/stations/update-sation
 import { AskresetComponent } from './_components/login/askreset/askreset.component'
 
 import { ToastrModule} from "ngx-toastr";
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";;
+import { RefuseUserModalComponent } from './_components/admin-panel/refuse-user-modal/refuse-user-modal.component'
 
 
 @NgModule({
@@ -60,7 +61,8 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     DeleteStationModalComponent
 ,
     UpdateSationModalComponent ,
-    AskresetComponent ],
+    AskresetComponent ,
+    RefuseUserModalComponent],
   providers: [
     AuthGuard,
     AlertService,

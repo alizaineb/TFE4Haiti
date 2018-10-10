@@ -55,9 +55,9 @@ exports.routes = [
     access: [roles.ADMIN]
   },
   {
-    path: "/api/users/deleteUser",
+    path: "/api/users/refuse",
     httpMethod: "POST",
-    middleWare: [controllers.users.deleteUser],
+    middleWare: [controllers.users.refuseUser],
     access: [roles.ADMIN]
   },
   {

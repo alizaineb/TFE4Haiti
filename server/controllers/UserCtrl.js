@@ -168,7 +168,7 @@ exports.acceptUser = function(req, res) {
   });
 }
 
-exports.deleteUser = function(req, res) {
+exports.refuseUser = function(req, res) {
   res.status(200).send();
 }
 
