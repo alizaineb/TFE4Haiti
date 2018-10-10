@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import * as L from 'leaflet';
-import {StationsService} from '../../_services/stations.service';
-import {st} from "@angular/core/src/render3";
+import { StationsService } from '../../_services/stations.service';
+import { st } from "@angular/core/src/render3";
 
 @Component({
   selector: 'app-home',
@@ -61,7 +61,7 @@ export class HomeComponent implements OnInit {
 
       self.stations.forEach(station => {
 
-        L.marker([station.latitude, station.longitude], {icon: icon[station.state]}).bindPopup(station.name).addTo(stationGroup[station.state]);
+        L.marker([station.latitude, station.longitude], { icon: icon[station.state] }).bindPopup(station.name).addTo(stationGroup[station.state]);
       });
 
       console.table(self.stations);
@@ -73,9 +73,9 @@ export class HomeComponent implements OnInit {
       // Maps usage : OpenStreetMap, OpenSurferMaps
 
       const mapLayerOSMGrayScale = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-          id: 'mapbox.light',
-          attribution: mbAttr
-        }),
+        id: 'mapbox.light',
+        attribution: mbAttr
+      }),
         mapLayerOSMTopo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
           id: 'mapbox.streets',
           attribution: mbAttr
@@ -111,11 +111,11 @@ export class HomeComponent implements OnInit {
         'OSM - Grayscale': mapLayerOSMGrayScale,
         'Ersi WorldStreetMap': mapLayerErsiWorlStreetMap,
         'Ersi - Satelite': mapLayerErsiSatelite,
-        'Hydda - Full' : mapLayerHyddaFull
+        'Hydda - Full': mapLayerHyddaFull
       };
 
       const overlays = {
-        'Fonctionnel': stationGroup.working,
+        'Fonctionnelle': stationGroup.working,
         'En panne': stationGroup.broken,
         'A valider': stationGroup.awaiting,
         'Supprimée': stationGroup.deleted
