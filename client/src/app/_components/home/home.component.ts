@@ -99,7 +99,7 @@ export class HomeComponent implements OnInit {
         zoom: 8,
         minZoom: 8,
         maxZoom: 18,
-        layers: [mapLayerOSMTopo, stationGroup.working, stationGroup.deleted, stationGroup.awaiting, stationGroup.broken]
+        layers: [mapLayerOSMGrayScale, stationGroup.working, stationGroup.deleted, stationGroup.awaiting, stationGroup.broken]
       });
 
       L.control.scale().addTo(map);
