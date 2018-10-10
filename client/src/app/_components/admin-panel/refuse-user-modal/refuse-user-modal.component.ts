@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { AlertService } from "../../../_services";
 import { UserService } from "../../../_services/user.service";
@@ -13,6 +13,9 @@ export class RefuseUserModalComponent implements OnInit {
 
   @Input()
   currUser: string;
+
+  @Output()
+  sent = new EventEmitter<boolean>();
 
   sendFeedbackForm: FormGroup;
   note: String;
@@ -29,6 +32,7 @@ export class RefuseUserModalComponent implements OnInit {
   }
 
   resetInterface() {
+    this.sent.emit(true);
     this.sendFeedbackForm.reset();
   }
 
@@ -38,6 +42,7 @@ export class RefuseUserModalComponent implements OnInit {
       .pipe(first())
       .subscribe(result => {
         this.sendFeedbackForm.reset();
+        self.sent.emit(true);
         self.alertService.success("L'utilisateur a été refusé avec succès");
       },
         error => {

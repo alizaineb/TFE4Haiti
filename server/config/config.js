@@ -89,6 +89,7 @@ function createDefaultCfgFile(callback) {
   nconf.set('mail:pwd', '');
   nconf.set('mail:secure', '');
   nconf.set('mail:subjectCreationAccOk', '');
+  nconf.set('mail:subjectCreationAccRefused', '');
 
   nconf.save(function(err) {
     fs.readFile(fullConfigFileName, function(err, data) {
@@ -167,6 +168,10 @@ function checkCfg(callback) {
   }
   if (typeof nconf.get('mail:subjectCreationAccOk') === "undefined") {
     nconf.set('mail:subjectCreationAccOk', '');
+    cfgModified = true;
+  }
+  if (typeof nconf.get('mail:subjectCreationAccRefused') === "undefined") {
+    nconf.set('mail:subjectCreationAccRefused', '');
     cfgModified = true;
   }
   // La configuration a été changée

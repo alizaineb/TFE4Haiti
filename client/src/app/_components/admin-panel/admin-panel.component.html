@@ -37,5 +37,5 @@
 
 <!-- Modal refuse user -->
 <div class="modal fade" id="refuseUserModal" tabindex="-1" role="dialog" aria-labelledby="refuseUserModalLabel" aria-hidden="true">
-  <app-refuse-user-modal [currUser]=currUser (sent)="loadAwaitingUsers()"></app-refuse-user-modal>
+  <app-refuse-user-modal [currUser]=currUser (sent)="loadAwaitingUsers($event)"></app-refuse-user-modal>
 </div>
