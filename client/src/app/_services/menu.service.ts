@@ -10,7 +10,7 @@ export class MenuService {
   private currentUser;
   private bigMenuParent = {
     left: {
-      all: [{name: 'Heatmap', path: 'heatmap'}],
+      all: [],
       viewer: [],
       worker: [{name: 'Stations', path: 'stations'}],
       admin: [{name: 'Users', path: 'users'}]
