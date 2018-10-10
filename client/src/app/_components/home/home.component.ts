@@ -13,6 +13,7 @@ export class HomeComponent implements OnInit {
 
   public allStations = [];
   private selectedStation = [];
+  public filteredStation=[];
   private mapContainer;
   private zoom = 8;
   private centerMap = [19.099041, -72.658473];
@@ -26,6 +27,7 @@ export class HomeComponent implements OnInit {
     this.stationsService.getAll().subscribe(result => {
       self.selectedStation = result.slice(0); //make a clone
       self.allStations = result.slice(0);
+      self.filteredStation = result.slice(0);
       self.generateMap();
     });
 
@@ -195,8 +197,19 @@ export class HomeComponent implements OnInit {
     }else{
       self.selectedStation.splice(index, 1);
     }
-    self.mapContainer.
     self.generateMap();
+
+  }
+
+  filterStation(event) {
+    const term = event.target.value;
+    console.log(term)
+
+    this.filteredStation = this.allStations.filter((value) => {
+      // return value.name.toLowerCase().startsWith(term.toLowerCase());
+      return value.name.toLowerCase().includes(term.toLowerCase());
+    });
+    // console.table(this.filteredStation)
 
   }
 }
