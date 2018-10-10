@@ -1,6 +1,8 @@
 'use strict';
 const logger = require('../config/logger');
 const Station = require('./../models/station');
+const states = require('../config/constants').stationState;
+
 
 exports.get = function(req, res) {
   Station.stationModel.find({}).then(function(stations) {
@@ -24,13 +26,12 @@ exports.create = function(req, res) {
   sTmp.name = station.name;
   sTmp.latitude = station.latitude;
   sTmp.longitude = station.longitude;
-  console.log(station.createdAt);
-  console.log(new Date(station.createdAt));
+  sTmp.altitude = station.altitude;
   sTmp.createdAt = new Date(station.createdAt);
   //sTmp.last_update = Date.now();
   // TODO Picture
   // sTmp.picture = station.picture;
-  sTmp.state = 'attente';
+  sTmp.state = states.AWAITING;
   sTmp.interval = station.interval;
   sTmp.users = [];
 
@@ -80,4 +81,4 @@ exports.delete = function(req, res) {
 exports.getintervals = function(req, res) {
   const intervals = ['1min','5min','10min','15min','30min','1h','2h','6h','12h','24h'];
   return res.status(200).send(intervals);
-}
+};

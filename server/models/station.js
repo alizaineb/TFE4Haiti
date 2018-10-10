@@ -9,6 +9,7 @@ const Station = new Schema({
   name: { type: String, required: true },
   latitude: { type: Number, required: true, min: -90.0, max: 90.0 },
   longitude: { type: Number, required: true, min: -180.0, max: 180.0 },
+  altitude: {type: Numer, required: true},
   //picture: { type: String }, // Url vers la photo
   users: { type: [String], required: true },
   createdAt: { type: Date, required: true},
@@ -24,6 +25,7 @@ Station.methods.toDto = function() {
     name: this.name,
     latitude: this.latitude,
     longitude: this.longitude,
+    altitude: this.altitude,
     state: this.state,
     createdAt: this.createdAt,
     updatedAt: this.updatedAt,
