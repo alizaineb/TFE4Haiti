@@ -30,7 +30,7 @@ export class UserService {
   }
 
   refuseUser(id: String) {
-    return this.http.post(environment.apiUrl + '/users/refuse');
+    return this.http.post(environment.apiUrl + '/users/refuse', {id: id});
   }
 
   update(user: User) {
