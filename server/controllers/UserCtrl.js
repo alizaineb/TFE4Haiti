@@ -169,8 +169,11 @@ exports.acceptUser = function(req, res) {
 }
 
 exports.refuseUser = function(req, res) {
-  checkParam(req, res, ["id", "reason"], () => {
+  checkParam(req, res, ["id"], () => {
     // Récupérer l'utilisateur
+    if (req.body.reason == undefined) {
+      return res.status(400).send("Information manquante");
+    }
     let id = req.body.id;
     let reason = req.body.reason;
     UsersModel.userModel.find({ _id: id, state: userState.AWAITING }, function(err, result) {
@@ -185,15 +188,16 @@ exports.refuseUser = function(req, res) {
       } else {
         // Lui envoyer un mail
         let currUser = result[0];
+        let text = 'Bonjour,\n\nVotre demande de compte a été refusée.\nRaison :  \n"' + (reason.trim().length > 0 ? reason : 'Pas de raison donnée par l\'administrateur') + '"\n\nBien à vous';
+        console.log(text);
         var mailOptions = {
           from: nconf.get('mail').user,
           to: currUser.mail,
           subject: nconf.get('mail').subjectCreationAccRefused,
-          text: 'Bonjour,\n\nVotre demande de compte a été refusée.\nRaison :  \n"' + reason + '"\n\nBien à vous'
+          text: text
         };
         mailTransporter.sendMail(mailOptions, (error, info) => {
           if (error) {
-            console.log(error);
             return res.status(500).send({ error: "Erreur lors de l'envoi du mail à l'utilisateur." });
           } else {
             // Le supprimer de la db
