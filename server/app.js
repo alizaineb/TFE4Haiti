@@ -21,6 +21,9 @@ function configureServer() {
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json({ limit: '50mb', strict: true }));
 
+  app.use('/', express.static('public'));
+
+
   app.use(function(request, response, next) {
     logger.info('[Server] Received request for ' + request.method + ' ' + request.path);
 
