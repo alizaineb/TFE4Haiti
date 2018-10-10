@@ -211,8 +211,6 @@ exports.refuseUser = function(req, res) {
         });
       }
     });
-
-
   });
 }
 
