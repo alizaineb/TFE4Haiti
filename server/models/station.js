@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 var timestamps = require('mongoose-timestamp');
+const states = require('../config/constants').stationState;
 
 
 // schema pour récupérer un mot de passe
@@ -11,7 +12,7 @@ const Station = new Schema({
   //picture: { type: String }, // Url vers la photo
   users: { type: [String], required: true },
   createdAt: { type: Date, required: true},
-  state: { type: String, enum: ['attente', 'panne', "valide"], required: true },
+  state: { type: String, enum: [states.AWAITING, states.BROKEN, states.WORKING, states.DELETED], required: true },
   interval: {type: String, required: true, enum: ['1min','5min','10min','15min','30min','1h','2h','6h','12h','24h']}
 },{
   timestamps: { createdAt: false, updatedAt: true }
