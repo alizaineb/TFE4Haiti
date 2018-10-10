@@ -188,7 +188,7 @@ exports.refuseUser = function(req, res) {
       } else {
         // Lui envoyer un mail
         let currUser = result[0];
-        let text = 'Bonjour,\n\nVotre demande de compte a été refusée.\nRaison :  \n"' + (reason.trim().length > 0 ? reason : 'Pas de raison donnée par l\'administrateur') + '"\n\nBien à vous';
+        let text = 'Bonjour,\n\nVotre demande de compte a été refusée.\nRaison :  \n"' + ((reason.trim().length > 0) ? reason : 'Pas de raison donnée par l\'administrateur') + '"\n\nBien à vous';
         console.log(text);
         var mailOptions = {
           from: nconf.get('mail').user,
