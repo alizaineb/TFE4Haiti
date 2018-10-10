@@ -59,6 +59,7 @@ function startWebServer() {
   //Configure la base de données
   configureDB();
 
+  //TODO : ajout d'une fvérification que la configuration mail est correcte style on envoie un mail en mode le serveur est lancé (et en dev=true ça se fait pas ^^).  
   // Gestion des routes
   require('./routes/server')(app);
 

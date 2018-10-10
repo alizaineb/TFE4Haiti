@@ -1,5 +1,6 @@
 'use strict';
 // Modules node
+const nconf = require('nconf');
 
 // Nos modules
 const logger = require('../config/logger');
@@ -8,6 +9,7 @@ const tokenManager = require('./../config/tokenManager');
 const roles = require('../config/constants').roles;
 const userState = require('../config/constants').userState;
 const checkParam = require('./utils').checkParam;
+const mailTransporter = require('./mailer').transporter;
 
 exports.login = function(req, res) {
   checkParam(req, res, ["mail", "pwd"], function() {
@@ -71,6 +73,7 @@ exports.getByEmail = function(req, res) {
 };
 
 exports.create = function(req, res) {
+  // TODO Check mail
   let uTmp = new UsersModel.userModel();
   let user = req.body
   uTmp.first_name = user.first_name;
@@ -140,12 +143,26 @@ exports.acceptUser = function(req, res) {
     } else if (result.length == 0) {
       return res.status(404).send({ error: "Aucun utilisateur correpsondant." });
     } else {
-      result[0].state = userState.PASSWORD_CREATION;
-      result[0].save(function(err, userUpdt) {
-        if (err) {
-          return res.status(500).send({ error: "Erreur lors de la mise à jour de l'utilisateur concerné." });
+      let currUser = result[0];
+      var mailOptions = {
+        from: nconf.get('mail').user,
+        to: currUser.mail,
+        subject: nconf.get('mail').subjectCreationAccOk,
+        text: 'This is a test'
+      };
+      mailTransporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log(error);
+          return res.status(500).send({ error: "Erreur lors de l'envoi du mail à l'utilisateur." });
+        } else {
+          currUser.state = userState.PASSWORD_CREATION;
+          currUser.save(function(err, userUpdt) {
+            if (err) {
+              return res.status(500).send({ error: "Erreur lors de la mise à jour de l'utilisateur concerné." });
+            }
+            return res.status(200).send();
+          });
         }
-        return res.status(200).send();
       });
     }
   });

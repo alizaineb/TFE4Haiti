@@ -54,6 +54,6 @@ export class AdminPanelComponent implements OnInit {
   }
 
   private toNiceDate(date: Date) {
-    return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear() + " à " + date.getHours() + ":" + date.getMinutes();
+    return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear() + " à " + date.getHours() + ":" + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
   }
 }

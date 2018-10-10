@@ -83,6 +83,12 @@ function createDefaultCfgFile(callback) {
   nconf.set('database:name', 'TFE4Haiti');
   nconf.set('database:login', '');
   nconf.set('database:password', '');
+  nconf.set('mail:host', '');
+  nconf.set('mail:port', '');
+  nconf.set('mail:user', '');
+  nconf.set('mail:pwd', '');
+  nconf.set('mail:secure', '');
+  nconf.set('mail:subjectCreationAccOk', '');
 
   nconf.save(function(err) {
     fs.readFile(fullConfigFileName, function(err, data) {
@@ -137,6 +143,30 @@ function checkCfg(callback) {
   }
   if (typeof nconf.get('token:expiration') === "undefined") {
     nconf.set('token:expiration', 1440);
+    cfgModified = true;
+  }
+  if (typeof nconf.get('mail:host') === "undefined") {
+    nconf.set('mail:host', '');
+    cfgModified = true;
+  }
+  if (typeof nconf.get('mail:port') === "undefined") {
+    nconf.set('mail:port', '');
+    cfgModified = true;
+  }
+  if (typeof nconf.get('mail:user') === "undefined") {
+    nconf.set('mail:user', '');
+    cfgModified = true;
+  }
+  if (typeof nconf.get('mail:pwd') === "undefined") {
+    nconf.set('mail:pwd', '');
+    cfgModified = true;
+  }
+  if (typeof nconf.get('mail:secure') === "undefined") {
+    nconf.set('mail:secure', '');
+    cfgModified = true;
+  }
+  if (typeof nconf.get('mail:subjectCreationAccOk') === "undefined") {
+    nconf.set('mail:subjectCreationAccOk', '');
     cfgModified = true;
   }
   // La configuration a été changée
