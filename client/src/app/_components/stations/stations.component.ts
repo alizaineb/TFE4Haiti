@@ -18,12 +18,12 @@ export class StationsComponent implements OnInit {
   stationToUpdate: Station;
 
   constructor(private stationService: StationsService) {
-    this.headers = ["Nom", "Latitude", "Longitude", "Etat", "Créé le", "Dernière modification", "Intervalle"];
+    this.headers = ["Nom", "Latitude", "Longitude","Altitude", "Etat", "Créé le", "Dernière modification", "Intervalle"];
   }
 
   ngOnInit() {
     this.loadAllStations();
-    this.stationToDelete = new Station('','',undefined,undefined,'',null,null,'',[]);
+    this.stationToDelete = Station.getEmptyStation();
     this.stationToUpdate = null
   }
 
@@ -52,7 +52,7 @@ export class StationsComponent implements OnInit {
           this.loadAllStations();
         });
     } else {
-      this.stationToDelete = new Station('','',undefined,undefined,'',null,null,'',[]);
+      this.stationToDelete = Station.getEmptyStation();
     }
   }
 
@@ -77,6 +77,13 @@ export class StationsComponent implements OnInit {
             this.stations.sort((val1:Station, val2:Station)=> {return val1.longitude > val2.longitude ? -1 : 1});
           } else {
             this.stations.sort((val1:Station, val2:Station)=> {return val2.longitude > val1.longitude ? -1 : 1});
+          }
+          break;
+        case "Altitude":
+          if(this.stations[0].altitude < this.stations[1].altitude){
+            this.stations.sort((val1:Station, val2:Station)=> {return val1.altitude > val2.altitude ? -1 : 1});
+          } else {
+            this.stations.sort((val1:Station, val2:Station)=> {return val2.altitude > val1.altitude ? -1 : 1});
           }
           break;
         case "Intervalle":

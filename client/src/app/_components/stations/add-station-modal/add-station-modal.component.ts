@@ -36,8 +36,7 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked{
   }
 
   ngOnInit(): void {
-    this.station = new Station('','',undefined,undefined,'',null, new Date(),'',[]);
-
+    this.station = Station.getEmptyStation();
     this.addStationForm = new FormGroup({
       'name': new FormControl(this.station.name, [
         Validators.required,
@@ -53,24 +52,75 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked{
         Validators.max(180),
         Validators.min(-180)
       ]),
+      'altitude': new FormControl(this.station.altitude, [
+        Validators.required,
+        Validators.max(10000),
+        Validators.min(0)
+      ]),
       'interval': new FormControl(this.station.interval, [
         Validators.required
       ]),
       'createdAt': new FormControl(this.station.createdAt, [
         Validators.required
       ])
+      //Ajouter la méthode get è
     });
+    this.initDatePickerAndMap();
+  }
 
+  get name() { return this.addStationForm.get('name'); }
+  get latitude() { return this.addStationForm.get('latitude'); }
+  get longitude() { return this.addStationForm.get('longitude'); }
+  get interval() { return this.addStationForm.get('interval'); }
+  get createdAt() {return this.addStationForm.get('createdAt');}
+  get altitude() {return this.addStationForm.get('altitude')}
 
+  ngAfterViewChecked(): void {
+    this.map.invalidateSize()
+  }
+
+  onSubmit() { this.submitted = true; }
+
+  resetStation() {
+    this.station = Station.getEmptyStation();
+    this.datePicker.setDate(null);
+    this.map.removeLayer(this.mark)
+  }
+
+  sendStation(){
+    this.submitted = true;
+    // stop here if form is invalid
+    if (this.addStationForm.invalid) {
+      return;
+    }
+    this.stationService.register(this.station)
+      .pipe(first())
+      .subscribe(
+        result => {
+          //trigger sent
+          this.sent.emit(true);
+          //Fermer la page
+          let element: HTMLElement = document.getElementsByClassName('btn')[1] as HTMLElement;
+          element.click();
+          //this.resetStation();
+          this.alertService.success("La station a été ajoutée");
+        },
+        error => {
+          this.alertService.error(error);
+        });
+  }
+
+  initDatePickerAndMap(){
+    const self = this;
     this.datePicker = flatpickr("#createdAt", {
-      defaultDate: this.station.createdAt,
       locale:French,
       altInput: true,
       altFormat: "d-m-Y",
-      dateFormat: "d-m-Y"
+      dateFormat: "d-m-Y",
+      onChange: function(selectedDates, dateStr, instance) {
+        self.station.createdAt = new Date(selectedDates[0])
+      },
     });
-
-    const self = this;
 
     const icon1 = L.icon({
       iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/images/marker-icon.png',
@@ -107,8 +157,8 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked{
 
     this.map = L.map('mapid', {
       center: [19.099041, -72.658473],
-      zoom: 8,
-      minZoom: 8,
+      zoom: 7,
+      minZoom: 7,
       maxZoom: 18,
       layers: [mapLayer1]
     });
@@ -116,64 +166,22 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked{
     L.control.scale().addTo(this.map);
     L.control.layers(baseLayers).addTo(this.map);
 
+    if (self.station.latitude != undefined && self.station.latitude != undefined) {
+      self.mark = L.marker([self.station.latitude, self.station.longitude], {icon: icon1}).addTo(self.map);
+    }else {
+      this.mark = L.marker([0, 0], {icon: icon1});
+    }
+
     this.map.on('click', function(e) {
       // @ts-ignore
       let latln: LatLng = e.latlng;
-      if (self.station.latitude == undefined || self.station.latitude == undefined) {
-        self.station.latitude = latln.lat;
-        self.station.longitude = latln.lng;
-        self.mark = L.marker([self.station.latitude, self.station.longitude], {icon: icon1}).addTo(self.map);
-      }else {
-        self.station.latitude = latln.lat;
-        self.station.longitude = latln.lng;
-        self.mark.setLatLng(latln);
-      }
+      self.station.latitude = latln.lat;
+      self.station.longitude = latln.lng;
+      self.mark.setLatLng(latln);
+      self.mark.addTo(self.map);
     });
   }
-
-  ngAfterViewChecked(): void {
-    this.map.invalidateSize()
-  }
-
-  updateCreatedDate(){
-    this.station.createdAt = new Date(this.datePicker.selectedDates[0]);
-  }
-
-  get name() { return this.addStationForm.get('name'); }
-  get latitude() { return this.addStationForm.get('latitude'); }
-  get longitude() { return this.addStationForm.get('longitude'); }
-  get interval() { return this.addStationForm.get('interval'); }
-  get createdAt() {return this.addStationForm.get('createdAt');}
-
-
-  onSubmit() { this.submitted = true; }
-
-  resetStation() {
-    this.station = new Station('','',undefined,undefined,'',null, new Date(),'',[]);
-    this.datePicker.setDate(new Date())
-  }
-
-  sendStation(){
-    this.submitted = true;
-    // stop here if form is invalid
-    if (this.addStationForm.invalid) {
-      return;
-    }
-    this.stationService.register(this.station)
-      .pipe(first())
-      .subscribe(
-        result => {
-          //trigger sent
-          this.sent.emit(true);
-          //Fermer la page
-          this.resetStation();
-          let element: HTMLElement = document.getElementsByClassName('btn')[1] as HTMLElement;
-          element.click();
-        },
-        error => {
-          this.alertService.error(error);
-        });
-  }
 }
+
 
 
