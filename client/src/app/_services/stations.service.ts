@@ -12,6 +12,10 @@ export class StationsService {
   constructor(private http: HttpClient) {
   }
 
+  getIntervals(){
+    return this.http.get<any[]>(environment.apiUrl + '/stations/getInfo/intervals')
+  }
+
   getAll() {
     return this.http.get<Station[]>(environment.apiUrl + '/stations');
   }

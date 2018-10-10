@@ -76,3 +76,8 @@ exports.delete = function(req, res) {
     return res.status(500).send(err);
   });
 };
+
+exports.getintervals = function(req, res) {
+  const intervals = ['1min','5min','10min','15min','30min','1h','2h','6h','12h','24h'];
+  return res.status(200).send(intervals);
+}

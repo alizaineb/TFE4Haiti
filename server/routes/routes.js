@@ -105,6 +105,12 @@ exports.routes = [
 
   },
 
+  {
+    path: "/api/stations/getInfo/intervals",
+    httpMethod: "GET",
+    middleWare: [controllers.stations.getintervals]
+  },
+
 
 
 
