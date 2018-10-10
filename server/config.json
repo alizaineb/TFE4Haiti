@@ -5,14 +5,15 @@
     "port": "3000"
   },
   "database": {
-    "host": "localhost",
-    "port": "27017",
-    "name": "TFE4Haiti",
-    "login": "",
-    "password": ""
+    "host": "ds125693.mlab.com",
+    "port": "25693",
+    "name": "tfe4haiti",
+    "login": "tfe4haiti",
+    "password": "TFE4Haiti"
   },
   "token": {
     "privateKey": "somethingsomethingjsontoken",
     "expiration": "12h"
   }
 }
+

@@ -37,7 +37,7 @@ function configureServer() {
 
 function configureDB() {
   //Connect to mongoDB server
-  let url = 'mongodb://' + nconf.get('database:host') + ':' + nconf.get('database:port') + '/' + nconf.get('database:name');
+  let url = 'mongodb://' + nconf.get('database:login') + ':' + nconf.get('database:password') + '@' + nconf.get('database:host') + ':' + nconf.get('database:port') + '/' + nconf.get('database:name');
   mongoose.connect(url, { useNewUrlParser: true });
   mongoose.set('debug', nconf.get('development'));
   mongoose.set('useCreateIndex', true);
