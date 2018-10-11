@@ -3,6 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import * as L from 'leaflet';
 import {StationsService} from '../../_services/stations.service';
 import {st} from "@angular/core/src/render3";
+import {Station} from "../../_models";
 
 @Component({
   selector: 'app-home',
@@ -27,13 +28,22 @@ export class HomeComponent implements OnInit {
     this.stationsService.getAll().subscribe(result => {
       self.selectedStation = result.slice(0); //make a clone
       self.allStations = result.slice(0);
-      self.filteredStation = result.slice(0);
+      self.filteredStation = result.slice(0).sort(this.compareStation);
       self.generateMap();
     });
 
 
   }
 
+  compareStation(a: Station, b: Station){
+    if(a.name.toLowerCase() < b.name.toLowerCase()){
+      return -1;
+    }
+    if(a.name.toLowerCase() > b.name.toLowerCase()){
+      return 1;
+    }
+    return 0;
+  }
   generateMap() {
     const self = this;
 
@@ -78,10 +88,15 @@ export class HomeComponent implements OnInit {
     }
 
 
-    self.selectedStation.forEach(station => {
-
+    let station;
+    for(let i=0; i < self.selectedStation.length; i++){
+      station = self.selectedStation[i];
       L.marker([station.latitude, station.longitude], {icon: icon[station.state]}).bindPopup(`<b>${station.name} </b><br/>`).addTo(stationGroup[station.state]);
-    });
+    }
+    // self.selectedStation.forEach(station => {
+    //
+    //
+    // });
 
     console.table(self.selectedStation);
     const mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
@@ -216,6 +231,7 @@ export class HomeComponent implements OnInit {
       // return value.name.toLowerCase().startsWith(term.toLowerCase());
       return value.name.toLowerCase().includes(term.toLowerCase());
     });
+    this.filteredStation = this.filteredStation.sort(this.compareStation)
     // console.table(this.filteredStation)
 
   }
