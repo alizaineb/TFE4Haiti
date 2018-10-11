@@ -91,5 +91,3 @@ const userModel = mongoose.model("user", User);
 
 // Export du modèle
 exports.userModel = userModel;
-
-// TODO Si jamais j'ai des méthodes pour hash le pwd etc etc

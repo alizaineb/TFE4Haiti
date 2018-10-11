@@ -11,7 +11,7 @@ const roles = require('../config/constants').roles;
 const userState = require('../config/constants').userState;
 const checkParam = require('./utils').checkParam;
 const mailTransporter = require('./mailer');
-const pwdRecovery = require('./../models/pwdRecovery');
+const PwdRecoveryModel = require('./../models/pwdRecovery');
 
 exports.login = function(req, res) {
   checkParam(req, res, ["mail", "pwd"], function() {
@@ -88,7 +88,7 @@ exports.create = function(req, res) {
     return res.status(201).send(uTmp.toDto());
   }).catch(function(err) {
     logger.error(err);
-    return res.status(500).send(err);
+    return res.status(500).send("Une erreur est survenue lors de la création de l'utilisateur");
   })
 };
 
@@ -145,17 +145,7 @@ exports.acceptUser = function(req, res) {
       return res.status(404).send("Aucun utilisateur correspondant.");
     } else {
       let currUser = result[0];
-      // create code to go on website
-      text = "";
-      mailTransporter.sendMail(req, res, nconf.get('mail').subjectCreationAccOk, currUser.mail, text, () => {
-        currUser.state = userState.PASSWORD_CREATION;
-        currUser.save(function(err, userUpdt) {
-          if (err) {
-            return res.status(500).send("Erreur lors de la mise à jour de l'utilisateur concerné.");
-          }
-          return res.status(200).send();
-        });
-      });
+      sendEmailReset(req, res, currUser, false);
     }
   });
 }
@@ -180,7 +170,10 @@ exports.refuseUser = function(req, res) {
       } else {
         // Lui envoyer un mail
         let currUser = result[0];
-        let text = 'Bonjour ' + currUser.first_name + ' ' + currUser.last_name + ',\n\nVotre demande de compte a été refusée.\nRaison :  \n"' + ((reason.trim().length > 0) ? reason : 'Pas de raison donnée par l\'administrateur') + '"\n\nLes informations vont concernant sont supprimées.\n\nBien à vous';
+        let text = 'Bonjour ' + currUser.first_name + ' ' + currUser.last_name +
+          ',\n\nVotre demande de compte a été refusée.\nRaison :  \n"' +
+          ((reason.trim().length > 0) ? reason : 'Pas de raison donnée par l\'administrateur') +
+          '"\n\nLes informations vont concernant sont supprimées.\n\nBien à vous';
         mailTransporter.sendMailAndIgnoreIfMailInvalid(req, res, nconf.get('mail').subjectCreationAccRefused, currUser.mail, text, (resp) => {
           // Le supprimer de la db
           currUser.remove(function(err, userUpdt) {
@@ -196,16 +189,93 @@ exports.refuseUser = function(req, res) {
 }
 
 
+exports.askResetPwd = function(req, res) {
+  checkParam(req, res, ["mail"], () => {
+    // Trouver l'utilisateur concerné
+    UsersModel.userModel.find({ mail: req.body.mail }, function(err, result) {
+      if (err) {
+        return res.status(500).send("Erreur lors de la récupération de l'utilisateur concerné.");
+      }
+
+      if (result.length > 1) {
+        return res.status(500).send("Ceci n'aurait jamais dû arriver.");
+      } else if (result.length == 0) {
+        // /!\ Est bien un retour 200 pour des raisons de sécurité on ne peut pas renvoyer une 404, sinon il devient possible de brute forcer la liste des utilisateurs /!\
+        return res.status(200).send();
+      } else {
+        let currUser = result[0];
+        // /!\ Pas signifier à l'utilisateur si son compte a été validé
+        if (currUser.state == userState.AWAITING || currUser.state == userState.DELETED) {
+          return res.status(200).send();
+        }
+        sendEmailReset(req, res, currUser, true);
+      }
+    });
+  });
+}
+
+exports.resetPwd = function(req, res) {
+  checkParam(req, res, ["mdp1", "mdp2", "mail", "urlReset"], () => {
+    // check mdp1 == mdp2
+
+    // check user en mode pwd_creation
+
+    // Check pas expiré
+
+    return res.status(200).send();
+  });
+}
 
 
 
 // Private function
 function getRandomString() {
   crypto.randomBytes(64, function(ex, buf) {
-    if (ex) throw ex;
+    if (ex) throw ex; //TODO La traiter ???
     return buf.toString('hex');
   });
 }
+
+function sendEmailReset(req, res, user, isUserRequest) {
+  // Création de l'objet permettant de reset le mdp
+  let pwdTmp = new PwdRecoveryModel.pwdRecoveryModel();
+  let url = crypto.randomBytes(32).toString('hex');
+  let origin = req.get('origin');
+  pwdTmp.user = user._id;
+  pwdTmp.url = url
+  if (isUserRequest) {
+    pwdTmp.duration = nconf.get("user").changePwdTime;
+  } else {
+    pwdTmp.duration = nconf.get("user").accountAcceptedTime;
+  }
+  let urlTotal = origin + '/login/reset/' + url;
+  pwdTmp.save((err) => {
+    if (err) {
+      logger.error(err);
+      return res.status(500).send("Une erreur est survenue lors de la création de l'url de reset");
+    }
+    // On envoie le mail
+    let text = 'Bonjour ' + user.first_name + ' ' + user.last_name +
+      ',\n\nVoici le lien avec lequel vous avez la possibilité de ' + (isUserRequest ? 'changer' : 'créer') +
+      ' votre mot de passe : \n' +
+      urlTotal +
+      (isUserRequest ? '\n\nSi vous n\'avez pas effectué cette requête, veuillez contacter l\'administrateur' : '') +
+      '\n\n Bien à vous';
+    mailTransporter.sendMail(req, res, nconf.get('mail').changePwd, user.mail, text, () => {
+      user.state = userState.PASSWORD_CREATION;
+      // On met à jour l'utilisateur
+      user.save(function(err, userUpdt) {
+        if (err) {
+          return res.status(500).send("Erreur lors de la mise à jour de l'utilisateur concerné.");
+        }
+        return res.status(200).send();
+      });
+    });
+
+  });
+}
+
+
 
 // used to tetst some routes
 exports.useless = function(req, res) {

@@ -41,5 +41,8 @@ export class UserService {
     return this.http.delete(environment.apiUrl + '/users/' + id);
   }
 
+  requestChangePwd(mail: String) {
+    return this.http.post(environment.apiUrl + '/users/askResetPwd', { mail: mail });
+  }
 
 }

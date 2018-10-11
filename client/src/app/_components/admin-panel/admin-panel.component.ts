@@ -63,7 +63,7 @@ export class AdminPanelComponent implements OnInit {
       .pipe(first())
       .subscribe(result => {
         self.loadAwaitingUsers();
-        self.alertService.success("L'utilisateur a été ajouté avec succès");
+        self.alertService.success("L'utilisateur a été accepté avec succès");
       },
         error => {
           self.alertService.error(error);
