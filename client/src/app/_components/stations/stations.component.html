@@ -33,7 +33,11 @@
   <tbody>
     <tr *ngFor="let station of stationsFiltered; index as i;">
       <td>{{i+1}}</td>
-      <td>{{station.name}}</td>
+      <td>{{station.name}}
+        <a class="details float-right" [routerLink]="['/stations', station._id]">
+          <i class="fas fa-info-circle"></i>
+        </a>
+      </td>
       <td>{{station.latitude}}</td>
       <td>{{station.longitude}}</td>
       <td>{{station.altitude}}</td>
