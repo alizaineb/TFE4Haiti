@@ -9,7 +9,7 @@ const Station = new Schema({
   name: { type: String, required: true },
   latitude: { type: Number, required: true, min: -90.0, max: 90.0 },
   longitude: { type: Number, required: true, min: -180.0, max: 180.0 },
-  altitude: { type: Number, required: true },
+  altitude: { type: Number, required: true, min:0, max:10000 },
   //picture: { type: String }, // Url vers la photo
   users: { type: [String], required: true },
   createdAt: { type: Date, required: true },

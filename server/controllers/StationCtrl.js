@@ -2,7 +2,7 @@
 const logger = require('../config/logger');
 const Station = require('./../models/station');
 const states = require('../config/constants').stationState;
-const checkParamObj = require('./utils').checkParamObj;
+const checkParam = require('./utils').checkParam;
 
 
 
@@ -26,9 +26,8 @@ exports.getById = function(req, res) {
 };
 
 exports.create = function(req, res) {
-  checkParamObj(req.body.station, res, ["name", "latitude","longitude","altitude","createdAt","interval"], function() {
-
-    let station = req.body.station;
+  checkParam(req, res, ["name", "latitude","longitude","altitude","createdAt","interval"], function() {
+    let station = req.body;
     let sTmp = new Station.stationModel();
     sTmp.name = station.name;
     sTmp.latitude = station.latitude;
