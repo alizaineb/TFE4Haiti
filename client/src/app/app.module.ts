@@ -31,7 +31,8 @@ import {ToastrModule} from "ngx-toastr";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {RefuseUserModalComponent} from './_components/admin-panel/refuse-user-modal/refuse-user-modal.component';
 import {SimpleStationComponent} from './_components/stations/simple-station/simple-station.component';
-import {DetailsStationComponent} from './_components/stations/simple-station/details/details-station.component';
+import {DetailsStationComponent} from './_components/stations/simple-station/details/details-station.component';;
+import { LogoutComponent } from './_components/logout/logout.component'
 
 @NgModule({
   imports: [
@@ -62,7 +63,8 @@ import {DetailsStationComponent} from './_components/stations/simple-station/det
     RefuseUserModalComponent,
     SimpleStationComponent,
     DetailsStationComponent
-  ],
+,
+    LogoutComponent  ],
 
   providers: [
     AuthGuard,

@@ -10,6 +10,7 @@ import { ResetPasswordComponent } from "./_components/login/reset-password/reset
 import { FaqComponent } from "./_components/faq/faq.component";
 import { AskresetComponent } from "./_components/login/askreset/askreset.component";
 import { SimpleStationComponent } from "./_components/stations/simple-station/simple-station.component";
+import {LogoutComponent} from "./_components/logout/logout.component";
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -21,6 +22,7 @@ const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'login/reset/:id', component: ResetPasswordComponent },
   { path: 'login/askreset', component: AskresetComponent },
+  { path: 'logout', component: LogoutComponent },
 
 
   { path: 'faq', component: FaqComponent },
