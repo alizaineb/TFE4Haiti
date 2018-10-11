@@ -4,7 +4,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {AlertService} from "../../../_services";
 
 @Component({
-  selector: 'app-details-station',
+  selector: 'app-simple-station',
   templateUrl: './simple-station.component.html',
   styleUrls: ['./simple-station.component.css']
 })
@@ -16,38 +16,44 @@ export class SimpleStationComponent implements OnInit, OnDestroy {
   public stationId = "";
 
   public tabList = ['Details', 'Tableaux', 'Graphiques', 'Notes'];
-  private activeTab = this.tabList[0];
+  public activeC = [false, false, false, false,]
+  public activeTab = this.tabList[0];
 
-    constructor(
+  constructor(
     private route: ActivatedRoute,
     private router: Router,
     private stationService: StationsService,
     private alertService: AlertService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     const self = this;
 
-    self.sub = self.route.params.subscribe( (params) =>{
+    self.sub = self.route.params.subscribe((params) => {
       self.stationId = params['id'];
       self.activeTab = params['tab'];
-      if(self.tabList.indexOf(self.activeTab) < 0){
+      const index = self.tabList.indexOf(self.activeTab);
+      if ( index < 0) {
         self.activeTab = self.tabList[0];
+        self.activeC[0] = true;
         self.router.navigate(['/stations', self.stationId, self.activeTab])
+      }else{
+        self.activeC[index] = true
       }
     });
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.sub.unsubscribe();
   }
 
-  getSelectedClass(tab){
+  getSelectedClass(tab) {
     return this.activeTab == tab;
   }
 
   selectTab(tab: string) {
-    if(this.tabList.indexOf(tab) >=0){
+    if (this.tabList.indexOf(tab) >= 0) {
       this.activeTab = tab;
     }
   }
