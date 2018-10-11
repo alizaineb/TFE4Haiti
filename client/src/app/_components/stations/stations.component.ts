@@ -18,6 +18,8 @@ export class StationsComponent implements OnInit {
   stationToDelete: Station;
   stationToUpdate: Station;
 
+  searchKeyWord:string = '';
+
   constructor(private stationService: StationsService) {
     this.headers = ["Nom", "Latitude", "Longitude","Altitude", "Etat", "Créé le", "Dernière modification", "Intervalle"];
   }
@@ -34,13 +36,13 @@ export class StationsComponent implements OnInit {
       .subscribe(result => {
         this.stations = result.slice(0);
         this.stationsFiltered = result.slice(0);
+        this.filterStation();
       });
   }
 
-  filterStation(event) {
-    const term = event.target.value;
+  filterStation() {
     this.stationsFiltered = this.stations.filter((value) => {
-      return value.name.toLowerCase().includes(term.toLowerCase());
+      return value.name.toLowerCase().includes(this.searchKeyWord.toLowerCase());
     });
   }
 
