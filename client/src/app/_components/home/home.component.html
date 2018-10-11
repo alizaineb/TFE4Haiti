@@ -8,7 +8,7 @@
       <input type="text" class="form-control" placeholder="Recherche" aria-label="Recherche" aria-describedby="basic-addon1" (keyup)="filterStation($event)">
     </div>
     <ul class="list-group">
-      <li class="list-group-item"
+      <li class="list-group-item d-flex justify-content-between align-items-center"
           *ngFor="let station of filteredStation"
           [ngClass]="{
           'list-group-item':true,
@@ -17,6 +17,8 @@
           (click)="toogleSelectionFor(station)"
       >
         <a [routerLink]="['/stations', station._id]">{{station.name}}</a>
+        <i *ngIf="getSelectedClass(station)" class="fas fa-check-circle "></i>
+        <i *ngIf="!getSelectedClass(station)" class="far fa-circle "></i>
       </li>
     </ul>
   </div>

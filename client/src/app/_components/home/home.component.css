@@ -11,3 +11,7 @@
   overflow: hidden;
   overflow-y: scroll;
 }
+
+.list-group a{
+  color: #0b0b0b;
+}
