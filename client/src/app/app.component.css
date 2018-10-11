@@ -4,3 +4,7 @@
   padding-bottom: 3vh;
   min-height:92vh;
 }
+
+.container{
+  max-width: 90vw;
+}
