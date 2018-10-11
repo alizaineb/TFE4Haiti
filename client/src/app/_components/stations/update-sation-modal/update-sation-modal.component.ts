@@ -1,4 +1,11 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {
+  AfterViewChecked,
+  Component,
+  EventEmitter,
+  Input, OnChanges,
+  OnInit,
+  Output, SimpleChanges
+} from '@angular/core';
 import {Station} from "../../../_models";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AlertService} from "../../../_services";
@@ -14,7 +21,7 @@ import {LatLng} from "leaflet";
   templateUrl: './update-sation-modal.component.html',
   styleUrls: ['./update-sation-modal.component.css']
 })
-export class UpdateSationModalComponent implements OnInit {
+export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnChanges {
 
   @Input()
   stationToUpdate:Station;
@@ -83,12 +90,20 @@ export class UpdateSationModalComponent implements OnInit {
     this.map.invalidateSize()
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    this.resetStation();
+  }
+
   onSubmit() { this.submitted = true; }
 
   resetStation() {
     this.initForm();
-    this.datePicker.setDate(this.stationToUpdate.createdAt);
-    this.mark.setLatLng([this.stationToUpdate.latitude, this.stationToUpdate.longitude]);
+    if(this.datePicker){
+      this.datePicker.setDate(this.stationToUpdate.createdAt);
+    }
+    if(this.mark){
+      this.mark.setLatLng([this.stationToUpdate.latitude, this.stationToUpdate.longitude]);
+    }
   }
 
   sendStation(){
@@ -107,7 +122,7 @@ export class UpdateSationModalComponent implements OnInit {
     s.interval = this.updateStationForm.controls['interval'].value;
     s.createdAt = this.updateStationForm.controls['createdAt'].value;
 
-    this.stationService.register(s)
+    this.stationService.update(s)
       .pipe(first())
       .subscribe(
         result => {
