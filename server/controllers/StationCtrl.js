@@ -19,7 +19,10 @@ exports.get = function(req, res) {
 
 exports.getById = function(req, res) {
   //TODO connect to mongodb
-  return res.status(200).send("Method to implements");
+  const id = req.params.id;
+  Station.stationModel.findOne({_id: id}).then(station =>{
+    return res.status(200).send(station);
+  });
 };
 
 exports.create = function(req, res) {
