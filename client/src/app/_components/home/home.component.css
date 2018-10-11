@@ -15,3 +15,7 @@
 .list-group a{
   color: #0b0b0b;
 }
+
+i {
+  cursor: pointer;
+}
