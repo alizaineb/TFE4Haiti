@@ -55,28 +55,26 @@ exports.create = function(req, res) {
 };
 
 exports.update = function(req, res) {
-  let id = req.params.id;
-  console.log(id)
-  /*
-    let station = req.body;
-    let sTmp = new Station.stationModel();
-    sTmp.name = station.name;
-    sTmp.latitude = station.latitude;
-    sTmp.longitude = station.longitude;
-    sTmp.createdAt = new Date(station.createdAt);
-    //sTmp.last_update = Date.now();
-    // TODO Picture
-    // sTmp.picture = station.picture;
-    sTmp.state = station.state;
-    sTmp.interval = station.interval;
-    sTmp.users = station.users;
-    sTmp.interval = station.interval;
-    sTmp.save().then(() => {
-      return res.status(201).send({ message: sTmp });
-    }).catch(function(err) {
-      logger.error(err);
-      return res.status(500).send(err);
-    })*/
+  checkParam(req, res, ["name", "latitude","longitude","altitude","createdAt","interval"], function() {
+    let id = req.params.id;
+    Station.stationModel.findById({ _id: id }, function(err, station) {
+      if (err) return res.status(500).send("Erreur lors de la récupération de l'utilisateur concerné.");
+      if (station.length > 1) return res.status(500).send("Ceci n'aurait jamais dû arriver.");
+      if (station.length === 0) return res.status(404).send("La station n'existe pas");
+
+      station.name = req.body.name;
+      station.latitude = req.body.latitude;
+      station.longitude = req.body.longitude;
+      station.altitude = req.body.altitude;
+      station.createdAt = req.body.createdAt;
+      station.interval = req.body.interval;
+
+      station.save(function (err, updatedStation) {
+        if (err) return res.status(500).send("Erreur lors de l'update");
+        return res.status(201).send(updatedStation);
+      });
+    });
+  });
 };
 
 exports.delete = function(req, res) {

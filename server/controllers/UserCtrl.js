@@ -126,7 +126,7 @@ exports.getAllAwaiting = function(req, res) {
       return res.status(200).send(tabS);
     }
   });
-}
+};
 
 exports.acceptUser = function(req, res) {
   let id = req.body.id || '';
@@ -141,19 +141,19 @@ exports.acceptUser = function(req, res) {
 
     if (result.length > 1) {
       return res.status(500).send("Ceci n'aurait jamais dû arriver.");
-    } else if (result.length == 0) {
+    } else if (result.length === 0) {
       return res.status(404).send("Aucun utilisateur correspondant.");
     } else {
       let currUser = result[0];
       sendEmailReset(req, res, currUser, false);
     }
   });
-}
+};
 
 exports.refuseUser = function(req, res) {
   checkParam(req, res, ["id"], () => {
     // Récupérer l'utilisateur
-    if (req.body.reason == undefined) {
+    if (req.body.reason === undefined) {
       return res.status(400).send("Information manquante");
     }
     let id = req.body.id;
@@ -165,7 +165,7 @@ exports.refuseUser = function(req, res) {
 
       if (result.length > 1) {
         return res.status(500).send("Ceci n'aurait jamais dû arriver.");
-      } else if (result.length == 0) {
+      } else if (result.length === 0) {
         return res.status(404).send("Aucun utilisateur correspondant.");
       } else {
         // Lui envoyer un mail
@@ -186,7 +186,7 @@ exports.refuseUser = function(req, res) {
       }
     });
   });
-}
+};
 
 
 exports.askResetPwd = function(req, res) {
@@ -212,7 +212,7 @@ exports.askResetPwd = function(req, res) {
       }
     });
   });
-}
+};
 
 exports.resetPwd = function(req, res) {
   checkParam(req, res, ["pwd1", "pwd2", "urlReset"], () => {
@@ -277,7 +277,7 @@ exports.resetPwd = function(req, res) {
       }
     });
   });
-}
+};
 
 
 

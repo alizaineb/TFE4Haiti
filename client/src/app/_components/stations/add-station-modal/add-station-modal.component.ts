@@ -107,11 +107,8 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked{
       .subscribe(
         result => {
           //trigger sent
+          this.resetStation();
           this.sent.emit(true);
-          //Fermer la page
-          let element: HTMLElement = document.getElementsByClassName('btn')[1] as HTMLElement;
-          element.click();
-          //this.resetStation();
           this.alertService.success("La station a été ajoutée");
         },
         error => {
