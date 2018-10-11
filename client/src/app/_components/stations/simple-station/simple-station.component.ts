@@ -1,7 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {StationsService} from "../../../_services/stations.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {AlertService} from "../../../_services";
 
 @Component({
   selector: 'app-simple-station',
@@ -13,29 +11,31 @@ export class SimpleStationComponent implements OnInit, OnDestroy {
   //sub to the route
   private sub: any;
 
-  public stationId = "";
+  public stationId: string;
 
-  public tabList = ['Details', 'Tableaux', 'Graphiques', 'Notes'];
-  public activeTab = this.tabList[0];
+  public tabList: string[];
+  public activeTab: string;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-
   ) {
   }
 
   ngOnInit() {
     const self = this;
 
+    self.stationId = "";
+    self.tabList = ['Details', 'Tableaux', 'Graphiques', 'Notes'];
+    self.activeTab = self.tabList[0];
+
     self.sub = self.route.params.subscribe((params) => {
       self.stationId = params['id'];
       self.activeTab = params['tab'];
-      if ( self.tabList.indexOf(self.activeTab) < 0) {
+      if (self.tabList.indexOf(self.activeTab) < 0) {
         self.activeTab = self.tabList[0];
         self.router.navigate(['/stations', self.stationId, self.activeTab])
       }
-
     });
   }
 
