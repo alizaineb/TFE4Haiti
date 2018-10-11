@@ -2,6 +2,8 @@
 const logger = require('../config/logger');
 const Station = require('./../models/station');
 const states = require('../config/constants').stationState;
+const checkParamObj = require('./utils').checkParamObj;
+
 
 
 exports.get = function(req, res) {
@@ -21,27 +23,29 @@ exports.getById = function(req, res) {
 };
 
 exports.create = function(req, res) {
-  console.log(req);
-  let station = req.body.station;
-  let sTmp = new Station.stationModel();
-  sTmp.name = station.name;
-  sTmp.latitude = station.latitude;
-  sTmp.longitude = station.longitude;
-  sTmp.altitude = station.altitude;
-  sTmp.createdAt = new Date(station.createdAt);
-  //sTmp.last_update = Date.now();
-  // TODO Picture
-  // sTmp.picture = station.picture;
-  sTmp.state = states.AWAITING;
-  sTmp.interval = station.interval;
-  sTmp.users = [];
+  checkParamObj(req.body.station, res, ["name", "latitude","longitude","altitude","createdAt","interval"], function() {
 
-  sTmp.save().then(() => {
-    return res.status(201).send(sTmp);
-  }).catch(function(err) {
-    logger.error(err);
-    return res.status(500).send(err);
-  })
+    let station = req.body.station;
+    let sTmp = new Station.stationModel();
+    sTmp.name = station.name;
+    sTmp.latitude = station.latitude;
+    sTmp.longitude = station.longitude;
+    sTmp.altitude = station.altitude;
+    sTmp.createdAt = new Date(station.createdAt);
+    //sTmp.last_update = Date.now();
+    // TODO Picture
+    // sTmp.picture = station.picture;
+    sTmp.state = states.AWAITING;
+    sTmp.interval = station.interval;
+    sTmp.users = [];
+
+    sTmp.save().then(() => {
+      return res.status(201).send(sTmp);
+    }).catch(function (err) {
+      logger.error(err);
+      return res.status(500).send(err);
+    })
+  });
 };
 
 exports.update = function(req, res) {
