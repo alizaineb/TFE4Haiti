@@ -23,7 +23,7 @@ export class StationsService {
   }
 
   register(station: Station) {
-    return this.http.post(environment.apiUrl + '/stations', JSON.stringify({station}));
+    return this.http.post(environment.apiUrl + '/stations', station);
   }
 
   update(station) {

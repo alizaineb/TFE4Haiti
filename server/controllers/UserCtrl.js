@@ -77,7 +77,7 @@ exports.getByEmail = function(req, res) {
 exports.create = function(req, res) {
   // TODO Check mail
   let uTmp = new UsersModel.userModel();
-  let user = req.body
+  let user = req.body;
   uTmp.first_name = user.first_name;
   uTmp.last_name = user.last_name;
   uTmp.mail = user.mail;
