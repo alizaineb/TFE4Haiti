@@ -1,3 +1,52 @@
-<p>
-  details works!
-</p>
+<div class="row details" >
+  <div class="col-md-7" *ngIf="currentStation">
+    <div class="row">
+      <div class="col-md-12">
+        <h5>Nom : </h5>
+      </div>
+      <div class="col-md-11 offset-md-1">
+        <h2>{{currentStation.name}}</h2>
+      </div>
+
+      <div class="col-md-12">
+        <h5>Interval : </h5>
+      </div>
+      <div class="col-md-11 offset-md-1">
+        <h4>{{currentStation.interval}}</h4>
+      </div>
+
+      <div class="col-md-12">
+        <h5>Coordonnées : </h5>
+      </div>
+      <div class="col-md-11 offset-md-1">
+        <h5>{{currentStation.latitude}}, {{currentStation.longitude}}</h5>
+      </div>
+      <div class="col-md-12">
+        <h5>Altitude : </h5>
+      </div>
+      <div class="col-md-11 offset-md-1">
+        <h5>{{currentStation.altitude || 'Pas d\'altitude renseigné'}}</h5>
+      </div>
+
+      <div class="col-md-12">
+        <h5>Date d'installation : </h5>
+      </div>
+      <div class="col-md-11 offset-md-1">
+        <h5>{{toNiceDate(currentStation.createdAt)}}</h5>
+      </div>
+      <div class="col-md-12">
+        <h5>Statut : </h5>
+      </div>
+      <div class="col-md-11 offset-md-1">
+        <h2>{{currentStation.state}}</h2>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 offset-1">
+    <div id="mapId">
+
+    </div>
+
+  </div>
+
+</div>

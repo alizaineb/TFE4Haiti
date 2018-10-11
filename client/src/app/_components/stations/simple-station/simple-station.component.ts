@@ -16,14 +16,12 @@ export class SimpleStationComponent implements OnInit, OnDestroy {
   public stationId = "";
 
   public tabList = ['Details', 'Tableaux', 'Graphiques', 'Notes'];
-  public activeC = [false, false, false, false,]
   public activeTab = this.tabList[0];
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private stationService: StationsService,
-    private alertService: AlertService
+
   ) {
   }
 
@@ -33,14 +31,11 @@ export class SimpleStationComponent implements OnInit, OnDestroy {
     self.sub = self.route.params.subscribe((params) => {
       self.stationId = params['id'];
       self.activeTab = params['tab'];
-      const index = self.tabList.indexOf(self.activeTab);
-      if ( index < 0) {
+      if ( self.tabList.indexOf(self.activeTab) < 0) {
         self.activeTab = self.tabList[0];
-        self.activeC[0] = true;
         self.router.navigate(['/stations', self.stationId, self.activeTab])
-      }else{
-        self.activeC[index] = true
       }
+
     });
   }
 
