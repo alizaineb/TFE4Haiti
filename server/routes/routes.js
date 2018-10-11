@@ -71,6 +71,16 @@ exports.routes = [
     middleWare: [controllers.users.delete],
     access: [roles.ADMIN]
   },
+  {
+    path: "/api/users/askResetPwd",
+    httpMethod: "POST",
+    middleWare: [controllers.users.askResetPwd]
+  },
+  {
+    path: "/api/users/resetPwd",
+    httpMethod: "POST",
+    middleWare: [controllers.users.resetPwd]
+  },
 
 
   // Méthodes liées aux stations
