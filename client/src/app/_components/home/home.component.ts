@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit {
 
   public allStations = [];
   private selectedStation = [];
-  public filteredStation=[];
+  public filteredStation = [];
   private mapContainer;
   private zoom = 8;
   private centerMap = [19.099041, -72.658473];
@@ -37,7 +37,7 @@ export class HomeComponent implements OnInit {
   generateMap() {
     const self = this;
 
-    if(self.mapContainer){
+    if (self.mapContainer) {
       self.mapContainer.off();
       self.mapContainer.remove();
     }
@@ -162,24 +162,24 @@ export class HomeComponent implements OnInit {
 
 
     L.control.layers(baseLayers, overlays).addTo(self.mapContainer);
-    self.mapContainer.on('zoomend', (e)=> {
+    self.mapContainer.on('zoomend', (e) => {
       self.zoom = e.target._animateToZoom;
     });
 
-    self.mapContainer.on('moveend', (e)=> {
+    self.mapContainer.on('moveend', (e) => {
       const center = self.mapContainer.getBounds().getCenter()
-       self.centerMap = [center.lat, center.lng];
+      self.centerMap = [center.lat, center.lng];
     });
 
-    self.mapContainer.on('baselayerchange', (e)=>{
+    self.mapContainer.on('baselayerchange', (e) => {
       console.log('maps layer change', e.layer)
     })
 
 
   }
 
-  getSelectedClass(station){
-    if(this.selectedStation.length == this.allStations.length){
+  getSelectedClass(station) {
+    if (this.selectedStation.length == this.allStations.length) {
       return false;
     }
     return this.selectedStation.indexOf(station) >= 0;
@@ -188,16 +188,20 @@ export class HomeComponent implements OnInit {
 
   toogleSelectionFor(station) {
     const self = this;
-    if(self.selectedStation.length == self.allStations.length){
+    if (self.selectedStation.length == self.allStations.length) {
       self.selectedStation = [];
     }
     const index = self.selectedStation.indexOf(station);
-    if(index == -1){
+    if (index == -1) {
       self.selectedStation.push(station);
       self.centerMap = [station.latitude, station.longitude];
-      self.zoom =12;
-    }else{
+    } else {
       self.selectedStation.splice(index, 1);
+      if (this.selectedStation.length == 0) {
+        self.zoom = 8;
+        self.centerMap = [19.099041, -72.658473];
+        self.selectedStation = self.allStations.slice(0);
+      }
     }
 
     self.generateMap();

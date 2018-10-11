@@ -3,3 +3,11 @@
   width: 100%;
 }
 
+.list-group{
+  max-height: 75vh;
+}
+
+.list-group{
+  overflow: hidden;
+  overflow-y: scroll;
+}
