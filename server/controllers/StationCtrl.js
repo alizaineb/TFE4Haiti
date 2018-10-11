@@ -2,6 +2,8 @@
 const logger = require('../config/logger');
 const Station = require('./../models/station');
 const states = require('../config/constants').stationState;
+const checkParam = require('./utils').checkParam;
+
 
 
 exports.get = function(req, res) {
@@ -17,31 +19,35 @@ exports.get = function(req, res) {
 
 exports.getById = function(req, res) {
   //TODO connect to mongodb
-  return res.status(200).send("Method to implements");
+  const id = req.params.id;
+  Station.stationModel.findOne({_id: id}).then(station =>{
+    return res.status(200).send(station);
+  });
 };
 
 exports.create = function(req, res) {
-  console.log(req);
-  let station = req.body.station;
-  let sTmp = new Station.stationModel();
-  sTmp.name = station.name;
-  sTmp.latitude = station.latitude;
-  sTmp.longitude = station.longitude;
-  sTmp.altitude = station.altitude;
-  sTmp.createdAt = new Date(station.createdAt);
-  //sTmp.last_update = Date.now();
-  // TODO Picture
-  // sTmp.picture = station.picture;
-  sTmp.state = states.AWAITING;
-  sTmp.interval = station.interval;
-  sTmp.users = [];
+  checkParam(req, res, ["name", "latitude","longitude","altitude","createdAt","interval"], function() {
+    let station = req.body;
+    let sTmp = new Station.stationModel();
+    sTmp.name = station.name;
+    sTmp.latitude = station.latitude;
+    sTmp.longitude = station.longitude;
+    sTmp.altitude = station.altitude;
+    sTmp.createdAt = new Date(station.createdAt);
+    //sTmp.last_update = Date.now();
+    // TODO Picture
+    // sTmp.picture = station.picture;
+    sTmp.state = states.AWAITING;
+    sTmp.interval = station.interval;
+    sTmp.users = [];
 
-  sTmp.save().then(() => {
-    return res.status(201).send(sTmp);
-  }).catch(function(err) {
-    logger.error(err);
-    return res.status(500).send(err);
-  })
+    sTmp.save().then(() => {
+      return res.status(201).send(sTmp);
+    }).catch(function (err) {
+      logger.error(err);
+      return res.status(500).send(err);
+    })
+  });
 };
 
 exports.update = function(req, res) {

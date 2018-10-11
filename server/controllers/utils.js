@@ -16,4 +16,4 @@ exports.checkParam = function(req, res, params, callback) {
     }
   }
   return callback();
-}
+};

@@ -124,9 +124,6 @@ exports.routes = [
 
 
 
-
-
-
   // Routes used to test
   {
     path: "/api/login/test",
