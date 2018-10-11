@@ -19,10 +19,10 @@ exports.login = function(req, res) {
 
     UsersModel.userModel.findOne({ mail: mail, state: userState.OK }, function(err, result) {
       if (err) {
-        return res.status(500).send({ error: "Impossible de créer cet utilisateur, veuillez contacter un administrateur." });
+        return res.status(500).send("Impossible de créer cet utilisateur, veuillez contacter un administrateur.");
       }
       if (!result) {
-        return res.status(404).send({ error: "Login et/ou mot de passe incorrect." });
+        return res.status(404).send("Login et/ou mot de passe incorrect.");
       } else {
         result.comparePassword(pwd, function(match) {
           if (match === true) {
@@ -36,10 +36,10 @@ exports.login = function(req, res) {
             } else {
               const err = "the server was unable to create a token.";
               logger.error(err);
-              return res.status(500, err);
+              return res.status(500).send(err);
             }
           } else {
-            return res.status(404).send({ error: "Login et/ou mot de passe incorrect." });
+            return res.status(404).send("Login et/ou mot de passe incorrect.");
           }
         });
       }
@@ -63,12 +63,12 @@ exports.get = function(req, res) {
 
 exports.getById = function(req, res) {
   //TODO connect to mongodb
-  return res.status(200).send({ message: "Method to implements" });
+  return res.status(200).send("Method to implements");
 };
 
 exports.getByEmail = function(req, res) {
   //TODO connect to mongodb
-  return res.status(200).send({ message: "Method to implements" });
+  return res.status(200).send("Method to implements");
 
 };
 
@@ -83,7 +83,7 @@ exports.create = function(req, res) {
   uTmp.role = roles.ADMIN; //TODO Change to VIEWER, it's admin for the developpement
   uTmp.state = userState.AWAITING;
   uTmp.save().then(() => {
-    return res.status(201).send({ message: uTmp.toDto() });
+    return res.status(201).send(uTmp.toDto());
   }).catch(function(err) {
     logger.error(err);
     return res.status(500).send(err);
@@ -92,14 +92,14 @@ exports.create = function(req, res) {
 
 exports.update = function(req, res) {
   //TODO connect to mongodb
-  return res.status(200).send({ message: "Method to implements" });
+  return res.status(200).send("Method to implements");
 };
 
 exports.delete = function(req, res) {
   let id = req.params.id;
   // console.log(id);
   let user = UsersModel.userModel.deleteOne({ _id: id }).then(() => {
-    return res.status(204).send({ deleted: "ok" }) //TODO remove body
+    return res.status(204).send("ok") //TODO remove body
   }).catch(function(err) {
     logger.error(err);
     return res.status(500).send(err);
@@ -108,13 +108,13 @@ exports.delete = function(req, res) {
 
 exports.logout = function(req, res) {
   //TODO connect to mongodb
-  return res.status(200).send({ message: "Method to implements" });
+  return res.status(200).send("Method to implements");
 };
 
 exports.getAllAwaiting = function(req, res) {
   UsersModel.userModel.find({ state: userState.AWAITING }, function(err, result) {
     if (err) {
-      return res.status(500).send({ error: "Erreur lors de la récupération des utilisateurs en attente." });
+      return res.status(500).send("Erreur lors de la récupération des utilisateurs en attente.");
     }
     if (!result) {
       return res.status(204);
@@ -122,7 +122,6 @@ exports.getAllAwaiting = function(req, res) {
       let tabS = [];
       result.forEach(user => tabS.push(user.toDto()));
       return res.status(200).send(tabS);
-      return res.status(200).send();
     }
   });
 }
@@ -135,13 +134,13 @@ exports.acceptUser = function(req, res) {
 
   UsersModel.userModel.find({ _id: id, state: userState.AWAITING }, function(err, result) {
     if (err) {
-      return res.status(500).send({ error: "Erreur lors de la récupération de l'utilisateur concerné." });
+      return res.status(500).send("Erreur lors de la récupération de l'utilisateur concerné.");
     }
 
     if (result.length > 1) {
-      return res.status(500).send({ error: "Ceci n'aurait jamais dû arriver." });
+      return res.status(500).send("Ceci n'aurait jamais dû arriver.");
     } else if (result.length == 0) {
-      return res.status(404).send({ error: "Aucun utilisateur correspondant." });
+      return res.status(404).send("Aucun utilisateur correspondant.");
     } else {
       let currUser = result[0];
       var mailOptions = {
@@ -154,7 +153,7 @@ exports.acceptUser = function(req, res) {
         currUser.state = userState.PASSWORD_CREATION;
         currUser.save(function(err, userUpdt) {
           if (err) {
-            return res.status(500).send({ error: "Erreur lors de la mise à jour de l'utilisateur concerné." });
+            return res.status(500).send("Erreur lors de la mise à jour de l'utilisateur concerné.");
           }
           return res.status(200).send();
         });
@@ -173,13 +172,13 @@ exports.refuseUser = function(req, res) {
     let reason = req.body.reason;
     UsersModel.userModel.find({ _id: id, state: userState.AWAITING }, function(err, result) {
       if (err) {
-        return res.status(500).send({ error: "Erreur lors de la récupération de l'utilisateur concerné." });
+        return res.status(500).send("Erreur lors de la récupération de l'utilisateur concerné.");
       }
 
       if (result.length > 1) {
-        return res.status(500).send({ error: "Ceci n'aurait jamais dû arriver." });
+        return res.status(500).send("Ceci n'aurait jamais dû arriver.");
       } else if (result.length == 0) {
-        return res.status(404).send({ error: "Aucun utilisateur correspondant." });
+        return res.status(404).send("Aucun utilisateur correspondant.");
       } else {
         // Lui envoyer un mail
         let currUser = result[0];
@@ -188,7 +187,7 @@ exports.refuseUser = function(req, res) {
           // Le supprimer de la db
           currUser.remove(function(err, userUpdt) {
             if (err) {
-              return res.status(500).send({ error: "Erreur lors de la suppression de l'utilisateur concerné." });
+              return res.status(500).send("Erreur lors de la suppression de l'utilisateur concerné.");
             }
             return res.status(200).send();
           });
@@ -204,5 +203,5 @@ exports.refuseUser = function(req, res) {
 
 
 exports.useless = function(req, res) {
-  return res.sendStatus(200, { message: "ok", error: "NON" });
+  return res.status(200).send("ok");
 };

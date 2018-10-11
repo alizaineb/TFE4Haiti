@@ -27,7 +27,7 @@ exports.sendMail = function(req, res, subject, to, text, callback) {
   };
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      return res.status(500).send({ error: "Erreur lors de l'envoi du mail à l'utilisateur." });
+      return res.status(500).send("Erreur lors de l'envoi du mail à l'utilisateur.");
     } else {
       return callback();
     }
