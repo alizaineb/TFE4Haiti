@@ -9,7 +9,7 @@ const tokenManager = require('./../config/tokenManager');
 const roles = require('../config/constants').roles;
 const userState = require('../config/constants').userState;
 const checkParam = require('./utils').checkParam;
-const mailTransporter = require('./mailer').transporter;
+const mailTransporter = require('./mailer');
 
 exports.login = function(req, res) {
   checkParam(req, res, ["mail", "pwd"], function() {
@@ -150,19 +150,14 @@ exports.acceptUser = function(req, res) {
         subject: nconf.get('mail').subjectCreationAccOk,
         text: 'This is a test'
       };
-      mailTransporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          console.log(error);
-          return res.status(500).send({ error: "Erreur lors de l'envoi du mail à l'utilisateur." });
-        } else {
-          currUser.state = userState.PASSWORD_CREATION;
-          currUser.save(function(err, userUpdt) {
-            if (err) {
-              return res.status(500).send({ error: "Erreur lors de la mise à jour de l'utilisateur concerné." });
-            }
-            return res.status(200).send();
-          });
-        }
+      mailTransporter.sendMail(req, res, nconf.get('mail').subjectCreationAccOk, currUser.mail, "OK", () => {
+        currUser.state = userState.PASSWORD_CREATION;
+        currUser.save(function(err, userUpdt) {
+          if (err) {
+            return res.status(500).send({ error: "Erreur lors de la mise à jour de l'utilisateur concerné." });
+          }
+          return res.status(200).send();
+        });
       });
     }
   });
@@ -189,27 +184,14 @@ exports.refuseUser = function(req, res) {
         // Lui envoyer un mail
         let currUser = result[0];
         let text = 'Bonjour ' + currUser.first_name + ' ' + currUser.last_name + ',\n\nVotre demande de compte a été refusée.\nRaison :  \n"' + ((reason.trim().length > 0) ? reason : 'Pas de raison donnée par l\'administrateur') + '"\n\nLes informations vont concernant sont supprimées.\n\nBien à vous';
-        //console.log(text);
-        //console.log(currUser);
-        var mailOptions = {
-          from: nconf.get('mail').user,
-          to: currUser.mail,
-          subject: nconf.get('mail').subjectCreationAccRefused,
-          text: text
-        };
-        mailTransporter.sendMail(mailOptions, (error, info) => {
-          if (error) {
-            console.log(error);
-            return res.status(500).send({ error: "Erreur lors de l'envoi du mail à l'utilisateur." });
-          } else {
-            // Le supprimer de la db
-            currUser.remove(function(err, userUpdt) {
-              if (err) {
-                return res.status(500).send({ error: "Erreur lors de la suppression de l'utilisateur concerné." });
-              }
-              return res.status(200).send();
-            });
-          }
+        mailTransporter.sendMail(req, res, nconf.get('mail').subjectCreationAccRefused, currUser.mail, text, () => {
+          // Le supprimer de la db
+          currUser.remove(function(err, userUpdt) {
+            if (err) {
+              return res.status(500).send({ error: "Erreur lors de la suppression de l'utilisateur concerné." });
+            }
+            return res.status(200).send();
+          });
         });
       }
     });

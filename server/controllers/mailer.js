@@ -4,7 +4,7 @@ const nodemailer = require('nodemailer');
 const nconf = require('nconf');
 
 // TODO Enlever reject unautorized à la fin.
-exports.transporter = nodemailer.createTransport({
+var transporter = nodemailer.createTransport({
   host: nconf.get('mail').host,
   port: nconf.get('mail').port,
   secure: nconf.get('mail').secure,
@@ -17,6 +17,22 @@ exports.transporter = nodemailer.createTransport({
   }
 });
 
+
+exports.sendMail = function(req, res, subject, to, text, callback) {
+  var mailOptions = {
+    from: nconf.get('mail').user,
+    to: to,
+    subject: subject,
+    text: text
+  };
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return res.status(500).send({ error: "Erreur lors de l'envoi du mail à l'utilisateur." });
+    } else {
+      return callback();
+    }
+  });
+}
 // How to use it :
 /*
 var mailOptions = {
