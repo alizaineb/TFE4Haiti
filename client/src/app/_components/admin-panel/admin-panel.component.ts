@@ -11,11 +11,17 @@ import { AlertService } from '../../_services/index';
 export class AdminPanelComponent implements OnInit {
 
   currUser: string;
+  showUsers: boolean;
+  showStations: boolean;
+  showDatas: boolean;
 
   headers: string[];
   users = [];
   constructor(private userService: UserService, private alertService: AlertService) {
     this.headers = ["Nom", "Prénom", "Adresse mail", "Date de création"];
+    this.showUsers = false;
+    this.showStations = false;
+    this.showDatas = false;
   }
 
   ngOnInit() {
@@ -31,15 +37,20 @@ export class AdminPanelComponent implements OnInit {
           usr.niceDate = self.toNiceDate(new Date(usr.created_at));
         }
         self.users = res;
+        if (res.length > 0) {
+          this.showUsers = true;
+        } else {
+          this.showUsers = false;
+        }
       });
   }
 
   loadAwaitingStation() {
-
+    this.showStations = false;
   }
 
   loadAwaitingData() {
-
+    this.showDatas = false;
   }
 
   setCurrUser(id: string) {

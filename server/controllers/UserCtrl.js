@@ -189,7 +189,8 @@ exports.refuseUser = function(req, res) {
         // Lui envoyer un mail
         let currUser = result[0];
         let text = 'Bonjour ' + currUser.first_name + ' ' + currUser.last_name + ',\n\nVotre demande de compte a été refusée.\nRaison :  \n"' + ((reason.trim().length > 0) ? reason : 'Pas de raison donnée par l\'administrateur') + '"\n\nLes informations vont concernant sont supprimées.\n\nBien à vous';
-        console.log(text);
+        //console.log(text);
+        //console.log(currUser);
         var mailOptions = {
           from: nconf.get('mail').user,
           to: currUser.mail,
@@ -198,6 +199,7 @@ exports.refuseUser = function(req, res) {
         };
         mailTransporter.sendMail(mailOptions, (error, info) => {
           if (error) {
+            console.log(error);
             return res.status(500).send({ error: "Erreur lors de l'envoi du mail à l'utilisateur." });
           } else {
             // Le supprimer de la db

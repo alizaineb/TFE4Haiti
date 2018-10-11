@@ -87,7 +87,7 @@ function createDefaultCfgFile(callback) {
   nconf.set('mail:port', '');
   nconf.set('mail:user', '');
   nconf.set('mail:pwd', '');
-  nconf.set('mail:secure', '');
+  nconf.set('mail:secure', true);
   nconf.set('mail:subjectCreationAccOk', '');
   nconf.set('mail:subjectCreationAccRefused', '');
 
@@ -163,7 +163,7 @@ function checkCfg(callback) {
     cfgModified = true;
   }
   if (typeof nconf.get('mail:secure') === "undefined") {
-    nconf.set('mail:secure', '');
+    nconf.set('mail:secure', true);
     cfgModified = true;
   }
   if (typeof nconf.get('mail:subjectCreationAccOk') === "undefined") {
