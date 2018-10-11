@@ -82,8 +82,9 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked{
   onSubmit() { this.submitted = true; }
 
   resetStation() {
+    this.addStationForm.reset();
     this.datePicker.setDate(null);
-    this.map.removeLayer(this.mark)
+    this.map.removeLayer(this.mark);
   }
 
   sendStation(){
@@ -162,6 +163,7 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked{
       'Opentopomap': mapLayer2,
       'OpenStreetMap': mapLayer3
     };
+
 
     this.map = L.map('mapid', {
       center: [19.099041, -72.658473],
