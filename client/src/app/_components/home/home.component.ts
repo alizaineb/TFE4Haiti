@@ -85,7 +85,7 @@ export class HomeComponent implements OnInit {
       awaiting: L.layerGroup(),
       broken: L.layerGroup(),
       deleted: L.layerGroup()
-    }
+    };
 
 
     let station;

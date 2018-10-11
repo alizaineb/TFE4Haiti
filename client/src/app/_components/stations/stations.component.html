@@ -1,12 +1,16 @@
 <h1>Gestion de mes stations </h1>
 
-<label>Recherche:
-  <input type="text">
-</label>
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+  </div>
+  <input type="text" class="form-control" placeholder="Nom d'une station" aria-label="Recherche" aria-describedby="basic-addon1" (keyup)="filterStation($event)">
+  <!-- Button trigger modal -->
+  <i class="float-right fas fa-plus-circle fa-2x" data-toggle="modal" data-target="#addStationModal">
+  </i>
 
-<!-- Button trigger modal -->
-<i class="float-right fas fa-plus-circle fa-2x" data-toggle="modal" data-target="#addStationModal">
-</i>
+</div>
+
 
 
 
@@ -23,7 +27,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let station of stations; index as i;">
+    <tr *ngFor="let station of stationsFiltered; index as i;">
       <td>{{i+1}}</td>
       <td>{{station.name}}</td>
       <td>{{station.latitude}}</td>
