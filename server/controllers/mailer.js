@@ -33,6 +33,22 @@ exports.sendMail = function(req, res, subject, to, text, callback) {
     }
   });
 }
+
+exports.sendMailAndIgnoreIfMailInvalid = function(req, res, subject, to, text, callback) {
+  var mailOptions = {
+    from: nconf.get('mail').user,
+    to: to,
+    subject: subject,
+    text: text
+  };
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return callback();
+    } else {
+      return callback();
+    }
+  });
+}
 // How to use it :
 /*
 var mailOptions = {

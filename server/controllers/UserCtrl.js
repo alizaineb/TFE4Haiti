@@ -183,7 +183,7 @@ exports.refuseUser = function(req, res) {
         // Lui envoyer un mail
         let currUser = result[0];
         let text = 'Bonjour ' + currUser.first_name + ' ' + currUser.last_name + ',\n\nVotre demande de compte a été refusée.\nRaison :  \n"' + ((reason.trim().length > 0) ? reason : 'Pas de raison donnée par l\'administrateur') + '"\n\nLes informations vont concernant sont supprimées.\n\nBien à vous';
-        mailTransporter.sendMail(req, res, nconf.get('mail').subjectCreationAccRefused, currUser.mail, text, () => {
+        mailTransporter.sendMailAndIgnoreIfMailInvalid(req, res, nconf.get('mail').subjectCreationAccRefused, currUser.mail, text, (resp) => {
           // Le supprimer de la db
           currUser.remove(function(err, userUpdt) {
             if (err) {

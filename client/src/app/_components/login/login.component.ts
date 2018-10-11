@@ -1,10 +1,10 @@
-﻿import {Component, OnInit} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {first} from 'rxjs/operators';
+﻿import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { first } from 'rxjs/operators';
 
-import {AlertService, AuthenticationService} from '../../_services/index';
-import {LocalstorageService} from "../../_services/localstorage.service";
+import { AlertService, AuthenticationService } from '../../_services/index';
+import { LocalstorageService } from "../../_services/localstorage.service";
 
 @Component({
   templateUrl: 'login.component.html',
@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
       first_name: ['', Validators.required],
       last_name: ['', Validators.required]
     });
-    
+
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
@@ -90,7 +90,7 @@ export class LoginComponent implements OnInit {
       .subscribe(
         data => {
           this.router.navigate(["/login"]);
-          this.alertService.success("Votre compte a été créé! Vous pouvez vous connectez.");
+          this.alertService.success("Votre compte a été créé !Veuillez attendre la validation par l'administrateur.");
           this.loading = false;
         },
         error => {
