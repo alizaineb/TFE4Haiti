@@ -18,7 +18,7 @@ export class AskresetComponent implements OnInit {
     this.forgetForm = new FormGroup({
       'mail': new FormControl('', [
         Validators.required
-      ]);
+      ])
     });
   }
 

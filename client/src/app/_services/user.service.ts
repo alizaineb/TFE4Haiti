@@ -45,4 +45,8 @@ export class UserService {
     return this.http.post(environment.apiUrl + '/users/askResetPwd', { mail: mail });
   }
 
+  changePwd(pwd: String, pwdConf: String, url: String) {
+    return this.http.post(environment.apiUrl + '/users/resetPwd', { pwd1: pwd, pwd2: pwdConf, urlReset: url });
+  }
+
 }

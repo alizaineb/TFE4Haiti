@@ -215,14 +215,67 @@ exports.askResetPwd = function(req, res) {
 }
 
 exports.resetPwd = function(req, res) {
-  checkParam(req, res, ["mdp1", "mdp2", "mail", "urlReset"], () => {
+  checkParam(req, res, ["pwd1", "pwd2", "urlReset"], () => {
+    let pwd1 = req.body.pwd1;
+    let pwd2 = req.body.pwd2;
+    let url = req.body.urlReset;
+
     // check mdp1 == mdp2
+    if (pwd1 != pwd2) {
+      return res.status(400).send("Mot de passe différents");
+    }
+    PwdRecoveryModel.pwdRecoveryModel.find({ url: url }, (err, result) => {
+      if (err) {
+        return res.status(500).send("Erreur lors de la récupération du lien de reset concerné.");
+      }
+      if (result.length > 1) {
+        return res.status(500).send("Ceci n'aurait jamais dû arriver.");
+      } else if (result.length == 0) {
+        return res.status(400).send("Lien inexistant ou déjà utilisé.");
+      } else {
+        let urlObj = result[0];
+        UsersModel.userModel.find({ _id: urlObj.user }, function(err, result) {
+          if (err) {
+            return res.status(500).send("Erreur lors de la récupération de l'utilisateur concerné.");
+          }
+          if (result.length > 1) {
+            return res.status(500).send("Ceci n'aurait jamais dû arriver.");
+          } else if (result.length == 0) {
+            // /!\ Est bien un retour 200 pour des raisons de sécurité on ne peut pas renvoyer une 404, sinon il devient possible de brute forcer la liste des liesn de reset /!\
+            return res.status(500).send("Utilisateur supprimé entre temps");
+          } else {
+            // check user en mode pwd_creation
+            let usr = result[0];
+            if (usr.state != userState.PASSWORD_CREATION) {
+              return res.status(500).send("L'utilisateur n'est pas dans l'état requis");
+            } else {
+              // Check pas expiré
+              var date = new Date();
+              if (date.getTime() < (urlObj.date.getTime() + (urlObj.duration * 1000))) {
+                usr.pwd = pwd1;
+                usr.state = userState.OK;
+                usr.save((err) => {
+                  if (err) {
+                    logger.error(err);
+                    return res.status(500).send("Une erreur est survenue lors de la mise à jour du mot de passe");
+                  } else {
+                    urlObj.remove(function(err, userUpdt) {
+                      if (err) {
+                        return res.status(500).send("Erreur lors de la suppression du lien d'utlisation");
+                      }
+                      return res.status(200).send();
+                    });
+                  }
+                });
+              } else {
+                return res.status(400).send("Malheureusement vous avez mis trop de temps pour changer votre mot de passe, le lien utilisé est écoulé.");
+              }
+            }
+          }
 
-    // check user en mode pwd_creation
-
-    // Check pas expiré
-
-    return res.status(200).send();
+        });
+      }
+    });
   });
 }
 
@@ -248,7 +301,7 @@ function sendEmailReset(req, res, user, isUserRequest) {
   } else {
     pwdTmp.duration = nconf.get("user").accountAcceptedTime;
   }
-  let urlTotal = origin + '/login/reset/' + url;
+  let urlTotal = origin + '/login/reset/' + (isUserRequest ? 'u' : 'a') + '/' + url;
   pwdTmp.save((err) => {
     if (err) {
       logger.error(err);
