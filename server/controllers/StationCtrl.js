@@ -2,6 +2,7 @@
 const logger = require('../config/logger');
 const Station = require('./../models/station');
 const states = require('../config/constants').stationState;
+const checkParam = require('./utils').checkParam;
 
 
 exports.get = function(req, res) {
@@ -17,7 +18,10 @@ exports.get = function(req, res) {
 
 exports.getById = function(req, res) {
   //TODO connect to mongodb
-  return res.status(200).send("Method to implements");
+  const id = req.params.id;
+  Station.stationModel.findOne({_id: id}).then(station =>{
+    return res.status(200).send(station);
+  });
 };
 
 exports.create = function(req, res) {

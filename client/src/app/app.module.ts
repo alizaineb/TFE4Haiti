@@ -41,7 +41,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 ;
 import {RefuseUserModalComponent} from './_components/admin-panel/refuse-user-modal/refuse-user-modal.component'
   ;
-import {DetailsStationComponent} from './_components/stations/details-station/details-station.component'
+import {SimpleStationComponent} from './_components/stations/simple-station/simple-station.component'
 
 @NgModule({
   imports: [
@@ -71,7 +71,7 @@ import {DetailsStationComponent} from './_components/stations/details-station/de
     UpdateSationModalComponent,
     AskresetComponent,
     RefuseUserModalComponent,
-    DetailsStationComponent,
+    SimpleStationComponent,
   ],
 
   providers: [

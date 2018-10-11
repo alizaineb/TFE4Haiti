@@ -1,0 +1,19 @@
+<ul class="nav nav-tabs">
+
+  <!-- Tab Detail d'une station -->
+  <li class="nav-item" *ngFor="let tab of tabList">
+    <a [ngClass]="{
+          'nav-link':true,
+          'active': getSelectedClass(tab)
+          }"
+       [routerLink]="['/stations', stationId, tab]"
+       (click)="selectTab(tab)"
+    >
+      {{tab}}
+    </a>
+  </li>
+</ul>
+
+
+
+
