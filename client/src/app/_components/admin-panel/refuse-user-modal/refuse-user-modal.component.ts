@@ -38,7 +38,8 @@ export class RefuseUserModalComponent implements OnInit {
 
   refuseUser() {
     let self = this;
-    this.userService.refuseUser(this.currUser, this.sendFeedbackForm.get("note").value)
+    let note = ((self.sendFeedbackForm.get("note").value) == null ? "" : self.sendFeedbackForm.get("note").value;
+    this.userService.refuseUser(self.currUser, note)
       .pipe(first())
       .subscribe(result => {
         this.sendFeedbackForm.reset();
