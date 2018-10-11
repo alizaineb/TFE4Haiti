@@ -239,7 +239,7 @@ function getRandomString() {
 function sendEmailReset(req, res, user, isUserRequest) {
   // Création de l'objet permettant de reset le mdp
   let pwdTmp = new PwdRecoveryModel.pwdRecoveryModel();
-  let url = crypto.randomBytes(64).toString('hex');
+  let url = crypto.randomBytes(32).toString('hex');
   let origin = req.get('origin');
   pwdTmp.user = user._id;
   pwdTmp.url = url
@@ -257,15 +257,14 @@ function sendEmailReset(req, res, user, isUserRequest) {
     // On envoie le mail
     let text = 'Bonjour ' + user.first_name + ' ' + user.last_name +
       ',\n\nVoici le lien avec lequel vous avez la possibilité de ' + (isUserRequest ? 'changer' : 'créer') +
-      '  votre mot de passe : \n' +
+      ' votre mot de passe : \n' +
       urlTotal +
       (isUserRequest ? '\n\nSi vous n\'avez pas effectué cette requête, veuillez contacter l\'administrateur' : '') +
       '\n\n Bien à vous';
-    console.log(text);
     mailTransporter.sendMail(req, res, nconf.get('mail').changePwd, user.mail, text, () => {
-      currUser.state = userState.PASSWORD_CREATION;
+      user.state = userState.PASSWORD_CREATION;
       // On met à jour l'utilisateur
-      currUser.save(function(err, userUpdt) {
+      user.save(function(err, userUpdt) {
         if (err) {
           return res.status(500).send("Erreur lors de la mise à jour de l'utilisateur concerné.");
         }
