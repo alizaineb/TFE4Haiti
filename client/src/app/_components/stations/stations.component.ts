@@ -69,9 +69,9 @@ export class StationsComponent implements OnInit {
       switch (headName) {
         case "Nom":
           if(this.stationsFiltered[0].name < this.stationsFiltered[1].name){
-            this.stationsFiltered.sort((val1:Station, val2:Station)=> {return val1.name > val2.name ? -1 : 1});
+            this.stationsFiltered.sort((val1:Station, val2:Station)=> {return val1.name.toLowerCase() > val2.name.toLowerCase() ? -1 : 1});
           } else {
-            this.stationsFiltered.sort((val1:Station, val2:Station)=> {return val2.name > val1.name ? -1 : 1});
+            this.stationsFiltered.sort((val1:Station, val2:Station)=> {return val2.name.toLowerCase() > val1.name.toLowerCase() ? -1 : 1});
           }
           break;
         case "Latitude":
