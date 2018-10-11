@@ -16,9 +16,14 @@
           }"
           (click)="toogleSelectionFor(station)"
       >
-        <a [routerLink]="['/stations', station._id]">{{station.name}}</a>
-        <i *ngIf="getSelectedClass(station)" class="fas fa-check-circle "></i>
-        <i *ngIf="!getSelectedClass(station)" class="far fa-circle "></i>
+        {{station.name}}
+
+        <div>
+          <i *ngIf="getSelectedClass(station)" class="fas fa-check-circle "></i>
+          <i *ngIf="!getSelectedClass(station)" class="far fa-circle "></i>
+          <a class="details" [routerLink]="['/stations', station._id]"> <i class="fas fa-info-circle"></i> </a>
+        </div>
+
       </li>
     </ul>
   </div>

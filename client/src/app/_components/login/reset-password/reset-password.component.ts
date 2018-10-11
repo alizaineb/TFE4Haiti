@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AlertService, AuthenticationService } from "../../../_services";
+import { ActivatedRoute, Router } from "@angular/router";
 import { first } from 'rxjs/operators';
 
 @Component({
@@ -13,15 +14,25 @@ export class ResetPasswordComponent implements OnInit {
   pwdSubmited = false;
   pwdNotMatch = false;
 
+  private sub: any;
+  private id: string;
+
   constructor(private formBuilder: FormBuilder,
-              private authenticationService: AuthenticationService,
-              private alertService: AlertService) {
+    private authenticationService: AuthenticationService,
+    private alertService: AlertService,
+    private route: ActivatedRoute,
+    private router: Router) {
   }
 
   ngOnInit() {
     this.pwdForm = this.formBuilder.group({
       pwd: ['', Validators.required],
       pwdConf: ['', Validators.required],
+    });
+
+    const self = this;
+    self.sub = self.route.params.subscribe((params) => {
+      self.id = params['id'];
     });
   }
 
