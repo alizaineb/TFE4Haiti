@@ -16,7 +16,7 @@
           }"
           (click)="toogleSelectionFor(station)"
       >
-        {{station.name}}
+        <a [routerLink]="['/stations', station._id]">{{station.name}}</a>
       </li>
     </ul>
   </div>
