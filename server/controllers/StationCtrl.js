@@ -22,7 +22,11 @@ exports.getById = function(req, res) {
   const id = req.params.id;
   Station.stationModel.findOne({_id: id}).then(station =>{
     return res.status(200).send(station);
-  });
+  },
+    err => {
+      res.status(500).send("Station inexistante...");
+    }
+    );
 };
 
 exports.create = function(req, res) {
