@@ -90,6 +90,8 @@ function createDefaultCfgFile(callback) {
   nconf.set('mail:secure', true);
   nconf.set('mail:subjectCreationAccOk', '');
   nconf.set('mail:subjectCreationAccRefused', '');
+  nconf.set('user:accountAcceptedTime', 60 * 60 * 24 * 7); // Une semaine
+  nconf.set('user:changePwdTime', 60 * 60 * 24); // Un jour
 
   nconf.save(function(err) {
     fs.readFile(fullConfigFileName, function(err, data) {
@@ -172,6 +174,14 @@ function checkCfg(callback) {
   }
   if (typeof nconf.get('mail:subjectCreationAccRefused') === "undefined") {
     nconf.set('mail:subjectCreationAccRefused', '');
+    cfgModified = true;
+  }
+  if (typeof nconf.get('user:accountAcceptedTime') === "undefined") {
+    nconf.set('user:accountAcceptedTime', 60 * 60 * 24 * 7); // Une semaine
+    cfgModified = true;
+  }
+  if (typeof nconf.get('user:changePwdTime') === "undefined") {
+    nconf.set('user:changePwdTime', 60 * 60 * 24); // Un jour
     cfgModified = true;
   }
   // La configuration a été changée

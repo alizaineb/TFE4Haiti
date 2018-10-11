@@ -1,6 +1,7 @@
 'use strict';
 // Modules node
 const nconf = require('nconf');
+var crypto = require('crypto');
 
 // Nos modules
 const logger = require('../config/logger');
@@ -10,6 +11,7 @@ const roles = require('../config/constants').roles;
 const userState = require('../config/constants').userState;
 const checkParam = require('./utils').checkParam;
 const mailTransporter = require('./mailer');
+const pwdRecovery = require('./../models/pwdRecovery');
 
 exports.login = function(req, res) {
   checkParam(req, res, ["mail", "pwd"], function() {
@@ -143,13 +145,9 @@ exports.acceptUser = function(req, res) {
       return res.status(404).send("Aucun utilisateur correspondant.");
     } else {
       let currUser = result[0];
-      var mailOptions = {
-        from: nconf.get('mail').user,
-        to: currUser.mail,
-        subject: nconf.get('mail').subjectCreationAccOk,
-        text: 'This is a test'
-      };
-      mailTransporter.sendMail(req, res, nconf.get('mail').subjectCreationAccOk, currUser.mail, "OK", () => {
+      // create code to go on website
+      text = "";
+      mailTransporter.sendMail(req, res, nconf.get('mail').subjectCreationAccOk, currUser.mail, text, () => {
         currUser.state = userState.PASSWORD_CREATION;
         currUser.save(function(err, userUpdt) {
           if (err) {
@@ -201,7 +199,15 @@ exports.refuseUser = function(req, res) {
 
 
 
+// Private function
+function getRandomString() {
+  crypto.randomBytes(64, function(ex, buf) {
+    if (ex) throw ex;
+    return buf.toString('hex');
+  });
+}
 
+// used to tetst some routes
 exports.useless = function(req, res) {
   return res.status(200).send("ok");
 };
