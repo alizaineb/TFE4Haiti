@@ -128,11 +128,7 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
         result => {
           //trigger sent
           this.updated.emit(true);
-          //Fermer la page
-          let element: HTMLElement = document.getElementsByClassName('btn')[1] as HTMLElement;
-          element.click();
-          //this.resetStation();
-          this.alertService.success("La station a été ajoutée");
+          this.alertService.success("La station a été modifiée");
         },
         error => {
           this.alertService.error(error);

@@ -8,7 +8,7 @@ exports.checkParam = function(req, res, params, callback) {
     if (req.body.hasOwnProperty(params[i])) {
       if (!req.body[params[i]]) {
         return res.status(400).send("Information manquante(s)");
-      } else if (typeof(req.body[params[i]]) === 'string' && req.body[params[i]].trim().length == 0) {
+      } else if (typeof(req.body[params[i]]) === 'string' && req.body[params[i]].trim().length === 0) {
         return res.status(400).send("Information manquante(s)");
       }
     } else {
