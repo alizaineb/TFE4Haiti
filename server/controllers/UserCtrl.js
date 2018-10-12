@@ -76,20 +76,22 @@ exports.getByEmail = function(req, res) {
 
 exports.create = function(req, res) {
   // TODO Check mail
-  let uTmp = new UsersModel.userModel();
-  let user = req.body;
-  uTmp.first_name = user.first_name;
-  uTmp.last_name = user.last_name;
-  uTmp.mail = user.mail;
-  uTmp.pwd = user.pwd;
-  uTmp.role = roles.ADMIN; //TODO Change to VIEWER, it's admin for the developpement
-  uTmp.state = userState.AWAITING;
-  uTmp.save().then(() => {
-    return res.status(201).send(uTmp.toDto());
-  }).catch(function(err) {
-    logger.error(err);
-    return res.status(500).send("Une erreur est survenue lors de la création de l'utilisateur");
-  })
+  checkParam(req, res, ["first_name", "last_name", "mail"], () => {
+
+    let uTmp = new UsersModel.userModel();
+    let user = req.body;
+    uTmp.first_name = user.first_name;
+    uTmp.last_name = user.last_name;
+    uTmp.mail = user.mail;
+    uTmp.role = roles.ADMIN; //TODO Change to VIEWER, it's admin for the developpement
+    uTmp.state = userState.AWAITING;
+    uTmp.save().then(() => {
+      return res.status(201).send(uTmp.toDto());
+    }).catch(function(err) {
+      logger.error(err);
+      return res.status(500).send("Une erreur est survenue lors de la création de l'utilisateur");
+    });
+  });
 };
 
 exports.update = function(req, res) {

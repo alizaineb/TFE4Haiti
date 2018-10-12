@@ -1,9 +1,9 @@
-﻿import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {map} from 'rxjs/operators';
+﻿import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
-import {environment} from '../../environments/environment';
-import {LocalstorageService} from "./localstorage.service";
+import { environment } from '../../environments/environment';
+import { LocalstorageService } from "./localstorage.service";
 
 @Injectable()
 export class AuthenticationService {
@@ -11,7 +11,7 @@ export class AuthenticationService {
   }
 
   login(username: string, password: string) {
-    return this.http.post<any>(environment.apiUrl + '/users/login', {mail: username, pwd: password})
+    return this.http.post<any>(environment.apiUrl + '/users/login', { mail: username, pwd: password })
       .pipe(map(user => {
         // login successful if there's a jwt token in the response
         if (user && user.token) {
@@ -23,10 +23,10 @@ export class AuthenticationService {
       }));
   }
 
-  isLogged(){
+  isLogged() {
     return this.http.get<any>(environment.apiUrl + '/login/test')
       .pipe(map(() => {
-        
+
       }));
   }
 
@@ -35,12 +35,11 @@ export class AuthenticationService {
     this.localStorageService.removeItem('currentUser');
   }
 
-  register(first_name: string, last_name: string, username: string, password: string) {
+  register(first_name: string, last_name: string, username: string) {
     return this.http.post<any>(environment.apiUrl + '/users', {
       first_name: first_name,
       last_name: last_name,
-      mail: username,
-      pwd: password
+      mail: username
     })
       .pipe(map(user => {
         // login successful if there's a jwt token in the response

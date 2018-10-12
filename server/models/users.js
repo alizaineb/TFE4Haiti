@@ -11,7 +11,7 @@ const User = new Schema({
   first_name: { type: String, required: true },
   last_name: { type: String, required: true },
   mail: { type: String, required: true, unique: true },
-  pwd: { type: String, required: true },
+  pwd: { type: String },
   created_at: { type: Date, default: Date.now },
   last_seen: { type: Date, default: Date.now },
   role: { type: String, enum: [roles.ADMIN, roles.WORKER, roles.VIEWER], required: true },
