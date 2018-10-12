@@ -61,11 +61,7 @@ exports.routes = [
     middleWare: [controllers.users.refuseUser],
     access: [roles.ADMIN]
   },
-  {
-    path: "/api/users/:id",
-    httpMethod: "GET",
-    middleWare: [controllers.users.getById]
-  },
+
   {
     path: "/api/users/:id",
     httpMethod: "DELETE",
@@ -82,9 +78,25 @@ exports.routes = [
     httpMethod: "POST",
     middleWare: [controllers.users.resetPwd]
   },
+    {
+        path: "/api/users/:id",
+        httpMethod: "GET",
+        middleWare: [controllers.users.getById]
+    },
 
 
   // Méthodes liées aux stations
+    {
+        path: "/api/stations/getAllAwaiting", //TODO Changer ce nom
+        httpMethod: "GET",
+        middleWare: [controllers.stations.getAllAwaiting],
+        access: [roles.ADMIN]
+    },
+    {
+        path: "/api/stations/getInfo/intervals",
+        httpMethod: "GET",
+        middleWare: [controllers.stations.getintervals]
+    },
   {
     path: "/api/stations",
     httpMethod: "POST",
@@ -96,11 +108,7 @@ exports.routes = [
     httpMethod: "GET",
     middleWare: [controllers.stations.get]
   },
-  {
-    path: "/api/stations/:id",
-    httpMethod: "GET",
-    middleWare: [controllers.stations.getById]
-  },
+
   {
     path: "/api/stations/:id",
     httpMethod: "DELETE",
@@ -115,17 +123,13 @@ exports.routes = [
     access: [roles.ADMIN]
 
   },
-  {
-    path: "/api/stations/getInfo/intervals",
-    httpMethod: "GET",
-    middleWare: [controllers.stations.getintervals]
-  },
-  {
-    path: "/api/stationsA/getAllAwaiting", //TODO Changer ce nom 
-    httpMethod: "GET",
-    middleWare: [controllers.stations.getAllAwaiting],
-    access: [roles.ADMIN]
-  },
+
+
+    {
+        path: "/api/stations/:id",
+        httpMethod: "GET",
+        middleWare: [controllers.stations.getById]
+    },
 
 
   // Méthodes liées aux notes

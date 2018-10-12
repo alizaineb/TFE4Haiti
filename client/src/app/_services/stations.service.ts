@@ -11,7 +11,7 @@ export class StationsService {
   }
 
   getIntervals() {
-    return this.http.get<any[]>(environment.apiUrl + '/stations/getInfo/intervals')
+    return this.http.get<any[]>(environment.apiUrl + '/stations/getInfo/intervals');
   }
 
   getAll() {
@@ -35,6 +35,6 @@ export class StationsService {
   }
 
   getAllAwaiting() {
-    return this.http.get<Station[]>(environment.apiUrl + '/stationsA/getAllAwaiting');
+    return this.http.get<Station[]>(environment.apiUrl + '/stations/getAllAwaiting');
   }
 }
