@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {environment} from "../../environments/environment";
-import {Station} from "../_models";
+import { Injectable } from '@angular/core';
+import { HttpClient } from "@angular/common/http";
+import { environment } from "../../environments/environment";
+import { Station } from "../_models";
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,7 @@ export class StationsService {
   constructor(private http: HttpClient) {
   }
 
-  getIntervals(){
+  getIntervals() {
     return this.http.get<any[]>(environment.apiUrl + '/stations/getInfo/intervals')
   }
 
@@ -32,5 +32,9 @@ export class StationsService {
 
   delete(id: string) {
     return this.http.delete(environment.apiUrl + '/stations/' + id);
+  }
+
+  getAllAwaiting() {
+    return this.http.get<Station[]>(environment.apiUrl + '/stationsA/getAllAwaiting');
   }
 }

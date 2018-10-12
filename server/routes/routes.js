@@ -114,11 +114,16 @@ exports.routes = [
     access: [roles.ADMIN]
 
   },
-
   {
     path: "/api/stations/getInfo/intervals",
     httpMethod: "GET",
     middleWare: [controllers.stations.getintervals]
+  },
+  {
+    path: "/api/stationsA/getAllAwaiting", //TODO Changer ce nom 
+    httpMethod: "GET",
+    middleWare: [controllers.stations.getAllAwaiting],
+    access: [roles.ADMIN]
   },
 
 

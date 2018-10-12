@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { UserService } from "../../_services/user.service";
+import { StationsService } from "../../_services/stations.service";
 import { AlertService } from '../../_services/index';
 
 @Component({
@@ -17,7 +18,7 @@ export class AdminPanelComponent implements OnInit {
 
   headers: string[];
   users = [];
-  constructor(private userService: UserService, private alertService: AlertService) {
+  constructor(private userService: UserService, private stationsService: StationsService, private alertService: AlertService) {
     this.headers = ["Nom", "Prénom", "Adresse mail", "Date de création"];
     this.showUsers = false;
     this.showStations = false;
@@ -26,6 +27,7 @@ export class AdminPanelComponent implements OnInit {
 
   ngOnInit() {
     this.loadAwaitingUsers();
+    this.loadAwaitingStation();
   }
 
   loadAwaitingUsers() {
@@ -46,7 +48,21 @@ export class AdminPanelComponent implements OnInit {
   }
 
   loadAwaitingStation() {
-    this.showStations = false;
+    let self = this;
+    this.stationsService.getAllAwaiting()
+      .pipe(first())
+      .subscribe(res => {
+        console.table(res);/*
+        for (let station of res) {
+          station.niceDate = self.toNiceDate(new Date(station.created_at));
+        }
+        self.users = res;
+        if (res.length > 0) {
+          this.showUsers = true;
+        } else {
+          this.showUsers = false;
+        }*/
+      });
   }
 
   loadAwaitingData() {
