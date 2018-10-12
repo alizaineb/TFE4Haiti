@@ -16,6 +16,7 @@ const Station = new Schema({
   state: { type: String, enum: [states.AWAITING, states.BROKEN, states.WORKING, states.DELETED], required: true },
   interval: { type: String, required: true, enum: ['1min', '5min', '10min', '15min', '30min', '1h', '2h', '6h', '12h', '24h'] }
 }, {
+  //Ajoute le champ updatedAt automatiquement
   timestamps: { createdAt: false, updatedAt: true }
 });
 

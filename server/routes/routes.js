@@ -3,6 +3,7 @@ const roles = require('../config/constants').roles;
 let controllers = {};
 controllers.users = require('../controllers/UserCtrl');
 controllers.stations = require('../controllers/StationCtrl');
+controllers.note = require('../controllers/noteCtrl');
 // Route par défaut récupère l'index
 // controllers.angular = function(req, res) { res.sendFile(path.join(__dirname, '../public/index.html')); };
 
@@ -124,6 +125,20 @@ exports.routes = [
     httpMethod: "GET",
     middleWare: [controllers.stations.getAllAwaiting],
     access: [roles.ADMIN]
+  },
+
+
+  // Méthodes liées aux notes
+  {
+    path: "/api/note",
+    httpMethod: "POST",
+    middleWare: [controllers.note.create],
+    access: [roles.ADMIN]
+  },
+  {
+    path: "/api/note",
+    httpMethod: "GET",
+    middleWare: [controllers.note.get]
   },
 
 
