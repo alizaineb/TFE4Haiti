@@ -58,7 +58,7 @@ exports.update = function(req, res) {
   checkParam(req, res, ["name", "latitude", "longitude", "altitude", "createdAt", "interval"], function() {
     let id = req.params.id;
     Station.stationModel.findById({ _id: id }, function(err, station) {
-      if (err) return res.status(500).send("Erreur lors de la récupération de l'utilisateur concerné.");
+      if (err) return res.status(500).send("Erreur lors de la récupération de la station.");
       if (station.length > 1) return res.status(500).send("Ceci n'aurait jamais dû arriver.");
       if (station.length === 0) return res.status(404).send("La station n'existe pas");
 
@@ -78,12 +78,13 @@ exports.update = function(req, res) {
 };
 
 exports.delete = function(req, res) {
-  let id = req.params.id;
-  Station.stationModel.deleteOne({ _id: id }).then(() => {
-    return res.status(204).send("ok") //TODO remove body
-  }).catch(function(err) {
-    logger.error(err);
-    return res.status(500).send(err);
+
+  Station.stationModel.findById({ _id: req.params.id }, function(err, station) {
+    station.state = states.DELETED;
+    station.save(function(err, updatedStation) {
+      if (err) return res.status(500).send("Erreur lors de la suppression");
+      return res.status(201).send(updatedStation);
+    });
   });
 };
 
