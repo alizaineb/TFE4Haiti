@@ -16,10 +16,13 @@ export class AdminPanelComponent implements OnInit {
   showStations: boolean;
   showDatas: boolean;
 
-  headers: string[];
+  headersUsers: string[];
+  headersStation: string[];
   users = [];
+  stations = [];
   constructor(private userService: UserService, private stationsService: StationsService, private alertService: AlertService) {
-    this.headers = ["Nom", "Prénom", "Adresse mail", "Date de création"];
+    this.headersUsers = ["Nom", "Prénom", "Adresse mail", "Date de création"];
+    this.headersStation = ["Nom de la station", "Coordonnées", "Auteur ", "Date de mise en service"];
     this.showUsers = false;
     this.showStations = false;
     this.showDatas = false;
@@ -52,16 +55,15 @@ export class AdminPanelComponent implements OnInit {
     this.stationsService.getAllAwaiting()
       .pipe(first())
       .subscribe(res => {
-        console.table(res);/*
         for (let station of res) {
-          station.niceDate = self.toNiceDate(new Date(station.created_at));
+          station.niceDateCreatedAt = self.toNiceDate(new Date(station.createdAt));
         }
-        self.users = res;
+        self.stations = res;
         if (res.length > 0) {
-          this.showUsers = true;
+          this.showStations = true;
         } else {
-          this.showUsers = false;
-        }*/
+          this.showStations = false;
+        }
       });
   }
 
