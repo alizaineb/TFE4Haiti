@@ -4,7 +4,7 @@ const checkParam = require('./utils').checkParam;
 
 
 exports.create = function(req, res) {
-  checkParam(req, res, ["note", "user_id", "station_id", "createdAt"], function() {
+  checkParam(req, res, ["note", "user_id", "station_id"], function() {
     let note = req.body;
     let nTmp = new Note.noteModel();
 

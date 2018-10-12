@@ -2,8 +2,9 @@ import {AfterViewChecked, Component, EventEmitter, OnInit, Output} from '@angula
 import {first} from "rxjs/operators";
 import {AlertService} from "../../../_services";
 import {StationsService} from "../../../_services/stations.service";
+import {NoteService} from "../../../_services/note.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {Station} from "../../../_models";
+import {Note, Station} from "../../../_models";
 import flatpickr from "flatpickr";
 import { French} from "flatpickr/dist/l10n/fr";
 import * as L from "leaflet";
@@ -31,7 +32,8 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked{
   mark;
 
   constructor(private alertService:AlertService,
-              private stationService:StationsService){
+              private stationService:StationsService,
+              private noteService: NoteService){
   }
 
   ngOnInit(): void {
@@ -62,6 +64,9 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked{
       ]),
       'createdAt': new FormControl(null, [
         Validators.required
+      ]),
+      'note': new FormControl('',[
+        Validators.maxLength(200)
       ])
       //Ajouter la méthode get è
     });
@@ -73,7 +78,8 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked{
   get longitude() { return this.addStationForm.get('longitude'); }
   get interval() { return this.addStationForm.get('interval'); }
   get createdAt() {return this.addStationForm.get('createdAt');}
-  get altitude() {return this.addStationForm.get('altitude')}
+  get altitude() {return this.addStationForm.get('altitude');}
+  get note() {return this.addStationForm.get('note');}
 
   ngAfterViewChecked(): void {
     this.map.invalidateSize()
@@ -106,8 +112,26 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked{
       .pipe(first())
       .subscribe(
         result => {
-          //trigger sent
+          //ajouter la note
+          if(this.addStationForm.controls['note'].value != ''){
+            let n = new Note();
+            // @ts-ignore
+            n.station_id = result._id;
+            n.note = this.addStationForm.controls['note'].value;
+            n.user_id = "ADEFINIR";
+
+            this.noteService.register(n)
+              .pipe(first())
+              .subscribe(
+                result => {
+              },
+              error => {
+                this.alertService.error(error);
+              });
+
+          }
           this.resetStation();
+          //trigger sent
           this.sent.emit(true);
           this.alertService.success("La station a été ajoutée");
         },

@@ -130,17 +130,17 @@ exports.routes = [
 
   // Méthodes liées aux notes
   {
-    path: "/api/note",
+    path: "/api/notes",
     httpMethod: "POST",
     middleWare: [controllers.note.create],
-    access: [roles.ADMIN]
+    access: [roles.ADMIN, roles.WORKER]
   },
   {
-    path: "/api/note",
+    path: "/api/notes",
     httpMethod: "GET",
-    middleWare: [controllers.note.get]
+    middleWare: [controllers.note.get],
+    access: [roles.ADMIN, roles.WORKER]
   },
-
 
 
 
