@@ -92,7 +92,6 @@ export class AdminPanelComponent implements OnInit {
 
   acceptStation(station: Station) {
     if (station.isDisabled) {
-      console.log("ARE");
       return;
     }
     station.isDisabled = true;
