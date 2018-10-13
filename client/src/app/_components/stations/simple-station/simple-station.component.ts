@@ -31,9 +31,9 @@ export class SimpleStationComponent implements OnInit, OnDestroy {
 
     self.sub = self.route.params.subscribe((params) => {
       self.stationId = params['id'];
-      self.activeTab = params['tab'];
-      if (self.tabList.indexOf(self.activeTab) < 0) {
-        self.activeTab = self.tabList[0];
+      const tab = params['tab'];
+      if (self.tabList.indexOf(tab) > 0) {
+        self.activeTab = tab;
         self.router.navigate(['/stations', self.stationId, self.activeTab])
       }
     });
