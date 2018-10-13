@@ -5,7 +5,10 @@ import { User } from '../../_models/index';
 import { UserService } from '../../_services/index';
 import { LocalstorageService } from "../../_services/localstorage.service";
 
-@Component({ templateUrl: 'users.component.html' })
+@Component({
+  templateUrl: 'users.component.html',
+  styleUrls: ['./users.component.css']
+})
 export class UsersComponent implements OnInit {
   currentUser: User;
   users: User[] = [];
@@ -14,7 +17,7 @@ export class UsersComponent implements OnInit {
 
   constructor(private userService: UserService, private localStorageService: LocalstorageService) {
     this.currentUser = this.localStorageService.getItem('currentUser').current;
-    this.headersUsers = ["Nom", "Prénom", "Adresse mail", "Date de création"];
+    this.headersUsers = ["Nom", "Prénom", "Adresse mail", "Date de création", "État"];
   }
 
   ngOnInit() {

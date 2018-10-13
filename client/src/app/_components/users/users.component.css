@@ -1,0 +1,17 @@
+h3 {
+  color: #111;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 30px;
+  font-weight: 300;
+  line-height: 32px;
+  margin: 0 0 40px;
+  text-align: center;
+}
+
+.fa-edit {
+  color: blue;
+}
+
+.fa-trash {
+  color: red;
+}

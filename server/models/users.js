@@ -26,7 +26,8 @@ User.methods.toDto = function() {
     mail: this.mail,
     role: this.role,
     created_at: this.created_at,
-    last_seen: this.last_seen
+    last_seen: this.last_seen,
+    state: this.state
   };
 };
 

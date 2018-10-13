@@ -6,4 +6,5 @@
   niceDate: string;
   mail: string;
   role: string;
+  state: string;
 }
