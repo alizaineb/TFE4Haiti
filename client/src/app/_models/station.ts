@@ -7,7 +7,6 @@ export class Station {
   public state: string;
   public updatedAt: Date;
   public createdAt: Date;
-  public niceDateCreatedAt: string;
   public interval: string;
   public users: string[];
 

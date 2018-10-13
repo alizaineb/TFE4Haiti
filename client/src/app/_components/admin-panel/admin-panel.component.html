@@ -55,7 +55,7 @@
         <td>{{station.latitude}},{{station.longitude}}</td>
         <td>{{station.interval}}</td>
         <td>RECUP L'auteur</td>
-        <td>{{station.niceDateCreatedAt}}</td>
+        <td>{{station.createdAt | date: 'd/MM/yyyy à HH:mm'}}</td>
         <td>
           <i class="fas fa-check fa-fw fa-1x" (click)="acceptStation(station)"></i>
           <i class="fas fa-trash fa-fw fa-1x"></i>

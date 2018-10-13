@@ -25,8 +25,8 @@
       <td>{{user.first_name}}</td>
       <td>{{user.last_name}}</td>
       <td>{{user.mail}}</td>
-      <td>{{user.niceDateCreatedAt}}</td>
-      <td>{{user.niceDateLastCo}}</td>
+      <td>{{user.created_at | date: 'd/MM/yyyy à HH:mm'}}</td>
+      <td>{{user.last_seen | date: 'd/MM/yyyy à HH:mm'}}</td>
       <td>{{user.role}}</td>
       <td>{{user.state}}</td>
       <td>

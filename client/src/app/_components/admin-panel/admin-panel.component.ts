@@ -39,9 +39,6 @@ export class AdminPanelComponent implements OnInit {
     this.userService.getAllAwaiting()
       .pipe(first())
       .subscribe(res => {
-        for (let usr of res) {
-          usr.niceDateCreatedAt = self.toNiceDate(new Date(usr.created_at));
-        }
         self.users = res;
         if (res.length > 0) {
           this.showUsers = true;
@@ -56,10 +53,6 @@ export class AdminPanelComponent implements OnInit {
     this.stationsService.getAllAwaiting()
       .pipe(first())
       .subscribe(res => {
-        for (let station of res) {
-          station.niceDateCreatedAt = self.toNiceDate(new Date(station.createdAt));
-          station.isDisabled = false;
-        }
         self.stations = res;
         if (res.length > 0) {
           this.showStations = true;
@@ -91,9 +84,6 @@ export class AdminPanelComponent implements OnInit {
   }
 
   acceptStation(station: Station) {
-    if (station.isDisabled) {
-      return;
-    }
     station.isDisabled = true;
     let self = this;
     this.stationsService.acceptStation(station._id)
@@ -105,9 +95,5 @@ export class AdminPanelComponent implements OnInit {
         error => {
           self.alertService.error(error);
         });
-  }
-
-  private toNiceDate(date: Date) {
-    return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear() + " à " + date.getHours() + ":" + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
   }
 }

@@ -33,19 +33,11 @@ export class UsersComponent implements OnInit {
   private loadAllUsers() {
     let self = this;
     this.userService.getAll().pipe(first()).subscribe(result => {
-      for (let usr of result) {
-        usr.niceDateCreatedAt = self.toNiceDate(new Date(usr.created_at));
-        usr.niceDateLastCo = self.toNiceDate(new Date(usr.last_seen));
-      }
       self.users = result;
     });
   }
 
   filterUser(event) {
     console.log("TODO");
-  }
-
-  private toNiceDate(date: Date) {
-    return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear() + " à " + date.getHours() + ":" + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
   }
 }
