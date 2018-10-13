@@ -17,7 +17,7 @@ export class UsersComponent implements OnInit {
 
   constructor(private userService: UserService, private localStorageService: LocalstorageService) {
     this.currentUser = this.localStorageService.getItem('currentUser').current;
-    this.headersUsers = ["Nom", "Prénom", "Adresse mail", "Date de création", "Date de dernière connexion", "Role," "État"];
+    this.headersUsers = ["Nom", "Prénom", "Adresse mail", "Date de création", "Date de dernière connexion", "Role", "État"];
   }
 
   ngOnInit() {
@@ -41,6 +41,9 @@ export class UsersComponent implements OnInit {
     });
   }
 
+  filterUser(event) {
+    console.log("TODO");
+  }
 
   private toNiceDate(date: Date) {
     return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear() + " à " + date.getHours() + ":" + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
