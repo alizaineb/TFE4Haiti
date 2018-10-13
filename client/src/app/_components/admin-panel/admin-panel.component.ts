@@ -84,7 +84,6 @@ export class AdminPanelComponent implements OnInit {
   }
 
   acceptStation(station: Station) {
-    station.isDisabled = true;
     let self = this;
     this.stationsService.acceptStation(station._id)
       .pipe(first())

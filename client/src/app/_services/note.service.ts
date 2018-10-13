@@ -10,8 +10,8 @@ export class NoteService {
 
   constructor(private http: HttpClient) {}
 
-  getAll() {
-    return this.http.get<Note[]>(environment.apiUrl + '/notes/');
+  getAll(stationId) {
+    return this.http.get<Note[]>(environment.apiUrl + '/notes/' + stationId);
   }
 
   register(note: Note) {

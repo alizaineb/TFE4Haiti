@@ -1,0 +1,12 @@
+<h1>Notes</h1>
+<div>
+  <textarea rows="6" placeholder="Ajouter une note" type="text" class="form-control" id="note"></textarea>
+  <button class="float-right">Ajouter une note</button>
+</div>
+
+<div *ngFor="let note of notes">
+  <p>{{note.user_id}}</p>
+  <p>{{mapUsers.get(note.user_id).first_name}}</p>
+  <p>{{note.note}}</p>
+  <br>
+</div>

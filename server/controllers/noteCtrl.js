@@ -22,7 +22,8 @@ exports.create = function(req, res) {
 };
 
 exports.get = function(req, res) {
-  Note.noteModel.find({}).then(function(notes) {
+  let stationId = req.params.stationId;
+  Note.noteModel.find({station_id: stationId}).then(function(notes) {
     let tabN = [];
     notes.forEach(notes => tabN.push(notes.toDto()));
     return res.status(200).send(tabN);

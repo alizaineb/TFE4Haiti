@@ -64,8 +64,14 @@ exports.get = function(req, res) {
 };
 
 exports.getById = function(req, res) {
-  //TODO connect to mongodb
-  return res.status(200).send("Method to implements");
+  let _id = req.params.id;
+  UsersModel.userModel.findById({ _id: _id }, function(err, user) {
+    if (err) return res.status(500).send("Erreur lors de la récupération de l'user.");
+    if (user.length > 1) return res.status(500).send("Ceci n'aurait jamais dû arriver.");
+    if (user.length === 0) return res.status(404).send("L'utilisateur n'existe pas");
+
+    return res.status(200).send(user.toDto());
+  });
 };
 
 exports.getByEmail = function(req, res) {

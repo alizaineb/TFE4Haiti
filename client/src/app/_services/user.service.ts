@@ -17,7 +17,7 @@ export class UserService {
     return this.http.get<User[]>(environment.apiUrl + '/users/getAllAwaiting');
   }
 
-  getById(id: number) {
+  getById(id: string) {
     return this.http.get(environment.apiUrl + '/users/' + id);
   }
 

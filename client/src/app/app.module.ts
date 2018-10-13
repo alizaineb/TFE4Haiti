@@ -33,7 +33,8 @@ import {RefuseUserModalComponent} from './_components/admin-panel/refuse-user-mo
 import {SimpleStationComponent} from './_components/stations/simple-station/simple-station.component';
 import {DetailsStationComponent} from './_components/stations/simple-station/details/details-station.component';;
 import { LogoutComponent } from './_components/logout/logout.component'
-
+;
+import { NoteComponent } from './_components/note/note.component'
 @NgModule({
   imports: [
     BrowserModule,
@@ -64,7 +65,8 @@ import { LogoutComponent } from './_components/logout/logout.component'
     SimpleStationComponent,
     DetailsStationComponent
 ,
-    LogoutComponent  ],
+    LogoutComponent ,
+    NoteComponent ],
 
   providers: [
     AuthGuard,

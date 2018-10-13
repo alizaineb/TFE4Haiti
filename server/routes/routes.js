@@ -146,7 +146,7 @@ exports.routes = [
     access: [roles.ADMIN, roles.WORKER]
   },
   {
-    path: "/api/notes",
+    path: "/api/notes/:stationId",
     httpMethod: "GET",
     middleWare: [controllers.note.get],
     access: [roles.ADMIN, roles.WORKER]
