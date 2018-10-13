@@ -16,7 +16,7 @@ exports.create = function(req, res) {
       return res.status(201).send(nTmp);
     }).catch(function(err) {
       logger.error(err);
-      return res.status(500).send(err);
+      return res.status(500).send("Erreur lors de la création d'une note");
     })
   });
 };
@@ -28,6 +28,6 @@ exports.get = function(req, res) {
     return res.status(200).send(tabN);
   }).catch(function(err) {
     logger.error(err);
-    return res.status(500).send(err);
+    return res.status(500).send("Erreur lors de la récupération des notes");
   })
 };

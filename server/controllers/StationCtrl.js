@@ -14,17 +14,17 @@ exports.get = function(req, res) {
     return res.status(200).send(tabS);
   }).catch(function(err) {
     logger.error(err);
-    return res.status(500).send(err);
+    return res.status(500).send("Une erreur est survenue lors de la récupération des stations");
   })
 };
 
 exports.getById = function(req, res) {
-  //TODO connect to mongodb
   const id = req.params.id;
   Station.stationModel.findOne({ _id: id }).then(station => {
       return res.status(200).send(station);
     },
     err => {
+      logger.error(err);
       res.status(500).send("Station inexistante...");
     }
   );
@@ -50,7 +50,7 @@ exports.create = function(req, res) {
       return res.status(201).send(sTmp);
     }).catch(function(err) {
       logger.error(err);
-      return res.status(500).send(err);
+      return res.status(500).send("Une erreur est survenue lors de la création de la station");
     })
   });
 };
@@ -71,7 +71,10 @@ exports.update = function(req, res) {
       station.interval = req.body.interval;
 
       station.save(function(err, updatedStation) {
-        if (err) return res.status(500).send("Erreur lors de l'update");
+        if (err) {
+          logger.error(err);
+          return res.status(500).send("Erreur lors de la mise à jour d'une station");
+        }
         return res.status(201).send(updatedStation);
       });
     });
@@ -79,11 +82,13 @@ exports.update = function(req, res) {
 };
 
 exports.delete = function(req, res) {
-
   Station.stationModel.findById({ _id: req.params.id }, function(err, station) {
     station.state = states.DELETED;
     station.save(function(err, updatedStation) {
-      if (err) return res.status(500).send("Erreur lors de la suppression");
+      if (err) {
+        logger.error(err);
+        return res.status(500).send("Erreur lors de la suppression d'une station");
+      }
       return res.status(201).send(updatedStation);
     });
   });
@@ -109,7 +114,6 @@ exports.acceptStation = function(req, res) {
   checkParam(req, res, ["id"], () => {
     let id = req.body.id;
     Station.stationModel.find({ _id: id }).then((station) => {
-      console.log(station);
       if (!station || station.length != 1) {
         return res.status(500).send("Un problème est survenu lors de la récupération de la station.");
       } else {
@@ -118,6 +122,7 @@ exports.acceptStation = function(req, res) {
         currStation.state = states.WORKING;
         currStation.save((err) => {
           if (err) {
+            logger.error(err);
             return res.status(500).send("Un problème est survenu lors de la mise à jour de la station.");
           } else {
             return res.status(200).send();

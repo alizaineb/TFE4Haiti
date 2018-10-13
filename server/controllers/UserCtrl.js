@@ -21,6 +21,7 @@ exports.login = function(req, res) {
 
     UsersModel.userModel.findOne({ mail: mail, state: userState.OK }, function(err, result) {
       if (err) {
+        logger.error(err);
         return res.status(500).send("Impossible de créer cet utilisateur, veuillez contacter un administrateur.");
       }
       if (!result) {
@@ -36,9 +37,8 @@ exports.login = function(req, res) {
                 current: result.toDto()
               });
             } else {
-              const err = "the server was unable to create a token.";
               logger.error(err);
-              return res.status(500).send(err);
+              return res.status(500).send("Impossible de créer un token");
             }
           } else {
             return res.status(404).send("Login et/ou mot de passe incorrect.");
@@ -47,7 +47,7 @@ exports.login = function(req, res) {
       }
     }).catch(function(err) {
       logger.error(err);
-      return res.status(500).send(err);
+      return res.status(500).send("Erreur lors de la récupération de l'utilisateur.");
     });
   });
 };
@@ -59,7 +59,7 @@ exports.get = function(req, res) {
     return res.status(200).send(tabU);
   }).catch(function(err) {
     logger.error(err);
-    return res.status(500).send(err);
+    return res.status(500).send("Erreur lors de la récupération des utilisateurs");
   })
 };
 
@@ -100,13 +100,15 @@ exports.update = function(req, res) {
 };
 
 exports.delete = function(req, res) {
-  let id = req.params.id;
-  // console.log(id);
-  let user = UsersModel.userModel.deleteOne({ _id: id }).then(() => {
-    return res.status(204).send("ok") //TODO remove body
-  }).catch(function(err) {
-    logger.error(err);
-    return res.status(500).send(err);
+  checkParam(req, res, ["id"], () => {
+    let id = req.params.id;
+    // console.log(id);
+    let user = UsersModel.userModel.deleteOne({ _id: id }).then(() => {
+      return res.status(204).send("ok") //TODO remove body
+    }).catch(function(err) {
+      logger.error(err);
+      return res.status(500).send("Erreur lors de la suppression de l'utilisateur");
+    });
   });
 };
 
@@ -118,6 +120,7 @@ exports.logout = function(req, res) {
 exports.getAllAwaiting = function(req, res) {
   UsersModel.userModel.find({ state: userState.AWAITING }, function(err, result) {
     if (err) {
+      logger.error(err);
       return res.status(500).send("Erreur lors de la récupération des utilisateurs en attente.");
     }
     if (!result) {
@@ -135,9 +138,9 @@ exports.acceptUser = function(req, res) {
     let id = req.body.id;
     UsersModel.userModel.find({ _id: id, state: userState.AWAITING }, function(err, result) {
       if (err) {
+        logger.error(err);
         return res.status(500).send("Erreur lors de la récupération de l'utilisateur concerné.");
       }
-
       if (result.length > 1) {
         return res.status(500).send("Ceci n'aurait jamais dû arriver.");
       } else if (result.length == 0) {
@@ -160,6 +163,7 @@ exports.refuseUser = function(req, res) {
     let reason = req.body.reason;
     UsersModel.userModel.find({ _id: id, state: userState.AWAITING }, function(err, result) {
       if (err) {
+        logger.error(err);
         return res.status(500).send("Erreur lors de la récupération de l'utilisateur concerné.");
       }
 
@@ -194,6 +198,7 @@ exports.askResetPwd = function(req, res) {
     // Trouver l'utilisateur concerné
     UsersModel.userModel.find({ mail: req.body.mail }, function(err, result) {
       if (err) {
+        logger.error(err);
         return res.status(500).send("Erreur lors de la récupération de l'utilisateur concerné.");
       }
 
@@ -226,6 +231,7 @@ exports.resetPwd = function(req, res) {
     }
     PwdRecoveryModel.pwdRecoveryModel.find({ url: url }, (err, result) => {
       if (err) {
+        logger.error(err);
         return res.status(500).send("Erreur lors de la récupération du lien de reset concerné.");
       }
       if (result.length > 1) {
@@ -236,6 +242,7 @@ exports.resetPwd = function(req, res) {
         let urlObj = result[0];
         UsersModel.userModel.find({ _id: urlObj.user }, function(err, result) {
           if (err) {
+            logger.error(err);
             return res.status(500).send("Erreur lors de la récupération de l'utilisateur concerné.");
           }
           if (result.length > 1) {
@@ -261,6 +268,7 @@ exports.resetPwd = function(req, res) {
                   } else {
                     urlObj.remove(function(err, userUpdt) {
                       if (err) {
+                        logger.error(err);
                         return res.status(500).send("Erreur lors de la suppression du lien d'utlisation");
                       }
                       return res.status(200).send();
@@ -326,6 +334,7 @@ function sendEmailReset(req, res, user, isUserRequest) {
       // On met à jour l'utilisateur
       user.save(function(err, userUpdt) {
         if (err) {
+          logger.error(err);
           return res.status(500).send("Erreur lors de la mise à jour de l'utilisateur concerné.");
         }
         return res.status(200).send();
