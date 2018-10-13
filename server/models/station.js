@@ -12,6 +12,7 @@ const Station = new Schema({
   altitude: { type: Number, required: true, min:0, max:10000 },
   //picture: { type: String }, // Url vers la photo
   users: { type: [String], required: true },
+  user_creator_id: {type: String, required: true},
   createdAt: { type: Date, required: true },
   state: { type: String, enum: [states.AWAITING, states.BROKEN, states.WORKING, states.DELETED], required: true },
   interval: { type: String, required: true, enum: ['1min', '5min', '10min', '15min', '30min', '1h', '2h', '6h', '12h', '24h'] }
@@ -30,7 +31,9 @@ Station.methods.toDto = function() {
     state: this.state,
     createdAt: this.createdAt,
     updatedAt: this.updatedAt,
-    interval: this.interval
+    interval: this.interval,
+    user_creator_id: this.user_creator_id,
+    users: this.users
   };
 };
 

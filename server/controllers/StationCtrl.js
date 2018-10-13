@@ -44,7 +44,8 @@ exports.create = function(req, res) {
     // sTmp.picture = station.picture;
     sTmp.state = states.AWAITING;
     sTmp.interval = station.interval;
-    sTmp.users = [];
+    sTmp.user_creator_id = req.token_decoded.id;
+    sTmp.users = [req.token_decoded.id];
 
     sTmp.save().then(() => {
       return res.status(201).send(sTmp);
@@ -108,7 +109,7 @@ exports.getAllAwaiting = function(req, res) {
     logger.error(err);
     return res.status(500).send("Une erreur est survenue lors dela récupération des stations en attente.");
   });
-}
+};
 
 exports.acceptStation = function(req, res) {
   checkParam(req, res, ["id"], () => {

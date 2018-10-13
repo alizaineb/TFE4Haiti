@@ -8,11 +8,10 @@ export class Station {
   public updatedAt: Date;
   public createdAt: Date;
   public interval: string;
+  public user_creator_id: string;
   public users: string[];
 
   public constructor(
   ) {
   }
 }
-
-//new Station('','',undefined,undefined,'',null,null,'',[]);

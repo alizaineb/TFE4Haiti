@@ -118,7 +118,6 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked{
             // @ts-ignore
             n.station_id = result._id;
             n.note = this.addStationForm.controls['note'].value;
-            n.user_id = "ADEFINIR";
 
             this.noteService.register(n)
               .pipe(first())
