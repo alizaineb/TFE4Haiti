@@ -1,17 +1,20 @@
-﻿import {Component, OnInit} from '@angular/core';
-import {first} from 'rxjs/operators';
+﻿import { Component, OnInit } from '@angular/core';
+import { first } from 'rxjs/operators';
 
-import {User} from '../../_models/index';
-import {UserService} from '../../_services/index';
-import {LocalstorageService} from "../../_services/localstorage.service";
+import { User } from '../../_models/index';
+import { UserService } from '../../_services/index';
+import { LocalstorageService } from "../../_services/localstorage.service";
 
-@Component({templateUrl: 'users.component.html'})
+@Component({ templateUrl: 'users.component.html' })
 export class UsersComponent implements OnInit {
   currentUser: User;
   users: User[] = [];
 
+  headersUsers: string[];
+
   constructor(private userService: UserService, private localStorageService: LocalstorageService) {
     this.currentUser = this.localStorageService.getItem('currentUser').current;
+    this.headersUsers = ["Nom", "Prénom", "Adresse mail", "Date de création"];
   }
 
   ngOnInit() {
@@ -25,8 +28,17 @@ export class UsersComponent implements OnInit {
   }
 
   private loadAllUsers() {
+    let self = this;
     this.userService.getAll().pipe(first()).subscribe(result => {
-      this.users = result;
+      for (let usr of result) {
+        usr.niceDate = self.toNiceDate(new Date(usr.created_at));
+      }
+      self.users = result;
     });
+  }
+
+
+  private toNiceDate(date: Date) {
+    return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear() + " à " + date.getHours() + ":" + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
   }
 }
