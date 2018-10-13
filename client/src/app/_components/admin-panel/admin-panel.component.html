@@ -23,7 +23,7 @@
         <td>{{user.first_name}}</td>
         <td>{{user.last_name}}</td>
         <td>{{user.mail}}</td>
-        <td>{{user.niceDate}}</td>
+        <td>{{user.niceDateCreatedAt}}</td>
         <td>
           <i class="fas fa-check fa-fw fa-1x" (click)="acceptUser(user._id)"></i>
           <i class="fas fa-trash fa-fw fa-1x" data-toggle="modal" (click)="setCurrUser(user._id)" data-target=" #refuseUserModal"></i>
