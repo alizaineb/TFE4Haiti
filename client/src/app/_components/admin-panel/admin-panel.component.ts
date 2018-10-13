@@ -22,7 +22,7 @@ export class AdminPanelComponent implements OnInit {
   stations = [];
   constructor(private userService: UserService, private stationsService: StationsService, private alertService: AlertService) {
     this.headersUsers = ["Nom", "Prénom", "Adresse mail", "Date de création"];
-    this.headersStation = ["Nom de la station", "Coordonnées", "Auteur ", "Date de mise en service"];
+    this.headersStation = ["Nom de la station", "Coordonnées", "Intervalle", "Auteur ", "Date de mise en service"];
     this.showUsers = false;
     this.showStations = false;
     this.showDatas = false;
@@ -82,6 +82,19 @@ export class AdminPanelComponent implements OnInit {
       .subscribe(result => {
         self.loadAwaitingUsers();
         self.alertService.success("L'utilisateur a été accepté avec succès");
+      },
+        error => {
+          self.alertService.error(error);
+        });
+  }
+
+  acceptStation(id: string) {
+    let self = this;
+    this.stationsService.acceptStation(id)
+      .pipe(first())
+      .subscribe(result => {
+        self.loadAwaitingStation();
+        self.alertService.success("La station a été accepté avec succès");
       },
         error => {
           self.alertService.error(error);

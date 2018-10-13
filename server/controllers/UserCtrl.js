@@ -131,24 +131,22 @@ exports.getAllAwaiting = function(req, res) {
 }
 
 exports.acceptUser = function(req, res) {
-  let id = req.body.id || '';
-  if (!id) {
-    return res.status(400).send("Information manquante");
-  }
+  checkParam(req, res, ["id"], () => {
+    let id = req.body.id;
+    UsersModel.userModel.find({ _id: id, state: userState.AWAITING }, function(err, result) {
+      if (err) {
+        return res.status(500).send("Erreur lors de la récupération de l'utilisateur concerné.");
+      }
 
-  UsersModel.userModel.find({ _id: id, state: userState.AWAITING }, function(err, result) {
-    if (err) {
-      return res.status(500).send("Erreur lors de la récupération de l'utilisateur concerné.");
-    }
-
-    if (result.length > 1) {
-      return res.status(500).send("Ceci n'aurait jamais dû arriver.");
-    } else if (result.length == 0) {
-      return res.status(404).send("Aucun utilisateur correspondant.");
-    } else {
-      let currUser = result[0];
-      sendEmailReset(req, res, currUser, false);
-    }
+      if (result.length > 1) {
+        return res.status(500).send("Ceci n'aurait jamais dû arriver.");
+      } else if (result.length == 0) {
+        return res.status(404).send("Aucun utilisateur correspondant.");
+      } else {
+        let currUser = result[0];
+        sendEmailReset(req, res, currUser, false);
+      }
+    });
   });
 }
 
@@ -316,7 +314,14 @@ function sendEmailReset(req, res, user, isUserRequest) {
       urlTotal +
       (isUserRequest ? '\n\nSi vous n\'avez pas effectué cette requête, veuillez contacter l\'administrateur' : '') +
       '\n\n Bien à vous';
-    mailTransporter.sendMail(req, res, nconf.get('mail').changePwd, user.mail, text, () => {
+    let title = "";
+
+    if (isUserRequest) {
+      title = nconf.get('mail').changePwd;
+    } else {
+      title = nconf.get('mail').subjectCreationAccOk;
+    }
+    mailTransporter.sendMail(req, res, title, user.mail, text, () => {
       user.state = userState.PASSWORD_CREATION;
       // On met à jour l'utilisateur
       user.save(function(err, userUpdt) {

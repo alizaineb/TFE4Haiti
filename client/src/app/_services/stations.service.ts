@@ -37,4 +37,14 @@ export class StationsService {
   getAllAwaiting() {
     return this.http.get<Station[]>(environment.apiUrl + '/stations/getAllAwaiting');
   }
+
+
+  /*
+  acceptUser(id: String) {
+    return this.http.post(environment.apiUrl + '/users/acceptUser', { id: id });
+  }
+  */
+  acceptStation(id: String) {
+    return this.http.post(environment.apiUrl + '/stations/acceptStation', { id: id });
+  }
 }

@@ -3,6 +3,7 @@ const logger = require('../config/logger');
 const Station = require('./../models/station');
 const states = require('../config/constants').stationState;
 const checkParam = require('./utils').checkParam;
+const mailTransporter = require('./mailer');
 
 
 
@@ -100,6 +101,32 @@ exports.getAllAwaiting = function(req, res) {
     return res.status(200).send(tabS);
   }).catch(function(err) {
     logger.error(err);
-    return res.status(500).send(err);
+    return res.status(500).send("Une erreur est survenue lors dela récupération des stations en attente.");
+  });
+}
+
+exports.acceptStation = function(req, res) {
+  checkParam(req, res, ["id"], () => {
+    let id = req.body.id;
+    Station.stationModel.find({ _id: id }).then((station) => {
+      console.log(station);
+      if (!station || station.length != 1) {
+        return res.status(500).send("Un problème est survenu lors de la récupération de la station.");
+      } else {
+        //TODO envoyer un mail à l'auteur
+        let currStation = station[0];
+        currStation.state = states.WORKING;
+        currStation.save((err) => {
+          if (err) {
+            return res.status(500).send("Un problème est survenu lors de la mise à jour de la station.");
+          } else {
+            return res.status(200).send();
+          }
+        });
+      }
+    }).catch((err) => {
+      logger.error(err);
+      return res.status(500).send("Une erreur est survenue lors de la récupération de la station concernée.");
+    });
   });
 }
