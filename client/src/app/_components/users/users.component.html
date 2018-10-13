@@ -25,15 +25,8 @@
       <td>{{user.state}}</td>
       <td>
         <i class="fas fa-edit fa-fw fa-1x"></i>
-        <i class="fas fa-trash fa-fw fa-1x"></i>
+        <i class="fas fa-trash fa-fw fa-1x" (click)="deleteUser(user._id)"></i>
       </td>
     </tr>
   </tbody>
 </table>
-<ul>
-  <li *ngFor="let user of users">
-    {{user.mail}} ({{user.role}})
-    - <a (click)="deleteUser(user._id)" class="text-danger">Delete</a>
-  </li>
-</ul>
-<p><a [routerLink]="['/login']">Logout</a></p>
