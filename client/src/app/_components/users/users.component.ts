@@ -1,8 +1,8 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
 
-import { User } from '../../_models/index';
-import { UserService } from '../../_services/index';
+import { User } from '../../_models';
+import { UserService } from '../../_services';
 import { LocalstorageService } from "../../_services/localstorage.service";
 
 @Component({
@@ -41,5 +41,3 @@ export class UsersComponent implements OnInit {
     console.log("TODO");
   }
 }
-
-    this.userService.getAll().pipe(first()).subscribe(result => {
