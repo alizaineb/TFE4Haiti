@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { UserService } from "../../_services/user.service";
+import { Station } from "../../_models";
 import { StationsService } from "../../_services/stations.service";
 import { AlertService } from '../../_services/index';
 
@@ -57,6 +58,7 @@ export class AdminPanelComponent implements OnInit {
       .subscribe(res => {
         for (let station of res) {
           station.niceDateCreatedAt = self.toNiceDate(new Date(station.createdAt));
+          station.isDisabled = false;
         }
         self.stations = res;
         if (res.length > 0) {
@@ -88,9 +90,14 @@ export class AdminPanelComponent implements OnInit {
         });
   }
 
-  acceptStation(id: string) {
+  acceptStation(station: Station) {
+    if (station.isDisabled) {
+      console.log("ARE");
+      return;
+    }
+    station.isDisabled = true;
     let self = this;
-    this.stationsService.acceptStation(id)
+    this.stationsService.acceptStation(station._id)
       .pipe(first())
       .subscribe(result => {
         self.loadAwaitingStation();
