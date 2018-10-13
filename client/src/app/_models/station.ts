@@ -10,8 +10,6 @@ export class Station {
   public interval: string;
   public users: string[];
 
-  public isDisabled: boolean;
-
   public constructor(
   ) {
   }
