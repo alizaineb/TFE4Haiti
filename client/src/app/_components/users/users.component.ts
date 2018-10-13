@@ -17,7 +17,7 @@ export class UsersComponent implements OnInit {
 
   constructor(private userService: UserService, private localStorageService: LocalstorageService) {
     this.currentUser = this.localStorageService.getItem('currentUser').current;
-    this.headersUsers = ["Nom", "Prénom", "Adresse mail", "Date de création", "État"];
+    this.headersUsers = ["Nom", "Prénom", "Adresse mail", "Date de création", "Date de dernière connexion", "Role," "État"];
   }
 
   ngOnInit() {
@@ -34,7 +34,8 @@ export class UsersComponent implements OnInit {
     let self = this;
     this.userService.getAll().pipe(first()).subscribe(result => {
       for (let usr of result) {
-        usr.niceDate = self.toNiceDate(new Date(usr.created_at));
+        usr.niceDateCreatedAt = self.toNiceDate(new Date(usr.created_at));
+        usr.niceDateLastCo = self.toNiceDate(new Date(usr.last_seen));
       }
       self.users = result;
     });
