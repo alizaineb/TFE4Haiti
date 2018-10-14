@@ -135,7 +135,7 @@
               <div class="form-group">
                 <textarea rows="6" placeholder="Ajouter une note" type="text" class="form-control" id="note"
                           formControlName="note"></textarea>
-                <div *ngIf="note.invalid && (createdAt.dirty || note.touched)"
+                <div *ngIf="note.invalid && (note.dirty || note.touched)"
                      class="alert alert-danger">
                   <div *ngIf="note.errors.maxlength">
                     200 caractères maximum
