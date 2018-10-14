@@ -23,10 +23,13 @@
   </form>
 </div>
 
-<div *ngFor="let note of notes">
-  <div *ngIf="isLoaded">
-    <p>De {{note.user.last_name}} {{note.user.first_name}} créé le {{note.createdAt | date: 'd/MM/yyyy'}}</p>
-    <p>{{note.note}}</p>
-    <br>
+<div class="container-fluid">
+  <div class="card mb-3" *ngFor="let note of notes">
+    <div *ngIf="isLoaded">
+      <h6 class="card-header">De {{note.user.last_name}} {{note.user.first_name}} créé le {{note.createdAt | date: 'd/MM/yyyy'}}</h6>
+      <div class="card-body">
+        <p class="card-text">{{note.note}}
+      </div>
+    </div>
   </div>
 </div>
