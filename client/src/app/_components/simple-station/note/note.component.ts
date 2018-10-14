@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { StationsService } from "../../_services/stations.service";
-import { AlertService, UserService } from "../../_services";
-import { NoteService } from "../../_services/note.service";
-import { Note, User } from "../../_models";
+import { StationsService } from "../../../_services/stations.service";
+import { AlertService, UserService } from "../../../_services/";
+import { NoteService } from "../../../_services/note.service";
+import { Note, User } from "../../../_models/";
 import { first } from "rxjs/operators";
 
 @Component({

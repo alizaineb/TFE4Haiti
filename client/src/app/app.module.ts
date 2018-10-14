@@ -34,7 +34,7 @@ import {SimpleStationComponent} from './_components/simple-station/simple-statio
 import {DetailsStationComponent} from './_components/simple-station/details/details-station.component';;
 import { LogoutComponent } from './_components/logout/logout.component'
 ;
-import { NoteComponent } from './_components/note/note.component'
+import { NoteComponent } from './_components/simple-station/note/note.component'
 @NgModule({
   imports: [
     BrowserModule,
