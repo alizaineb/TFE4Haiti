@@ -8,6 +8,10 @@ h3 {
   text-align: center;
 }
 
+.fas{
+  cursor: pointer;
+}
+
 .fa-edit {
   color: blue;
 }

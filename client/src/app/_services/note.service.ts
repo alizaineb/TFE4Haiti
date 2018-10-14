@@ -16,6 +16,6 @@ export class NoteService {
   }
 
   register(note: Note) {
-    return this.http.post(environment.apiUrl + '/notes/', note);
+    return this.http.post<Note>(environment.apiUrl + '/notes/', note);
   }
 }

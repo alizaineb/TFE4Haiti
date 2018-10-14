@@ -30,9 +30,19 @@
       <td>{{user.role}}</td>
       <td>{{user.state}}</td>
       <td>
-        <i class="fas fa-edit fa-fw fa-1x"></i>
+        <i class="fas fa-edit fa-fw fa-1x" (click)="assignUserToUpdate(user)" data-toggle="modal" data-target="#updateUserModal"></i>
         <i class="fas fa-trash fa-fw fa-1x" (click)="deleteUser(user._id)"></i>
       </td>
     </tr>
   </tbody>
 </table>
+
+<!-- Modal -->
+<div class="modal fade" id="updateUserModal" tabindex="-1" role="dialog" aria-labelledby="updateUserModal" aria-hidden="true">
+  <app-update-user-modal
+    [userToUpdate]=userToUpdate
+    (updated)="loadAllUsers($event)"
+  >
+
+  </app-update-user-modal>
+</div>

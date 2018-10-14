@@ -31,10 +31,11 @@ import {ToastrModule} from "ngx-toastr";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {RefuseUserModalComponent} from './_components/admin-panel/refuse-user-modal/refuse-user-modal.component';
 import {SimpleStationComponent} from './_components/simple-station/simple-station.component';
-import {DetailsStationComponent} from './_components/simple-station/details/details-station.component';;
-import { LogoutComponent } from './_components/logout/logout.component'
-;
-import { NoteComponent } from './_components/simple-station/note/note.component'
+import {DetailsStationComponent} from './_components/simple-station/details/details-station.component';
+import { LogoutComponent } from './_components/logout/logout.component';
+import { NoteComponent } from './_components/simple-station/note/note.component';
+import { UpdateUserModalComponent } from './_components/users/update-user-modal/update-user-modal.component';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -63,10 +64,10 @@ import { NoteComponent } from './_components/simple-station/note/note.component'
     AskresetComponent,
     RefuseUserModalComponent,
     SimpleStationComponent,
-    DetailsStationComponent
-,
+    DetailsStationComponent,
     LogoutComponent ,
-    NoteComponent ],
+    NoteComponent ,
+    UpdateUserModalComponent],
 
   providers: [
     AuthGuard,

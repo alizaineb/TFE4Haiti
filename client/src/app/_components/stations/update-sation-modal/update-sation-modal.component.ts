@@ -47,12 +47,6 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
     this.initDatePickerAndMap();
   }
 
-  get name() { return this.updateStationForm.get('name'); }
-  get latitude() { return this.updateStationForm.get('latitude'); }
-  get longitude() { return this.updateStationForm.get('longitude'); }
-  get interval() { return this.updateStationForm.get('interval'); }
-  get createdAt() {return this.updateStationForm.get('createdAt');}
-  get altitude() {return this.updateStationForm.get('altitude')}
 
   initForm(){
     this.updateStationForm = new FormGroup({
@@ -82,9 +76,16 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
       'createdAt': new FormControl(this.stationToUpdate.createdAt, [
         Validators.required
       ])
-      //Ajouter la méthode get
+      //Ajouter la méthode get en dessous pour chaque field
     });
   }
+
+  get name() { return this.updateStationForm.get('name'); }
+  get latitude() { return this.updateStationForm.get('latitude'); }
+  get longitude() { return this.updateStationForm.get('longitude'); }
+  get interval() { return this.updateStationForm.get('interval'); }
+  get createdAt() {return this.updateStationForm.get('createdAt');}
+  get altitude() {return this.updateStationForm.get('altitude')}
 
   ngAfterViewChecked(): void {
     this.map.invalidateSize()

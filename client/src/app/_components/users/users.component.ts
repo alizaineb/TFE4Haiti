@@ -13,6 +13,8 @@ export class UsersComponent implements OnInit {
   currentUser: User;
   users: User[] = [];
 
+  userToUpdate: User;
+
   headersUsers: string[];
 
   constructor(private userService: UserService, private localStorageService: LocalstorageService) {
@@ -40,4 +42,10 @@ export class UsersComponent implements OnInit {
   filterUser(event) {
     console.log("TODO");
   }
+
+  assignUserToUpdate(user:User){
+    this.userToUpdate =user;
+  }
+
+
 }

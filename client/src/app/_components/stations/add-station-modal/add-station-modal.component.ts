@@ -111,21 +111,19 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked{
     this.stationService.register(s)
       .pipe(first())
       .subscribe(
-        result => {
-          //ajouter la note
+        newStation => {
           if(this.addStationForm.controls['note'].value != ''){
             let n = new Note();
-            // @ts-ignore
-            n.station_id = result._id;
+            n.station_id = newStation._id;
             n.note = this.addStationForm.controls['note'].value;
 
             this.noteService.register(n)
               .pipe(first())
               .subscribe(
-                result => {
+                newNote => {
               },
               error => {
-                this.alertService.error(error);
+                this.alertService.error("La note n'a pas été ajoutér\n" + error);
               });
 
           }
