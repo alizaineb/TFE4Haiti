@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 
 import { environment } from '../../environments/environment';
 import { User } from '../_models';
+import {Observable} from "rxjs";
+
 
 @Injectable()
 export class UserService {
@@ -17,8 +19,8 @@ export class UserService {
     return this.http.get<User[]>(environment.apiUrl + '/users/getAllAwaiting');
   }
 
-  getById(id: string) {
-    return this.http.get(environment.apiUrl + '/users/' + id);
+  getById(id: string): Observable <User> {
+    return this.http.get<User>(environment.apiUrl + '/users/' + id);
   }
 
   register(user: User) {
