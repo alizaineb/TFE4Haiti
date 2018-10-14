@@ -5,8 +5,10 @@
 </div>
 
 <div *ngFor="let note of notes">
-  <p>{{note.user_id}}</p>
-  <p>{{mapUsers.get(note.user_id).first_name}}</p>
-  <p>{{note.note}}</p>
-  <br>
+  <div *ngIf="isLoaded">
+    <p>{{note.user_id}}</p>
+    <p>{{note.user.first_name}}</p>
+    <p>{{note.note}}</p>
+    <br>
+  </div>
 </div>
