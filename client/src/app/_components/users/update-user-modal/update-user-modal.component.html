@@ -8,23 +8,30 @@
     </div>
     <div class="modal-body">
       <div class="container">
-        <form (ngSubmit)="onSubmit()" [formGroup]="updateUserForm" #updateUserFormNg="ngForm">
+
+        <form [formGroup]="updateUserForm" #updateUserFormNg="ngForm">
           <div class="row">
             <div class="col-md-4">
-              <input class="form-control" placeholder="Prénom" formControlName="first_name" required>
-              <div *ngIf="first_name.errors.required">
-                Le prénom est requis.
+              <input id="first_name" class="form-control" placeholder="Prénom" formControlName="first_name" required>
+              <div *ngIf="first_name.invalid && (first_name.dirty || first_name.touched)">
+                <div *ngIf="first_name.errors.required">
+                  Le prénom est requis.
+                </div>
               </div>
             </div>
-
             <div class="col-md-4">
-              <input class="form-control" placeholder="Nom" formControlName="last_name" required>
-              <div *ngIf="last_name.errors.required">
-                Le nom est requis.
+              <input id="last_name" class="form-control" placeholder="Nom" formControlName="last_name" required>
+              <div *ngIf="last_name.invalid && (last_name.dirty || last_name.touched)">
+                <div *ngIf="last_name.errors.required">
+                  Le nom est requis.
+                </div>
               </div>
             </div>
           </div>
         </form>
+
+
+
       </div>
     </div>
     <div class="modal-footer">

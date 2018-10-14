@@ -15,7 +15,7 @@ export class UpdateUserModalComponent implements OnInit {
   @Output()
   updated = new EventEmitter<boolean>();
 
-  updateUserForm: FromGroup;
+  updateUserForm:FormGroup;
 
   constructor() { }
 
@@ -25,13 +25,19 @@ export class UpdateUserModalComponent implements OnInit {
 
   initForm() {
     this.updateUserForm = new FormGroup({
-      'first_name': new FormControl(this.userToUpdate.first_name, [
+      'first_name': new FormControl('', [
         Validators.required
       ]),
 
-      'last_name': new FormControl(this.userToUpdate.last_name, [
+      'last_name': new FormControl('', [
         Validators.required
       ])
     });
   }
+
+  get first_name() { return this.updateUserForm.get('first_name'); }
+  get last_name() { return this.updateUserForm.get('last_name'); }
+
+
+
 }
