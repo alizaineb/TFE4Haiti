@@ -39,10 +39,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="updateUserModal" tabindex="-1" role="dialog" aria-labelledby="updateUserModal" aria-hidden="true">
-  <app-update-user-modal
-    [userToUpdate]=userToUpdate
-    (updated)="loadAllUsers($event)"
-  >
-
-  </app-update-user-modal>
+  <div *ngIf="userToUpdate != null">
+    <app-update-user-modal [userToUpdate]=userToUpdate (updated)="loadAllUsers($event)"></app-update-user-modal>
+  </div>
 </div>

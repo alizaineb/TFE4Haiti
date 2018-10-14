@@ -15,8 +15,11 @@ export class UpdateUserModalComponent implements OnInit {
   @Output()
   updated = new EventEmitter<boolean>();
 
-  updateUserForm:FormGroup;
+  updateUserForm: FormGroup;
 
+  // TODO Modifier et faire un call api pour ces valeurs
+  roles = ['admin', 'viewer', 'worker'];
+  states = ['awaiting', 'pwd_creation', 'ok', 'deleted'];
   constructor() { }
 
   ngOnInit() {
@@ -25,11 +28,19 @@ export class UpdateUserModalComponent implements OnInit {
 
   initForm() {
     this.updateUserForm = new FormGroup({
-      'first_name': new FormControl('', [
+      'first_name': new FormControl(this.userToUpdate.first_name, [
         Validators.required
       ]),
-
-      'last_name': new FormControl('', [
+      'last_name': new FormControl(this.userToUpdate.last_name, [
+        Validators.required
+      ]),
+      'mail': new FormControl(this.userToUpdate.mail, [
+        Validators.required
+      ]),
+      'role': new FormControl(this.userToUpdate.role, [
+        Validators.required
+      ]),
+      'state': new FormControl(this.userToUpdate.state, [
         Validators.required
       ])
     });
@@ -37,7 +48,7 @@ export class UpdateUserModalComponent implements OnInit {
 
   get first_name() { return this.updateUserForm.get('first_name'); }
   get last_name() { return this.updateUserForm.get('last_name'); }
-
-
-
+  get mail() { return this.updateUserForm.get('mail'); }
+  get role() { return this.updateUserForm.get('role'); }
+  get state() { return this.updateUserForm.get('state'); }
 }
