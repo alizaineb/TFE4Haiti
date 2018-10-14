@@ -1,13 +1,31 @@
 <h1>Notes</h1>
 <div>
-  <textarea rows="6" placeholder="Ajouter une note" type="text" class="form-control" id="note"></textarea>
-  <button class="float-right">Ajouter une note</button>
+  <form (ngSubmit)="onSubmit()" [formGroup]="addNoteForm" #addNoteFormNg="ngForm">
+    <textarea
+      rows="6"
+      placeholder="Ajouter une note"
+      type="text"
+      class="form-control"
+      id="note"
+      formControlName="note"
+    ></textarea>
+    <div *ngIf="note.invalid && (note.dirty || note.touched)"
+         class="alert alert-danger">
+      <div *ngIf="note.errors.required">
+        Une note est requise
+      </div>
+      <div *ngIf="note.errors.maxlength">
+        200 caractères maximum
+      </div>
+    </div>
+    <br>
+    <button class="float-right btn btn-primary" [disabled]="!addNoteFormNg.form.valid">Ajouter une note</button>
+  </form>
 </div>
 
 <div *ngFor="let note of notes">
   <div *ngIf="isLoaded">
-    <p>{{note.user_id}}</p>
-    <p>{{note.user.first_name}}</p>
+    <p>De {{note.user.last_name}} {{note.user.first_name}} créé le {{note.createdAt | date: 'd/MM/yyyy'}}</p>
     <p>{{note.note}}</p>
     <br>
   </div>

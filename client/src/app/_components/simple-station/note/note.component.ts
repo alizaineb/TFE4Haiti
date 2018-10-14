@@ -4,6 +4,7 @@ import { AlertService, UserService } from "../../../_services/";
 import { NoteService } from "../../../_services/note.service";
 import { Note, User } from "../../../_models/";
 import { first } from "rxjs/operators";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-note',
@@ -15,8 +16,13 @@ export class NoteComponent implements OnInit {
   @Input()
   private stationId: string;
 
+  addNoteForm: FormGroup;
+
   notes: Note[] = [];
   isLoaded: boolean;
+
+  submitted = false;
+
 
   constructor(
     private stationService: StationsService,
@@ -30,7 +36,19 @@ export class NoteComponent implements OnInit {
   ngOnInit() {
     this.isLoaded = false;
     this.loadData();
+    this.addNoteForm = new FormGroup({
+      'note': new FormControl('',[
+        Validators.required,
+        Validators.maxLength(200)
+      ])
+    })
   }
+
+  get note() { return this.addNoteForm.get('note'); }
+
+
+  onSubmit() { this.submitted = true; }
+
 
   loadData() {
     let self = this;
