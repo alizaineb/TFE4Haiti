@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { StationsService } from "../../../_services/stations.service";
 import { AlertService, UserService } from "../../../_services/";
 import { NoteService } from "../../../_services/note.service";
-import { Note, User } from "../../../_models/";
+import { Note } from "../../../_models/";
 import { first } from "rxjs/operators";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 
@@ -46,6 +46,30 @@ export class NoteComponent implements OnInit {
 
   get note() { return this.addNoteForm.get('note'); }
 
+
+  sendNote(){
+    this.submitted = true;
+    // stop here if form is invalid
+    if (this.addNoteForm.invalid) {
+      return;
+    }
+
+    let n = new Note();
+    n.station_id = this.stationId;
+    n.note = this.addNoteForm.controls['note'].value;
+
+    this.noteService.register(n)
+      .pipe(first())
+      .subscribe(
+        newNote => {
+          this.alertService.success("La note a été ajoutée");
+          this.addNoteForm.reset();
+          this.loadData();
+        },
+        error => {
+          this.alertService.error(error);
+        });
+  }
 
   onSubmit() { this.submitted = true; }
 
