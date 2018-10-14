@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {StationsService} from "../../../../_services/stations.service";
-import {AlertService} from "../../../../_services";
+import {StationsService} from "../../../_services/stations.service";
+import {AlertService} from "../../../_services/";
 import * as L from "leaflet";
 
 @Component({

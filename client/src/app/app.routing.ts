@@ -9,7 +9,7 @@ import { StationsComponent } from "./_components/stations/stations.component";
 import { ResetPasswordComponent } from "./_components/login/reset-password/reset-password.component";
 import { FaqComponent } from "./_components/faq/faq.component";
 import { AskresetComponent } from "./_components/login/askreset/askreset.component";
-import { SimpleStationComponent } from "./_components/stations/simple-station/simple-station.component";
+import { SimpleStationComponent } from "./_components/simple-station/simple-station.component";
 import { LogoutComponent } from "./_components/logout/logout.component";
 
 const appRoutes: Routes = [
