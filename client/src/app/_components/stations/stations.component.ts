@@ -52,7 +52,6 @@ export class StationsComponent implements OnInit {
 
   assignStationToUpdate(station: Station){
     this.stationToUpdate = station;
-    // console.log(this.stationToUpdate)
   }
 
   deleteStation(choice: boolean){

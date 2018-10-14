@@ -12,6 +12,7 @@ export class DetailsStationComponent implements OnInit {
 
   @Input()
   private stationId: string;
+
   public currentStation;
   private mapContainer;
 
@@ -31,7 +32,7 @@ export class DetailsStationComponent implements OnInit {
       err => {
         self.alertService.error(err);
       }
-    )
+    );
     console.log("details init", this.stationId)
   }
 

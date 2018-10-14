@@ -25,11 +25,11 @@ export class UpdateUserModalComponent implements OnInit {
 
   initForm() {
     this.updateUserForm = new FormGroup({
-      'first_name': new FormControl('', [
+      'first_name': new FormControl(this.userToUpdate.first_name, [
         Validators.required
       ]),
 
-      'last_name': new FormControl('', [
+      'last_name': new FormControl(this.userToUpdate.last_name, [
         Validators.required
       ])
     });

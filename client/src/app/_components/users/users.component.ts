@@ -24,6 +24,7 @@ export class UsersComponent implements OnInit {
 
   ngOnInit() {
     this.loadAllUsers();
+    this.userToUpdate = null;
   }
 
   deleteUser(id: number) {

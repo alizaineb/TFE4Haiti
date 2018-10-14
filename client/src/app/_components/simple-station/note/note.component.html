@@ -19,7 +19,7 @@
       </div>
     </div>
     <br>
-    <button class="float-right btn btn-primary" [disabled]="!addNoteFormNg.form.valid">Ajouter une note</button>
+    <button (click)="sendNote()" class="float-right btn btn-primary" [disabled]="!addNoteFormNg.form.valid">Ajouter une note</button>
   </form>
 </div>
 
