@@ -8,8 +8,30 @@
     </div>
     <div class="modal-body">
       <div class="container">
-        <p>Enjoy</p>
+        <form (ngSubmit)="onSubmit()" [formGroup]="updateUserForm" #updateUserFormNg="ngForm">
+          <div class="row">
+            <div class="col-md-4">
+              <input class="form-control" placeholder="Prénom" formControlName="first_name" required>
+              <div *ngIf="first_name.errors.required">
+                Le prénom est requis.
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <input class="form-control" placeholder="Nom" formControlName="last_name" required>
+              <div *ngIf="last_name.errors.required">
+                Le nom est requis.
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler
+      </button>
+      <button type="submit" class="btn btn-success" data-dismiss="modal"> Envoyer
+      </button>
     </div>
   </div>
 </div>

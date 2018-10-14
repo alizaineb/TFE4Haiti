@@ -1,5 +1,6 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {User} from "../../../_models";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { User } from "../../../_models";
 
 @Component({
   selector: 'app-update-user-modal',
@@ -9,15 +10,28 @@ import {User} from "../../../_models";
 export class UpdateUserModalComponent implements OnInit {
 
   @Input()
-  userToUpdate:User;
+  userToUpdate: User;
 
   @Output()
   updated = new EventEmitter<boolean>();
 
+  updateUserForm: FromGroup;
 
   constructor() { }
 
   ngOnInit() {
+    this.initForm();
   }
 
+  initForm() {
+    this.updateUserForm = new FormGroup({
+      'first_name': new FormControl(this.userToUpdate.first_name, [
+        Validators.required
+      ]),
+
+      'last_name': new FormControl(this.userToUpdate.last_name, [
+        Validators.required
+      ])
+    });
+  }
 }
