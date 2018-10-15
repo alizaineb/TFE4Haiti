@@ -20,6 +20,8 @@ export class UsersComponent implements OnInit {
   headersUsers: string[];
   searchKeyWord: string = '';
 
+  private map: Map<string, string>;
+
   constructor(private userService: UserService, private localStorageService: LocalstorageService) {
     this.currentUser = this.localStorageService.getItem('currentUser').current;
     this.headersUsers = ["Nom", "Prénom", "Adresse mail", "Date de création", "Date de dernière connexion", "Role", "État"];
@@ -28,6 +30,14 @@ export class UsersComponent implements OnInit {
   ngOnInit() {
     this.loadAllUsers();
     this.userToUpdate = null;
+    this.map = new Map();
+    this.map.set("Nom", "first_name");
+    this.map.set("Prénom", "last_name");
+    this.map.set("Adresse mail", "mail");
+    this.map.set("Date de création", "created_at");
+    this.map.set("Date de dernière connexion", "last_seen");
+    this.map.set("Role", "role");
+    this.map.set("État", "state");
   }
 
   deleteUser(id: number) {
@@ -59,15 +69,7 @@ export class UsersComponent implements OnInit {
     if (this.usersFiltered.length <= 1) {
       return;
     }
-    let map = new Map();
-    map.set("Nom", "first_name");
-    map.set("Prénom", "last_name");
-    map.set("Adresse mail", "mail");
-    map.set("Date de création", "created_at");
-    map.set("Date de dernière connexion", "last_seen");
-    map.set("Role", "role");
-    map.set("État", "state");
-    let key = map.get(head);
+    let key = this.map.get(head);
     let i = 1;
     while (i < this.usersFiltered.length && this.usersFiltered[0][key] == this.usersFiltered[i][key]) {
       i++;

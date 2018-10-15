@@ -21,6 +21,7 @@ export class AdminPanelComponent implements OnInit {
   headersStation: string[];
   users = [];
   stations = [];
+  private map: Map<string, string>;
   constructor(private userService: UserService, private stationsService: StationsService, private alertService: AlertService) {
     this.headersUsers = ["Nom", "Prénom", "Adresse mail", "Date de création"];
     this.headersStation = ["Nom de la station", "Latitude", "Longitude", "Intervalle", "Auteur ", "Date de mise en service"];
@@ -32,6 +33,13 @@ export class AdminPanelComponent implements OnInit {
   ngOnInit() {
     this.loadAwaitingUsers();
     this.loadAwaitingStation();
+    this.map = new Map();
+    this.map.set("Nom de la station", "name");
+    this.map.set("Latitude", "latitude");
+    this.map.set("Longitude", "latitude");
+    this.map.set("Intervalle", "interval");
+    this.map.set("Auteur", "user_creator_id");
+    this.map.set("Date de mise en service", "createdAt");
   }
 
   loadAwaitingUsers() {
@@ -102,14 +110,7 @@ export class AdminPanelComponent implements OnInit {
       return;
     }
     // TODO gérer intervalle sort propre
-    let map = new Map();
-    map.set("Nom de la station", "name");
-    map.set("Latitude", "latitude");
-    map.set("Longitude", "latitude");
-    map.set("Intervalle", "interval");
-    map.set("Auteur", "user_creator_id");
-    map.set("Date de mise en service", "createdAt");
-    let key = map.get(head);
+    let key = this.map.get(head);
     let i = 1;
     while (i < this.stations.length && this.stations[0][key] == this.stations[i][key]) {
       i++;
