@@ -39,7 +39,7 @@ export class UsersComponent implements OnInit {
   private loadAllUsers() {
     let self = this;
     this.userService.getAll().pipe(first()).subscribe(result => {
-      self.users = result;
+      self.users = result.slice(0);
       this.usersFiltered = result.slice(0);
       this.filterUser();
     });
@@ -56,22 +56,30 @@ export class UsersComponent implements OnInit {
   }
 
   sortData(head: string) {
-    switch (head) {
-      case "Nom":
-        break;
-      case "Prénom":
-        break;
-      case "Adresse mail":
-        break;
-      case "Date de création":
-        break;
-      case "Date de dernière connexion":
-        break;
-      case "Role":
-        break;
-      case "État":
-        break;
+    if (this.usersFiltered.length <= 1) {
+      return;
+    }
+    let key = "";
+    let map = new Map();
+    map.set("Nom", "first_name");
+    map.set("Prénom", "last_name");
+    map.set("Adresse mail", "mail");
+    map.set("Date de création", "created_at");
+    map.set("Date de dernière connexion", "last_seen");
+    map.set("Role", "role");
+    map.set("État", "state");
+    let key = map.get(head);
+    let i = 1;
+    while (i < this.usersFiltered.length && this.usersFiltered[0][key] == this.usersFiltered[i][key]) {
+      i++;
+    }
+    // Tous les champs sont égaux, pas besoin de trier
+    if (i > this.usersFiltered.length) {
+      return;
+    }
+    if (this.usersFiltered[0][key] <= this.usersFiltered[i][key]) {
+      this.usersFiltered.sort((val1: User, val2: User) => { return val1[key].toLowerCase() > val2[key].toLowerCase() ? -1 : 1 });
+    } else {
+      this.usersFiltered.sort((val1: User, val2: User) => { return val2[key].toLowerCase() > val1[key].toLowerCase() ? -1 : 1 });
     }
   }
-
-}
