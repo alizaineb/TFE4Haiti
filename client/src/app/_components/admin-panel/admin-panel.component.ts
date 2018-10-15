@@ -101,15 +101,13 @@ export class AdminPanelComponent implements OnInit {
     if (this.stations.length <= 1) {
       return;
     }
-    if (head == "Intervalle") {
-      //TODO A gérer
-      return;
-    }
+    // TODO gérer intervalle sort propre
     let key = "";
     let map = new Map();
     map.set("Nom de la station", "name");
     map.set("Latitude", "latitude");
     map.set("Longitude", "latitude");
+    map.set("Intervalle", "interval");
     map.set("Auteur", "user_creator_id");
     map.set("Date de mise en service", "createdAt");
     let key = map.get(head);
