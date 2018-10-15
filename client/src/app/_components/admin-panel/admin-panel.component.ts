@@ -95,4 +95,38 @@ export class AdminPanelComponent implements OnInit {
           self.alertService.error(error);
         });
   }
-}
+
+
+  sortDataStation(head: string) {
+    if (this.stations.length <= 1) {
+      return;
+    }
+    if (head == "Coordonnées") {
+      //TODO A gérer
+      return;
+    }
+    if (head == "Intervalle") {
+      //TODO A gérer 
+      return;
+    }
+    let key = "";
+    let map = new Map();
+    map.set("Nom de la station", "name");
+    map.set("Auteur", "user_creator_id");
+    map.set("Date de mise en service", "createdAt");
+    let key = map.get(head);
+    let i = 1;
+    while (i < this.stations.length && this.stations[0][key] == this.stations[i][key]) {
+      i++;
+    }
+    // Tous les champs sont égaux, pas besoin de trier
+    if (i > this.stations.length) {
+      return;
+    }
+
+    if (this.stations[0][key] <= this.stations[i][key]) {
+      this.stations.sort((val1: Station, val2: Station) => { return val1[key].toLowerCase() > val2[key].toLowerCase() ? -1 : 1 });
+    } else {
+      this.stations.sort((val1: Station, val2: Station) => { return val2[key].toLowerCase() > val1[key].toLowerCase() ? -1 : 1 });
+    }
+  }

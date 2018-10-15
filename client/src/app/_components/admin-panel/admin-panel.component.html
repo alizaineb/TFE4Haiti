@@ -43,7 +43,7 @@
         <th *ngFor="let head of headersStation">
 
           {{head}}
-          <i class="fa fa-sort float-right" aria-hidden="true" (click)="sortData(head)"></i>
+          <i class="fa fa-sort float-right" aria-hidden="true" (click)="sortDataStation(head)"></i>
         </th>
         <th>Action</th>
       </tr>
@@ -55,7 +55,7 @@
         <td>{{station.latitude}},{{station.longitude}}</td>
         <td>{{station.interval}}</td>
         <td>RECUP L'auteur</td>
-        <td>{{station.createdAt | date: 'd/MM/yyyy à HH:mm'}}</td>
+        <td>{{station.createdAt | date: 'd/MM/yyyy'}}</td>
         <td>
           <i class="fas fa-check fa-fw fa-1x" (click)="acceptStation(station)"></i>
           <i class="fas fa-trash fa-fw fa-1x"></i>
