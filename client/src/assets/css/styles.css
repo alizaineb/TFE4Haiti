@@ -424,12 +424,20 @@ i:hover {
   color: lightGreen;
 }
 
+.fa-check:active {
+  color: darkGreen;
+}
+
 .fa-trash {
   color: red;
 }
 
 .fa-trash:hover {
   color: Orange;
+}
+
+.fa-trash:active {
+  color: darkRed;
 }
 
 .fa-edit {
@@ -440,6 +448,10 @@ i:hover {
   color: LightSkyBlue;
 }
 
+.fa-edit:active {
+  color: darkBlue;
+}
+
 .fa-file-download {
   color: green;
 }
@@ -448,12 +460,20 @@ i:hover {
   color: lightGreen;
 }
 
+.fa-file-download:active {
+  color: darkGreen;
+}
+
 .fa-plus-circle {
   color: blue;
 }
 
 .fa-plus-circle:hover {
   color: LightSkyBlue;
+}
+
+.fa-plus-circle:active {
+  color: darkBlue;
 }
 
 .fas {
