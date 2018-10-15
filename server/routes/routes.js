@@ -83,6 +83,11 @@ exports.routes = [
     httpMethod: "GET",
     middleWare: [controllers.users.getById]
   },
+  {
+    path: "/api/users/:id",
+    httpMethod: "PUT",
+    middleWare: [controllers.users.update]
+  },
 
 
   // Méthodes liées aux stations

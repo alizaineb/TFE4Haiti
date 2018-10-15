@@ -1,5 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { AlertService } from "../../../_services";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { UserService } from "../../../_services/user.service";
+import { first } from "rxjs/operators";
 import { User } from "../../../_models";
 
 @Component({
@@ -20,7 +23,7 @@ export class UpdateUserModalComponent implements OnInit {
   // TODO Modifier et faire un call api pour ces valeurs
   roles = ['admin', 'viewer', 'worker'];
   states = ['awaiting', 'pwd_creation', 'ok', 'deleted'];
-  constructor() { }
+  constructor(private alertService: AlertService, private userService: UserService) { }
 
   ngOnInit() {
     this.initForm();
@@ -45,6 +48,34 @@ export class UpdateUserModalComponent implements OnInit {
         Validators.required
       ])
     });
+  }
+
+  resetUser() {
+    this.initForm();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.resetUser();
+  }
+
+  updateUser() {
+    let userToSend = new User();
+    userToSend._id = this.userToUpdate._id;
+    userToSend.first_name = this.updateUserForm.get('first_name').value;
+    userToSend.last_name = this.updateUserForm.get('last_name').value;
+    userToSend.mail = this.userToUpdate.mail;
+    userToSend.role = this.updateUserForm.get('role').value;
+    userToSend.state = this.updateUserForm.get('state').value;
+    this.userService.update(userToSend).pipe(first()).subscribe(
+      result => {
+        //trigger sent
+        this.updated.emit(true);
+        this.alertService.success("L'utilisateur a bien été mis à jour");
+      },
+      error => {
+        this.alertService.error("Une erreur est survenue lors de la mise à jour de l'utilisateur");
+      });
+
   }
 
   get first_name() { return this.updateUserForm.get('first_name'); }

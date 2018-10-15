@@ -101,9 +101,30 @@ exports.create = function(req, res) {
 };
 
 exports.update = function(req, res) {
-  //TODO connect to mongodb
-  return res.status(200).send("Method to implements");
-};
+  console.log(req.body);
+  checkParam(req, res, ["_id", "first_name", "last_name", "mail", "role", "state"], () => {
+    let id = req.body._id;
+    UsersModel.userModel.findById({ _id: id }, function(err, user) {
+      if (err) {
+        logger.error(err);
+        return res.status(500).send("Erreur lors de la récupération de l'user.");
+      } else {
+        user.first_name = req.body.first_name;
+        user.last_name = req.body.last_name;
+        user.role = req.body.role;
+        user.state = req.body.state;
+        user.save((err) => {
+          if (err) {
+            logger.error(err);
+            return res.status(500).send("Une erreur est survenue lors de la mise à jour de l'utilisateur");
+          } else {
+            return res.status(200).send();
+          }
+        });
+      }
+    });
+  });
+}
 
 exports.delete = function(req, res) {
   checkParam(req, res, ["id"], () => {
