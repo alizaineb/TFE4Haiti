@@ -23,7 +23,7 @@ export class AdminPanelComponent implements OnInit {
   stations = [];
   constructor(private userService: UserService, private stationsService: StationsService, private alertService: AlertService) {
     this.headersUsers = ["Nom", "Prénom", "Adresse mail", "Date de création"];
-    this.headersStation = ["Nom de la station", "Coordonnées", "Intervalle", "Auteur ", "Date de mise en service"];
+    this.headersStation = ["Nom de la station", "Latitude", "Longitude", "Intervalle", "Auteur ", "Date de mise en service"];
     this.showUsers = false;
     this.showStations = false;
     this.showDatas = false;
@@ -101,17 +101,15 @@ export class AdminPanelComponent implements OnInit {
     if (this.stations.length <= 1) {
       return;
     }
-    if (head == "Coordonnées") {
-      //TODO A gérer
-      return;
-    }
     if (head == "Intervalle") {
-      //TODO A gérer 
+      //TODO A gérer
       return;
     }
     let key = "";
     let map = new Map();
     map.set("Nom de la station", "name");
+    map.set("Latitude", "latitude");
+    map.set("Longitude", "latitude");
     map.set("Auteur", "user_creator_id");
     map.set("Date de mise en service", "createdAt");
     let key = map.get(head);
@@ -125,8 +123,18 @@ export class AdminPanelComponent implements OnInit {
     }
 
     if (this.stations[0][key] <= this.stations[i][key]) {
-      this.stations.sort((val1: Station, val2: Station) => { return val1[key].toLowerCase() > val2[key].toLowerCase() ? -1 : 1 });
+      this.stations.sort((val1: Station, val2: Station) => {
+        if (typeof (val1[key]) == 'number') {
+          return val1[key] > val2[key] ? -1 : 1
+        }
+        return val1[key].toLowerCase() > val2[key].toLowerCase() ? -1 : 1
+      });
     } else {
-      this.stations.sort((val1: Station, val2: Station) => { return val2[key].toLowerCase() > val1[key].toLowerCase() ? -1 : 1 });
+      this.stations.sort((val1: Station, val2: Station) => {
+        if (typeof (val1[key]) == 'number') {
+          return val2[key] > val1[key] ? -1 : 1
+        }
+        return val2[key].toLowerCase() > val1[key].toLowerCase() ? -1 : 1
+      });
     }
   }

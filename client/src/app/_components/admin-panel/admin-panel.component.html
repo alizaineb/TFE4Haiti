@@ -52,7 +52,8 @@
       <tr *ngFor="let station of stations; index as i;">
         <td>{{i+1}}</td>
         <td>{{station.name}}</td>
-        <td>{{station.latitude}},{{station.longitude}}</td>
+        <td>{{station.latitude}}</td>
+        <td>{{station.longitude}}</td>
         <td>{{station.interval}}</td>
         <td>RECUP L'auteur</td>
         <td>{{station.createdAt | date: 'd/MM/yyyy'}}</td>
