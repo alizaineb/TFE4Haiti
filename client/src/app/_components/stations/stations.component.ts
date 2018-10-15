@@ -75,34 +75,6 @@ export class StationsComponent implements OnInit {
             this.stationsFiltered.sort((val1:Station, val2:Station)=> {return val2.name.toLowerCase() > val1.name.toLowerCase() ? -1 : 1});
           }
           break;
-        case "Latitude":
-          if(this.stationsFiltered[0].latitude <= this.stationsFiltered[1].latitude){
-            this.stationsFiltered.sort((val1:Station, val2:Station)=> {return val1.latitude > val2.latitude ? -1 : 1});
-          } else {
-            this.stationsFiltered.sort((val1:Station, val2:Station)=> {return val2.latitude > val1.latitude ? -1 : 1});
-          }
-          break;
-        case "Longitude":
-          if(this.stationsFiltered[0].longitude <= this.stationsFiltered[1].longitude){
-            this.stationsFiltered.sort((val1:Station, val2:Station)=> {return val1.longitude > val2.longitude ? -1 : 1});
-          } else {
-            this.stationsFiltered.sort((val1:Station, val2:Station)=> {return val2.longitude > val1.longitude ? -1 : 1});
-          }
-          break;
-        case "Altitude":
-          if(this.stationsFiltered[0].altitude <= this.stationsFiltered[1].altitude){
-            this.stationsFiltered.sort((val1:Station, val2:Station)=> {return val1.altitude > val2.altitude ? -1 : 1});
-          } else {
-            this.stationsFiltered.sort((val1:Station, val2:Station)=> {return val2.altitude > val1.altitude ? -1 : 1});
-          }
-          break;
-        case "Intervalle":
-          if(this.stationsFiltered[0].interval <= this.stationsFiltered[1].interval){
-            this.stationsFiltered.sort((val1:Station, val2:Station)=> {return val1.interval > val2.interval ? -1 : 1});
-          } else {
-            this.stationsFiltered.sort((val1:Station, val2:Station)=> {return val2.interval > val1.interval ? -1 : 1});
-          }
-          break;
         case "Etat":
           if(this.stationsFiltered[0].state <= this.stationsFiltered[1].state){
             this.stationsFiltered.sort((val1:Station, val2:Station)=> {return val1.state > val2.state ? -1 : 1});
