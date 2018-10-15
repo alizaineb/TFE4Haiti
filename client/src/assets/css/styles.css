@@ -445,7 +445,7 @@ i:hover {
 }
 
 .fa-edit:hover {
-  color: LightSkyBlue;
+  color: MediumSlateBlue;
 }
 
 .fa-edit:active {
@@ -482,6 +482,10 @@ i:hover {
 
 .fa-sort {
   cursor: pointer;
+}
+
+tbody>tr:hover {
+  background: LightSkyBlue !important;
 }
 
 h1 {

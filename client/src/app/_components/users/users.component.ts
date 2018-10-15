@@ -59,7 +59,6 @@ export class UsersComponent implements OnInit {
     if (this.usersFiltered.length <= 1) {
       return;
     }
-    let key = "";
     let map = new Map();
     map.set("Nom", "first_name");
     map.set("Prénom", "last_name");
@@ -83,3 +82,4 @@ export class UsersComponent implements OnInit {
       this.usersFiltered.sort((val1: User, val2: User) => { return val2[key].toLowerCase() > val1[key].toLowerCase() ? -1 : 1 });
     }
   }
+}

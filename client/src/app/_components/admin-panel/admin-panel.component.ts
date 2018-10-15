@@ -102,7 +102,6 @@ export class AdminPanelComponent implements OnInit {
       return;
     }
     // TODO gérer intervalle sort propre
-    let key = "";
     let map = new Map();
     map.set("Nom de la station", "name");
     map.set("Latitude", "latitude");
@@ -136,3 +135,5 @@ export class AdminPanelComponent implements OnInit {
       });
     }
   }
+
+}
