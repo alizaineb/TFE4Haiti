@@ -1,6 +1,6 @@
 import { Component, OnInit, Output } from '@angular/core';
 import { first } from 'rxjs/operators';
-import { Station } from "../../_models";
+import {Station, User} from "../../_models";
 import { StationsService } from "../../_services/stations.service";
 
 @Component({
@@ -18,13 +18,16 @@ export class StationsComponent implements OnInit {
   stationToDelete: Station;
   stationToUpdate: Station;
 
+  map;
+
   searchKeyWord: string = '';
 
   constructor(private stationService: StationsService) {
-    this.headers = ["Nom", "Etat", "Créé le", "Dernière modification"];
+    this.headers = ["Nom", "Etat", "Date de création", "Dernière modification"];
   }
 
   ngOnInit() {
+    this.initMap();
     this.loadAllStations();
     this.stationToDelete = new Station();
     this.stationToUpdate = null
@@ -38,6 +41,14 @@ export class StationsComponent implements OnInit {
         this.stationsFiltered = result.slice(0);
         this.filterStation();
       });
+  }
+
+  initMap(){
+    this.map = new Map();
+    this.map.set("Nom", "name");
+    this.map.set("Date de création", "createdAt");
+    this.map.set("Dernière modification","updatedAt");
+    this.map.set("Etat", "state");
   }
 
   filterStation() {
@@ -66,67 +77,24 @@ export class StationsComponent implements OnInit {
     }
   }
 
-  sortData(headName: string) {
+  sortData(head: string) {
     if (this.stationsFiltered.length <= 1) {
       return;
     }
-    switch (headName) {
-      case "Nom":
-        if (this.stationsFiltered[0].name <= this.stationsFiltered[1].name) {
-          this.stationsFiltered.sort((val1: Station, val2: Station) => { return val1.name.toLowerCase() > val2.name.toLowerCase() ? -1 : 1 });
-        } else {
-          this.stationsFiltered.sort((val1: Station, val2: Station) => { return val2.name.toLowerCase() > val1.name.toLowerCase() ? -1 : 1 });
-        }
-        break;
-      case "Latitude":
-        if (this.stationsFiltered[0].latitude <= this.stationsFiltered[1].latitude) {
-          this.stationsFiltered.sort((val1: Station, val2: Station) => { return val1.latitude > val2.latitude ? -1 : 1 });
-        } else {
-          this.stationsFiltered.sort((val1: Station, val2: Station) => { return val2.latitude > val1.latitude ? -1 : 1 });
-        }
-        break;
-      case "Longitude":
-        if (this.stationsFiltered[0].longitude <= this.stationsFiltered[1].longitude) {
-          this.stationsFiltered.sort((val1: Station, val2: Station) => { return val1.longitude > val2.longitude ? -1 : 1 });
-        } else {
-          this.stationsFiltered.sort((val1: Station, val2: Station) => { return val2.longitude > val1.longitude ? -1 : 1 });
-        }
-        break;
-      case "Altitude":
-        if (this.stationsFiltered[0].altitude <= this.stationsFiltered[1].altitude) {
-          this.stationsFiltered.sort((val1: Station, val2: Station) => { return val1.altitude > val2.altitude ? -1 : 1 });
-        } else {
-          this.stationsFiltered.sort((val1: Station, val2: Station) => { return val2.altitude > val1.altitude ? -1 : 1 });
-        }
-        break;
-      case "Intervalle":
-        if (this.stationsFiltered[0].interval <= this.stationsFiltered[1].interval) {
-          this.stationsFiltered.sort((val1: Station, val2: Station) => { return val1.interval > val2.interval ? -1 : 1 });
-        } else {
-          this.stationsFiltered.sort((val1: Station, val2: Station) => { return val2.interval > val1.interval ? -1 : 1 });
-        }
-        break;
-      case "Etat":
-        if (this.stationsFiltered[0].state <= this.stationsFiltered[1].state) {
-          this.stationsFiltered.sort((val1: Station, val2: Station) => { return val1.state > val2.state ? -1 : 1 });
-        } else {
-          this.stationsFiltered.sort((val1: Station, val2: Station) => { return val2.state > val1.state ? -1 : 1 });
-        }
-        break;
-      case "Créé le":
-        if (this.stationsFiltered[0].createdAt <= this.stationsFiltered[1].createdAt) {
-          this.stationsFiltered.sort((val1: Station, val2: Station) => { return val1.createdAt > val2.createdAt ? -1 : 1 });
-        } else {
-          this.stationsFiltered.sort((val1: Station, val2: Station) => { return val2.createdAt > val1.createdAt ? -1 : 1 });
-        }
-        break;
-      case "Dernière modification":
-        if (this.stationsFiltered[0].updatedAt <= this.stationsFiltered[1].updatedAt) {
-          this.stationsFiltered.sort((val1: Station, val2: Station) => { return val1.updatedAt > val2.updatedAt ? -1 : 1 });
-        } else {
-          this.stationsFiltered.sort((val1: Station, val2: Station) => { return val2.updatedAt > val1.updatedAt ? -1 : 1 });
-        }
-        break;
+    let key = this.map.get(head);
+    let i = 1;
+    while (i < this.stationsFiltered.length && this.stationsFiltered[0][key] == this.stationsFiltered[i][key]) {
+      i++;
+    }
+    // Tous les champs sont égaux, pas besoin de trier
+    if (i > this.stationsFiltered.length) {
+      return;
+    }
+    if (this.stationsFiltered[0][key] <= this.stationsFiltered[i][key]) {
+      this.stationsFiltered.sort((val1: Station, val2: Station) => { return val1[key].toLowerCase() > val2[key].toLowerCase() ? -1 : 1 });
+    } else {
+      this.stationsFiltered.sort((val1: Station, val2: Station) => { return val2[key].toLowerCase() > val1[key].toLowerCase() ? -1 : 1 });
     }
   }
+
 }

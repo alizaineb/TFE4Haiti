@@ -5,6 +5,10 @@ import { NoteService } from "../../../_services/note.service";
 import { Note } from "../../../_models/";
 import { first } from "rxjs/operators";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import { DemoserviceService } from "./demoservice.service";
+import {throwError} from "rxjs";
+
+
 
 @Component({
   selector: 'app-note',
@@ -19,22 +23,20 @@ export class NoteComponent implements OnInit {
   addNoteForm: FormGroup;
 
   notes: Note[] = [];
-  isLoaded: boolean;
 
   submitted = false;
-
 
   constructor(
     private stationService: StationsService,
     private alertService: AlertService,
     private noteService: NoteService,
-    private userService: UserService
+    private userService: UserService,
+    private dataService: DemoserviceService
   ) {
 
   }
 
   ngOnInit() {
-    this.isLoaded = false;
     this.loadData();
     this.addNoteForm = new FormGroup({
       'note': new FormControl('',[
@@ -72,40 +74,21 @@ export class NoteComponent implements OnInit {
 
   onSubmit() { this.submitted = true; }
 
-
   loadData() {
-    let self = this;
-    this.noteService.getAll(this.stationId)
-      .pipe(first())
-      .subscribe(result => {
-        this.notes = result;
-        let i = 0;
-        // this.userService.getAll().subscribe(users =>  {
-        //   for (let n of this.notes)  {
-        //     for( let u of users){
-        //       if (n.user_id == u._id){
-        //         n.user = u;
-        //       }
-        //     }
-        //   }
-        //   self.done();
-        // });
-
-        for (let n of this.notes) {
-          this.userService.getById(n.user_id)
-            .pipe(first())
-            .subscribe(result => {
-              n.user = result;
-              i++;
-              if (i == this.notes.length) {
-                self.done();
-              }
-            });
+    this.dataService.requestDataFromMultipleSources(this.stationId).subscribe(
+      data => {
+        this.notes = data[0];
+        for(let n of this.notes){
+          this.userService.getById(n.user_id).pipe(first())
+            .subscribe(user => {
+              console.log(user);
+            })
         }
-      });
-  }
-
-  done() {
-    this.isLoaded = true;
+      },
+      error => {
+        console.error("Error saving food!");
+        return throwError(error);  // Angular 6/RxJS 6
+      }
+    );
   }
 }
