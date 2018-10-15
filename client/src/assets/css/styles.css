@@ -384,15 +384,15 @@ a:active, a:focus, a:hover {
   border-color: #1a252f
 }
 
-
 .info {
   padding: 6px 8px;
   font: 14px/16px Arial, Helvetica, sans-serif;
   background: white;
-  background: rgba(255,255,255,0.8);
-  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
 }
+
 .info h4 {
   margin: 0 0 5px;
   color: #777;
@@ -409,4 +409,67 @@ a:active, a:focus, a:hover {
   float: left;
   margin-right: 8px;
   opacity: 0.7;
+}
+
+/* nos ajouts */
+i:hover {
+  cursor: pointer;
+}
+
+.fa-check {
+  color: green;
+}
+
+.fa-check:hover {
+  color: lightGreen;
+}
+
+.fa-trash {
+  color: red;
+}
+
+.fa-trash:hover {
+  color: Orange;
+}
+
+.fa-edit {
+  color: blue;
+}
+
+.fa-edit:hover {
+  color: LightSkyBlue;
+}
+
+.fa-file-download {
+  color: green;
+}
+
+.fa-file-download:hover {
+  color: lightGreen;
+}
+
+.fa-plus-circle {
+  color: blue;
+}
+
+.fa-plus-circle:hover {
+  color: LightSkyBlue;
+}
+
+.fas {
+  cursor: pointer;
+}
+
+.fa-sort {
+  cursor: pointer;
+}
+
+h1 {
+  color: #111;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 30px;
+  font-weight: 300;
+  line-height: 32px;
+  margin: 0 0 40px;
+  text-align: center;
 }
