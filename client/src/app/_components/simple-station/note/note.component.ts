@@ -57,7 +57,6 @@ export class NoteComponent implements OnInit {
     let n = new Note();
     n.station_id = this.stationId;
     n.note = this.addNoteForm.controls['note'].value;
-
     this.noteService.register(n)
       .pipe(first())
       .subscribe(
