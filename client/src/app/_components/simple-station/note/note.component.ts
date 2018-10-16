@@ -6,8 +6,7 @@ import { Note } from "../../../_models/";
 import { first } from "rxjs/operators";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import { DemoserviceService } from "./demoservice.service";
-import {throwError} from "rxjs";
-
+import { switchMap, map } from 'rxjs/operators';
 
 
 @Component({
@@ -74,7 +73,7 @@ export class NoteComponent implements OnInit {
 
   onSubmit() { this.submitted = true; }
 
-  loadData() {
+  /*loadData() {
     this.dataService.requestDataFromMultipleSources(this.stationId).subscribe(
       data => {
         this.notes = data[0];
@@ -90,5 +89,15 @@ export class NoteComponent implements OnInit {
         return throwError(error);  // Angular 6/RxJS 6
       }
     );
+  }*/
+
+  loadData() {
+    /*this.noteService.getAll(this.stationId).pipe(
+      postData => this.userService.getById(postData.user_id).pipe(
+        userByPostData => ({ postData, userByPostData })
+      )
+    ).subscribe(({ postData, userByPostData })=> console.log(postData, userByPostData));
+  }*/
   }
+
 }
