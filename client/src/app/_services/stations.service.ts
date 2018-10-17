@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
-import { environment } from "../../environments/environment";
-import {Note, Station} from "../_models";
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import {Note, Station} from '../_models';
 
 @Injectable({
   providedIn: 'root'
@@ -46,5 +46,16 @@ export class StationsService {
   */
   acceptStation(id: String) {
     return this.http.post(environment.apiUrl + '/stations/acceptStation', { id: id });
+  }
+
+  getFrenchState(station: Station) {
+    const french = {
+      'working' : 'Ok',
+      'awaiting' : 'A valider',
+      'broken' : 'En panne',
+      'deleted' : 'Supprimée'
+    };
+    return french[station.state];
+
   }
 }
