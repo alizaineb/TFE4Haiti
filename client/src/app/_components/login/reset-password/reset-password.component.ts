@@ -14,6 +14,7 @@ export class ResetPasswordComponent implements OnInit {
   pwdSubmited = false;
   pwdNotMatch = false;
   tata: boolean;
+  loading:boolean;
 
   private sub: any;
   private id: string;

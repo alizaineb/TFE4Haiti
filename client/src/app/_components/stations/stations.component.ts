@@ -33,7 +33,7 @@ export class StationsComponent implements OnInit {
     this.stationToUpdate = null
   }
 
-  loadAllStations() {
+  loadAllStations($event=null) {
     this.stationService.getAll()
       
       .subscribe(result => {

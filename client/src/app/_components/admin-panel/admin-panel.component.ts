@@ -49,7 +49,7 @@ export class AdminPanelComponent implements OnInit {
     this.mapUserFilter.set("Date de création", "created_at");
   }
 
-  loadAwaitingUsers() {
+  loadAwaitingUsers($event=null) {
     let self = this;
     this.userService.getAllAwaiting()
       .pipe(first())

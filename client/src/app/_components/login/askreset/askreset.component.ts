@@ -12,6 +12,7 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 export class AskresetComponent implements OnInit {
 
   forgetForm: FormGroup;
+  loading: boolean;
   constructor(private alertService: AlertService, private userService: UserService) { }
 
   ngOnInit() {
