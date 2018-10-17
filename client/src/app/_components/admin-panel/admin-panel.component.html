@@ -23,7 +23,7 @@
         <td>{{user.first_name}}</td>
         <td>{{user.last_name}}</td>
         <td>{{user.mail}}</td>
-        <td>{{user.niceDateCreatedAt}}</td>
+        <td>{{user.created_at | date: 'd/MM/yyyy à HH:mm'}}</td>
         <td>
           <i class="fas fa-check fa-fw fa-1x" (click)="acceptUser(user._id)"></i>
           <i class="fas fa-trash fa-fw fa-1x" data-toggle="modal" (click)="setCurrUser(user._id)" data-target=" #refuseUserModal"></i>
@@ -55,7 +55,7 @@
         <td>{{station.latitude}}</td>
         <td>{{station.longitude}}</td>
         <td>{{station.interval}}</td>
-        <td>{{station.user_creator.mail}}</td>
+        <td>{{station.user_creator}}</td>
         <td>{{station.createdAt | date: 'd/MM/yyyy'}}</td>
         <td>
           <i class="fas fa-check fa-fw fa-1x" (click)="acceptStation(station)"></i>

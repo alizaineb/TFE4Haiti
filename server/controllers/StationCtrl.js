@@ -114,7 +114,7 @@ exports.getAllAwaiting = function(req, res) {
           return res.status(500).send("Erreur lors de la récupération de l'utilisateur lié à la station");
         } else {
           let stationTmp = station.toDto();
-          stationTmp.user_creator = user;
+          stationTmp.user_creator = user.mail;
           tabS.push(stationTmp);
           cb++;
         }

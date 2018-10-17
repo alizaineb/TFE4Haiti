@@ -24,7 +24,7 @@ export class AdminPanelComponent implements OnInit {
   private map: Map<string, string>;
   constructor(private userService: UserService, private stationsService: StationsService, private alertService: AlertService) {
     this.headersUsers = ["Nom", "Prénom", "Adresse mail", "Date de création"];
-    this.headersStation = ["Nom de la station", "Latitude", "Longitude", "Intervalle", "Auteur ", "Date de mise en service"];
+    this.headersStation = ["Nom de la station", "Latitude", "Longitude", "Intervalle", "Auteur", "Date de mise en service"];
     this.showUsers = false;
     this.showStations = false;
     this.showDatas = false;
@@ -38,7 +38,7 @@ export class AdminPanelComponent implements OnInit {
     this.map.set("Latitude", "latitude");
     this.map.set("Longitude", "latitude");
     this.map.set("Intervalle", "interval");
-    this.map.set("Auteur", "user_creator_id");
+    this.map.set("Auteur", "user_creator");
     this.map.set("Date de mise en service", "createdAt");
   }
 
@@ -129,10 +129,9 @@ export class AdminPanelComponent implements OnInit {
       i++;
     }
     // Tous les champs sont égaux, pas besoin de trier
-    if (i > this.stations.length) {
+    if (i >= this.stations.length) {
       return;
     }
-
     if (this.stations[0][key] <= this.stations[i][key]) {
       this.stations.sort((val1: Station, val2: Station) => {
         if (typeof (val1[key]) == 'number') {
