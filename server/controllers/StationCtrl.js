@@ -118,7 +118,7 @@ exports.getAllAwaiting = function(req, res) {
           tabS.push(stationTmp);
           cb++;
         }
-        if (cb == stations.length) {
+        if (cb === stations.length) {
           return res.status(200).send(tabS);
         }
       });
@@ -133,7 +133,7 @@ exports.acceptStation = function(req, res) {
   checkParam(req, res, ["id"], () => {
     let id = req.body.id;
     Station.stationModel.find({ _id: id }).then((station) => {
-      if (!station || station.length != 1) {
+      if (!station || station.length !== 1) {
         return res.status(500).send("Un problème est survenu lors de la récupération de la station.");
       } else {
         let currStation = station[0];

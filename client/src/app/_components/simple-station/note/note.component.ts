@@ -6,7 +6,10 @@ import { Note } from "../../../_models/";
 import { first } from "rxjs/operators";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import { DemoserviceService } from "./demoservice.service";
-import { switchMap, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
+
+
+
 
 
 @Component({
@@ -73,31 +76,23 @@ export class NoteComponent implements OnInit {
 
   onSubmit() { this.submitted = true; }
 
-  /*loadData() {
-    this.dataService.requestDataFromMultipleSources(this.stationId).subscribe(
-      data => {
-        this.notes = data[0];
-        for(let n of this.notes){
-          this.userService.getById(n.user_id).pipe(first())
-            .subscribe(user => {
-              console.log(user);
+  loadData(){
+    this.noteService.getAll(this.stationId)
+      .pipe(
+        map(notes => {
+          for(let n of notes){
+            this.userService.getById(n.user_id).pipe(first()).subscribe(user => {
+              // @ts-ignore
+              n.last_name = user.last_name;
+              // @ts-ignore
+              n.first_name = user.first_name;
             })
-        }
-      },
-      error => {
-        console.error("Error saving food!");
-        return throwError(error);  // Angular 6/RxJS 6
-      }
-    );
-  }*/
-
-  loadData() {
-    /*this.noteService.getAll(this.stationId).pipe(
-      postData => this.userService.getById(postData.user_id).pipe(
-        userByPostData => ({ postData, userByPostData })
+          }
+          return notes;
+        })
       )
-    ).subscribe(({ postData, userByPostData })=> console.log(postData, userByPostData));
-  }*/
+      .subscribe(notes => {
+        this.notes = notes;
+      })
   }
-
 }
