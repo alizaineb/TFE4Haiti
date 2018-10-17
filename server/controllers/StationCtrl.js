@@ -118,7 +118,6 @@ exports.acceptStation = function(req, res) {
       if (!station || station.length != 1) {
         return res.status(500).send("Un problème est survenu lors de la récupération de la station.");
       } else {
-        //TODO envoyer un mail à l'auteur
         let currStation = station[0];
         currStation.state = states.WORKING;
         currStation.save((err) => {
