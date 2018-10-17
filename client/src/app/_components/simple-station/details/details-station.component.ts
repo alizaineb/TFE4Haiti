@@ -1,7 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {StationsService} from "../../../_services/stations.service";
-import {AlertService} from "../../../_services/";
-import * as L from "leaflet";
+import {StationsService} from '../../../_services/stations.service';
+import {AlertService} from '../../../_services/';
+import * as L from 'leaflet';
+import {Station} from '../../../_models';
 
 @Component({
   selector: 'app-simple-station-details',
@@ -33,12 +34,16 @@ export class DetailsStationComponent implements OnInit {
         self.alertService.error(err);
       }
     );
-    console.log("details init", this.stationId)
+    console.log('details init', this.stationId);
   }
 
   toNiceDate(date) {
     date = new Date(date);
-    return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear() + " à " + date.getHours() + ":" + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+    return date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear() + ' à ' + date.getHours() + ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+  }
+
+  getState(station: Station) {
+    return this.stationService.getFrenchState(station);
   }
 
   generateMap() {
@@ -121,21 +126,21 @@ export class DetailsStationComponent implements OnInit {
       maxZoom: 18,
       layers: [mapLayerOSMGrayScale, stationGroup]
     });
-    console.log("coucou2");
+    console.log('coucou2');
 
 
     L.control.scale().addTo(self.mapContainer);
 
-    let legend = L.control.attribution({position: 'bottomright'});
+    const legend = L.control.attribution({position: 'bottomright'});
 
     legend.onAdd = function (map) {
 
-      var div = L.DomUtil.create('div', 'info legend'),
+      const div = L.DomUtil.create('div', 'info legend'),
         grades = ['OK', 'En panne', 'Supprimée', 'A valider'],
         color = ['#5cd65c', '#ffb84d', '#ff471a', '#1aa3ff'];
 
       // loop through our density intervals and generate a label with a colored square for each interval
-      for (var i = 0; i < grades.length; i++) {
+      for (let i = 0; i < grades.length; i++) {
         div.innerHTML +=
           '<i style="background:' + color[i] + '"></i> ' +
           grades[i] + '<br>';
