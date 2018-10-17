@@ -62,6 +62,7 @@ export class AdminPanelComponent implements OnInit {
       .pipe(first())
       .subscribe(res => {
         self.stations = res;
+        console.log(res);
         if (res.length > 0) {
           this.showStations = true;
         } else {

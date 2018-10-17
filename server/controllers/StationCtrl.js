@@ -1,6 +1,7 @@
 'use strict';
 const logger = require('../config/logger');
 const Station = require('./../models/station');
+const User = require('./../models/users');
 const states = require('../config/constants').stationState;
 const checkParam = require('./utils').checkParam;
 const mailTransporter = require('./mailer');
@@ -103,8 +104,26 @@ exports.getintervals = function(req, res) {
 exports.getAllAwaiting = function(req, res) {
   Station.stationModel.find({ state: states.AWAITING }).then(function(stations) {
     let tabS = [];
-    stations.forEach(stations => tabS.push(stations.toDto()));
-    return res.status(200).send(tabS);
+    let cb = 0;
+    for (let i = 0; i < stations.length; i++) {
+      let station = stations[i];
+      // On récupère l'utilsiateur lié
+      User.userModel.findById(station.user_creator_id, function(err, user) {
+        console.log(user);
+        if (err) {
+          logger.error(err);
+          return res.status(500).send("Erreur lors de la récupération de l'utilisateur lié à la station");
+        } else {
+          let stationTmp = station.toDto();
+          stationTmp.user_creator = user;
+          tabS.push(stationTmp);
+          cb++;
+        }
+        if (cb == stations.length) {
+          return res.status(200).send(tabS);
+        }
+      });
+    }
   }).catch(function(err) {
     logger.error(err);
     return res.status(500).send("Une erreur est survenue lors dela récupération des stations en attente.");

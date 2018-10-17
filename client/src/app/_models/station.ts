@@ -9,6 +9,7 @@ export class Station {
   public createdAt: Date;
   public interval: string;
   public user_creator_id: string;
+  public user_creator: any;
   public users: string[];
 
   public constructor(
