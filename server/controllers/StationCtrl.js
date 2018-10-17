@@ -60,7 +60,7 @@ exports.create = function(req, res) {
 exports.update = function(req, res) {
   checkParam(req, res, ["name", "latitude", "longitude", "altitude", "createdAt", "interval"], function() {
     let id = req.params.id;
-    Station.stationModel.findById({ _id: id }, function(err, station) {
+    Station.stationModel.findById(_id, function(err, station) {
       if (err) return res.status(500).send("Erreur lors de la récupération de la station.");
       if (station.length > 1) return res.status(500).send("Ceci n'aurait jamais dû arriver.");
       if (station.length === 0) return res.status(404).send("La station n'existe pas");
@@ -84,7 +84,7 @@ exports.update = function(req, res) {
 };
 
 exports.delete = function(req, res) {
-  Station.stationModel.findById({ _id: req.params.id }, function(err, station) {
+  Station.stationModel.findById(req.params.id , function(err, station) {
     station.state = states.DELETED;
     station.save(function(err, updatedStation) {
       if (err) {
