@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { UserService } from "../../_services/user.service";
 import { Station } from "../../_models";
+import { User } from "../../_models";
 import { StationsService } from "../../_services/stations.service";
 import { AlertService } from '../../_services/index';
 
@@ -22,6 +23,7 @@ export class AdminPanelComponent implements OnInit {
   users = [];
   stations = [];
   private map: Map<string, string>;
+  private mapUserFilter: Map<string, string>;
   constructor(private userService: UserService, private stationsService: StationsService, private alertService: AlertService) {
     this.headersUsers = ["Nom", "Prénom", "Adresse mail", "Date de création"];
     this.headersStation = ["Nom de la station", "Latitude", "Longitude", "Intervalle", "Auteur", "Date de mise en service"];
@@ -40,6 +42,11 @@ export class AdminPanelComponent implements OnInit {
     this.map.set("Intervalle", "interval");
     this.map.set("Auteur", "user_creator");
     this.map.set("Date de mise en service", "createdAt");
+    this.mapUserFilter = new Map();
+    this.mapUserFilter.set("Nom", "last_name");
+    this.mapUserFilter.set("Prénom", "first_name");
+    this.mapUserFilter.set("Adresse mail", "mail");
+    this.mapUserFilter.set("Date de création", "created_at");
   }
 
   loadAwaitingUsers() {
@@ -144,6 +151,31 @@ export class AdminPanelComponent implements OnInit {
         if (typeof (val1[key]) == 'number') {
           return val2[key] > val1[key] ? -1 : 1
         }
+        return val2[key].toLowerCase() > val1[key].toLowerCase() ? -1 : 1
+      });
+    }
+  }
+
+  sortDataUser(head: string) {
+    if (this.users.length <= 1) {
+      return;
+    }
+    // TODO gérer intervalle sort propre
+    let key = this.mapUserFilter.get(head);
+    let i = 1;
+    while (i < this.users.length && this.users[0][key] == this.users[i][key]) {
+      i++;
+    }
+    // Tous les champs sont égaux, pas besoin de trier
+    if (i >= this.users.length) {
+      return;
+    }
+    if (this.users[0][key] <= this.users[i][key]) {
+      this.users.sort((val1: User, val2: User) => {
+        return val1[key].toLowerCase() > val2[key].toLowerCase() ? -1 : 1
+      });
+    } else {
+      this.users.sort((val1: User, val2: User) => {
         return val2[key].toLowerCase() > val1[key].toLowerCase() ? -1 : 1
       });
     }
