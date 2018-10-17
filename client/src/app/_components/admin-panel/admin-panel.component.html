@@ -59,7 +59,7 @@
         <td>{{station.createdAt | date: 'd/MM/yyyy'}}</td>
         <td>
           <i class="fas fa-check fa-fw fa-1x" (click)="acceptStation(station)"></i>
-          <i class="fas fa-trash fa-fw fa-1x"></i>
+          <i class="fas fa-trash fa-fw fa-1x" (click)="refuseStation(station)"></i>
         </td>
       </tr>
     </tbody>

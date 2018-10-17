@@ -62,7 +62,6 @@ export class AdminPanelComponent implements OnInit {
       .pipe(first())
       .subscribe(res => {
         self.stations = res;
-        console.log(res);
         if (res.length > 0) {
           this.showStations = true;
         } else {
@@ -99,6 +98,19 @@ export class AdminPanelComponent implements OnInit {
       .subscribe(result => {
         self.loadAwaitingStation();
         self.alertService.success("La station a été accepté avec succès");
+      },
+        error => {
+          self.alertService.error(error);
+        });
+  }
+
+  refuseStation(station: Station) {
+    let self = this;
+    this.stationsService.delete(station._id)
+      .pipe(first())
+      .subscribe(result => {
+        self.loadAwaitingStation();
+        self.alertService.success("La station a été refusée avec succès");
       },
         error => {
           self.alertService.error(error);

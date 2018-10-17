@@ -109,7 +109,6 @@ exports.getAllAwaiting = function(req, res) {
       let station = stations[i];
       // On récupère l'utilsiateur lié
       User.userModel.findById(station.user_creator_id, function(err, user) {
-        console.log(user);
         if (err) {
           logger.error(err);
           return res.status(500).send("Erreur lors de la récupération de l'utilisateur lié à la station");
