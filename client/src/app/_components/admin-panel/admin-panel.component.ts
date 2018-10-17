@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { first } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 import { UserService } from "../../_services/user.service";
 import { Station } from "../../_models";
 import { User } from "../../_models";
@@ -66,7 +66,15 @@ export class AdminPanelComponent implements OnInit {
   loadAwaitingStation() {
     let self = this;
     this.stationsService.getAllAwaiting()
-      .pipe(first())
+      .pipe(map(stations => {
+        for (let n of stations) {
+          this.userService.getById(n.user_creator_id).pipe(first()).subscribe(user => {
+            n.user_creator = user.mail;
+          });
+        }
+        return stations;
+      })
+      )
       .subscribe(res => {
         self.stations = res;
         if (res.length > 0) {

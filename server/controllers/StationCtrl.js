@@ -84,7 +84,7 @@ exports.update = function(req, res) {
 };
 
 exports.delete = function(req, res) {
-  Station.stationModel.findById(req.params.id , function(err, station) {
+  Station.stationModel.findById(req.params.id, function(err, station) {
     station.state = states.DELETED;
     station.save(function(err, updatedStation) {
       if (err) {
@@ -104,25 +104,8 @@ exports.getintervals = function(req, res) {
 exports.getAllAwaiting = function(req, res) {
   Station.stationModel.find({ state: states.AWAITING }).then(function(stations) {
     let tabS = [];
-    let cb = 0;
-    for (let i = 0; i < stations.length; i++) {
-      let station = stations[i];
-      // On récupère l'utilsiateur lié
-      User.userModel.findById(station.user_creator_id, function(err, user) {
-        if (err) {
-          logger.error(err);
-          return res.status(500).send("Erreur lors de la récupération de l'utilisateur lié à la station");
-        } else {
-          let stationTmp = station.toDto();
-          stationTmp.user_creator = user.mail;
-          tabS.push(stationTmp);
-          cb++;
-        }
-        if (cb === stations.length) {
-          return res.status(200).send(tabS);
-        }
-      });
-    }
+    stations.forEach(station => tabS.push(station.toDto()));
+    return res.status(200).send(tabS);
   }).catch(function(err) {
     logger.error(err);
     return res.status(500).send("Une erreur est survenue lors dela récupération des stations en attente.");
