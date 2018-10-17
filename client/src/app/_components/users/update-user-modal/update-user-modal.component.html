@@ -66,9 +66,9 @@
                   <option value="" disabled selected>etat</option>
                   <option *ngFor="let i of states" [value]="i">{{i}}</option>
                 </select>
-                <div *ngIf="state.invalid && (etat.dirty || state.touched)" class="alert alert-danger">
+                <div *ngIf="state.invalid && (state.dirty || state.touched)" class="alert alert-danger">
                   <div *ngIf="state.errors.required">
-                    Une etat est requis
+                    Un etat est requis
                   </div>
                 </div>
               </div>
