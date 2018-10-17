@@ -81,7 +81,7 @@ export class NoteComponent implements OnInit {
         map(notes => {
           notes.sort((val1: Note, val2: Note) => { return val1.createdAt > val2.createdAt ? -1 : 1 });
           for(let n of notes){
-            this.userService.getById(n.user_id).pipe(first()).subscribe(user => {
+            this.userService.getById(n.user_id).subscribe(user => {
               // @ts-ignore
               n.last_name = user.last_name;
               // @ts-ignore

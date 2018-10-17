@@ -124,7 +124,7 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
     s.createdAt = this.updateStationForm.controls['createdAt'].value;
 
     this.stationService.update(s)
-      .pipe(first())
+      
       .subscribe(
         result => {
           //trigger sent

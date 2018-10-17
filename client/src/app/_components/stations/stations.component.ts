@@ -35,7 +35,7 @@ export class StationsComponent implements OnInit {
 
   loadAllStations() {
     this.stationService.getAll()
-      .pipe(first())
+      
       .subscribe(result => {
         this.stations = result.slice(0);
         this.stationsFiltered = result.slice(0);
@@ -68,7 +68,6 @@ export class StationsComponent implements OnInit {
   deleteStation(choice: boolean) {
     if (choice) {
       this.stationService.delete(this.stationToDelete._id)
-        .pipe(first())
         .subscribe(result => {
           this.loadAllStations();
         });

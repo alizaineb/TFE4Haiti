@@ -109,7 +109,6 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked{
     s.createdAt = this.addStationForm.controls['createdAt'].value;
 
     this.stationService.register(s)
-      .pipe(first())
       .subscribe(
         newStation => {
           if(this.addStationForm.controls['note'].value != ''){
@@ -118,7 +117,7 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked{
             n.note = this.addStationForm.controls['note'].value;
 
             this.noteService.register(n)
-              .pipe(first())
+              
               .subscribe(
                 newNote => {
               },
