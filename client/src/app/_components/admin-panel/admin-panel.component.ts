@@ -42,7 +42,7 @@ export class AdminPanelComponent implements OnInit {
     this.map.set("Date de mise en service", "createdAt");
   }
 
-  loadAwaitingUsers() {
+  loadAwaitingUsers($event=null) {
     let self = this;
     this.userService.getAllAwaiting()
       .pipe(first())
