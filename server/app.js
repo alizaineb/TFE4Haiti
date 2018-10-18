@@ -38,20 +38,27 @@ function configureServer() {
   });
 }
 
-function configureDB() {
+function configureDB(cb) {
   //Connect to mongoDB server
   let url = 'mongodb://' + nconf.get('database:login') + ':' + nconf.get('database:password') + '@' + nconf.get('database:host') + ':' + nconf.get('database:port') + '/' + nconf.get('database:name');
-  mongoose.connect(url, { useNewUrlParser: true });
   mongoose.set('debug', nconf.get('development'));
   mongoose.set('useCreateIndex', true);
 
-  //Require the models
-  // Import and use model in mongoose
-  // require('./../models/donnee');
-  // require('./../models/mdp_recuperation');
-  // require('./../models/station');
-  require('./models/users');
+  mongoose.connect(url, { useNewUrlParser: true }).then(
+    () => {
+      //Require the models
+      // Import and use model in mongoose
+      // require('./../models/donnee');
+      // require('./../models/mdp_recuperation');
+      // require('./../models/station');
+      require('./models/users');
 
+      cb()
+    },
+    err => {
+      logger.error('[Database] Impossible de se connecter à la base de données.')
+    }
+  );
 }
 
 function startWebServer() {
@@ -59,14 +66,15 @@ function startWebServer() {
   configureServer();
 
   //Configure la base de données
-  configureDB();
+  configureDB(() => {
+    //TODO : ajout d'une fvérification que la configuration mail est correcte style on envoie un mail en mode le serveur est lancé (et en dev=true ça se fait pas ^^).
+    // Gestion des routes
+    require('./routes/server')(app);
 
-  //TODO : ajout d'une fvérification que la configuration mail est correcte style on envoie un mail en mode le serveur est lancé (et en dev=true ça se fait pas ^^).
-  // Gestion des routes
-  require('./routes/server')(app);
+    // Lancement du serveur
+    app.listen(nconf.get('server').port)
+  });
 
-  // Lancement du serveur
-  app.listen(nconf.get('server').port)
 }
 
 process.chdir(__dirname);
