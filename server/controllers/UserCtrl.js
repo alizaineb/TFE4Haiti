@@ -101,7 +101,7 @@ exports.create = function(req, res) {
 };
 
 exports.update = function(req, res) {
-  console.log(req.body);
+  // TODO Check mail
   checkParam(req, res, ["_id", "first_name", "last_name", "mail", "role", "state"], () => {
     let id = req.body._id;
     UsersModel.userModel.findById({ _id: id }, function(err, user) {
