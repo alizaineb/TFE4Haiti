@@ -375,5 +375,5 @@ function sendEmailReset(req, res, user, isUserRequest) {
 
 // used to tetst some routes
 exports.useless = function(req, res) {
-  return res.status(200).send("ok");
+  return res.status(200).send({message: 'ok'});
 };
