@@ -24,10 +24,7 @@ export class AuthenticationService {
   }
 
   isLogged() {
-    return this.http.get<any>(environment.apiUrl + '/login/test')
-      .pipe(map(() => {
-
-      }));
+    return this.http.get<any>(environment.apiUrl + '/login/test');
   }
 
   logout() {
