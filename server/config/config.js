@@ -72,6 +72,7 @@ exports.load = function(callback) {
 
 function createDefaultCfgFile(callback) {
   logger.warn('[Config]  Création d\'un nouveau fichier de configuration');
+  logger.error('/!\\ Un fichier de configuration par défaut a été créé.\nLe serveur va fonctionner avec des valeurs par défaut. Pour des raisons de sécurité et assurer une fonctionnement total de l\'application, veuillez le modifier.\nPour de plus amples informations référez-vous à la documentation.');
   nconf.argv().env().file({ file: fullConfigFileName });
   nconf.set('development', true);
   nconf.set('token:privateKey', 'somethingsomethingjsontoken'); // 1h
@@ -197,6 +198,7 @@ function checkCfg(callback) {
         if (err) {
           logger.error("[Config] Erreur durant la vérification du fichier de configuration :  \n" + err);
         } else {
+          logger.error('/!\\ Le fichier de configuration a été modifié.\nLe serveur va fonctionner avec des valeurs par défaut. Pour des raisons de sécurité et assurer une fonctionnement total de l\'application, veuillez le modifier.\nPour de plus amples informations référez-vous à la documentation.');
           callback(null);
         }
       });
