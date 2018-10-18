@@ -4,6 +4,8 @@ import * as L from 'leaflet';
 import {StationsService} from '../../_services/stations.service';
 import {st} from "@angular/core/src/render3";
 import {Station} from "../../_models";
+import {LocalstorageService} from "../../_services/localstorage.service";
+import {layerGroup} from "leaflet";
 
 @Component({
   selector: 'app-home',
@@ -19,7 +21,10 @@ export class HomeComponent implements OnInit {
   private zoom = 8;
   private centerMap = [19.099041, -72.658473];
 
-  constructor(private stationsService: StationsService) {
+  constructor(
+    private localStorageService: LocalstorageService,
+    private stationsService: StationsService
+  ) {
   }
 
   ngOnInit() {
@@ -93,12 +98,8 @@ export class HomeComponent implements OnInit {
       station = self.selectedStation[i];
       L.marker([station.latitude, station.longitude], {icon: icon[station.state]}).bindPopup(`<b>${station.name} </b><br/>`).addTo(stationGroup[station.state]);
     }
-    // self.selectedStation.forEach(station => {
-    //
-    //
-    // });
 
-    console.table(self.selectedStation);
+    // console.table(self.selectedStation);
     const mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
       '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
       'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>';
@@ -128,6 +129,8 @@ export class HomeComponent implements OnInit {
         attribution: 'Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       });
 
+
+
     self.mapContainer = L.map('mapid', {
       center: [self.centerMap[0], self.centerMap[1]],
       zoom: self.zoom,
@@ -135,6 +138,7 @@ export class HomeComponent implements OnInit {
       maxZoom: 18,
       layers: [mapLayerOSMGrayScale, stationGroup.working, stationGroup.deleted, stationGroup.awaiting, stationGroup.broken]
     });
+
 
 
     L.control.scale().addTo(self.mapContainer);
@@ -168,6 +172,8 @@ export class HomeComponent implements OnInit {
       'Hydda - Full': mapLayerHyddaFull
     };
 
+
+
     const overlays = {
       'Fonctionnelle': stationGroup.working,
       'En panne': stationGroup.broken,
@@ -176,7 +182,18 @@ export class HomeComponent implements OnInit {
     };
 
 
-    L.control.layers(baseLayers, overlays).addTo(self.mapContainer);
+
+
+    const currentU = this.localStorageService.getStorage()['currentUser'];
+    console.log(currentU);
+    if(!currentU){
+      self.mapContainer.removeLayer(stationGroup.awaiting);
+      self.mapContainer.removeLayer(overlays);
+      L.control.layers(baseLayers).addTo(self.mapContainer);
+    }else{
+      L.control.layers(baseLayers, overlays).addTo(self.mapContainer);
+    }
+
     self.mapContainer.on('zoomend', (e) => {
       self.zoom = e.target._animateToZoom;
     });
