@@ -21,7 +21,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let user of usersFiltered; index as i;">
+    <tr *ngFor="let user of usersFiltered | paginate: { itemsPerPage: 10, currentPage: p } ; index as i;">
       <td>{{i+1}}</td>
       <td>{{user.first_name}}</td>
       <td>{{user.last_name}}</td>
@@ -37,6 +37,8 @@
     </tr>
   </tbody>
 </table>
+
+<pagination-controls (pageChange)="p = $event"></pagination-controls>
 
 <!-- Modal -->
 <div class="modal fade" id="updateUserModal" tabindex="-1" role="dialog" aria-labelledby="updateUserModal" aria-hidden="true">
