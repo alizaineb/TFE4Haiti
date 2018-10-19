@@ -35,6 +35,7 @@ import {DetailsStationComponent} from './_components/simple-station/details/deta
 import { LogoutComponent } from './_components/logout/logout.component';
 import { NoteComponent } from './_components/simple-station/note/note.component';
 import { UpdateUserModalComponent } from './_components/users/update-user-modal/update-user-modal.component';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 @NgModule({
   imports: [
@@ -44,7 +45,8 @@ import { UpdateUserModalComponent } from './_components/users/update-user-modal/
     routing,
     FormsModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    NgxPaginationModule
   ],
   declarations: [
     AppComponent,
