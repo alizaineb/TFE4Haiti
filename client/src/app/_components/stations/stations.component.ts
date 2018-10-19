@@ -18,6 +18,7 @@ export class StationsComponent implements OnInit {
   stationToDelete: Station;
   stationToUpdate: Station;
 
+  currentPage = 1; // page courante des stations affichées
   map;
 
   searchKeyWord: string = '';
@@ -35,7 +36,6 @@ export class StationsComponent implements OnInit {
 
   loadAllStations($event=null) {
     this.stationService.getAll()
-      
       .subscribe(result => {
         this.stations = result.slice(0);
         this.stationsFiltered = result.slice(0);

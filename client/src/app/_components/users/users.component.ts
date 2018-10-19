@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
 
 import { User } from '../../_models';
@@ -13,6 +13,8 @@ export class UsersComponent implements OnInit {
   currentUser: User;
   users: User[] = [];
   usersFiltered: User[] = [];
+
+  currentPage = 1; // page courante des utilisateurs affiché
 
 
   userToUpdate: User;
