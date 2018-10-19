@@ -18,7 +18,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let user of users; index as i;">
+      <tr *ngFor="let user of users | paginate: { itemsPerPage: 10, currentPage: pageUser, id:'userpages' } ; index as i;">
         <td>{{i+1}}</td>
         <td>{{user.first_name}}</td>
         <td>{{user.last_name}}</td>
@@ -31,6 +31,7 @@
       </tr>
     </tbody>
   </table>
+  <pagination-controls (pageChange)="pageUser = $event" id="userpages" autoHide="true"></pagination-controls>
 </div>
 <div *ngIf="showStations">
   <h1>
@@ -49,7 +50,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let station of stations; index as i;">
+      <tr *ngFor="let station of stations | paginate: { itemsPerPage: 10, currentPage: pageStations, id:'stationspage' } ; index as i;">
         <td>{{i+1}}</td>
         <td>{{station.name}}</td>
         <td>{{station.latitude}}</td>
@@ -64,6 +65,8 @@
       </tr>
     </tbody>
   </table>
+  <pagination-controls (pageChange)="pageStations = $event" id="stationspage" autoHide="true"></pagination-controls>
+
 
 </div>
 <div *ngIf="showDatas">
