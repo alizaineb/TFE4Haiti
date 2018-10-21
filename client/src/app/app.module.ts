@@ -35,7 +35,8 @@ import {DetailsStationComponent} from './_components/simple-station/details/deta
 import { LogoutComponent } from './_components/logout/logout.component';
 import { NoteComponent } from './_components/simple-station/note/note.component';
 import { UpdateUserModalComponent } from './_components/users/update-user-modal/update-user-modal.component';
-import {NgxPaginationModule} from 'ngx-pagination';
+import {NgxPaginationModule} from 'ngx-pagination';;
+import { ImportStationModalComponent } from './_components/stations/import-station-modal/import-station-modal.component'
 
 @NgModule({
   imports: [
@@ -69,8 +70,8 @@ import {NgxPaginationModule} from 'ngx-pagination';
     DetailsStationComponent,
     LogoutComponent ,
     NoteComponent ,
-    UpdateUserModalComponent],
-
+    UpdateUserModalComponent,
+    ImportStationModalComponent ],
   providers: [
     AuthGuard,
     AlertService,

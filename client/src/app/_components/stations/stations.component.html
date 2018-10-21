@@ -43,7 +43,7 @@
       <td>{{station.updatedAt | date: 'd/MM/yyyy à HH:mm'}}</td>
       <td>
         <i class="fas fa-edit fa-fw fa-1x" (click)="assignStationToUpdate(station)" data-toggle="modal" data-target="#updateStationModal"></i>
-        <i class="fas fa-file-download fa-fw fa-1x"></i>
+        <i class="fas fa-file-download fa-fw fa-1x" (click)="assignStationToImport(station)" data-toggle="modal" data-target="#importStationModal"></i>
         <i class="fas fa-trash fa-fw fa-1x" (click)="assignStationToDelete(station)" data-toggle="modal" data-target="#deleteStationModal"></i>
       </td>
     </tr>
@@ -57,7 +57,7 @@
 <!-- Modal -->
 <div class="modal fade" id="addStationModal" tabindex="-1" role="dialog" aria-labelledby="addStationModalLabel" aria-hidden="true">
   <app-add-station-modal (sent)="loadAllStations($event)">
-    ></app-add-station-modal>
+    </app-add-station-modal>
 </div>
 
 <!-- Modal -->
@@ -70,4 +70,9 @@
   <div *ngIf="stationToUpdate != null">
     <app-update-sation-modal [stationToUpdate]=stationToUpdate (updated)="loadAllStations($event)"></app-update-sation-modal>
   </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="importStationModal" tabindex="-1" role="dialog" aria-labelledby="importStationModalLabel" aria-hidden="true">
+  <app-import-station-modal [stationId]=importDataStation._id></app-import-station-modal>
 </div>

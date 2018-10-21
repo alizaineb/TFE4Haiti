@@ -17,6 +17,7 @@ export class StationsComponent implements OnInit {
   stationsFiltered: Station[] = [];
   stationToDelete: Station;
   stationToUpdate: Station;
+  importDataStation: Station;
 
   currentPage = 1; // page courante des stations affichées
   map;
@@ -31,7 +32,8 @@ export class StationsComponent implements OnInit {
     this.initMap();
     this.loadAllStations();
     this.stationToDelete = new Station();
-    this.stationToUpdate = null
+    this.stationToUpdate = null;
+    this.importDataStation = new Station();
   }
 
   loadAllStations($event=null) {
@@ -63,6 +65,10 @@ export class StationsComponent implements OnInit {
 
   assignStationToUpdate(station: Station) {
     this.stationToUpdate = station;
+  }
+
+  assignStationToImport(station: Station) {
+    this.importDataStation = station;
   }
 
   deleteStation(choice: boolean) {
