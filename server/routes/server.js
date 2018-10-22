@@ -34,6 +34,7 @@ module.exports = function(app) {
         app.delete.apply(app, args);
         break;
       default:
+        // TODO TRAIDER DIFFEREMMENT ICI en mdoe renvoyer une erreur ?
         throw new Error('Type de requête inconnue pour la route ' + route.path);
     }
   });
