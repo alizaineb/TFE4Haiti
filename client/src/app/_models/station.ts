@@ -8,6 +8,8 @@ export class Station {
   public updatedAt: Date;
   public createdAt: Date;
   public interval: string;
+  public commune: string;
+  public river: string;
   public user_creator_id: string;
   public user_creator: any;
   public users: string[];

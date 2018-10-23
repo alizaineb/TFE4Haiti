@@ -20,15 +20,14 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked {
 
   @Output()
   sent = new EventEmitter<boolean>();
-
-  intervals = ['1min', '5min', '10min', '15min', '30min', '1h', '2h', '6h', '12h', '24h'];
   submitted = false;
-
   addStationForm: FormGroup;
   datePicker;
-
   map;
   mark;
+  intervals: string[];
+  communes: string[];
+  rivers: string[];
 
   constructor(private alertService: AlertService,
               private stationService: StationsService,
@@ -36,6 +35,9 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit(): void {
+    this.stationService.getIntervals().subscribe(intervals => {this.intervals = intervals; });
+    this.stationService.getCommunes().subscribe(communes => {this.communes = communes; });
+    this.stationService.getRivers().subscribe(rivers => {this.rivers = rivers; });
     this.addStationForm = new FormGroup({
 
       'name': new FormControl('', [
@@ -54,11 +56,16 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked {
         Validators.min(-180)
       ]),
       'altitude': new FormControl(undefined, [
-        Validators.required,
         Validators.max(10000),
         Validators.min(0)
       ]),
       'interval': new FormControl('', [
+        Validators.required
+      ]),
+      'commune': new FormControl('', [
+        Validators.required
+      ]),
+      'river': new FormControl('', [
         Validators.required
       ]),
       'createdAt': new FormControl(null, [
@@ -79,6 +86,8 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked {
   get createdAt() {return this.addStationForm.get('createdAt'); }
   get altitude() {return this.addStationForm.get('altitude'); }
   get note() {return this.addStationForm.get('note'); }
+  get river() {return this.addStationForm.get('river'); }
+  get commune() {return this.addStationForm.get('commune'); }
 
   ngAfterViewChecked(): void {
     this.map.invalidateSize();
@@ -105,6 +114,8 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked {
     s.longitude = this.addStationForm.controls['longitude'].value;
     s.altitude = this.addStationForm.controls['altitude'].value;
     s.interval = this.addStationForm.controls['interval'].value;
+    s.river = this.addStationForm.controls['river'].value;
+    s.commune = this.addStationForm.controls['commune'].value;
     s.createdAt = this.addStationForm.controls['createdAt'].value;
 
     this.stationService.register(s)

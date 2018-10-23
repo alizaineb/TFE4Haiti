@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import {Note, Station} from '../_models';
+import {Station} from '../_models';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +12,14 @@ export class StationsService {
 
   getIntervals() {
     return this.http.get<any[]>(environment.apiUrl + '/stations/getInfo/intervals');
+  }
+
+  getCommunes() {
+    return this.http.get<any[]>(environment.apiUrl + '/stations/getInfo/communes');
+  }
+
+  getRivers() {
+    return this.http.get<any[]>(environment.apiUrl + '/stations/getInfo/rivers');
   }
 
   getAll() {
@@ -37,6 +45,8 @@ export class StationsService {
   getAllAwaiting() {
     return this.http.get<Station[]>(environment.apiUrl + '/stations/getAllAwaiting');
   }
+
+
 
 
   /*

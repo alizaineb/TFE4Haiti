@@ -28,7 +28,9 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
   @Output()
   updated = new EventEmitter<boolean>();
 
-  intervals = ['1min', '5min', '10min', '15min', '30min', '1h', '2h', '6h', '12h', '24h'];
+  intervals: string[];
+  communes: string[];
+  rivers: string[];
   submitted = false;
 
   updateStationForm: FormGroup;
@@ -42,6 +44,9 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
   }
 
   ngOnInit(): void {
+    this.stationService.getIntervals().subscribe(intervals => {this.intervals = intervals; });
+    this.stationService.getCommunes().subscribe(communes => {this.communes = communes; });
+    this.stationService.getRivers().subscribe(rivers => {this.rivers = rivers; });
     this.initForm();
     this.initDatePickerAndMap();
   }
@@ -65,11 +70,16 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
         Validators.min(-180)
       ]),
       'altitude': new FormControl(this.stationToUpdate.altitude, [
-        Validators.required,
         Validators.max(10000),
         Validators.min(0)
       ]),
       'interval': new FormControl(this.stationToUpdate.interval, [
+        Validators.required
+      ]),
+      'commune': new FormControl(this.stationToUpdate.commune, [
+        Validators.required
+      ]),
+      'river': new FormControl(this.stationToUpdate.river, [
         Validators.required
       ]),
       'createdAt': new FormControl(this.stationToUpdate.createdAt, [
@@ -85,6 +95,8 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
   get interval() { return this.updateStationForm.get('interval'); }
   get createdAt() {return this.updateStationForm.get('createdAt'); }
   get altitude() {return this.updateStationForm.get('altitude'); }
+  get river() {return this.updateStationForm.get('river'); }
+  get commune() {return this.updateStationForm.get('commune'); }
 
   ngAfterViewChecked(): void {
     this.map.invalidateSize();
@@ -121,6 +133,8 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
     s.altitude = this.updateStationForm.controls['altitude'].value;
     s.interval = this.updateStationForm.controls['interval'].value;
     s.createdAt = this.updateStationForm.controls['createdAt'].value;
+    s.river = this.updateStationForm.controls['river'].value;
+    s.commune = this.updateStationForm.controls['commune'].value;
 
     this.stationService.update(s)
 

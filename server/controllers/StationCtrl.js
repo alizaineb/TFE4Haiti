@@ -32,7 +32,7 @@ exports.getById = function(req, res) {
 };
 
 exports.create = function(req, res) {
-  checkParam(req, res, ["name", "latitude", "longitude", "altitude", "createdAt", "interval"], function() {
+  checkParam(req, res, ["name", "latitude", "longitude", "river", "commune", "createdAt", "interval"], function() {
     let station = req.body;
     let sTmp = new Station.stationModel();
     sTmp.name = station.name;
@@ -47,6 +47,8 @@ exports.create = function(req, res) {
     sTmp.interval = station.interval;
     sTmp.user_creator_id = req.token_decoded.id;
     sTmp.users = [req.token_decoded.id];
+    sTmp.commune = station.commune;
+    sTmp.river = station.river;
 
     sTmp.save().then(() => {
       return res.status(201).send(sTmp);
@@ -58,9 +60,8 @@ exports.create = function(req, res) {
 };
 
 exports.update = function(req, res) {
-  checkParam(req, res, ["name", "latitude", "longitude", "altitude", "createdAt", "interval"], function() {
-    let id = req.params.id;
-    Station.stationModel.findById(_id, function(err, station) {
+  checkParam(req, res, ["name", "latitude", "longitude", "river", "commune", "createdAt", "interval"], function() {
+    Station.stationModel.findById(req.params.id, function(err, station) {
       if (err) return res.status(500).send("Erreur lors de la récupération de la station.");
       if (station.length > 1) return res.status(500).send("Ceci n'aurait jamais dû arriver.");
       if (station.length === 0) return res.status(404).send("La station n'existe pas");
@@ -71,6 +72,8 @@ exports.update = function(req, res) {
       station.altitude = req.body.altitude;
       station.createdAt = req.body.createdAt;
       station.interval = req.body.interval;
+      station.river = req.body.river;
+      station.commune = req.body.commune;
 
       station.save(function(err, updatedStation) {
         if (err) {
@@ -96,10 +99,7 @@ exports.delete = function(req, res) {
   });
 };
 
-exports.getintervals = function(req, res) {
-  const intervals = ['1min', '5min', '10min', '15min', '30min', '1h', '2h', '6h', '12h', '24h'];
-  return res.status(200).send(intervals);
-};
+
 
 exports.getAllAwaiting = function(req, res) {
   Station.stationModel.find({ state: states.AWAITING }).then(function(stations) {
@@ -135,4 +135,17 @@ exports.acceptStation = function(req, res) {
       return res.status(500).send("Une erreur est survenue lors de la récupération de la station concernée.");
     });
   });
-}
+};
+
+
+exports.getIntervals = function(req, res) {
+  return res.status(200).send(Station.intervals);
+};
+
+exports.getCommunes = function(req, res) {
+  return res.status(200).send(Station.communes);
+};
+
+exports.getRivers = function(req, res) {
+  return res.status(200).send(Station.rivers);
+};

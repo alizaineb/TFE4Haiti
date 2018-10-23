@@ -9,11 +9,13 @@ const Station = new Schema({
   name: { type: String, required: true },
   latitude: { type: Number, required: true, min: -90.0, max: 90.0 },
   longitude: { type: Number, required: true, min: -180.0, max: 180.0 },
-  altitude: { type: Number, required: true, min: 0, max: 10000 },
+  altitude: { type: Number, min: 0, max: 10000 },
   //picture: { type: String }, // Url vers la photo
   users: { type: [String], required: true },
   user_creator_id: { type: String, required: true },
   createdAt: { type: Date, required: true },
+  commune: {type: String, required: true},
+  river : {type: String, required: true},
   state: { type: String, enum: [states.AWAITING, states.BROKEN, states.WORKING, states.DELETED], required: true },
   interval: { type: String, required: true, enum: ['1min', '5min', '10min', '15min', '30min', '1h', '2h', '6h', '12h', '24h'] }
 }, {
@@ -32,12 +34,22 @@ Station.methods.toDto = function() {
     createdAt: this.createdAt,
     updatedAt: this.updatedAt,
     interval: this.interval,
+    river: this.river,
+    commune: this.commune,
     user_creator_id: this.user_creator_id,
     users: this.users
   };
 };
 
-//Definition du modèle
 const stationModel = mongoose.model("station", Station);
-// Export du modèle
 exports.stationModel = stationModel;
+
+const intervals = ['1min', '5min', '10min', '15min', '30min', '1h', '2h', '6h', '12h', '24h'];
+exports.intervals = intervals;
+
+// TODO En attente de confirmation
+const communes = ['commune1','commune2'];
+exports.communes = communes;
+
+const rivers = ['river1','river2'];
+exports.rivers = rivers;

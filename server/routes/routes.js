@@ -106,7 +106,17 @@ exports.routes = [
   {
     path: "/api/stations/getInfo/intervals",
     httpMethod: "GET",
-    middleWare: [controllers.stations.getintervals]
+    middleWare: [controllers.stations.getIntervals]
+  },
+  {
+    path: "/api/stations/getInfo/communes",
+    httpMethod: "GET",
+    middleWare: [controllers.stations.getCommunes]
+  },
+  {
+    path: "/api/stations/getInfo/rivers",
+    httpMethod: "GET",
+    middleWare: [controllers.stations.getRivers]
   },
   {
     path: "/api/stations",

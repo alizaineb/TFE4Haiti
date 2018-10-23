@@ -25,17 +25,58 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                   <div class="form-group">
 
-                    <select class="form-control" id="interval" formControlName="interval" required>
+                    <select class="form-control" id="interval"
+                            formControlName="interval" required>
                       <option value="" disabled selected>Intervalle</option>
                       <option *ngFor="let i of intervals" [value]="i">{{i}}</option>
                     </select>
 
-                    <div *ngIf="interval.invalid && (interval.dirty || interval.touched)" class="alert alert-danger">
+                    <div *ngIf="interval.invalid && (interval.dirty || interval.touched)"
+                         class="alert alert-danger">
                       <div *ngIf="interval.errors.required">
                         Une intervalle est requise
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+
+                    <select class="form-control" id="river"
+                            formControlName="river" required>
+                      <option value="" disabled selected>Rivière</option>
+                      <option *ngFor="let i of rivers" [value]="i">{{i}}</option>
+                    </select>
+
+                    <div *ngIf="river.invalid && (river.dirty || river.touched)"
+                         class="alert alert-danger">
+                      <div *ngIf="river.errors.required">
+                        Une rivière est requise
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <select class="form-control" id="commune"
+                            formControlName="commune" required>
+                      <option value="" disabled selected>Commune</option>
+                      <option *ngFor="let i of communes" [value]="i">{{i}}</option>
+                    </select>
+
+                    <div *ngIf="commune.invalid && (commune.dirty || commune.touched)"
+                         class="alert alert-danger">
+                      <div *ngIf="commune.errors.required">
+                        Une commune est requise
                       </div>
                     </div>
                   </div>
@@ -78,7 +119,7 @@
                 </div>
                 <div class="col-md">
                   <div class="form-group">
-                    <input type="number" class="form-control" id="altitude" placeholder="Altitude" formControlName="altitude" required>
+                    <input type="number" class="form-control" id="altitude" placeholder="Altitude" formControlName="altitude">
                     <div *ngIf="altitude.invalid && (altitude.dirty || altitude.touched)" class="alert alert-danger">
                       <div *ngIf="altitude.errors.required">
                         La longitude est requise

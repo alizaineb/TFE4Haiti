@@ -24,7 +24,7 @@ export class StationsComponent implements OnInit {
   searchKeyWord = '';
 
   constructor(private stationService: StationsService) {
-    this.headers = ['Nom', 'Etat', 'Date de création', 'Dernière modification'];
+    this.headers = ['Nom', 'Etat', 'Commune', 'Rivière', 'Date de création', 'Dernière modification'];
   }
 
   ngOnInit() {
@@ -50,6 +50,8 @@ export class StationsComponent implements OnInit {
     this.map.set('Date de création', 'createdAt');
     this.map.set('Dernière modification', 'updatedAt');
     this.map.set('Etat', 'state');
+    this.map.set('Commune', 'commune');
+    this.map.set('Rivière', 'river');
   }
 
   filterStation() {
