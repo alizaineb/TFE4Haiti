@@ -6,15 +6,14 @@ import {
   OnInit,
   Output, SimpleChanges
 } from '@angular/core';
-import {Station} from "../../../_models";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {AlertService} from "../../../_services";
-import {StationsService} from "../../../_services/stations.service";
-import flatpickr from "flatpickr";
-import {French} from "flatpickr/dist/l10n/fr";
-import {first} from "rxjs/operators";
-import * as L from "leaflet";
-import {LatLng} from "leaflet";
+import {Station} from '../../../_models';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {AlertService} from '../../../_services';
+import {StationsService} from '../../../_services/stations.service';
+import flatpickr from 'flatpickr';
+import {French} from 'flatpickr/dist/l10n/fr';
+import * as L from 'leaflet';
+import {LatLng} from 'leaflet';
 
 @Component({
   selector: 'app-update-sation-modal',
@@ -24,22 +23,22 @@ import {LatLng} from "leaflet";
 export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnChanges {
 
   @Input()
-  stationToUpdate:Station;
+  stationToUpdate: Station;
 
   @Output()
   updated = new EventEmitter<boolean>();
 
-  intervals = ['1min','5min','10min','15min','30min','1h','2h','6h','12h','24h'];
+  intervals = ['1min', '5min', '10min', '15min', '30min', '1h', '2h', '6h', '12h', '24h'];
   submitted = false;
 
-  updateStationForm:FormGroup;
+  updateStationForm: FormGroup;
   datePicker;
 
   map;
   mark;
 
-  constructor(private alertService:AlertService,
-              private stationService:StationsService){
+  constructor(private alertService: AlertService,
+              private stationService: StationsService) {
   }
 
   ngOnInit(): void {
@@ -48,7 +47,7 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
   }
 
 
-  initForm(){
+  initForm() {
     this.updateStationForm = new FormGroup({
       'name': new FormControl(this.stationToUpdate.name, [
         Validators.required,
@@ -76,7 +75,7 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
       'createdAt': new FormControl(this.stationToUpdate.createdAt, [
         Validators.required
       ])
-      //Ajouter la méthode get en dessous pour chaque field
+      // Ajouter la méthode get en dessous pour chaque field
     });
   }
 
@@ -84,11 +83,11 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
   get latitude() { return this.updateStationForm.get('latitude'); }
   get longitude() { return this.updateStationForm.get('longitude'); }
   get interval() { return this.updateStationForm.get('interval'); }
-  get createdAt() {return this.updateStationForm.get('createdAt');}
-  get altitude() {return this.updateStationForm.get('altitude')}
+  get createdAt() {return this.updateStationForm.get('createdAt'); }
+  get altitude() {return this.updateStationForm.get('altitude'); }
 
   ngAfterViewChecked(): void {
-    this.map.invalidateSize()
+    this.map.invalidateSize();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -99,22 +98,22 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
 
   resetStation() {
     this.initForm();
-    if(this.datePicker){
+    if (this.datePicker) {
       this.datePicker.setDate(this.stationToUpdate.createdAt);
     }
-    if(this.mark){
+    if (this.mark) {
       this.mark.setLatLng([this.stationToUpdate.latitude, this.stationToUpdate.longitude]);
     }
   }
 
-  sendStation(){
+  sendStation() {
     this.submitted = true;
     // stop here if form is invalid
     if (this.updateStationForm.invalid) {
       return;
     }
 
-    let s = new Station();
+    const s = new Station();
     s._id = this.stationToUpdate._id;
     s.name = this.updateStationForm.controls['name'].value;
     s.latitude = this.updateStationForm.controls['latitude'].value;
@@ -124,26 +123,26 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
     s.createdAt = this.updateStationForm.controls['createdAt'].value;
 
     this.stationService.update(s)
-      
+
       .subscribe(
         result => {
-          //trigger sent
+          // trigger sent
           this.updated.emit(true);
-          this.alertService.success("La station a été modifiée");
+          this.alertService.success('La station a été modifiée');
         },
         error => {
           this.alertService.error(error);
         });
   }
 
-  initDatePickerAndMap(){
+  initDatePickerAndMap() {
     const self = this;
-    this.datePicker = flatpickr("#createdAt2", {
+    this.datePicker = flatpickr('#createdAt2', {
       defaultDate: self.stationToUpdate.createdAt,
-      locale:French,
+      locale: French,
       altInput: true,
-      altFormat: "d-m-Y",
-      dateFormat: "d-m-Y",
+      altFormat: 'd-m-Y',
+      dateFormat: 'd-m-Y',
       onChange: function(selectedDates, dateStr, instance) {
         self.updateStationForm.controls['createdAt'].setValue(new Date(selectedDates[0]));
       }
@@ -163,7 +162,8 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
 
     // Maps usage : OpenStreetMap, OpenSurferMaps
 
-    const mapLayer2 = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+    const mapLayer2 = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.ey' +
+      'J1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
         id: 'mapbox.light',
         attribution: mbAttr
       }),
@@ -197,7 +197,7 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
 
     this.map.on('click', function(e) {
       // @ts-ignore
-      let latln: LatLng = e.latlng;
+      const latln: LatLng = e.latlng;
       self.updateStationForm.controls['latitude'].setValue(latln.lat);
       self.updateStationForm.controls['longitude'].setValue(latln.lng);
       self.mark.setLatLng(latln);

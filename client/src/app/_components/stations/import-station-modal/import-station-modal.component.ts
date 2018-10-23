@@ -8,12 +8,11 @@ import {Component, Input, OnInit} from '@angular/core';
 export class ImportStationModalComponent implements OnInit {
 
   @Input()
-  stationId:String;
+  stationId: String;
 
   constructor() { }
 
   ngOnInit() {
-    console.log(this.stationId);
   }
 
 }

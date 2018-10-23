@@ -1,14 +1,13 @@
 import {AfterViewChecked, Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {first} from "rxjs/operators";
-import {AlertService} from "../../../_services";
-import {StationsService} from "../../../_services/stations.service";
-import {NoteService} from "../../../_services/note.service";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {Note, Station} from "../../../_models";
-import flatpickr from "flatpickr";
-import { French} from "flatpickr/dist/l10n/fr";
-import * as L from "leaflet";
-import {LatLng} from "leaflet";
+import {AlertService} from '../../../_services';
+import {StationsService} from '../../../_services/stations.service';
+import {NoteService} from '../../../_services/note.service';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Note, Station} from '../../../_models';
+import flatpickr from 'flatpickr';
+import { French} from 'flatpickr/dist/l10n/fr';
+import * as L from 'leaflet';
+import {LatLng} from 'leaflet';
 
 
 @Component({
@@ -16,24 +15,24 @@ import {LatLng} from "leaflet";
   templateUrl: './add-station-modal.component.html',
   styleUrls: ['./add-station-modal.component.css']
 })
-export class AddStationModalComponent implements OnInit, AfterViewChecked{
+export class AddStationModalComponent implements OnInit, AfterViewChecked {
 
 
   @Output()
   sent = new EventEmitter<boolean>();
 
-  intervals = ['1min','5min','10min','15min','30min','1h','2h','6h','12h','24h'];
+  intervals = ['1min', '5min', '10min', '15min', '30min', '1h', '2h', '6h', '12h', '24h'];
   submitted = false;
 
-  addStationForm:FormGroup;
+  addStationForm: FormGroup;
   datePicker;
 
   map;
   mark;
 
-  constructor(private alertService:AlertService,
-              private stationService:StationsService,
-              private noteService: NoteService){
+  constructor(private alertService: AlertService,
+              private stationService: StationsService,
+              private noteService: NoteService) {
   }
 
   ngOnInit(): void {
@@ -65,10 +64,10 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked{
       'createdAt': new FormControl(null, [
         Validators.required
       ]),
-      'note': new FormControl('',[
+      'note': new FormControl('', [
         Validators.maxLength(200)
       ])
-      //Ajouter la méthode get è
+      // Ajouter la méthode get è
     });
     this.initDatePickerAndMap();
   }
@@ -77,12 +76,12 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked{
   get latitude() { return this.addStationForm.get('latitude'); }
   get longitude() { return this.addStationForm.get('longitude'); }
   get interval() { return this.addStationForm.get('interval'); }
-  get createdAt() {return this.addStationForm.get('createdAt');}
-  get altitude() {return this.addStationForm.get('altitude');}
-  get note() {return this.addStationForm.get('note');}
+  get createdAt() {return this.addStationForm.get('createdAt'); }
+  get altitude() {return this.addStationForm.get('altitude'); }
+  get note() {return this.addStationForm.get('note'); }
 
   ngAfterViewChecked(): void {
-    this.map.invalidateSize()
+    this.map.invalidateSize();
   }
 
   onSubmit() { this.submitted = true; }
@@ -93,14 +92,14 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked{
     this.map.removeLayer(this.mark);
   }
 
-  sendStation(){
+  sendStation() {
     this.submitted = true;
     // stop here if form is invalid
     if (this.addStationForm.invalid) {
       return;
     }
 
-    let s = new Station();
+    const s = new Station();
     s.name = this.addStationForm.controls['name'].value;
     s.latitude = this.addStationForm.controls['latitude'].value;
     s.longitude = this.addStationForm.controls['longitude'].value;
@@ -111,38 +110,35 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked{
     this.stationService.register(s)
       .subscribe(
         newStation => {
-          if(this.addStationForm.controls['note'].value != ''){
-            let n = new Note();
+          if (this.addStationForm.controls['note'].value !== '') {
+            const n = new Note();
             n.station_id = newStation._id;
             n.note = this.addStationForm.controls['note'].value;
-
             this.noteService.register(n)
-              
               .subscribe(
                 newNote => {
               },
               error => {
-                this.alertService.error("La note n'a pas été ajoutér\n" + error);
+                this.alertService.error('La note n\'a pas été ajoutér\n' + error);
               });
-
           }
           this.resetStation();
-          //trigger sent
+          // trigger sent
           this.sent.emit(true);
-          this.alertService.success("La station a été ajoutée");
+          this.alertService.success('La station a été ajoutée');
         },
         error => {
           this.alertService.error(error);
         });
   }
 
-  initDatePickerAndMap(){
+  initDatePickerAndMap() {
     const self = this;
-    this.datePicker = flatpickr("#createdAt", {
-      locale:French,
+    this.datePicker = flatpickr('#createdAtAdd', {
+      locale: French,
       altInput: true,
-      altFormat: "d-m-Y",
-      dateFormat: "d-m-Y",
+      altFormat: 'd-m-Y',
+      dateFormat: 'd-m-Y',
       onChange: function(selectedDates, dateStr, instance) {
         self.addStationForm.controls['createdAt'].setValue(new Date(selectedDates[0]));
       }
@@ -162,7 +158,8 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked{
 
     // Maps usage : OpenStreetMap, OpenSurferMaps
 
-    const mapLayer2 = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+    const mapLayer2 = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYS' +
+      'I6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
         id: 'mapbox.light',
         attribution: mbAttr
       }),
@@ -202,7 +199,7 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked{
     this.mark = L.marker([0, 0], {icon: icon1});
     this.map.on('click', function(e) {
       // @ts-ignore
-      let latln: LatLng = e.latlng;
+      const latln: LatLng = e.latlng;
       self.addStationForm.controls['latitude'].setValue(latln.lat);
       self.addStationForm.controls['longitude'].setValue(latln.lng);
       self.mark.setLatLng(latln);

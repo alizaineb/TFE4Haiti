@@ -1,7 +1,6 @@
 import { Component, OnInit, Output } from '@angular/core';
-import { first } from 'rxjs/operators';
-import {Station, User} from "../../_models";
-import { StationsService } from "../../_services/stations.service";
+import {Station} from '../../_models';
+import { StationsService } from '../../_services/stations.service';
 
 @Component({
   selector: 'app-stations',
@@ -22,10 +21,10 @@ export class StationsComponent implements OnInit {
   currentPage = 1; // page courante des stations affichées
   map;
 
-  searchKeyWord: string = '';
+  searchKeyWord = '';
 
   constructor(private stationService: StationsService) {
-    this.headers = ["Nom", "Etat", "Date de création", "Dernière modification"];
+    this.headers = ['Nom', 'Etat', 'Date de création', 'Dernière modification'];
   }
 
   ngOnInit() {
@@ -36,7 +35,7 @@ export class StationsComponent implements OnInit {
     this.importDataStation = new Station();
   }
 
-  loadAllStations($event=null) {
+  loadAllStations($event= null) {
     this.stationService.getAll()
       .subscribe(result => {
         this.stations = result.slice(0);
@@ -45,12 +44,12 @@ export class StationsComponent implements OnInit {
       });
   }
 
-  initMap(){
+  initMap() {
     this.map = new Map();
-    this.map.set("Nom", "name");
-    this.map.set("Date de création", "createdAt");
-    this.map.set("Dernière modification","updatedAt");
-    this.map.set("Etat", "state");
+    this.map.set('Nom', 'name');
+    this.map.set('Date de création', 'createdAt');
+    this.map.set('Dernière modification', 'updatedAt');
+    this.map.set('Etat', 'state');
   }
 
   filterStation() {
@@ -86,7 +85,7 @@ export class StationsComponent implements OnInit {
     if (this.stationsFiltered.length <= 1) {
       return;
     }
-    let key = this.map.get(head);
+    const key = this.map.get(head);
     let i = 1;
     while (i < this.stationsFiltered.length && this.stationsFiltered[0][key] == this.stationsFiltered[i][key]) {
       i++;
@@ -96,9 +95,9 @@ export class StationsComponent implements OnInit {
       return;
     }
     if (this.stationsFiltered[0][key] <= this.stationsFiltered[i][key]) {
-      this.stationsFiltered.sort((val1: Station, val2: Station) => { return val1[key].toLowerCase() > val2[key].toLowerCase() ? -1 : 1 });
+      this.stationsFiltered.sort((val1: Station, val2: Station) => val1[key].toLowerCase() > val2[key].toLowerCase() ? -1 : 1);
     } else {
-      this.stationsFiltered.sort((val1: Station, val2: Station) => { return val2[key].toLowerCase() > val1[key].toLowerCase() ? -1 : 1 });
+      this.stationsFiltered.sort((val1: Station, val2: Station) => val2[key].toLowerCase() > val1[key].toLowerCase() ? -1 : 1);
     }
   }
 
