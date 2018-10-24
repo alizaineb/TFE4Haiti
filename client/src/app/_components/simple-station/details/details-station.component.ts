@@ -24,16 +24,23 @@ export class DetailsStationComponent implements OnInit {
   }
 
   ngOnInit() {
-    const self = this;
+    this.loadData();
+  }
+
+  loadData(){
     this.stationService.getById(this.stationId).subscribe(
       station => {
-        self.currentStation = station;
-        self.generateMap();
+        this.currentStation = station;
+        this.generateMap();
       },
       err => {
-        self.alertService.error(err);
+        this.alertService.error(err);
       }
     );
+  }
+
+  reloadStation($event = null){
+    this.loadData();
   }
 
   toNiceDate(date) {
