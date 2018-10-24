@@ -39,6 +39,14 @@ export class StationsService {
     return this.http.put(environment.apiUrl + '/stations/' + station._id, station);
   }
 
+  addUser(stationId: string, userId: string) {
+    return this.http.put(environment.apiUrl + '/stations/addUser/' + stationId, {userId: userId});
+  }
+
+  removeUser(stationId: string, userId: string) {
+    return this.http.put(environment.apiUrl + '/stations/removeUser/' + stationId, {userId: userId});
+  }
+
   delete(id: string) {
     return this.http.delete(environment.apiUrl + '/stations/' + id);
   }
@@ -46,6 +54,8 @@ export class StationsService {
   getAllAwaiting() {
     return this.http.get<Station[]>(environment.apiUrl + '/stations/getAllAwaiting');
   }
+
+
 
 
 

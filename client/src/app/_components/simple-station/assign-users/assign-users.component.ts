@@ -71,8 +71,7 @@ export class AssignUsersComponent implements OnInit {
   }
 
   addUser(user: User) {
-    this.station.users.push(user._id);
-    this.stationService.update(this.station)
+    this.stationService.addUser(this.stationId, user._id)
       .subscribe(
         () => { this.alertService.success('L\'utilisateur a été ajoutée');
           this.loadData();
@@ -81,9 +80,8 @@ export class AssignUsersComponent implements OnInit {
       );
   }
 
-  removeUser(user: User, index) {
-    this.station.users.splice(index, 1);
-    this.stationService.update(this.station)
+  removeUser(user: User) {
+    this.stationService.removeUser(this.stationId, user._id)
       .subscribe(
         () => {this.alertService.success('L\'utilisateur a été supprimée');
           this.loadData();

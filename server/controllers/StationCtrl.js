@@ -3,6 +3,7 @@ const logger = require('../config/logger');
 const Station = require('./../models/station');
 const states = require('../config/constants').stationState;
 const checkParam = require('./utils').checkParam;
+const UsersModel = require('./../models/users');
 
 
 
@@ -19,7 +20,11 @@ exports.get = function(req, res) {
 
 exports.getById = function(req, res) {
   Station.stationModel.findById(req.params.id, function(err, station) {
-    if (err) return res.status(500).send("Erreur lors de la récupération de la station.");
+    if (err) {
+      logger.error(err);
+      return res.status(500).send("Erreur lors de la récupération de la station.");
+    }
+    if (station === undefined || station === null) return res.status(404).send("La station n'existe pas");
     if (station.length > 1) return res.status(500).send("Ceci n'aurait jamais dû arriver.");
     if (station.length === 0) return res.status(404).send("La station n'existe pas");
 
@@ -56,9 +61,14 @@ exports.create = function(req, res) {
 };
 
 exports.update = function(req, res) {
-  checkParam(req, res, ["name", "latitude", "longitude", "river", "commune", "createdAt","users", "interval"], function() {
+  checkParam(req, res, ["name", "latitude", "longitude", "river", "commune", "createdAt", "interval"], function() {
     Station.stationModel.findById(req.params.id, function(err, station) {
-      if (err) return res.status(500).send("Erreur lors de la récupération de la station.");
+
+      if (err) {
+        logger.error(err);
+        return res.status(500).send("Erreur lors de la récupération de la station.");
+      }
+      if (station === undefined || station === null) return res.status(404).send("La station n'existe pas");
       if (station.length > 1) return res.status(500).send("Ceci n'aurait jamais dû arriver.");
       if (station.length === 0) return res.status(404).send("La station n'existe pas");
 
@@ -70,13 +80,75 @@ exports.update = function(req, res) {
       station.interval = req.body.interval;
       station.river = req.body.river;
       station.commune = req.body.commune;
-      station.user_creator_id = req.body.user_creator_id;
-      station.users = req.body.users;
 
       station.save(function(err, updatedStation) {
         if (err) {
           logger.error(err);
           return res.status(500).send("Erreur lors de la mise à jour d'une station");
+        }
+        return res.status(201).send(updatedStation);
+      });
+    });
+  });
+};
+
+exports.addUser = function(req, res) {
+  checkParam(req, res, ["userId"], function() {
+    UsersModel.userModel.findById(req.body.userId, function(err, user) {
+      if (err) {
+        logger.error(err);
+        return res.status(500).send("Erreur lors de la récupération de l'user.");
+      }
+      if (user === undefined || user === null) return res.status(404).send("L'utilisateur n'existe pas");
+      if (user.length > 1) return res.status(500).send("Ceci n'aurait jamais dû arriver.");
+      if (user.length === 0) return res.status(404).send("L'utilisateur n'existe pas");
+
+      Station.stationModel.findById(req.params.id, function(err, station) {
+        logger.error(err);
+        if (err) return res.status(500).send("Erreur lors de la récupération de la station.");
+        if (station.length > 1) return res.status(500).send("Ceci n'aurait jamais dû arriver.");
+        if (station.length === 0) return res.status(404).send("La station n'existe pas");
+
+        station.users.addToSet(req.body.userId);
+
+        station.save(function(err, updatedStation) {
+          if (err) {
+            logger.error(err);
+            return res.status(500).send("Erreur lors de la mise à jour des utilisateurs");
+          }
+          return res.status(201).send(updatedStation);
+        });
+      });
+    });
+  });
+};
+
+exports.removeUser = function(req, res) {
+  checkParam(req, res, ["userId"], function() {
+    UsersModel.userModel.findById(req.body.userId, function(err, user) {
+      if (err) {
+        logger.error(err);
+        return res.status(500).send("Erreur lors de la récupération de l'user.");
+      }
+      if (user === undefined || user === null) return res.status(404).send("L'utilisateur n'existe pas");
+      if (user.length > 1) return res.status(500).send("Ceci n'aurait jamais dû arriver.");
+      if (user.length === 0) return res.status(404).send("L'utilisateur n'existe pas");
+    });
+
+    Station.stationModel.findById(req.params.id, function(err, station) {
+      if (err) {
+        logger.error(err);
+        return res.status(500).send("Erreur lors de la récupération de la station.");
+      }
+      if (station.length > 1) return res.status(500).send("Ceci n'aurait jamais dû arriver.");
+      if (station.length === 0) return res.status(404).send("La station n'existe pas");
+
+      station.users = station.users.filter(id => id !== req.body.userId);
+
+      station.save(function(err, updatedStation) {
+        if (err) {
+          logger.error(err);
+          return res.status(500).send("Erreur lors de la mise à jour des utilisateurs");
         }
         return res.status(201).send(updatedStation);
       });
