@@ -36,7 +36,7 @@ exports.insertData = function(req, res) {
     console.log(err);
     console.log(docs);
     if(err){
-      res.status(500).send(err);
+      res.status(500).send('Les données n\'ont pas sur être insérer...');
     }else{
       res.status(200).send();
     }
