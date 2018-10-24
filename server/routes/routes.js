@@ -156,24 +156,30 @@ exports.routes = [
     httpMethod: "DELETE",
     middleWare: [controllers.stations.delete],
     access: [roles.ADMIN]
-
   },
   {
     path: "/api/stations/:id",
     httpMethod: "PUT",
     middleWare: [controllers.stations.update],
     access: [roles.ADMIN]
-
   },
-
-
+  {
+    path: "/api/stations/addUser/:id",
+    httpMethod: "PUT",
+    middleWare: [controllers.stations.addUser],
+    access: [roles.ADMIN]
+  },
+  {
+    path: "/api/stations/removeUser/:id",
+    httpMethod: "PUT",
+    middleWare: [controllers.stations.removeUser],
+    access: [roles.ADMIN]
+  },
   {
     path: "/api/stations/:id",
     httpMethod: "GET",
     middleWare: [controllers.stations.getById]
   },
-
-
   // Méthodes liées aux notes
   {
     path: "/api/notes",

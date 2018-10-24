@@ -12,7 +12,6 @@ const userState = require('../config/constants').userState;
 const checkParam = require('./utils').checkParam;
 const mailTransporter = require('./mailer');
 const PwdRecoveryModel = require('./../models/pwdRecovery');
-const StationModel = require('./../models/station');
 
 exports.login = function(req, res) {
   checkParam(req, res, ["mail", "pwd"], function() {
