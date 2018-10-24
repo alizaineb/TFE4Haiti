@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { StationsService } from "../../../_services/stations.service";
-import { AlertService, UserService } from "../../../_services/";
-import { NoteService } from "../../../_services/note.service";
-import {Note, Station} from "../../../_models/";
-import {first, mergeMap, retry} from "rxjs/operators";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import { DemoserviceService } from "./demoservice.service";
+import { StationsService } from '../../../_services/stations.service';
+import { AlertService, UserService } from '../../../_services/';
+import { NoteService } from '../../../_services/note.service';
+import {Note, Station} from '../../../_models/';
+import {first, mergeMap, retry} from 'rxjs/operators';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import { DemoserviceService } from './demoservice.service';
 import { map } from 'rxjs/operators';
 
 
@@ -40,30 +40,30 @@ export class NoteComponent implements OnInit {
   ngOnInit() {
     this.loadData();
     this.addNoteForm = new FormGroup({
-      'note': new FormControl('',[
+      'note': new FormControl('', [
         Validators.required,
         Validators.maxLength(200)
       ])
-    })
+    });
   }
 
   get note() { return this.addNoteForm.get('note'); }
 
 
-  sendNote(){
+  sendNote() {
     this.submitted = true;
     // stop here if form is invalid
     if (this.addNoteForm.invalid) {
       return;
     }
 
-    let n = new Note();
+    const n = new Note();
     n.station_id = this.stationId;
     n.note = this.addNoteForm.controls['note'].value;
     this.noteService.register(n)
       .subscribe(
         newNote => {
-          this.alertService.success("La note a été ajoutée");
+          this.alertService.success('La note a été ajoutée');
           this.addNoteForm.reset();
           this.loadData();
         },
@@ -74,25 +74,25 @@ export class NoteComponent implements OnInit {
 
   onSubmit() { this.submitted = true; }
 
-  loadData(){
+  loadData() {
     this.noteService.getAll(this.stationId)
       .pipe(
         retry(3),
         map(notes => {
-          notes.sort((val1: Note, val2: Note) => { return val1.createdAt > val2.createdAt ? -1 : 1 });
-          for(let n of notes){
+          notes.sort((val1: Note, val2: Note) => val1.createdAt > val2.createdAt ? -1 : 1);
+          for (const n of notes) {
             this.userService.getById(n.user_id).subscribe(user => {
               // @ts-ignore
               n.last_name = user.last_name;
               // @ts-ignore
               n.first_name = user.first_name;
-            })
+            });
           }
           return notes;
         })
       )
       .subscribe(notes => {
         this.notes = notes;
-      })
+      });
   }
 }

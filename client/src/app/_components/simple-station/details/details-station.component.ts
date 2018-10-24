@@ -34,7 +34,6 @@ export class DetailsStationComponent implements OnInit {
         self.alertService.error(err);
       }
     );
-    console.log('details init', this.stationId);
   }
 
   toNiceDate(date) {

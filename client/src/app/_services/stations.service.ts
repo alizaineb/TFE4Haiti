@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import {Station} from '../_models';
+import {Note, Station} from '../_models';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -26,8 +27,8 @@ export class StationsService {
     return this.http.get<Station[]>(environment.apiUrl + '/stations');
   }
 
-  getById(id: string) {
-    return this.http.get(environment.apiUrl + '/stations/' + id);
+  getById(id: string): Observable <Station> {
+    return this.http.get<Station>(environment.apiUrl + '/stations/' + id);
   }
 
   register(station: Station) {

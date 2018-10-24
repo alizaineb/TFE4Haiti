@@ -14,21 +14,21 @@ import {JwtInterceptor, ErrorInterceptor} from './_helpers';
 import {AlertService, AuthenticationService, UserService} from './_services';
 import {UsersComponent} from './_components/users';
 import {LoginComponent} from './_components/login';
-import {MenuService} from "./_services/menu.service";
+import {MenuService} from './_services/menu.service';
 import {MenuComponent} from './_components/menu/menu.component';
 import {FooterComponent} from './_components/footer/footer.component';
 import {MapComponent} from './_components/map/map.component'  ;
 import {StationsComponent} from './_components/stations/stations.component' ;
 import {AdminPanelComponent} from './_components/admin-panel/admin-panel.component';
 import {ResetPasswordComponent} from './_components/login/reset-password/reset-password.component';
-import {FaqComponent} from './_components/faq/faq.component'
-import {StationsService} from "./_services/stations.service";
+import {FaqComponent} from './_components/faq/faq.component';
+import {StationsService} from './_services/stations.service';
 import {AddStationModalComponent} from './_components/stations/add-station-modal/add-station-modal.component';
 import {DeleteStationModalComponent} from './_components/stations/delete-station-modal/delete-station-modal.component';
 import {UpdateSationModalComponent} from './_components/stations/update-sation-modal/update-sation-modal.component';
-import {AskresetComponent} from './_components/login/askreset/askreset.component'
-import {ToastrModule} from "ngx-toastr";
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {AskresetComponent} from './_components/login/askreset/askreset.component';
+import {ToastrModule} from 'ngx-toastr';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RefuseUserModalComponent} from './_components/admin-panel/refuse-user-modal/refuse-user-modal.component';
 import {SimpleStationComponent} from './_components/simple-station/simple-station.component';
 import {DetailsStationComponent} from './_components/simple-station/details/details-station.component';
