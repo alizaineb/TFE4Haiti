@@ -28,7 +28,6 @@ export class StationsComponent implements OnInit {
   ngOnInit() {
     this.initMap();
     this.loadAllStations();
-
   }
 
   loadAllStations($event = null) {

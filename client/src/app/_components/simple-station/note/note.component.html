@@ -1,33 +1,36 @@
 <h1>Notes</h1>
-<div>
-  <form (ngSubmit)="onSubmit()" [formGroup]="addNoteForm" #addNoteFormNg="ngForm">
-    <textarea
-      rows="6"
-      placeholder="Ajouter une note"
-      type="text"
-      class="form-control"
-      id="note"
-      formControlName="note"
-    ></textarea>
-    <div *ngIf="note.invalid && (note.dirty || note.touched)"
-         class="alert alert-danger">
-      <div *ngIf="note.errors.required">
-        Une note est requise
+<div class="row">
+  <div class="col-12">
+    <form (ngSubmit)="onSubmit()" [formGroup]="addNoteForm" #addNoteFormNg="ngForm">
+      <textarea
+        rows="6"
+        placeholder="Ajouter une note"
+        type="text"
+        class="form-control"
+        id="note"
+        formControlName="note"
+      ></textarea>
+      <div *ngIf="note.invalid && (note.dirty || note.touched)"
+           class="alert alert-danger">
+        <div *ngIf="note.errors.required">
+          Une note est requise
+        </div>
+        <div *ngIf="note.errors.maxlength">
+          200 caractères maximum
+        </div>
       </div>
-      <div *ngIf="note.errors.maxlength">
-        200 caractères maximum
-      </div>
-    </div>
-    <br>
-    <button (click)="sendNote()" class="float-right btn btn-primary" [disabled]="!addNoteFormNg.form.valid">Ajouter une note</button>
-  </form>
+      <br>
+      <button (click)="sendNote()" class="float-right btn btn-primary" [disabled]="!addNoteFormNg.form.valid">Ajouter une note</button>
+    </form>
+  </div>
 </div>
-
-<div class="container-fluid">
+<div class="row">
+  <div class="col-12">
   <div class="card mb-3" *ngFor="let note of notes">
       <h6 class="card-header">De {{note.last_name}} {{note.first_name}} créé le {{note.createdAt | date: 'd/MM/yyyy'}}</h6>
       <div class="card-body">
         <p class="card-text">{{note.note}}
       </div>
   </div>
+</div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {AfterViewChecked, Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import { StationsService } from '../../../_services/stations.service';
 import { AlertService, UserService } from '../../../_services/';
 import { NoteService } from '../../../_services/note.service';
@@ -17,7 +17,7 @@ import { map } from 'rxjs/operators';
   templateUrl: './note.component.html',
   styleUrls: ['./note.component.css']
 })
-export class NoteComponent implements OnInit {
+export class NoteComponent implements OnInit, OnChanges{
 
   @Input()
   private stationId: string;
@@ -38,7 +38,7 @@ export class NoteComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadData();
+    // data load in ngOnChanges
     this.addNoteForm = new FormGroup({
       'note': new FormControl('', [
         Validators.required,
@@ -49,6 +49,9 @@ export class NoteComponent implements OnInit {
 
   get note() { return this.addNoteForm.get('note'); }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    this.loadData();
+  }
 
   sendNote() {
     this.submitted = true;
