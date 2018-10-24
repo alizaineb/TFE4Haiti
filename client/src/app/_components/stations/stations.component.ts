@@ -1,5 +1,5 @@
 import { Component, OnInit, Output } from '@angular/core';
-import {Station} from '../../_models';
+import { Station } from '../../_models';
 import { StationsService } from '../../_services/stations.service';
 
 @Component({
@@ -24,7 +24,7 @@ export class StationsComponent implements OnInit {
   searchKeyWord = '';
 
   constructor(private stationService: StationsService) {
-    this.headers = ['Nom', 'Etat', 'Commune', 'Rivière', 'Date de création', 'Dernière modification'];
+    this.headers = ['Nom', 'Commune', 'Rivière', 'Date de création', 'Dernière modification', 'Etat'];
   }
 
   ngOnInit() {
@@ -35,7 +35,7 @@ export class StationsComponent implements OnInit {
     this.importDataStation = new Station();
   }
 
-  loadAllStations($event= null) {
+  loadAllStations($event = null) {
     this.stationService.getAll()
       .subscribe(result => {
         this.stations = result.slice(0);

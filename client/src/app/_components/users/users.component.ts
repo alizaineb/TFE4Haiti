@@ -26,7 +26,7 @@ export class UsersComponent implements OnInit {
 
   constructor(private userService: UserService, private localStorageService: LocalstorageService) {
     this.currentUser = this.localStorageService.getItem('currentUser').current;
-    this.headersUsers = ["Nom", "Prénom", "Adresse mail", "Date de création", "Date de dernière connexion", "Role", "État"];
+    this.headersUsers = ["Nom", "Prénom", "Adresse mail", "Commune", "Rivière", "Date de création", "Date de dernière connexion", "Role", "État"];
   }
 
   ngOnInit() {
@@ -40,6 +40,8 @@ export class UsersComponent implements OnInit {
     this.map.set("Date de dernière connexion", "last_seen");
     this.map.set("Role", "role");
     this.map.set("État", "state");
+    this.map.set('Commune', 'commune');
+    this.map.set('Rivière', 'river');
   }
 
   deleteUser(id: number) {

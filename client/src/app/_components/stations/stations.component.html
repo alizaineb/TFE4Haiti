@@ -38,11 +38,11 @@
           <i class="fas fa-info-circle"></i>
         </a>
       </td>
-      <td>{{station.state}}</td>
       <td>{{station.commune}}</td>
       <td>{{station.river}}</td>
       <td>{{station.createdAt | date: 'd/MM/yyyy'}}</td>
       <td>{{station.updatedAt | date: 'd/MM/yyyy à HH:mm'}}</td>
+      <td>{{station.state}}</td>
       <td>
         <i class="fas fa-edit fa-fw fa-1x" (click)="assignStationToUpdate(station)" data-toggle="modal" data-target="#updateStationModal"></i>
         <i class="fas fa-file-download fa-fw fa-1x" (click)="assignStationToImport(station)" data-toggle="modal" data-target="#importStationModal"></i>
@@ -59,7 +59,7 @@
 <!-- Modal -->
 <div class="modal fade" id="addStationModal" tabindex="-1" role="dialog" aria-labelledby="addStationModalLabel" aria-hidden="true">
   <app-add-station-modal (sent)="loadAllStations($event)">
-    </app-add-station-modal>
+  </app-add-station-modal>
 </div>
 
 <!-- Modal -->
