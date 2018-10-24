@@ -56,7 +56,7 @@ exports.create = function(req, res) {
 };
 
 exports.update = function(req, res) {
-  checkParam(req, res, ["name", "latitude", "longitude", "river", "commune", "createdAt", "interval"], function() {
+  checkParam(req, res, ["name", "latitude", "longitude", "river", "commune", "createdAt","users", "interval"], function() {
     Station.stationModel.findById(req.params.id, function(err, station) {
       if (err) return res.status(500).send("Erreur lors de la récupération de la station.");
       if (station.length > 1) return res.status(500).send("Ceci n'aurait jamais dû arriver.");
@@ -70,6 +70,8 @@ exports.update = function(req, res) {
       station.interval = req.body.interval;
       station.river = req.body.river;
       station.commune = req.body.commune;
+      station.user_creator_id = req.body.user_creator_id;
+      station.users = req.body.users;
 
       station.save(function(err, updatedStation) {
         if (err) {

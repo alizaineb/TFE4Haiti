@@ -1,8 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {StationsService} from '../../../_services/stations.service';
 import {AlertService, UserService} from '../../../_services';
-import {NoteService} from '../../../_services/note.service';
-import {Note, Station, User} from '../../../_models';
+import {Station, User} from '../../../_models';
 import {map} from 'rxjs/operators';
 
 @Component({
@@ -19,20 +18,39 @@ export class AssignUsersComponent implements OnInit {
   station: Station;
   listUsers: User[];
   listAllUsers: User[];
+  listUsersFiltered: User[];
+  listAllUsersFiltered: User[];
+
+  searchKeyWord = '';
+  searchAllKeyWord = '';
 
   constructor(
     private stationService: StationsService,
     private alertService: AlertService,
-    private noteService: NoteService,
     private userService: UserService,
   ) {
 
   }
 
   ngOnInit() {
+    this.loadData();
+  }
+
+  loadData() {
     this.stationService.getById(this.stationId)
       .pipe(
         map(station => {
+          this.userService.getAll()
+            .pipe(
+              map(users => {
+                users = users.filter(u => !station.users.includes(u._id));
+                return users;
+              })
+            )
+            .subscribe(users => {
+              this.listAllUsers = users;
+            });
+
           const listUser = [];
           for (const id of station.users) {
             this.userService.getById(id).subscribe(user => {
@@ -49,18 +67,28 @@ export class AssignUsersComponent implements OnInit {
         this.listUsers = data[1];
       });
 
-    this.userService.getAll().subscribe(users => {this.listAllUsers = users; });
+
   }
 
-  addUser(user: User, index) {
-    this.listAllUsers.splice(index, 1);
-    this.listUsers.push(user);
-    this.alertService.success('L\'utilisateur a été ajoutée');
+  addUser(user: User) {
+    this.station.users.push(user._id);
+    this.stationService.update(this.station)
+      .subscribe(
+        () => { this.alertService.success('L\'utilisateur a été ajoutée');
+          this.loadData();
+        },
+        error => this.alertService.error(error)
+      );
   }
 
   removeUser(user: User, index) {
-    this.listUsers.splice(index, 1);
-    this.listAllUsers.push(user);
-    this.alertService.success('L\'utilisateur a été supprimée');
+    this.station.users.splice(index, 1);
+    this.stationService.update(this.station)
+      .subscribe(
+        () => {this.alertService.success('L\'utilisateur a été supprimée');
+          this.loadData();
+          },
+        error => this.alertService.error(error)
+      );
   }
 }

@@ -89,7 +89,7 @@ export class StationsComponent implements OnInit {
     }
     const key = this.map.get(head);
     let i = 1;
-    while (i < this.stationsFiltered.length && this.stationsFiltered[0][key] == this.stationsFiltered[i][key]) {
+    while (i < this.stationsFiltered.length && this.stationsFiltered[0][key] === this.stationsFiltered[i][key]) {
       i++;
     }
     // Tous les champs sont égaux, pas besoin de trier

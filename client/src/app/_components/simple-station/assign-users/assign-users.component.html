@@ -2,14 +2,15 @@
   <h1>
     Assigner des utilisateurs pour la station {{station.name}}
   </h1>
+  <br>
 
   <div class="container">
     <div class="row">
       <div class="col">
-        <h2>Tous les utilisateurs: </h2>
+        <h3>Utilisateurs disponibles: </h3>
       </div>
       <div class="col">
-        <h2>Liste des utilisateurs ayant accès à la station:</h2>
+        <h3>Utilisateurs assignés:</h3>
       </div>
     </div>
 
@@ -35,7 +36,7 @@
             <td> {{user.first_name}} </td>
             <td> {{user.last_name}} </td>
             <td> {{user.mail}} </td>
-            <td> <i (click)="addUser(user,i)" class="fas fa-arrow-right"></i></td>
+            <td> <i (click)="addUser(user)" class="fas fa-arrow-right"></i></td>
           </tbody>
         </table>
       </div>

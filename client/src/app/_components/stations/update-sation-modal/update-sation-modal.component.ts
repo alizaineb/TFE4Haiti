@@ -137,7 +137,6 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
     s.commune = this.updateStationForm.controls['commune'].value;
 
     this.stationService.update(s)
-
       .subscribe(
         result => {
           // trigger sent
