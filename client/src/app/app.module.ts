@@ -3,9 +3,6 @@ import {BrowserModule} from '@angular/platform-browser';
 import {ReactiveFormsModule} from '@angular/forms';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
-
-// used to create fake backend
-
 import {AppComponent} from './app.component';
 import {routing} from './app.routing';
 import {AlertComponent} from './_directives';
@@ -39,13 +36,9 @@ import {NgxPaginationModule} from 'ngx-pagination';
 import {ImportStationModalComponent} from './_components/stations/import-station-modal/import-station-modal.component';
 import {HomeComponent} from './_components/home/home.component';
 import {AssignUsersComponent} from './_components/simple-station/assign-users/assign-users.component';
-
-;
 import {StationImportDataComponent} from './_components/stations/import-data/station-import-data.component';
-
-;
-import {ImportStatopInputRowComponent} from './_components/stations/import-data/input-row/import-statop-input-row.component'
-  ;
+import {ImportStatopInputRowComponent} from './_components/stations/import-data/input-row/import-statop-input-row.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap'
 
 @NgModule({
   imports: [
@@ -56,7 +49,8 @@ import {ImportStatopInputRowComponent} from './_components/stations/import-data/
     FormsModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    NgxPaginationModule
+    NgxPaginationModule,
+    NgbModule
   ],
   declarations: [
     AppComponent,

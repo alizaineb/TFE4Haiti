@@ -8,5 +8,6 @@ export class Data {
 
   public constructor(
   ) {
+    this.date = new Date();
   }
 }

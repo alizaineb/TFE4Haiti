@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-inport-input-row',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ImportStatopInputRowComponent implements OnInit {
 
-  constructor() { }
+  dataForm: FormGroup;
+  constructor(
+    private formBuilder: FormBuilder,
+  ) { }
 
   ngOnInit() {
+    this.dataForm = this.formBuilder.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required]
+    });
   }
 
 }
