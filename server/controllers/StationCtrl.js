@@ -1,10 +1,8 @@
 'use strict';
 const logger = require('../config/logger');
 const Station = require('./../models/station');
-const User = require('./../models/users');
 const states = require('../config/constants').stationState;
 const checkParam = require('./utils').checkParam;
-const mailTransporter = require('./mailer');
 
 
 
@@ -20,15 +18,13 @@ exports.get = function(req, res) {
 };
 
 exports.getById = function(req, res) {
-  const id = req.params.id;
-  Station.stationModel.findOne({ _id: id }).then(station => {
-      return res.status(200).send(station);
-    },
-    err => {
-      logger.error(err);
-      res.status(500).send("Station inexistante...");
-    }
-  );
+  Station.stationModel.findById(req.params.id, function(err, station) {
+    if (err) return res.status(500).send("Erreur lors de la récupération de la station.");
+    if (station.length > 1) return res.status(500).send("Ceci n'aurait jamais dû arriver.");
+    if (station.length === 0) return res.status(404).send("La station n'existe pas");
+
+    return res.status(200).send(station.toDto());
+  });
 };
 
 exports.create = function(req, res) {
