@@ -43,6 +43,9 @@ import {AssignUsersComponent} from './_components/simple-station/assign-users/as
 ;
 import {StationImportDataComponent} from './_components/stations/import-data/station-import-data.component';
 
+;
+import {ImportStatopInputRowComponent} from './_components/stations/import-data/input-row/import-statop-input-row.component'
+  ;
 
 @NgModule({
   imports: [
@@ -80,7 +83,8 @@ import {StationImportDataComponent} from './_components/stations/import-data/sta
     ImportStationModalComponent,
     HomeComponent,
     AssignUsersComponent,
-    StationImportDataComponent
+    StationImportDataComponent,
+    ImportStatopInputRowComponent
   ],
   providers: [
     AuthGuard,

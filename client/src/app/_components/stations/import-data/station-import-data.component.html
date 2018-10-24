@@ -1,3 +1,8 @@
-<p>
-  import-data works!
-</p>
+<a [routerLink]="['/','stations']" ><i class="fas fa-chevron-left"></i> Revenir à mes stations</a>
+<div *ngIf="!loading">
+  <div class="row">
+    <div class="col-sm"><p>Import des données pour la station : {{currentStation.name}}</p></div>
+  </div>
+
+</div>
+
