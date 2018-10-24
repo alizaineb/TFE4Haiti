@@ -37,7 +37,8 @@ import { NoteComponent } from './_components/simple-station/note/note.component'
 import { UpdateUserModalComponent } from './_components/users/update-user-modal/update-user-modal.component';
 import {NgxPaginationModule} from 'ngx-pagination';;
 import { ImportStationModalComponent } from './_components/stations/import-station-modal/import-station-modal.component'
-
+;
+import { HomeComponent } from './_components/home/home.component'
 @NgModule({
   imports: [
     BrowserModule,
@@ -71,7 +72,8 @@ import { ImportStationModalComponent } from './_components/stations/import-stati
     LogoutComponent ,
     NoteComponent ,
     UpdateUserModalComponent,
-    ImportStationModalComponent ],
+    ImportStationModalComponent ,
+    HomeComponent],
   providers: [
     AuthGuard,
     AlertService,
