@@ -21,12 +21,13 @@ export class UpdateUserModalComponent implements OnInit {
   updateUserForm: FormGroup;
 
   // TODO Modifier et faire un call api pour ces valeurs
-  roles = ['admin', 'viewer', 'worker'];
+  roles: string[];
   states = ['awaiting', 'pwd_creation', 'ok', 'deleted'];
   constructor(private alertService: AlertService, private userService: UserService) { }
 
   ngOnInit() {
     this.initForm();
+    this.userService.getRoles().subscribe(roles => { console.log(roles); this.roles = roles; });
   }
 
   initForm() {
