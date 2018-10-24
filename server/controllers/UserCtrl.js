@@ -86,14 +86,16 @@ exports.roles = function(req, res) {
 
 exports.create = function(req, res) {
   // TODO Check mail
-  checkParam(req, res, ["first_name", "last_name", "mail"], () => {
-    // Check role connu.
-    let uTmp = new UsersModel.userModel();
+  checkParam(req, res, ["first_name", "last_name", "mail", "role"], () => {
     let user = req.body;
+    if (Object.values(roles).indexOf(user.role) == -1) {
+      return res.status(400).send("Role inconnu");
+    }
+    let uTmp = new UsersModel.userModel();
     uTmp.first_name = user.first_name;
     uTmp.last_name = user.last_name;
     uTmp.mail = user.mail;
-    uTmp.role = roles.ADMIN; //TODO Change to VIEWER, it's admin for the developpement
+    uTmp.role = user.role;
     uTmp.state = userState.AWAITING;
     uTmp.save().then(() => {
       return res.status(201).send(uTmp.toDto());
