@@ -22,6 +22,7 @@ exports.insertData = function(req, res) {
   // Va falloir utiliser Promise.all(les promesses).then etc : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
 
   const datas = req.body;
+  let tmp = [];
   for (let i = 0; i < datas.length; i++) {
     let d = datas[i];
     let data = new dataModel.rainDataModel();
@@ -29,10 +30,13 @@ exports.insertData = function(req, res) {
     data.id_user = d.id_user;
     data.date = d.date;
     data.value = d.value;
-    data.save();
+    tmp.push(data);
   }
+  dataModel.rainDataModel.insertMany(tmp, (err, docs) => {
+    res.status(200).send();
+  })
 
-  res.status(200).send();
+
 }
 
 /*

@@ -69,7 +69,8 @@ export class StationImportDataComponent implements OnInit {
       tmp.id_station = this.currentStation._id;
       tmp.id_user = currentUser.current._id;
       tmp.value = this.data[i].value;
-      tmp.date = new Date(`${this.data[i].date} ${this.data[i].time.hour}:${this.data[i].time.time}:00`);
+      tmp.date = new Date(`${this.data[i].date}T${this.data[i].time.hour}:${this.data[i].time.time | this.data[i].time['minutes']}:00`);
+      console.log(`${this.data[i].date}T${this.data[i].time.hour}:${this.data[i].time.time | this.data[i].time['minutes']}:00`);
       dataToSend.push(tmp);
     }
     console.table(dataToSend);
