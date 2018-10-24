@@ -45,15 +45,15 @@ export class MenuComponent implements OnInit {
       const role = User.current.role;
       // console.log('role : ', role);
       switch (role) {
-        case 'admin':
+        case 'administrateur':
           this.menu.left = this.menuService.getLeftAdminMenu();
           this.menu.right = this.menuService.getRightAdminMenu();
           break;
-        case 'worker':
+        case 'chercheur':
           this.menu.left = this.menuService.getleftWorkerMenu();
           this.menu.right = this.menuService.getRightWorkerMenu();
           break;
-        case 'viewer':
+        case 'employé':
           this.menu.left = this.menuService.getLeftViewerMenu();
           this.menu.right = this.menuService.getRightViewerMenu();
           break;
