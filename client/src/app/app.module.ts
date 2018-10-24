@@ -35,10 +35,10 @@ import {DetailsStationComponent} from './_components/simple-station/details/deta
 import { LogoutComponent } from './_components/logout/logout.component';
 import { NoteComponent } from './_components/simple-station/note/note.component';
 import { UpdateUserModalComponent } from './_components/users/update-user-modal/update-user-modal.component';
-import {NgxPaginationModule} from 'ngx-pagination';;
-import { ImportStationModalComponent } from './_components/stations/import-station-modal/import-station-modal.component'
-;
-import { HomeComponent } from './_components/home/home.component'
+import {NgxPaginationModule} from 'ngx-pagination';
+import { ImportStationModalComponent } from './_components/stations/import-station-modal/import-station-modal.component';
+import { HomeComponent } from './_components/home/home.component';
+import { AssignUsersComponent } from './_components/simple-station/assign-users/assign-users.component';
 @NgModule({
   imports: [
     BrowserModule,
@@ -73,7 +73,8 @@ import { HomeComponent } from './_components/home/home.component'
     NoteComponent ,
     UpdateUserModalComponent,
     ImportStationModalComponent ,
-    HomeComponent],
+    HomeComponent,
+    AssignUsersComponent],
   providers: [
     AuthGuard,
     AlertService,
