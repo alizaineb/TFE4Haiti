@@ -131,6 +131,7 @@ export class HomeComponent implements OnInit {
 
 
 
+    const currentU = this.localStorageService.getStorage()['currentUser'];
     self.mapContainer = L.map('mapid', {
       center: [self.centerMap[0], self.centerMap[1]],
       zoom: self.zoom,
@@ -148,9 +149,13 @@ export class HomeComponent implements OnInit {
     legend.onAdd = function (map) {
 
       var div = L.DomUtil.create('div', 'info legend'),
-        grades = ['Fonctionnelle', 'En panne', 'Pas en activitée', 'A valider'],
-        color = ['#5cd65c', '#ffb84d', '#ff471a', '#1aa3ff'];
+        grades = ['Fonctionnelle', 'En panne', 'Pas en activitée'],
+        color = ['#5cd65c', '#ffb84d', '#ff471a'];
 
+      if(currentU){
+        grades.push('A valider');
+        color.push('#1aa3ff');
+      }
       // loop through our density intervals and generate a label with a colored square for each interval
       for (var i = 0; i < grades.length; i++) {
         div.innerHTML +=
@@ -184,12 +189,15 @@ export class HomeComponent implements OnInit {
 
 
 
-    const currentU = this.localStorageService.getStorage()['currentUser'];
+
     console.log(currentU);
     if(!currentU){
       self.mapContainer.removeLayer(stationGroup.awaiting);
       self.mapContainer.removeLayer(overlays);
       L.control.layers(baseLayers).addTo(self.mapContainer);
+      self.filteredStation = self.allStations.filter(station => {
+        return station.state.toLowerCase() != 'awaiting'.toLowerCase()
+      })
     }else{
       L.control.layers(baseLayers, overlays).addTo(self.mapContainer);
     }
