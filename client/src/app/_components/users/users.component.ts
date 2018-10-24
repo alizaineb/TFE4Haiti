@@ -45,9 +45,9 @@ export class UsersComponent implements OnInit {
     this.map.set('Rivière', 'river');
   }
 
-  deleteUser(id: number) {
+  deleteUser(id) {
     let self = this;
-    this.userService.delete(id).pipe(first()).subscribe(result => {
+    this.userService.setDeleted(id).pipe(first()).subscribe(result => {
       self.alertService.success("L'utilisteur a été correctement passé dans l'état correspndant");
       this.loadAllUsers()
     },

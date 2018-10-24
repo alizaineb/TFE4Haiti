@@ -39,6 +39,12 @@ exports.routes = [
     middleWare: [controllers.users.roles]
   },
   {
+    path: "/api/users/setDeleted",
+    httpMethod: "POST",
+    middleWare: [controllers.users.setDeleted],
+    access: [roles.ADMIN]
+  },
+  {
     path: "/api/users/",
     httpMethod: "POST",
     middleWare: [controllers.users.create]

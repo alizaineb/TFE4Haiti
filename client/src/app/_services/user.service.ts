@@ -47,6 +47,9 @@ export class UserService {
   delete(id: number) {
     return this.http.delete(environment.apiUrl + '/users/' + id);
   }
+  setDeleted(id: String) {
+    return this.http.post(environment.apiUrl + '/users/setDeleted', { id: id });
+  }
 
   requestChangePwd(mail: String) {
     return this.http.post(environment.apiUrl + '/users/askResetPwd', { mail: mail });

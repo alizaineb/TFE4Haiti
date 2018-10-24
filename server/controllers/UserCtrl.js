@@ -324,6 +324,31 @@ exports.resetPwd = function(req, res) {
     });
   });
 }
+exports.setDeleted = function(req, res) {
+  checkParam(req, res, ["id"], () => {
+    UsersModel.userModel.findOne({ _id: req.body.id }, function(err, result) {
+      if (err) {
+        logger.error(err);
+        return res.status(500).send("Impossible de modifier cet utilisateur, veuillez contacter un administrateur.");
+      }
+      if (!result) {
+        return res.status(404).send("Utilisateur introuvable");
+      } else {
+        result.state = userState.DELETED;
+        result.save((err) => {
+          if (err) {
+            logger.error(err);
+            return res.status(500).send("Une erreur est survenue lors de la création de l'url de reset");
+          } else {
+            return res.status(200).send();
+          }
+        });
+      }
+    });
+  });
+}
+
+
 
 
 
