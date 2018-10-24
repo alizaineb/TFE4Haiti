@@ -88,10 +88,27 @@ export class UsersComponent implements OnInit {
     if (i > this.usersFiltered.length) {
       return;
     }
+
     if (this.usersFiltered[0][key] <= this.usersFiltered[i][key]) {
-      this.usersFiltered.sort((val1: User, val2: User) => { return val1[key].toLowerCase() > val2[key].toLowerCase() ? -1 : 1 });
+      this.usersFiltered.sort((val1: User, val2: User) => {
+        if (!val1[key]) {
+          val1[key] = "";
+        }
+        if (!val2[key]) {
+          val2[key] = "";
+        }
+        return val1[key].toLowerCase() > val2[key].toLowerCase() ? -1 : 1
+      });
     } else {
-      this.usersFiltered.sort((val1: User, val2: User) => { return val2[key].toLowerCase() > val1[key].toLowerCase() ? -1 : 1 });
+      this.usersFiltered.sort((val1: User, val2: User) => {
+        if (!val1[key]) {
+          val1[key] = "";
+        }
+        if (!val2[key]) {
+          val2[key] = "";
+        }
+        return val2[key].toLowerCase() > val1[key].toLowerCase() ? -1 : 1
+      });
     }
   }
 }
