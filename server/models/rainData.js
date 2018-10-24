@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const RainData = new Schema({
   id_station: { type: String, required: true },
+  id_user: { type: String, required: true },
   date: { type: Date, required: true },
   value: { type: Number, required: true, min: 0 }
 });

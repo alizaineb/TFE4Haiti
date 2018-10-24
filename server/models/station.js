@@ -6,6 +6,7 @@ const states = require('../config/constants').stationState;
 // TODO En attente de confirmation
 exports.communes = ['commune1', 'commune2'];
 exports.rivers = ['river1', 'river2'];
+exports.intervals = ['1min', '5min', '10min', '15min', '30min', '1h', '2h', '6h', '12h', '24h'];
 // schema pour récupérer un mot de passe
 const Schema = mongoose.Schema;
 const Station = new Schema({
@@ -46,6 +47,3 @@ Station.methods.toDto = function() {
 
 const stationModel = mongoose.model("station", Station);
 exports.stationModel = stationModel;
-
-const intervals = ['1min', '5min', '10min', '15min', '30min', '1h', '2h', '6h', '12h', '24h'];
-exports.intervals = intervals;
