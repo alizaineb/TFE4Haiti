@@ -17,7 +17,7 @@ import {LoginComponent} from './_components/login';
 import {MenuService} from "./_services/menu.service";
 import {MenuComponent} from './_components/menu/menu.component';
 import {FooterComponent} from './_components/footer/footer.component';
-import {HomeComponent} from './_components/home/home.component'  ;
+import {MapComponent} from './_components/map/map.component'  ;
 import {StationsComponent} from './_components/stations/stations.component' ;
 import {AdminPanelComponent} from './_components/admin-panel/admin-panel.component';
 import {ResetPasswordComponent} from './_components/login/reset-password/reset-password.component';
@@ -56,7 +56,7 @@ import { ImportStationModalComponent } from './_components/stations/import-stati
     LoginComponent,
     MenuComponent,
     FooterComponent,
-    HomeComponent,
+    MapComponent,
     StationsComponent,
     AdminPanelComponent,
     ResetPasswordComponent,

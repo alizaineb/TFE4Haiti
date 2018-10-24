@@ -8,11 +8,11 @@ import {LocalstorageService} from "../../_services/localstorage.service";
 import {layerGroup} from "leaflet";
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  selector: 'app-map',
+  templateUrl: './map.component.html',
+  styleUrls: ['./map.component.css']
 })
-export class HomeComponent implements OnInit {
+export class MapComponent implements OnInit {
 
   public allStations = [];
   private selectedStation = [];

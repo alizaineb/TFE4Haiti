@@ -3,7 +3,7 @@
 import { UsersComponent } from './_components/users';
 import { LoginComponent } from './_components/login';
 import { AuthGuard } from './_guards';
-import { HomeComponent } from "./_components/home/home.component";
+import { MapComponent } from "./_components/map/map.component";
 import { AdminPanelComponent } from "./_components/admin-panel/admin-panel.component";
 import { StationsComponent } from "./_components/stations/stations.component";
 import { ResetPasswordComponent } from "./_components/login/reset-password/reset-password.component";
@@ -13,7 +13,7 @@ import { SimpleStationComponent } from "./_components/simple-station/simple-stat
 import { LogoutComponent } from "./_components/logout/logout.component";
 
 const appRoutes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', component: MapComponent },
   { path: 'admin', component: AdminPanelComponent, canActivate: [AuthGuard] },
   { path: 'stations', component: StationsComponent, canActivate: [AuthGuard] },
   { path: 'stations/:id', component: SimpleStationComponent },
