@@ -1,7 +1,7 @@
 exports.roles = {
-  ADMIN: "admin",
-  VIEWER: "viewer",
-  WORKER: "worker",
+  ADMIN: "administrateur",
+  VIEWER: "chercheur",
+  WORKER: "employé",
 };
 
 exports.userState = {
