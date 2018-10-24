@@ -1,5 +1,5 @@
 const logger = require('../config/logger');
-const rainData = require('./../models/rainData');
+const dataModel = require('./../models/data');
 const checkParam = require('./utils').checkParam;
 
 /*
@@ -12,9 +12,10 @@ const checkParam = require('./utils').checkParam;
 exports.insertData = function(req, res, datas, station, user) {
   // Vérifier que l'utilisateur peut insérer sur cette station
 
-  // Vérifier les données en fonction de l'intervalle de la Station (que l'intervalle soit respectée)
+  // Vérifier les données en fonction de l'intervalle de la Station (que l'intervalle soit respectée) si intervalle <1h
 
   // inserer donnée une à une
+  // Si intervalle >1h vérifier l'intégrité des données ?!
 
   // ? si collision dans la date ?
 
@@ -22,11 +23,34 @@ exports.insertData = function(req, res, datas, station, user) {
 }
 
 /*
- * Méthode utilisée pour vérifier que la date passée correcponde à l'intervalle donnée.
+ * Méthode utilisée pour vérifier que la date passée corresponde à l'intervalle donnée.
  * @param {string} interval L'intervalle de la id_station
- * @param {date} date La date d'entrée de la donnée
+ * @param {Date} date La date d'entrée de la donnée
  */
+console.log("TEST : ");
+console.log(isCorrect("30mn", new Date('1995-12-17T03:30:00')));
 
 function isCorrect(interval, date) {
   // Intervalle existante : ['1min', '5min', '10min', '15min', '30min', '1h', '2h', '6h', '12h', '24h'];
+  let val;
+  switch (interval) {
+    case '1mn':
+      val = 60000;
+      break;
+    case '5mn':
+      val = 300000;
+      break;
+    case '10mn':
+      val = 600000;
+      break;
+    case '15mn':
+      val = 900000;
+      break;
+    case '30mn':
+      val = 1800000;
+      break;
+    default:
+      console.log("NOT SUPPORTED TODO A TRAITER");
+  }
+  return date.getTime() % val == 0;
 }
