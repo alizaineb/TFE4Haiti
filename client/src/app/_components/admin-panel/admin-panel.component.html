@@ -23,6 +23,7 @@
         <td>{{user.first_name}}</td>
         <td>{{user.last_name}}</td>
         <td>{{user.mail}}</td>
+        <td>{{user.role}}</td>
         <td>{{user.created_at | date: 'd/MM/yyyy à HH:mm'}}</td>
         <td>
           <i class="fas fa-check fa-fw fa-1x" (click)="acceptUser(user._id)"></i>

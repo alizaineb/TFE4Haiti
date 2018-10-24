@@ -25,7 +25,7 @@ export class AdminPanelComponent implements OnInit {
   private map: Map<string, string>;
   private mapUserFilter: Map<string, string>;
   constructor(private userService: UserService, private stationsService: StationsService, private alertService: AlertService) {
-    this.headersUsers = ["Nom", "Prénom", "Adresse mail", "Date de création"];
+    this.headersUsers = ["Nom", "Prénom", "Adresse mail", "Role requis", " Date de création"];
     this.headersStation = ["Nom de la station", "Latitude", "Longitude", "Intervalle", "Auteur", "Date de mise en service"];
     this.showUsers = false;
     this.showStations = false;
@@ -46,10 +46,11 @@ export class AdminPanelComponent implements OnInit {
     this.mapUserFilter.set("Nom", "last_name");
     this.mapUserFilter.set("Prénom", "first_name");
     this.mapUserFilter.set("Adresse mail", "mail");
+    this.mapUserFilter.set("Role requis mail", "role");
     this.mapUserFilter.set("Date de création", "created_at");
   }
 
-  loadAwaitingUsers($event=null) {
+  loadAwaitingUsers($event = null) {
     let self = this;
     this.userService.getAllAwaiting()
       .pipe(first())
