@@ -32,13 +32,18 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RefuseUserModalComponent} from './_components/admin-panel/refuse-user-modal/refuse-user-modal.component';
 import {SimpleStationComponent} from './_components/simple-station/simple-station.component';
 import {DetailsStationComponent} from './_components/simple-station/details/details-station.component';
-import { LogoutComponent } from './_components/logout/logout.component';
-import { NoteComponent } from './_components/simple-station/note/note.component';
-import { UpdateUserModalComponent } from './_components/users/update-user-modal/update-user-modal.component';
+import {LogoutComponent} from './_components/logout/logout.component';
+import {NoteComponent} from './_components/simple-station/note/note.component';
+import {UpdateUserModalComponent} from './_components/users/update-user-modal/update-user-modal.component';
 import {NgxPaginationModule} from 'ngx-pagination';
-import { ImportStationModalComponent } from './_components/stations/import-station-modal/import-station-modal.component';
-import { HomeComponent } from './_components/home/home.component';
-import { AssignUsersComponent } from './_components/simple-station/assign-users/assign-users.component';
+import {ImportStationModalComponent} from './_components/stations/import-station-modal/import-station-modal.component';
+import {HomeComponent} from './_components/home/home.component';
+import {AssignUsersComponent} from './_components/simple-station/assign-users/assign-users.component';
+
+;
+import {StationImportDataComponent} from './_components/stations/import-data/station-import-data.component';
+
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -69,12 +74,14 @@ import { AssignUsersComponent } from './_components/simple-station/assign-users/
     RefuseUserModalComponent,
     SimpleStationComponent,
     DetailsStationComponent,
-    LogoutComponent ,
-    NoteComponent ,
+    LogoutComponent,
+    NoteComponent,
     UpdateUserModalComponent,
-    ImportStationModalComponent ,
+    ImportStationModalComponent,
     HomeComponent,
-    AssignUsersComponent],
+    AssignUsersComponent,
+    StationImportDataComponent
+  ],
   providers: [
     AuthGuard,
     AlertService,
