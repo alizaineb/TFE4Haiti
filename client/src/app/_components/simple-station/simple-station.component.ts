@@ -8,7 +8,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class SimpleStationComponent implements OnInit, OnDestroy {
 
-  //sub to the route
+  // sub to the route
   private sub: any;
 
   public stationId: string;
@@ -25,8 +25,8 @@ export class SimpleStationComponent implements OnInit, OnDestroy {
   ngOnInit() {
     const self = this;
 
-    self.stationId = "";
-    self.tabList = ['Details', 'Tableaux', 'Graphiques', 'Notes'];
+    self.stationId = '';
+    self.tabList = ['Details', 'Tableaux', 'Graphiques', 'Notes', 'Utilisateurs'];
     self.activeTab = self.tabList[0];
 
     self.sub = self.route.params.subscribe((params) => {
@@ -34,7 +34,7 @@ export class SimpleStationComponent implements OnInit, OnDestroy {
       const tab = params['tab'];
       if (self.tabList.indexOf(tab) > 0) {
         self.activeTab = tab;
-        self.router.navigate(['/stations', self.stationId, self.activeTab])
+        self.router.navigate(['/stations', self.stationId, self.activeTab]);
       }
     });
   }
@@ -44,7 +44,7 @@ export class SimpleStationComponent implements OnInit, OnDestroy {
   }
 
   getSelectedClass(tab) {
-    return this.activeTab == tab;
+    return this.activeTab === tab;
   }
 
   selectTab(tab: string) {
