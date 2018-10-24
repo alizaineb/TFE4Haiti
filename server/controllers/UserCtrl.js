@@ -85,9 +85,11 @@ exports.roles = function(req, res) {
 };
 
 exports.create = function(req, res) {
-  // TODO Check mail
   checkParam(req, res, ["first_name", "last_name", "mail", "role"], () => {
     let user = req.body;
+    if (!ValidateEmail(user.mail)) {
+      return res.status(400).send("Format de l'email invalide");
+    }
     if (Object.values(roles).indexOf(user.role) == -1) {
       return res.status(400).send("Role inconnu");
     }
@@ -107,9 +109,11 @@ exports.create = function(req, res) {
 };
 
 exports.update = function(req, res) {
-  // TODO Check mail
   checkParam(req, res, ["_id", "first_name", "last_name", "mail", "role", "state"], () => {
     let id = req.body._id;
+    if (!ValidateEmail(req.body.mail)) {
+      return res.status(400).send("Format de l'email invalide");
+    }
     UsersModel.userModel.findById({ _id: id }, function(err, user) {
       if (err) {
         logger.error(err);
@@ -377,8 +381,13 @@ function sendEmailReset(req, res, user, isUserRequest) {
   });
 }
 
-
-
+// Source : https://www.w3resource.com/javascript/form/email-validation.php
+function ValidateEmail(mail) {
+  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
+    return (true);
+  }
+  return (false);
+}
 // used to tetst some routes
 exports.useless = function(req, res) {
   return res.status(200).send({ message: 'ok' });
