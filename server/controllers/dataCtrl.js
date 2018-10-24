@@ -33,7 +33,13 @@ exports.insertData = function(req, res) {
     tmp.push(data);
   }
   dataModel.rainDataModel.insertMany(tmp, (err, docs) => {
-    res.status(200).send();
+    console.log(err);
+    console.log(docs);
+    if(err){
+      res.status(500).send(err);
+    }else{
+      res.status(200).send();
+    }
   })
 
 
