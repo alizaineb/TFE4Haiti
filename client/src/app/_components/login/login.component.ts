@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
-import { AlertService, AuthenticationService } from '../../_services/index';
+import { AlertService, AuthenticationService, UserService } from '../../_services/index';
 import { LocalstorageService } from "../../_services/localstorage.service";
 
 @Component({
@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit {
   loginSubmitted = false;
   registerSubmitted = false;
   returnUrl: string;
+  roles: string[];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -24,19 +25,25 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private authenticationService: AuthenticationService,
     private alertService: AlertService,
-    private localStorageService: LocalstorageService) {
+    private localStorageService: LocalstorageService,
+    private userService: UserService
+  ) {
   }
 
   ngOnInit() {
+    this.roles = [];
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
+
     this.registerForm = this.formBuilder.group({
       username: ['', Validators.required],
       first_name: ['', Validators.required],
-      last_name: ['', Validators.required]
+      last_name: ['', Validators.required],
+      role: ['', Validators.required]
     });
+    this.userService.getRoles().subscribe(roles => { console.log(roles); this.roles = roles; });
 
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';

@@ -80,10 +80,14 @@ exports.getByEmail = function(req, res) {
 
 };
 
+exports.roles = function(req, res) {
+  return res.status(200).send(Object.values(roles));
+};
+
 exports.create = function(req, res) {
   // TODO Check mail
   checkParam(req, res, ["first_name", "last_name", "mail"], () => {
-
+    // Check role connu.
     let uTmp = new UsersModel.userModel();
     let user = req.body;
     uTmp.first_name = user.first_name;
@@ -375,5 +379,5 @@ function sendEmailReset(req, res, user, isUserRequest) {
 
 // used to tetst some routes
 exports.useless = function(req, res) {
-  return res.status(200).send({message: 'ok'});
+  return res.status(200).send({ message: 'ok' });
 };
