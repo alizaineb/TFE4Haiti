@@ -148,7 +148,7 @@ export class HomeComponent implements OnInit {
     legend.onAdd = function (map) {
 
       var div = L.DomUtil.create('div', 'info legend'),
-        grades = ['OK', 'En panne', 'Supprimée', 'A valider'],
+        grades = ['Fonctionnelle', 'En panne', 'Pas en activitée', 'A valider'],
         color = ['#5cd65c', '#ffb84d', '#ff471a', '#1aa3ff'];
 
       // loop through our density intervals and generate a label with a colored square for each interval
