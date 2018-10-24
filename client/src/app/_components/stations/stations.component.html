@@ -44,9 +44,10 @@
       <td>{{station.updatedAt | date: 'd/MM/yyyy à HH:mm'}}</td>
       <td>{{station.state}}</td>
       <td>
-        <i class="fas fa-edit fa-fw fa-1x" (click)="assignStationToUpdate(station)" data-toggle="modal" data-target="#updateStationModal"></i>
+        <i class="fas fa-edit fa-fw fa-1x" (click)="setStationSelected(station)" data-toggle="modal" data-target="#updateStationModal"></i>
         <a [routerLink]="['/','stations',  station._id, 'import']" ><i class="fas fa-file-download fa-fw fa-1x"></i></a>
-        <i class="fas fa-trash fa-fw fa-1x" (click)="assignStationToDelete(station)" data-toggle="modal" data-target="#deleteStationModal"></i>
+        <i class="fas fa-trash fa-fw fa-1x" (click)="setStationSelected(station)" data-toggle="modal" data-target="#deleteStationModal"></i>
+        <i class="fas fa-sticky-note" (click)="setStationSelected(station)" data-toggle="modal" data-target="#noteStationModal"></i>
       </td>
     </tr>
   </tbody>
@@ -64,13 +65,15 @@
 
 <!-- Modal -->
 <div class="modal fade" id="deleteStationModal" tabindex="-1" role="dialog" aria-labelledby="deleteStationModalLabel" aria-hidden="true">
-  <app-delete-station-modal [station]=stationToDelete.name (selected)="deleteStation($event)"></app-delete-station-modal>
+  <div *ngIf="stationSelected != null">
+    <app-delete-station-modal [station]=stationSelected.name (selected)="deleteStation($event)"></app-delete-station-modal>
+  </div>
 </div>
 
 <!-- Modal -->
 <div class="modal fade" id="updateStationModal" tabindex="-1" role="dialog" aria-labelledby="updateStationModalLabel" aria-hidden="true">
-  <div *ngIf="stationToUpdate != null">
-    <app-update-sation-modal [stationToUpdate]=stationToUpdate (updated)="loadAllStations($event)"></app-update-sation-modal>
+  <div *ngIf="stationSelected != null">
+    <app-update-sation-modal [stationToUpdate]=stationSelected (updated)="loadAllStations($event)"></app-update-sation-modal>
   </div>
 </div>
 

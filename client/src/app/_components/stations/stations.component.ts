@@ -14,9 +14,7 @@ export class StationsComponent implements OnInit {
   headers: string[];
   stations: Station[] = [];
   stationsFiltered: Station[] = [];
-  stationToDelete: Station;
-  stationToUpdate: Station;
-  importDataStation: Station;
+  stationSelected: Station = null;
 
   currentPage = 1; // page courante des stations affichées
   map;
@@ -30,9 +28,7 @@ export class StationsComponent implements OnInit {
   ngOnInit() {
     this.initMap();
     this.loadAllStations();
-    this.stationToDelete = new Station();
-    this.stationToUpdate = null;
-    this.importDataStation = new Station();
+
   }
 
   loadAllStations($event = null) {
@@ -60,26 +56,17 @@ export class StationsComponent implements OnInit {
     });
   }
 
-  assignStationToDelete(station: Station) {
-    this.stationToDelete = station;
-  }
 
-  assignStationToUpdate(station: Station) {
-    this.stationToUpdate = station;
-  }
-
-  assignStationToImport(station: Station) {
-    this.importDataStation = station;
+  setStationSelected(station: Station){
+    this.stationSelected = station;
   }
 
   deleteStation(choice: boolean) {
     if (choice) {
-      this.stationService.delete(this.stationToDelete._id)
+      this.stationService.delete(this.stationSelected._id)
         .subscribe(result => {
           this.loadAllStations();
         });
-    } else {
-      this.stationToDelete = new Station();
     }
   }
 
