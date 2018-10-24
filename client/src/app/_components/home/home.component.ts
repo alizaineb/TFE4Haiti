@@ -149,7 +149,7 @@ export class HomeComponent implements OnInit {
     legend.onAdd = function (map) {
 
       var div = L.DomUtil.create('div', 'info legend'),
-        grades = ['Fonctionnelle', 'En panne', 'Pas en activitée'],
+        grades = ['En activité', 'En panne', 'Pas en activitée'],
         color = ['#5cd65c', '#ffb84d', '#ff471a'];
 
       if(currentU){
