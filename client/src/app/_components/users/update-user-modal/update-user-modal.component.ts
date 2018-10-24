@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@
 import { AlertService } from "../../../_services";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { UserService } from "../../../_services/user.service";
+import { StationsService } from '../../../_services/stations.service';
 import { first } from "rxjs/operators";
 import { User } from "../../../_models";
 
@@ -21,13 +22,22 @@ export class UpdateUserModalComponent implements OnInit {
   updateUserForm: FormGroup;
 
   roles: string[];
+  communes: string[];
+  rivers: string[];
   // TODO Modifier et faire un call api pour ces valeurs
   states = ['awaiting', 'pwd_creation', 'ok', 'deleted'];
-  constructor(private alertService: AlertService, private userService: UserService) { }
+  constructor(private alertService: AlertService, private userService: UserService, private stationService: StationsService) { }
 
   ngOnInit() {
     this.initForm();
+    this.stationService.getCommunes().subscribe(communes => {
+      this.communes = communes;
+    });
+    this.stationService.getRivers().subscribe(rivers => {
+      this.rivers = rivers;
+    });
     this.userService.getRoles().subscribe(roles => { this.roles = roles; });
+
   }
 
   initForm() {
@@ -42,6 +52,8 @@ export class UpdateUserModalComponent implements OnInit {
       'mail': new FormControl(this.userToUpdate.mail, [
         Validators.required
       ]),
+      'commune': new FormControl(this.userToUpdate.commune),
+      'river': new FormControl(this.userToUpdate.river),
       'role': new FormControl(this.userToUpdate.role, [
         Validators.required
       ]),
@@ -67,6 +79,8 @@ export class UpdateUserModalComponent implements OnInit {
     userToSend.mail = this.userToUpdate.mail;
     userToSend.role = this.updateUserForm.get('role').value;
     userToSend.state = this.updateUserForm.get('state').value;
+    userToSend.commune = this.updateUserForm.get('commune').value;
+    userToSend.river = this.updateUserForm.get('river').value;
     this.userService.update(userToSend).pipe(first()).subscribe(
       result => {
         //trigger sent

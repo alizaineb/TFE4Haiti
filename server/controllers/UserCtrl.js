@@ -12,6 +12,7 @@ const userState = require('../config/constants').userState;
 const checkParam = require('./utils').checkParam;
 const mailTransporter = require('./mailer');
 const PwdRecoveryModel = require('./../models/pwdRecovery');
+const StationModel = require('./../models/station');
 
 exports.login = function(req, res) {
   checkParam(req, res, ["mail", "pwd"], function() {
@@ -123,6 +124,16 @@ exports.update = function(req, res) {
         user.last_name = req.body.last_name;
         user.role = req.body.role;
         user.state = req.body.state;
+        if (!req.body.commune) {
+          user.commune = undefined;
+        } else {
+          user.commune = req.body.commune;
+        }
+        if (!req.body.river) {
+          user.river = undefined;
+        } else {
+          user.river = req.body.river;
+        }
         user.save((err) => {
           if (err) {
             logger.error(err);

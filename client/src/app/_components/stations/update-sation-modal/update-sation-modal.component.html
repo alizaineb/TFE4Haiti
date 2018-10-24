@@ -45,6 +45,20 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
+                    <select class="form-control" id="commune" formControlName="commune" required>
+                      <option value="" disabled selected>Commune</option>
+                      <option *ngFor="let i of communes" [value]="i">{{i}}</option>
+                    </select>
+
+                    <div *ngIf="commune.invalid && (commune.dirty || commune.touched)" class="alert alert-danger">
+                      <div *ngIf="commune.errors.required">
+                        Une commune est requise
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
 
                     <select class="form-control" id="river" formControlName="river" required>
                       <option value="" disabled selected>Rivière</option>
@@ -54,20 +68,6 @@
                     <div *ngIf="river.invalid && (river.dirty || river.touched)" class="alert alert-danger">
                       <div *ngIf="river.errors.required">
                         Une rivière est requise
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <select class="form-control" id="commune" formControlName="commune" required>
-                      <option value="" disabled selected>Commune</option>
-                      <option *ngFor="let i of communes" [value]="i">{{i}}</option>
-                    </select>
-
-                    <div *ngIf="commune.invalid && (commune.dirty || commune.touched)" class="alert alert-danger">
-                      <div *ngIf="commune.errors.required">
-                        Une commune est requise
                       </div>
                     </div>
                   </div>
