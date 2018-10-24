@@ -12,6 +12,7 @@ import {AskresetComponent} from "./_components/login/askreset/askreset.component
 import {SimpleStationComponent} from "./_components/simple-station/simple-station.component";
 import {LogoutComponent} from "./_components/logout/logout.component";
 import {HomeComponent} from "./_components/home/home.component";
+import {StationImportDataComponent} from "./_components/stations/import-data/station-import-data.component";
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
@@ -19,6 +20,7 @@ const appRoutes: Routes = [
   {path: 'admin', component: AdminPanelComponent, canActivate: [AuthGuard]},
   {path: 'stations', component: StationsComponent, canActivate: [AuthGuard]},
   {path: 'stations/:id', component: SimpleStationComponent},
+  {path: 'stations/:id/import', component: StationImportDataComponent},
   {path: 'stations/:id/:tab', component: SimpleStationComponent},
   {path: 'users', component: UsersComponent, canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent},

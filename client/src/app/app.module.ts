@@ -3,9 +3,6 @@ import {BrowserModule} from '@angular/platform-browser';
 import {ReactiveFormsModule} from '@angular/forms';
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
-
-// used to create fake backend
-
 import {AppComponent} from './app.component';
 import {routing} from './app.routing';
 import {AlertComponent} from './_directives';
@@ -32,13 +29,17 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RefuseUserModalComponent} from './_components/admin-panel/refuse-user-modal/refuse-user-modal.component';
 import {SimpleStationComponent} from './_components/simple-station/simple-station.component';
 import {DetailsStationComponent} from './_components/simple-station/details/details-station.component';
-import { LogoutComponent } from './_components/logout/logout.component';
-import { NoteComponent } from './_components/simple-station/note/note.component';
-import { UpdateUserModalComponent } from './_components/users/update-user-modal/update-user-modal.component';
+import {LogoutComponent} from './_components/logout/logout.component';
+import {NoteComponent} from './_components/simple-station/note/note.component';
+import {UpdateUserModalComponent} from './_components/users/update-user-modal/update-user-modal.component';
 import {NgxPaginationModule} from 'ngx-pagination';
-import { ImportStationModalComponent } from './_components/stations/import-station-modal/import-station-modal.component';
-import { HomeComponent } from './_components/home/home.component';
-import { AssignUsersComponent } from './_components/simple-station/assign-users/assign-users.component';
+import {ImportStationModalComponent} from './_components/stations/import-station-modal/import-station-modal.component';
+import {HomeComponent} from './_components/home/home.component';
+import {AssignUsersComponent} from './_components/simple-station/assign-users/assign-users.component';
+import {StationImportDataComponent} from './_components/stations/import-data/station-import-data.component';
+import {ImportStatopInputRowComponent} from './_components/stations/import-data/input-row/import-statop-input-row.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap'
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -48,7 +49,8 @@ import { AssignUsersComponent } from './_components/simple-station/assign-users/
     FormsModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    NgxPaginationModule
+    NgxPaginationModule,
+    NgbModule
   ],
   declarations: [
     AppComponent,
@@ -69,12 +71,15 @@ import { AssignUsersComponent } from './_components/simple-station/assign-users/
     RefuseUserModalComponent,
     SimpleStationComponent,
     DetailsStationComponent,
-    LogoutComponent ,
-    NoteComponent ,
+    LogoutComponent,
+    NoteComponent,
     UpdateUserModalComponent,
-    ImportStationModalComponent ,
+    ImportStationModalComponent,
     HomeComponent,
-    AssignUsersComponent],
+    AssignUsersComponent,
+    StationImportDataComponent,
+    ImportStatopInputRowComponent
+  ],
   providers: [
     AuthGuard,
     AlertService,

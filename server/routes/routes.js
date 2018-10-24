@@ -1,6 +1,7 @@
 // Tous les controllers de l'application
 const roles = require('../config/constants').roles;
 let controllers = {};
+controllers.data = require('../controllers/dataCtrl');
 controllers.users = require('../controllers/UserCtrl');
 controllers.stations = require('../controllers/StationCtrl');
 controllers.note = require('../controllers/noteCtrl');
@@ -103,6 +104,14 @@ exports.routes = [
 
 
   // Méthodes liées aux stations
+
+  {//      /api/stations/5bbdb51dd7aec61a195afc9b/import
+    path: "/api/stations/:id/import",
+    httpMethod: "POST",
+    middleWare: [controllers.data.insertData],
+    access: [roles.WORKER, roles.ADMIN]
+
+  },
   {
     path: "/api/stations/getAllAwaiting",
     httpMethod: "GET",
@@ -178,7 +187,6 @@ exports.routes = [
     middleWare: [controllers.note.get],
     access: [roles.ADMIN, roles.WORKER]
   },
-
 
 
   // Routes used to test

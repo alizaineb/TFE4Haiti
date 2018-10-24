@@ -9,7 +9,7 @@ const checkParam = require('./utils').checkParam;
  * @param {string} user L'id de l'utilisateur ayant inséré les données
  * ? Besoin d'un autre paramètre ?
  */
-exports.insertData = function(req, res, datas, station, user) {
+exports.insertData = function(req, res) {
   // Vérifier que l'utilisateur peut insérer sur cette station
 
   // Vérifier les données en fonction de l'intervalle de la Station (que l'intervalle soit respectée) si intervalle <1h
@@ -20,6 +20,19 @@ exports.insertData = function(req, res, datas, station, user) {
   // ? si collision dans la date ?
 
   // Va falloir utiliser Promise.all(les promesses).then etc : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
+
+  const datas = req.body;
+  for (let i = 0; i < datas.length; i++) {
+    let d = datas[i];
+    let data = new dataModel.rainDataModel();
+    data.id_station = d.id_station;
+    data.id_user = d.id_user;
+    data.date = d.date;
+    data.value = d.value;
+    data.save();
+  }
+
+  res.status(200).send();
 }
 
 /*

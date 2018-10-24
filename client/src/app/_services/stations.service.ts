@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import {Note, Station} from '../_models';
 import {Observable} from 'rxjs';
+import {Data} from "../_models/data";
 
 @Injectable({
   providedIn: 'root'
@@ -68,5 +69,9 @@ export class StationsService {
     };
     return french[station.state];
 
+  }
+
+  importData(id:string, dataToSend: Data[]) {
+    return this.http.post(`${environment.apiUrl}/stations/${id}/import`, dataToSend);
   }
 }
