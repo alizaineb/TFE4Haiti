@@ -15,7 +15,7 @@ const User = new Schema({
   pwd: { type: String },
   created_at: { type: Date, default: Date.now },
   commune: { type: String, enum: StationModel.communes },
-  river: { type: String, enum: StationModel.communesrivers },
+  river: { type: String, enum: StationModel.rivers },
   last_seen: { type: Date, default: Date.now },
   role: { type: String, enum: [roles.ADMIN, roles.WORKER, roles.VIEWER], required: true },
   state: { type: String, enum: [state.AWAITING, state.PASSWORD_CREATION, state.OK, state.DELETED], required: true, default: state.AWAITING }

@@ -3,6 +3,9 @@ var timestamps = require('mongoose-timestamp');
 const states = require('../config/constants').stationState;
 
 
+// TODO En attente de confirmation
+exports.communes = ['commune1', 'commune2'];
+exports.rivers = ['river1', 'river2'];
 // schema pour récupérer un mot de passe
 const Schema = mongoose.Schema;
 const Station = new Schema({
@@ -14,8 +17,8 @@ const Station = new Schema({
   users: { type: [String], required: true },
   user_creator_id: { type: String, required: true },
   createdAt: { type: Date, required: true },
-  commune: {type: String, required: true},
-  river : {type: String, required: true},
+  commune: { type: String, required: true, enum: this.communes },
+  river: { type: String, required: true, enum: this.rivers },
   state: { type: String, enum: [states.AWAITING, states.BROKEN, states.WORKING, states.DELETED], required: true },
   interval: { type: String, required: true, enum: ['1min', '5min', '10min', '15min', '30min', '1h', '2h', '6h', '12h', '24h'] }
 }, {
@@ -46,10 +49,3 @@ exports.stationModel = stationModel;
 
 const intervals = ['1min', '5min', '10min', '15min', '30min', '1h', '2h', '6h', '12h', '24h'];
 exports.intervals = intervals;
-
-// TODO En attente de confirmation
-const communes = ['commune1','commune2'];
-exports.communes = communes;
-
-const rivers = ['river1','river2'];
-exports.rivers = rivers;
