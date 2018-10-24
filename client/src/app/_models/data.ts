@@ -4,7 +4,7 @@ export class Data {
   public id_user: string;
   public date: Date;
   public value: number;
-  
+
 
   public constructor(
   ) {

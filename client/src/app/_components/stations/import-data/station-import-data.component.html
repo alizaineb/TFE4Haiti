@@ -1,8 +1,17 @@
 <a [routerLink]="['/','stations']" ><i class="fas fa-chevron-left"></i> Revenir à mes stations</a>
 <div *ngIf="!loading">
   <div class="row">
-    <div class="col-sm"><p>Import des données pour la station : {{currentStation.name}}</p></div>
+    <div class="col-md-11"><p>Import des données pour la station : {{currentStation.name}}</p></div>
+    <div class="col-md-1"> <i class="fas fa-plus-circle" (click)="moreData()"></i></div>
   </div>
 
+  <div class="row" *ngFor="let d of data;">
+    <div class="col-md-11" >
+      <app-inport-input-row></app-inport-input-row>
+    </div>
+    <div class="col-md-1">
+      <i class="fas fa-minus-circle" (click)="moreData()"></i>
+    </div>
+  </div>
 </div>
 

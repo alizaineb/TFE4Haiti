@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Station} from "../../../_models";
 import {StationsService} from "../../../_services/stations.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {Data} from "../../../_models/data";
 
 @Component({
   selector: 'app-import-data',
@@ -16,7 +17,7 @@ export class StationImportDataComponent implements OnInit {
 
   currentStation: Station;
 
-  private data: any[];
+  data: Data[];
 
   constructor(private stationService: StationsService,
               private route: ActivatedRoute,
@@ -26,8 +27,10 @@ export class StationImportDataComponent implements OnInit {
   ngOnInit() {
 
     const self = this;
-    self.loading = true
+    self.loading = true;
 
+    self.data = [];
+    self.data.push(new Data());
 
     self.sub = self.route.params.subscribe((params) => {
       const id = params['id'];
@@ -45,4 +48,7 @@ export class StationImportDataComponent implements OnInit {
     });
   }
 
+  moreData(){
+    this.data.push(new Data());
+  }
 }
