@@ -76,7 +76,6 @@ export class UpdateUserModalComponent implements OnInit {
       error => {
         this.alertService.error("Une erreur est survenue lors de la mise à jour de l'utilisateur");
       });
-
   }
 
   get first_name() { return this.updateUserForm.get('first_name'); }

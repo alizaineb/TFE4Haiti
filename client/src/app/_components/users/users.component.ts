@@ -4,6 +4,7 @@ import { first } from 'rxjs/operators';
 import { User } from '../../_models';
 import { UserService } from '../../_services';
 import { LocalstorageService } from "../../_services/localstorage.service";
+import { AlertService } from '../../_services/index';
 
 @Component({
   templateUrl: 'users.component.html',
@@ -24,7 +25,7 @@ export class UsersComponent implements OnInit {
 
   private map: Map<string, string>;
 
-  constructor(private userService: UserService, private localStorageService: LocalstorageService) {
+  constructor(private userService: UserService, private localStorageService: LocalstorageService, private alertService: AlertService) {
     this.currentUser = this.localStorageService.getItem('currentUser').current;
     this.headersUsers = ["Nom", "Prénom", "Adresse mail", "Commune", "Rivière", "Date de création", "Date de dernière connexion", "Role", "État"];
   }
@@ -45,9 +46,14 @@ export class UsersComponent implements OnInit {
   }
 
   deleteUser(id: number) {
-    this.userService.delete(id).pipe(first()).subscribe(() => {
+    let self = this;
+    this.userService.delete(id).pipe(first()).subscribe(result => {
+      self.alertService.success("L'utilisteur a été correctement passé dans l'état correspndant");
       this.loadAllUsers()
-    });
+    },
+      error => {
+        self.alertService.error(error);
+      });
   }
 
   private loadAllUsers() {

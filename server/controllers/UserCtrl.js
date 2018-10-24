@@ -137,15 +137,16 @@ exports.update = function(req, res) {
 }
 
 exports.delete = function(req, res) {
-  checkParam(req, res, ["id"], () => {
-    let id = req.params.id;
-    // console.log(id);
-    let user = UsersModel.userModel.deleteOne({ _id: id }).then(() => {
-      return res.status(204).send("ok") //TODO remove body
-    }).catch(function(err) {
-      logger.error(err);
-      return res.status(500).send("Erreur lors de la suppression de l'utilisateur");
-    });
+  let id = req.params.id || '';
+  if (!id) {
+    return res.status(400).send("Information manquante(s)");
+  }
+  // console.log(id);
+  let user = UsersModel.userModel.deleteOne({ _id: id }).then(() => {
+    return res.status(204).send("ok") //TODO remove body
+  }).catch(function(err) {
+    logger.error(err);
+    return res.status(500).send("Erreur lors de la suppression de l'utilisateur");
   });
 };
 
