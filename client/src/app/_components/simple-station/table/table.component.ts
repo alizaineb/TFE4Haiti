@@ -15,7 +15,8 @@ export class TableComponent implements OnInit {
 
   private currentStation: Station;
 
-  private intervalles = ["1mn", "5mn", "10mn", "15mn", "30mn", "1h", "6h", "12h", "24h"];
+  private allIntervals: string[];
+  private intervalsFiltered: string[];
 
   constructor(private stationService: StationsService, private alertService: AlertService) { }
 
@@ -23,9 +24,27 @@ export class TableComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.stationService.getById(this.stationId).pipe().subscribe(station => {
-      this.currentStation = station
+    let self = this;
+    var prom1 = new Promise((resolve, reject) => {
+      this.stationService.getById(this.stationId).pipe().subscribe(station => {
+        self.currentStation = station;
+        resolve();
+      });
     });
+    var prom2 = new Promise((resolve, reject) => {
+      this.stationService.getIntervals().pipe().subscribe(intervalles => {
+        self.allIntervals = intervalles;
+        resolve();
+      });
+    });
+    Promise.all([prom1, prom2]).then(function(values) {
+      self.filterIntervals();
+    });
+
   }
 
+  filterIntervals() {
+    this.intervalsFiltered = this.allIntervals.slice(this.allIntervals.indexOf(this.currentStation.interval), this.allIntervals.length);
+
+  }
 }
