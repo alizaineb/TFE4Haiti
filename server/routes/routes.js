@@ -112,6 +112,13 @@ exports.routes = [
     access: [roles.WORKER, roles.ADMIN]
 
   },
+  {//      /api/stations/5bbdb51dd7aec61a195afc9b/import
+    path: "/api/stations/:id/importFile",
+    httpMethod: "POST",
+    middleWare: [controllers.data.importFileData],
+    access: [roles.WORKER, roles.ADMIN]
+
+  },
   {
     path: "/api/stations/getAllAwaiting",
     httpMethod: "GET",

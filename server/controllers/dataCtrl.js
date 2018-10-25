@@ -1,3 +1,4 @@
+const formidable = require('formidable');
 const logger = require('../config/logger');
 const dataModel = require('./../models/data');
 const checkParam = require('./utils').checkParam;
@@ -111,6 +112,17 @@ exports.importManualData = function(req, res) {
       });
     }
   });
+};
+
+exports.importFileData = function(req, res) {
+  let form = new formidable.IncomingForm();
+  form.parse(req, function(err, fields, files) {
+    console.log(err);
+    console.log(fields);
+    console.log(files);
+    res.status(200).send();
+  })
+
 };
 
 //push();
