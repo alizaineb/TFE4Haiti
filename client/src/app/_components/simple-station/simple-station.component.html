@@ -18,6 +18,10 @@
   <app-simple-station-details [stationId]="stationId"></app-simple-station-details>
 </div>
 
+<div *ngIf="getSelectedClass(tabList[2])">
+  <app-graph-line></app-graph-line>
+</div>
+
 <div *ngIf="getSelectedClass(tabList[3])">
   <app-note [stationId]="stationId"></app-note>
 </div>
