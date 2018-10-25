@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, SimpleChanges, OnChanges} from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { Station } from '../../../_models/';
 import { AlertService, UserService } from '../../../_services/';
 import { StationsService } from '../../../_services/stations.service';
@@ -24,7 +24,7 @@ export class TableComponent implements OnInit, OnChanges {
   constructor(private stationService: StationsService, private alertService: AlertService) { }
 
   ngOnInit() {
-    this.datePicker = flatpickr('#createdAtAdd2', {
+    this.datePicker = flatpickr('#datePicker', {
       locale: French,
       altInput: true,
       altFormat: 'd-m-Y',

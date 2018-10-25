@@ -12,20 +12,18 @@
         Rivière : {{currentStation.river}}
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-          <select class="form-control">
-            <option value="" disabled selected>Intervalle</option>
-            <option *ngFor="let i of intervalsFiltered" [value]="i">{{i}}</option>
-          </select>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <input id="createdAtAdd" placeholder="Date" type="text" class="flatpickr flatpickr-input form-control" formControlName="createdAt" required>
-      </div>
-
-    </div>
   </div>
 </div>
-<input id="createdAtAdd2" placeholder="Date" type="text" class="flatpickr flatpickr-input form-control" formControlName="createdAt" required>
+<div class="row someSpace">
+  <div class="col-md-6">
+    <div class="form-group">
+      <select class="form-control">
+        <option value="" disabled selected>Intervalle</option>
+        <option *ngFor="let i of intervalsFiltered" [value]="i">{{i}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <input id="datePicker" placeholder="Date" type="text" class="flatpickr flatpickr-input form-control" formControlName="createdAt" required>
+  </div>
+</div>
