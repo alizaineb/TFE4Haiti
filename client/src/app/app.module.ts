@@ -37,8 +37,8 @@ import {ImportStationModalComponent} from './_components/stations/import-station
 import {HomeComponent} from './_components/home/home.component';
 import {AssignUsersComponent} from './_components/simple-station/assign-users/assign-users.component';
 import {StationImportDataComponent} from './_components/stations/import-data/station-import-data.component';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap'
-
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { GraphLineComponent } from './_components/simple-station/graph-line/graph-line.component'
 @NgModule({
   imports: [
     BrowserModule,
@@ -76,8 +76,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap'
     ImportStationModalComponent,
     HomeComponent,
     AssignUsersComponent,
-    StationImportDataComponent
-  ],
+    StationImportDataComponent,
+    GraphLineComponent  ],
   providers: [
     AuthGuard,
     AlertService,

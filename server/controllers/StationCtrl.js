@@ -93,6 +93,9 @@ exports.update = function(req, res) {
 };
 
 exports.addUser = function(req, res) {
+
+  console.log("Hello");
+
   checkParam(req, res, ["userId"], function() {
     UsersModel.userModel.findById(req.body.userId, function(err, user) {
       if (err) {
@@ -104,8 +107,10 @@ exports.addUser = function(req, res) {
       if (user.length === 0) return res.status(404).send("L'utilisateur n'existe pas");
 
       Station.stationModel.findById(req.params.id, function(err, station) {
-        logger.error(err);
-        if (err) return res.status(500).send("Erreur lors de la récupération de la station.");
+        if (err) {
+          logger.error(err);
+          return res.status(500).send("Erreur lors de la récupération de la station.");
+        }
         if (station.length > 1) return res.status(500).send("Ceci n'aurait jamais dû arriver.");
         if (station.length === 0) return res.status(404).send("La station n'existe pas");
 
@@ -158,7 +163,9 @@ exports.removeUser = function(req, res) {
 
 exports.delete = function(req, res) {
   Station.stationModel.findById(req.params.id, function(err, station) {
+
     station.state = states.DELETED;
+
     station.save(function(err, updatedStation) {
       if (err) {
         logger.error(err);

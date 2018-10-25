@@ -2,6 +2,9 @@ const logger = require('../config/logger');
 const dataModel = require('./../models/data');
 const checkParam = require('./utils').checkParam;
 
+const Station = require("../models/station");
+const UsersModel = require("../models/users");
+
 /*
  * Méthode utilisée pour insérer des données en base de donnée
  * @param {number[]} dates Tableau des données devant être inséérer en base de données
@@ -9,19 +12,45 @@ const checkParam = require('./utils').checkParam;
  * @param {string} user L'id de l'utilisateur ayant inséré les données
  * ? Besoin d'un autre paramètre ?
  */
-
-exports.insertData = function(req, res) {
+insertData = function(req, res, datas, station, user) {
   // Vérifier que l'utilisateur peut insérer sur cette station
 
-  // Vérifier les données en fonction de l'intervalle de la Station (que l'intervalle soit respectée) si intervalle <1h
+  if (station.users.indexOf(user._id) < 0 && user.role !== 'administrateur') {
+    res.status(403).send(`Vous n'avez pas accès à la modification de cette station`);
+  } else {
 
-  // inserer donnée une à une
-  // Si intervalle >1h vérifier l'intégrité des données ?!
+    // Vérifier les données en fonction de l'intervalle de la Station (que l'intervalle soit respectée) si intervalle <1h
 
-  // ? si collision dans la date ?
+    // inserer donnée une à une
+    // Si intervalle >1h vérifier l'intégrité des données ?!
 
-  // Va falloir utiliser Promise.all(les promesses).then etc : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
+    // ? si collision dans la date ?
+
+    // Va falloir utiliser Promise.all(les promesses).then etc : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
+
+    console.log("data inserted")
+    dataModel.rainDataModel.insertMany(datas, (err, docs) => {
+      console.log(err);
+      console.log(docs);
+      if (err) {
+        res.status(500).send('Les données n\'ont pas sur être insérer...');
+      } else {
+        res.status(200).send();
+      }
+    })
+
+  }
+
+};
+
+exports.importManualData = function(req, res) {
   const datas = req.body;
+  const userId = req.token_decoded.id;
+  const stationId = req.params.id || '';
+  const self = this;
+
+  console.log('[USERID] ', req.token_decoded);
+
   let tmp = [];
   for (let i = 0; i < datas.length; i++) {
     let d = datas[i];
@@ -41,7 +70,35 @@ exports.insertData = function(req, res) {
       res.status(200).send();
     }
   })
-}
+  Station.stationModel.findById({ _id: stationId }, (err, station) => {
+    if (err) {
+      logger.error(err);
+      res.status(500).send(`erreur lors de la recupération de la station ${stationId}`)
+    } else {
+      console.log('[STATION] : ', station);
+      UsersModel.userModel.findById({ _id: userId }, (err, user) => {
+        if (err) {
+          logger.error(err);
+          res.status(500).send(`erreur lors de la recupération de l'utilisateur ${userId}`)
+        } else {
+          console.log('[USER] : ', user);
+          for (let i = 0; i < datas.length; i++) {
+            const d = datas[i];
+            let data = new dataModel.rainDataModel();
+            data.id_station = station._id;
+            data.id_user = user._id;
+            data.date = d.date;
+            data.value = d.value;
+            tmp.push(data);
+
+          }
+          insertData(req, res, datas, station, user);
+        }
+
+      });
+    }
+  });
+};
 
 //push();
 
