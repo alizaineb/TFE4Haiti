@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import {Component, OnInit, Input, SimpleChanges, OnChanges} from '@angular/core';
 import { Station } from '../../../_models/';
 import { AlertService, UserService } from '../../../_services/';
 import { StationsService } from '../../../_services/stations.service';
@@ -10,7 +10,7 @@ import { French } from 'flatpickr/dist/l10n/fr';
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css']
 })
-export class TableComponent implements OnInit {
+export class TableComponent implements OnInit, OnChanges {
 
   @Input()
   private stationId: string;
@@ -24,27 +24,23 @@ export class TableComponent implements OnInit {
   constructor(private stationService: StationsService, private alertService: AlertService) { }
 
   ngOnInit() {
-    console.log("AZEZA");
-    this.datePicker = flatpickr('#createdAtAdd', {
+    this.datePicker = flatpickr('#createdAtAdd2', {
       locale: French,
       altInput: true,
       altFormat: 'd-m-Y',
       dateFormat: 'd-m-Y',
-      onChange: function(selectedDates, dateStr, instance) {
-        console.log("A");
-      }
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    let self = this;
-    var prom1 = new Promise((resolve, reject) => {
+    const self = this;
+    const prom1 = new Promise((resolve, reject) => {
       this.stationService.getById(this.stationId).pipe().subscribe(station => {
         self.currentStation = station;
         resolve();
       });
     });
-    var prom2 = new Promise((resolve, reject) => {
+    const prom2 = new Promise((resolve, reject) => {
       this.stationService.getIntervals().pipe().subscribe(intervalles => {
         self.allIntervals = intervalles;
         resolve();
@@ -57,6 +53,5 @@ export class TableComponent implements OnInit {
 
   filterIntervals() {
     this.intervalsFiltered = this.allIntervals.slice(this.allIntervals.indexOf(this.currentStation.interval), this.allIntervals.length);
-
   }
 }

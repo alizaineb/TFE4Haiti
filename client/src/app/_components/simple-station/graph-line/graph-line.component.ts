@@ -1,7 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Chart} from 'chart.js';
-import {DataService} from "../../../_services/data.service";
-import {Data} from "../../../_models/data";
+import {DataService} from '../../../_services/data.service';
+import {Data} from '../../../_models/data';
+import flatpickr from "flatpickr";
+import {French} from "flatpickr/dist/l10n/fr";
 
 @Component({
   selector: 'app-graph-line',
@@ -13,18 +15,18 @@ export class GraphLineComponent implements OnInit {
   @Input()
   private stationId: string;
 
-  lineChart:any;
-  barChart:any;
+  lineChart: any;
+  barChart: any;
+  datePicker;
 
   listData: Data[];
 
-  constructor(private dataService:DataService) { }
+  constructor(private dataService: DataService) { }
 
   ngOnInit() {
-    console.log("Hello");
     this.dataService.getAll(this.stationId).subscribe(data => {
       console.log(data);
-      this.listData = data });
+      this.listData = data; });
 
 
     this.lineChart = new Chart('lineChart',
@@ -34,9 +36,9 @@ export class GraphLineComponent implements OnInit {
 
         // The data for our dataset
         data: {
-          labels: ["January", "February", "March", "April", "May", "June", "July"],
+          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
           datasets: [{
-            label: "My First dataset",
+            label: 'My First dataset',
             backgroundColor: 'rgb(255, 99, 132)',
             borderColor: 'rgb(255, 99, 132)',
             data: [0, 10, 5, 2, 20, 30, 45],
@@ -55,7 +57,7 @@ export class GraphLineComponent implements OnInit {
       {
         type: 'bar',
         data: {
-          labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+          labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
           datasets: [{
             label: '# of Votes',
             data: [12, 19, 3, 5, 2, 3],
@@ -86,7 +88,7 @@ export class GraphLineComponent implements OnInit {
           scales: {
             yAxes: [{
               ticks: {
-                beginAtZero:true
+                beginAtZero: true
               }
             }]
           }
