@@ -1,6 +1,25 @@
 <h1>Tableaux</h1>
-<div class="row col-md-12">
-  <div *ngIf="currentStation">
-    <p>{{currentStation.name}}</p>
+<div *ngIf="currentStation">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        Station : {{currentStation.name}}
+      </div>
+      <div class="col-md-4">
+        Commune : {{currentStation.commune}}
+      </div>
+      <div class="col-md-4">
+        Rivière : {{currentStation.river}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <select class="form-control">
+            <option value="" disabled selected>Intervalle</option>
+            <option *ngFor="let i of intervalles" [value]="i">{{i}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
   </div>
-</div>

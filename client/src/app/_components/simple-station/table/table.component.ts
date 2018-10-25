@@ -15,6 +15,8 @@ export class TableComponent implements OnInit {
 
   private currentStation: Station;
 
+  private intervalles = ["1mn", "5mn", "10mn", "15mn", "30mn", "1h", "6h", "12h", "24h"];
+
   constructor(private stationService: StationsService, private alertService: AlertService) { }
 
   ngOnInit() {
