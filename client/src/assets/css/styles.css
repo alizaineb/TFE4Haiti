@@ -476,6 +476,18 @@ i:hover {
   color: darkBlue;
 }
 
+.fa-sticky-note {
+  color: sandyBrown;
+}
+
+.fa-sticky-note:hover {
+  color: #F4EE60;
+}
+
+.fa-sticky-note:active {
+  color: #813B00;
+}
+
 .fas {
   cursor: pointer;
 }

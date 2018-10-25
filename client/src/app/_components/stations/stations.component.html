@@ -45,8 +45,8 @@
       <td>{{station.state}}</td>
       <td>
         <i class="fas fa-edit fa-fw fa-1x" (click)="setStationSelected(station)" data-toggle="modal" data-target="#updateStationModal"></i>
-        <a [routerLink]="['/','stations',  station._id, 'import']" ><i class="fas fa-file-download fa-fw fa-1x"></i></a>
-        <i class="fas fa-sticky-note fa-fw fa-lx" (click)="setStationSelected(station)" data-toggle="modal" data-target="#noteStationModal" style="color: sandybrown"></i>
+        <a [routerLink]="['/','stations',  station._id, 'import']"><i class="fas fa-file-download fa-fw fa-1x"></i></a>
+        <i class="fas fa-sticky-note fa-fw fa-lx" (click)="setStationSelected(station)" data-toggle="modal" data-target="#noteStationModal"></i>
         <i class="fas fa-trash fa-fw fa-1x" (click)="setStationSelected(station)" data-toggle="modal" data-target="#deleteStationModal"></i>
       </td>
     </tr>
@@ -99,5 +99,5 @@
 
 <!-- Modal -->
 <!--<div class="modal fade" id="importStationModal" tabindex="-1" role="dialog" aria-labelledby="importStationModalLabel" aria-hidden="true">-->
-  <!--<app-import-station-modal [stationId]=importDataStation._id></app-import-station-modal>-->
+<!--<app-import-station-modal [stationId]=importDataStation._id></app-import-station-modal>-->
 <!--</div>-->
