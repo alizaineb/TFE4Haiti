@@ -10,21 +10,22 @@
     </a>
   </li>
 </ul>
+<div class="test">
+  <div *ngIf="getSelectedClass(tabList[0])">
+    <app-simple-station-details [stationId]="stationId"></app-simple-station-details>
+  </div>
+  <div *ngIf="getSelectedClass(tabList[1])">
+    <app-table [stationId]="stationId"></app-table>
+  </div>
+  <div *ngIf="getSelectedClass(tabList[2])">
+    <app-graph-line [stationId]="stationId"></app-graph-line>
+  </div>
 
-<div *ngIf="getSelectedClass(tabList[0])">
-  <app-simple-station-details [stationId]="stationId"></app-simple-station-details>
-</div>
-<div *ngIf="getSelectedClass(tabList[1])">
-  <app-table [stationId]="stationId"></app-table>
-</div>
-<div *ngIf="getSelectedClass(tabList[2])">
-  <app-graph-line [stationId]="stationId"></app-graph-line>
-</div>
+  <div *ngIf="getSelectedClass(tabList[3])">
+    <app-note [stationId]="stationId"></app-note>
+  </div>
 
-<div *ngIf="getSelectedClass(tabList[3])">
-  <app-note [stationId]="stationId"></app-note>
-</div>
-
-<div *ngIf="getSelectedClass(tabList[4])">
-  <app-assign-users [stationId]="stationId"></app-assign-users>
+  <div *ngIf="getSelectedClass(tabList[4])">
+    <app-assign-users [stationId]="stationId"></app-assign-users>
+  </div>
 </div>
