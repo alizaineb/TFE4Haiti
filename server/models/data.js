@@ -10,8 +10,20 @@ const RainData = new Schema({
 });
 
 
+
+RainData.methods.toDto = function() {
+  return {
+    _id: this._id,
+    id_station: this.id_station,
+    id_user: this.id_user,
+    data: this.date,
+    value: this.value
+  };
+};
+
 //Definition du modèle
 const rainDataModel = mongoose.model("rainData", RainData);
 
 // Export du modèle
 exports.rainDataModel = rainDataModel;
+

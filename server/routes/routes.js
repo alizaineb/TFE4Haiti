@@ -194,6 +194,14 @@ exports.routes = [
     access: [roles.ADMIN, roles.WORKER]
   },
 
+  // Méthodes liées aux data
+  {
+    path: "/api/data/:stationId",
+    httpMethod: "GET",
+    middleWare: [controllers.data.get],
+    access: [roles.ADMIN, roles.WORKER]
+  },
+
 
   // Routes used to test
   {

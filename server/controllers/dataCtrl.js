@@ -40,7 +40,19 @@ insertData = function(req, res, datas, station, user) {
     })
 
   }
+};
 
+
+exports.get = function(req, res) {
+  dataModel.rainDataModel.find({ id_station: req.params.stationId}, function (err, data) {
+    if (err) {
+      logger.error(err);
+      return res.status(500).send("Erreur lors de la récupération des données.");
+    }
+    let tabD = [];
+    data.forEach(data => tabD.push(data.toDto()));
+    return res.status(200).send(tabD);
+  });
 };
 
 exports.importManualData = function(req, res) {
