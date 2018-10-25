@@ -134,6 +134,7 @@ export class StationImportDataComponent implements OnInit {
     const self = this;
     const f = <File> $event.target.files[0];
     if (f.type.toLowerCase() === "text/csv") {
+      self.selectedFile = f;
       self.alertService.success("coucou");
     } else {
       self.alertService.error("Seul les fichier CSV sont acceptés.")
