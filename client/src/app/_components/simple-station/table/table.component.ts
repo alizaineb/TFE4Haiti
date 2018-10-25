@@ -2,6 +2,8 @@ import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { Station } from '../../../_models/';
 import { AlertService, UserService } from '../../../_services/';
 import { StationsService } from '../../../_services/stations.service';
+import flatpickr from 'flatpickr';
+import { French } from 'flatpickr/dist/l10n/fr';
 
 @Component({
   selector: 'app-table',
@@ -14,6 +16,7 @@ export class TableComponent implements OnInit {
   private stationId: string;
 
   private currentStation: Station;
+  datePicker;
 
   private allIntervals: string[];
   private intervalsFiltered: string[];
@@ -21,6 +24,16 @@ export class TableComponent implements OnInit {
   constructor(private stationService: StationsService, private alertService: AlertService) { }
 
   ngOnInit() {
+    console.log("AZEZA");
+    this.datePicker = flatpickr('#createdAtAdd', {
+      locale: French,
+      altInput: true,
+      altFormat: 'd-m-Y',
+      dateFormat: 'd-m-Y',
+      onChange: function(selectedDates, dateStr, instance) {
+        console.log("A");
+      }
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -40,7 +53,6 @@ export class TableComponent implements OnInit {
     Promise.all([prom1, prom2]).then(function(values) {
       self.filterIntervals();
     });
-
   }
 
   filterIntervals() {
