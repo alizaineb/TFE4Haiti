@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import * as L from 'leaflet';
-import {StationsService} from '../../_services/stations.service';
-import {st} from "@angular/core/src/render3";
-import {Station} from "../../_models";
-import {LocalstorageService} from "../../_services/localstorage.service";
-import {layerGroup} from "leaflet";
+import { StationsService } from '../../_services/stations.service';
+import { st } from "@angular/core/src/render3";
+import { Station } from "../../_models";
+import { LocalstorageService } from "../../_services/localstorage.service";
+import { layerGroup } from "leaflet";
 
 @Component({
   selector: 'app-map',
@@ -20,6 +20,12 @@ export class MapComponent implements OnInit {
   private mapContainer;
   private zoom = 8;
   private centerMap = [19.099041, -72.658473];
+  private communes: string[];
+  private rivers: string[];
+
+  private communeFilter: string;
+  private riverFilter: string;
+  private term: string;
 
   constructor(
     private localStorageService: LocalstorageService,
@@ -28,7 +34,12 @@ export class MapComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.stationsService.getCommunes().subscribe(communes => {
+      this.communes = communes;
+    });
+    this.stationsService.getRivers().subscribe(rivers => {
+      this.rivers = rivers;
+    });
     const self = this;
     this.stationsService.getAll().subscribe(result => {
       self.selectedStation = result.slice(0); //make a clone
@@ -40,11 +51,11 @@ export class MapComponent implements OnInit {
 
   }
 
-  compareStation(a: Station, b: Station){
-    if(a.name.toLowerCase() < b.name.toLowerCase()){
+  compareStation(a: Station, b: Station) {
+    if (a.name.toLowerCase() < b.name.toLowerCase()) {
       return -1;
     }
-    if(a.name.toLowerCase() > b.name.toLowerCase()){
+    if (a.name.toLowerCase() > b.name.toLowerCase()) {
       return 1;
     }
     return 0;
@@ -94,9 +105,9 @@ export class MapComponent implements OnInit {
 
 
     let station;
-    for(let i=0; i < self.selectedStation.length; i++){
+    for (let i = 0; i < self.selectedStation.length; i++) {
       station = self.selectedStation[i];
-      L.marker([station.latitude, station.longitude], {icon: icon[station.state]}).bindPopup(`<b>${station.name} </b><br/>`).addTo(stationGroup[station.state]);
+      L.marker([station.latitude, station.longitude], { icon: icon[station.state] }).bindPopup(`<b>${station.name} </b><br/>`).addTo(stationGroup[station.state]);
     }
 
     // console.table(self.selectedStation);
@@ -108,9 +119,9 @@ export class MapComponent implements OnInit {
     // Maps usage : OpenStreetMap, OpenSurferMaps
 
     const mapLayerOSMGrayScale = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-        id: 'mapbox.light',
-        attribution: mbAttr
-      }),
+      id: 'mapbox.light',
+      attribution: mbAttr
+    }),
       mapLayerOSMTopo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
         id: 'mapbox.streets',
         attribution: mbAttr
@@ -144,15 +155,15 @@ export class MapComponent implements OnInit {
 
     L.control.scale().addTo(self.mapContainer);
 
-    let legend = L.control.attribution({position: 'bottomright'});
+    let legend = L.control.attribution({ position: 'bottomright' });
 
-    legend.onAdd = function (map) {
+    legend.onAdd = function(map) {
 
       var div = L.DomUtil.create('div', 'info legend'),
         grades = ['En activité', 'En panne', 'Pas en activitée'],
         color = ['#5cd65c', '#ffb84d', '#ff471a'];
 
-      if(currentU){
+      if (currentU) {
         grades.push('A valider');
         color.push('#1aa3ff');
       }
@@ -190,15 +201,15 @@ export class MapComponent implements OnInit {
 
 
 
-    console.log(currentU);
-    if(!currentU){
+    //console.log(currentU);
+    if (!currentU) {
       self.mapContainer.removeLayer(stationGroup.awaiting);
       self.mapContainer.removeLayer(overlays);
       L.control.layers(baseLayers).addTo(self.mapContainer);
       self.filteredStation = self.allStations.filter(station => {
         return station.state.toLowerCase() != 'awaiting'.toLowerCase()
       })
-    }else{
+    } else {
       L.control.layers(baseLayers, overlays).addTo(self.mapContainer);
     }
 
@@ -212,7 +223,7 @@ export class MapComponent implements OnInit {
     });
 
     self.mapContainer.on('baselayerchange', (e) => {
-      console.log('maps layer change', e.layer)
+      //console.log('maps layer change', e.layer)
     })
 
 
@@ -248,16 +259,40 @@ export class MapComponent implements OnInit {
 
   }
 
+  communeSelected(val) {
+    this.communeFilter = val;
+    this.applyFilter();
+  }
+
+  riverSelected(val) {
+    this.riverFilter = val;
+    this.applyFilter();
+  }
+
   filterStation(event) {
-    const term = event.target.value;
-    console.log(term)
+    this.term = event.target.value;
+    //console.log(term)
+    this.applyFilter();
+  }
 
-    this.filteredStation = this.allStations.filter((value) => {
-      // return value.name.toLowerCase().startsWith(term.toLowerCase());
-      return value.name.toLowerCase().includes(term.toLowerCase());
-    });
+  applyFilter() {
+    this.filteredStation = this.allStations;
+    if (this.communeFilter) {
+      this.filteredStation = this.filteredStation.filter((value) => {
+        return value.commune.toLowerCase().includes(this.communeFilter.toLowerCase());
+      });
+    }
+    if (this.riverFilter) {
+      this.filteredStation = this.filteredStation.filter((value) => {
+        return value.river.toLowerCase().includes(this.riverFilter.toLowerCase());
+      });
+    }
+    if (this.term) {
+      this.filteredStation = this.filteredStation.filter((value) => {
+        return value.name.toLowerCase().includes(this.term.toLowerCase());
+      });
+    }
+
     this.filteredStation = this.filteredStation.sort(this.compareStation)
-    // console.table(this.filteredStation)
-
   }
 }

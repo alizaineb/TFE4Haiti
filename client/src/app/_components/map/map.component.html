@@ -7,15 +7,31 @@
       </div>
       <input type="text" class="form-control" placeholder="Recherche" aria-label="Recherche" aria-describedby="basic-addon1" (keyup)="filterStation($event)">
     </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <select class="form-control" (change)="communeSelected($event.target.value)">
+            <option value="" selected>Commune</option>
+            <option *ngFor="let i of communes" [value]="i">{{i}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <select class="form-control" (change)="riverSelected($event.target.value)">
+            <option value="" selected>Rivière</option>
+            <option *ngFor="let i of rivers" [value]="i">{{i}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
     <ul class="list-group">
-      <li class="list-group-item d-flex justify-content-between align-items-center"
-          *ngFor="let station of filteredStation"
-          [ngClass]="{
+      <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let station of filteredStation" [ngClass]="{
           'list-group-item':true,
           'list-group-item-primary': getSelectedClass(station)
           }"
-          (click)="toogleSelectionFor(station)"
-      >
+        (click)="toogleSelectionFor(station)">
         {{station.name}}
 
         <div>
