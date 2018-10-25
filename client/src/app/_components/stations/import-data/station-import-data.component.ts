@@ -21,6 +21,7 @@ export class StationImportDataComponent implements OnInit {
   currentStation: Station;
 
   data: { date: string, time: { hour: number, time: number }, value: number }[];
+  private selectedZone: string;
 
   constructor(private stationService: StationsService,
               private localStorageService: LocalstorageService,
@@ -35,9 +36,11 @@ export class StationImportDataComponent implements OnInit {
 
     const self = this;
     self.loading = true;
-
+    self.selectedZone = 'manual';
     self.data = [];
+
     self.addData();
+
 
     self.sub = self.route.params.subscribe((params) => {
       const id = params['id'];
@@ -59,6 +62,15 @@ export class StationImportDataComponent implements OnInit {
     this.data.push({date: date, time: time, value: value});
   }
 
+
+  isSelectetd(item: string) {
+    const res = this.selectedZone == item;
+    return {"col-md-10": res, "col-md-2": !res, 'notselected': !res};
+  }
+
+  changeZone(item: string){
+    this.selectedZone = item;
+  }
   sendData() {
     let dataToSend = [];
     let currentUser = this.localStorageService.getItem('currentUser');

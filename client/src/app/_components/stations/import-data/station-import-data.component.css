@@ -1,0 +1,7 @@
+.table{
+  border-right: silver solid 1px ;
+}
+
+.notselected{
+  filter: blur(2px)
+}
