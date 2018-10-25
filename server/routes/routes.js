@@ -108,7 +108,7 @@ exports.routes = [
   {//      /api/stations/5bbdb51dd7aec61a195afc9b/import
     path: "/api/stations/:id/import",
     httpMethod: "POST",
-    middleWare: [controllers.data.insertData],
+    middleWare: [controllers.data.importManualData],
     access: [roles.WORKER, roles.ADMIN]
 
   },

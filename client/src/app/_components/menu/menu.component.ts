@@ -49,11 +49,12 @@ export class MenuComponent implements OnInit {
           this.menu.left = this.menuService.getLeftAdminMenu();
           this.menu.right = this.menuService.getRightAdminMenu();
           break;
-        case 'chercheur':
+        case 'employé':
+          console.log('Ime a workder');
           this.menu.left = this.menuService.getleftWorkerMenu();
           this.menu.right = this.menuService.getRightWorkerMenu();
           break;
-        case 'employé':
+        case 'chercheur':
           this.menu.left = this.menuService.getLeftViewerMenu();
           this.menu.right = this.menuService.getRightViewerMenu();
           break;
