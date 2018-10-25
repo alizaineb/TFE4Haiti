@@ -5,10 +5,7 @@
     <a [ngClass]="{
           'nav-link':true,
           'active': getSelectedClass(tab)
-          }"
-       [routerLink]="['/stations', stationId, tab]"
-       (click)="selectTab(tab)"
-    >
+          }" [routerLink]="['/stations', stationId, tab]" (click)="selectTab(tab)">
       {{tab}}
     </a>
   </li>
@@ -17,7 +14,9 @@
 <div *ngIf="getSelectedClass(tabList[0])">
   <app-simple-station-details [stationId]="stationId"></app-simple-station-details>
 </div>
-
+<div *ngIf="getSelectedClass(tabList[1])">
+  <app-table [stationId]="stationId"></app-table>
+</div>
 <div *ngIf="getSelectedClass(tabList[2])">
   <app-graph-line [stationId]="stationId"></app-graph-line>
 </div>
