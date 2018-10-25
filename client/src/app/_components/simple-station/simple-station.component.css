@@ -6,6 +6,7 @@ ul {
   border: 1px solid #dee2e6;
   border-radius: 0px 0px 16px 16px;
   margin-top: -10px;
+  padding-bottom: 20px;
   padding-top: 10px;
   border-top: none;
 }
