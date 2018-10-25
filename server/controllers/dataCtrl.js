@@ -4,6 +4,7 @@ const checkParam = require('./utils').checkParam;
 
 const Station = require("../models/station");
 const UsersModel = require("../models/users");
+const roles = require('../config/constants').roles;
 
 /*
  * Méthode utilisée pour insérer des données en base de donnée
@@ -15,7 +16,7 @@ const UsersModel = require("../models/users");
 insertData = function(req, res, datas, station, user) {
   // Vérifier que l'utilisateur peut insérer sur cette station
 
-  if (station.users.indexOf(user._id) < 0 && user.role !== 'administrateur') {
+  if (station.users.indexOf(user._id) < 0 && user.role !== roles.ADMIN) {
     res.status(403).send(`Vous n'avez pas accès à la modification de cette station`);
   } else {
 
