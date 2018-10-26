@@ -5,3 +5,7 @@
 .fas {
   color: #4286f4;
 }
+
+.noBorder {
+  border-style: none !important;
+}

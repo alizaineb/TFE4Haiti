@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { Station } from '../../../_models/';
+import { RainData } from '../../../_models/rainData';
 import { AlertService, UserService } from '../../../_services/';
 import { StationsService } from '../../../_services/stations.service';
 import flatpickr from 'flatpickr';
@@ -18,20 +19,30 @@ export class TableComponent implements OnInit, OnChanges {
   private currentStation: Station;
   datePicker;
 
+  private cols: string[];
+  private rows: string[];
+
   private allIntervals: string[];
   private intervalsFiltered: string[];
+  private allDatas: RainData[];
+  private aggregatedDatas: RainData[];
+
   private noDateSelected: boolean;
   private noIntervalSelected: boolean;
-  private dateLoading: boolean;
+  private dataLoading: boolean;
   private noData: boolean;
+  private dataToShow: boolean;
 
   constructor(private stationService: StationsService, private alertService: AlertService) { }
 
   ngOnInit() {
+    this.cols = [];
+    this.rows = [];
     this.noDateSelected = true;
     this.noIntervalSelected = true;
-    this.dateLoading = false;
+    this.dataLoading = false;
     this.noData = false;
+    this.dataToShow = false;
 
     let self = this;
     this.datePicker = flatpickr('#datePicker', {
@@ -43,6 +54,9 @@ export class TableComponent implements OnInit, OnChanges {
         self.dateChanged(selectedDates, dateStr, instance);
       }
     });
+    for (let i = 0; i < 24; i++) {
+      this.cols[i] = "" + i;
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -72,25 +86,57 @@ export class TableComponent implements OnInit, OnChanges {
   dateChanged(selectedDates, dateStr, instance) {
     this.noDateSelected = false;
     // Va falloir récup pour la date choisie ==> Lancer le loader
-    this.dateLoading = true;
+    this.dataLoading = true;
     this.noData = false;
+    this.dataToShow = false;
     // Lorsque la promesse est terminée ==> Stop le loader
     this.stationService.getData(this.stationId, dateStr).subscribe(rainDatas => {
-      console.log(rainDatas);
-      this.dateLoading = false;
+      this.dataLoading = false;
       if (rainDatas.length == 0) {
         this.noData = true;
+      } else {
+        this.dataToShow = true;
       }
+      this.allDatas = rainDatas;
+      this.aggregatedDatas = rainDatas.slice();
+      console.log(this.aggregatedDatas);
     }, error => {
       this.alertService.error(error);
     });
     // Load les dates afficher loading
   }
+
   intervalleChanged(val) {
     if (this.intervalsFiltered.indexOf(val) < 0) {
       return;
     }
     this.noIntervalSelected = false;
-    console.log(val);
+    let jump = this.getHopSize(val);
+    this.rows = [];
+    for (let i = 0; i < 60 / jump; i++) {
+      this.rows[i] = (i * jump) + "";
+    }
+    // Mtn faut bosser sur les données
+  }
+
+  getRange(num) {
+    return Array(num);
+  }
+
+  private getHopSize(interval) {
+    switch (interval) {
+      case "1min":
+        return 1;
+      case "5min":
+        return 5;
+      case "10min":
+        return 10;
+      case "15min":
+        return 15;
+      case "30min":
+        return 30;
+      default:
+        return 1;
+    }
   }
 }
