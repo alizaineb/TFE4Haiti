@@ -60,6 +60,20 @@ exports.get = function(req, res) {
   });
 };
 
+
+exports.getRainDataGraphLine = function(req, res) {
+  dataModel.rainDataModel.find({ id_station: req.params.stationId},'date value',{skip:1400}, function (err, rainData) {
+    if (err) {
+      logger.error(err);
+      return res.status(500).send("Erreur lors de la récupération des données.");
+    }
+    let tabD = [];
+    rainData.forEach(rainData => tabD.push(rainData.toDtoGraphLine()));
+    return res.status(200).send(tabD);
+  });
+};
+
+
 exports.importManualData = function(req, res) {
   const datas = req.body;
   const userId = req.token_decoded.id;
@@ -86,7 +100,7 @@ exports.importManualData = function(req, res) {
     } else {
       res.status(200).send();
     }
-  })
+  });
   Station.stationModel.findById({ _id: stationId }, (err, station) => {
     if (err) {
       logger.error(err);

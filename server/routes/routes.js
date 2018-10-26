@@ -203,9 +203,15 @@ exports.routes = [
 
   // Méthodes liées aux data
   {
-    path: "/api/data/:stationId",
+    path: "/api/rainData/:stationId",
     httpMethod: "GET",
     middleWare: [controllers.data.get],
+    access: [roles.ADMIN, roles.WORKER]
+  },
+  {
+    path: "/api/rainDataGraphLine/:stationId",
+    httpMethod: "GET",
+    middleWare: [controllers.data.getRainDataGraphLine],
     access: [roles.ADMIN, roles.WORKER]
   },
 
