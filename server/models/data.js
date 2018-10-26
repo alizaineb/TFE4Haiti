@@ -16,9 +16,16 @@ RainData.methods.toDto = function() {
     _id: this._id,
     id_station: this.id_station,
     id_user: this.id_user,
-    data: this.date,
+    date: this.date,
     value: this.value
   };
+};
+
+RainData.methods.toDtoGraphLine = function() {
+  return [
+    this.date,
+    this.value
+  ]
 };
 
 //Definition du modèle
