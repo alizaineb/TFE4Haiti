@@ -95,7 +95,7 @@ export class StationImportDataComponent implements OnInit {
       console.log(currentUser);
 
       for (let i = 0; i < this.data.length; i++) {//} d in this.data){
-        let tmp = new Data();
+        let tmp = new RainData();
         tmp.id_station = this.currentStation._id;
         tmp.id_user = currentUser.current._id;
         tmp.value = this.data[i].value;
