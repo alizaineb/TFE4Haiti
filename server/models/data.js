@@ -23,7 +23,7 @@ RainData.methods.toDto = function() {
 
 RainData.methods.toDtoGraphLine = function() {
   return [
-    this.date,
+    new Date(this.date).valueOf(),
     this.value
   ]
 };

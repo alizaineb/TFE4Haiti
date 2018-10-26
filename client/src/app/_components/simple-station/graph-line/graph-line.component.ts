@@ -57,7 +57,9 @@ export class GraphLineComponent implements OnInit {
          title: {
            text: 'AAPL Stock Price'
          },
-
+         xAxis: {
+           type: 'datetime'
+         },
          series: [{
            name: 'AAPL',
            data: data,
