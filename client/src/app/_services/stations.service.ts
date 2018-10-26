@@ -84,4 +84,8 @@ export class StationsService {
   importData(id:string, dataToSend: RainData[]) {
     return this.http.post(`${environment.apiUrl}/stations/${id}/import`, dataToSend);
   }
+
+  importDataFile(id: string, file: FormData) {
+    return this.http.post(`${environment.apiUrl}/stations/${id}/importFile`, file);
+  }
 }

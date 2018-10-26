@@ -21,6 +21,10 @@ export class StationImportDataComponent implements OnInit {
   currentStation: Station;
 
   data: { date: string, time: { hour: number, time: number }, value: number }[];
+  private selectedZone: string;
+
+  selectedFile: File = null;
+
 
   constructor(private stationService: StationsService,
               private localStorageService: LocalstorageService,
@@ -35,9 +39,11 @@ export class StationImportDataComponent implements OnInit {
 
     const self = this;
     self.loading = true;
-
+    self.selectedZone = 'manual';
     self.data = [];
+
     self.addData();
+
 
     self.sub = self.route.params.subscribe((params) => {
       const id = params['id'];
@@ -59,30 +65,56 @@ export class StationImportDataComponent implements OnInit {
     this.data.push({date: date, time: time, value: value});
   }
 
-  sendData() {
-    let dataToSend = [];
-    let currentUser = this.localStorageService.getItem('currentUser');
-    console.log(currentUser);
 
-    for (let i = 0; i < this.data.length; i++) {//} d in this.data){
-      let tmp = new RainData();
-      tmp.id_station = this.currentStation._id;
-      tmp.id_user = currentUser.current._id;
-      tmp.value = this.data[i].value;
-      tmp.date = new Date(`${this.data[i].date}T${this.data[i].time.hour}:${this.data[i].time.time | this.data[i].time['minutes']}:00`);
-      console.log(`${this.data[i].date}T${this.data[i].time.hour}:${this.data[i].time.time | this.data[i].time['minutes']}:00`);
-      dataToSend.push(tmp);
+  isSelectetd(item: string) {
+    const res = this.selectedZone == item;
+    return {"col-md-10": res, "col-md-2": !res, 'notselected': !res};
+  }
+
+  changeZone(item: string) {
+    this.selectedZone = item;
+  }
+
+  sendData() {
+    let currentUser = this.localStorageService.getItem('currentUser');
+
+    if (this.selectedZone == 'file') {
+      const fd = new FormData();
+      fd.append('CsvFile', this.selectedFile, this.selectedFile.name);
+      this.stationService.importDataFile(this.currentStation._id, fd).subscribe(
+        res => {
+          this.alertService.success('Fichier importé.');
+        },
+        err => {
+          this.alertService.error(`Erreur lors de l'importation du fichier.`);
+        }
+      );
+    } else {
+      let dataToSend = [];
+
+      console.log(currentUser);
+
+      for (let i = 0; i < this.data.length; i++) {//} d in this.data){
+        let tmp = new Data();
+        tmp.id_station = this.currentStation._id;
+        tmp.id_user = currentUser.current._id;
+        tmp.value = this.data[i].value;
+        tmp.date = new Date(`${this.data[i].date}T${this.data[i].time.hour}:${this.data[i].time.time | this.data[i].time['minutes']}:00`);
+        console.log(`${this.data[i].date}T${this.data[i].time.hour}:${this.data[i].time.time | this.data[i].time['minutes']}:00`);
+        dataToSend.push(tmp);
+      }
+      console.table(dataToSend);
+      this.stationService.importData(this.currentStation._id, dataToSend).subscribe(
+        res => {
+          this.alertService.success("données importées.");
+          this.data = [];
+          this.addData();
+        },
+        err => {
+          this.alertService.error(err);
+        });
     }
-    console.table(dataToSend);
-    this.stationService.importData(this.currentStation._id, dataToSend).subscribe(
-      res => {
-        this.alertService.success("données importées.");
-        this.data = [];
-        this.addData();
-      },
-      err => {
-        this.alertService.error(err);
-      });
+
 
   }
 
@@ -95,5 +127,19 @@ export class StationImportDataComponent implements OnInit {
     if (i > -1) {
       this.data.splice(i, 1)
     }
+  }
+
+
+  onFileSelected($event) {
+    const self = this;
+    const f = <File> $event.target.files[0];
+    if (f.type.toLowerCase() === "text/csv") {
+      self.selectedFile = f;
+      self.alertService.success("coucou");
+    } else {
+      self.alertService.error("Seul les fichier CSV sont acceptés.")
+    }
+
+    console.log(self.selectedFile);
   }
 }

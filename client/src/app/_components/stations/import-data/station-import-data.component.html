@@ -2,35 +2,52 @@
 <div *ngIf="!loading">
   <div class="row">
     <div class="col-md-11"><p>Import des données pour la station : {{currentStation.name}}</p></div>
-    <div class="col-md-1"><i class="fas fa-plus-circle" (click)="moreData()"></i><i class="fas fa-check-circle"
+    <div class="col-md-1"><i class="fas fa-check-circle"
                                                                                     (click)="sendData()"></i></div>
   </div>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <td>Date</td>
-        <td>Heure</td>
-        <td>Valeur</td>
-        <td>Actions</td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let d of data;">
-        <td class="align-middle">
-          <input placeholder="Date" type="date" [(ngModel)]="d.date"/>
-        </td>
-        <td>
-          <ngb-timepicker [(ngModel)]="d.time"></ngb-timepicker>
-        </td>
-        <td>
-          <input placeholder="value" type="number" [(ngModel)]="d.value"/>
-        </td>
-        <td>
-          <i class="fas fa-minus-circle" (click)="removeData(d)"></i>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="row">
+    <div class="col-md-10" [ngClass]="isSelectetd('manual')" (click)="changeZone('manual')">
+      <table class="table table-responsive table-striped">
+        <thead>
+        <tr>
+          <td>Date</td>
+          <td>Heure</td>
+          <td>Valeur</td>
+          <td>Actions <i class="fas fa-plus-circle" (click)="moreData()"></i></td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let d of data;">
+          <td class="align-middle">
+            <input placeholder="Date" type="date" [(ngModel)]="d.date"/>
+          </td>
+          <td>
+            <ngb-timepicker [(ngModel)]="d.time"></ngb-timepicker>
+          </td>
+          <td>
+            <input placeholder="value" type="number" [(ngModel)]="d.value"/>
+          </td>
+          <td>
+            <i class="fas fa-minus-circle" (click)="removeData(d)"></i>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div [ngClass]="isSelectetd('file')" (click)="changeZone('file')">
+      <div class="input-group mb3">
+        <div class="custom-file">
+          <input type="file" class="custom-file-input" id="uploadfileData"
+                 aria-describedby="uploadfileData"
+                 accept="text/csv"
+                 (change)="onFileSelected($event)">
+          <label class="custom-file-label" for="uploadfileData"></label>
+        </div>
+      </div>
+      <p *ngIf="selectedFile">File selected : {{selectedFile.name}}</p>
+    </div>
+  </div>
+
   <!--<div class="row" *ngFor="let d of data;">-->
     <!--<div class="col-md-3">-->
       <!--<pre>{{d | json}}</pre>-->
