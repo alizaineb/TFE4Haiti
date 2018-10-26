@@ -51,7 +51,38 @@ export class GraphLineComponent implements OnInit {
        this.highChart = Highcharts.stockChart('container', {
 
          rangeSelector: {
-           selected: 1
+           inputEnabled: false,
+           selected: 1,
+           buttons: [
+             {
+               type: 'minute',
+               count: 5,
+               text: '5min'
+             },
+             {
+             type: 'minute',
+             count: 60,
+             text: '1h'
+           }, {
+             type: 'day',
+             count: 1,
+             text: '1d'
+           }, {
+             type: 'week',
+             count: 1,
+             text: '1w'
+           }, {
+             type: 'month',
+             count: 1,
+             text: '1m'
+           }, {
+             type: 'year',
+             count: 1,
+             text: '1y'
+           }, {
+             type: 'all',
+             text: 'All'
+           }]
          },
 
          title: {
