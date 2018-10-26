@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Station} from "../../../_models";
 import {StationsService} from "../../../_services/stations.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Data} from "../../../_models/data";
+import {RainData} from "../../../_models/rainData";
 import {AlertService} from "../../../_services";
 import {NgbTimepickerConfig} from "@ng-bootstrap/ng-bootstrap"
 import {LocalstorageService} from "../../../_services/localstorage.service";
@@ -65,7 +65,7 @@ export class StationImportDataComponent implements OnInit {
     console.log(currentUser);
 
     for (let i = 0; i < this.data.length; i++) {//} d in this.data){
-      let tmp = new Data();
+      let tmp = new RainData();
       tmp.id_station = this.currentStation._id;
       tmp.id_user = currentUser.current._id;
       tmp.value = this.data[i].value;

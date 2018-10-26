@@ -1,4 +1,4 @@
-export class Data {
+export class RainData {
 
   public id_station: string;
   public id_user: string;

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import {Note, Station} from '../_models';
 import {Observable} from 'rxjs';
-import {Data} from "../_models/data";
+import {RainData} from "../_models/rainData";
 
 @Injectable({
   providedIn: 'root'
@@ -81,7 +81,7 @@ export class StationsService {
 
   }
 
-  importData(id:string, dataToSend: Data[]) {
+  importData(id:string, dataToSend: RainData[]) {
     return this.http.post(`${environment.apiUrl}/stations/${id}/import`, dataToSend);
   }
 }
