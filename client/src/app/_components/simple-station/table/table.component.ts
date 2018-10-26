@@ -35,6 +35,7 @@ export class TableComponent implements OnInit, OnChanges {
       locale: French,
       altInput: true,
       dateFormat: 'Y-m-d',
+      altFormat: 'd-m-Y',
       onChange: function(selectedDates, dateStr, instance) {
         self.dateChanged(selectedDates, dateStr, instance);
       }
@@ -70,11 +71,11 @@ export class TableComponent implements OnInit, OnChanges {
     // Va falloir récup pour la date choisie ==> Lancer le loader
     this.dateLoading = true;
     // Lorsque la promesse est terminée ==> Stop le loader
-    console.log(selectedDates);
-    console.log(dateStr);
-    console.log(instance);
-    this.stationService.getData(stationId, date).pipe().subscribe(rainDatas => {
+    this.stationService.getData(this.stationId, dateStr).subscribe(rainDatas => {
       console.log(rainDatas);
+      this.dateLoading = false;
+    }, error => {
+      this.alertService.error(error);
     });
     // Load les dates afficher loading
   }

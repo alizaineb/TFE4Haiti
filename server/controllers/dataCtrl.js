@@ -49,7 +49,25 @@ insertData = function(req, res, datas, station, user) {
 
 
 exports.get = function(req, res) {
-  dataModel.rainDataModel.find({ id_station: req.params.stationId}, function (err, data) {
+  dataModel.rainDataModel.find({ id_station: req.params.stationId }, function(err, data) {
+    if (err) {
+      logger.error(err);
+      return res.status(500).send("Erreur lors de la récupération des données.");
+    }
+    let tabD = [];
+    data.forEach(data => tabD.push(data.toDto()));
+    return res.status(200).send(tabD);
+  });
+};
+
+exports.getForDay = function(req, res) {
+  let date = new Date(req.params.date);
+  let dateMin = new Date(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate());
+  //console.log(dateMin);
+  let dateMax = new Date(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate());
+  dateMax.setHours(dateMax.getHours() + 24);
+  //console.log(dateMax);
+  dataModel.rainDataModel.find({ id_station: req.params.stationId, date: { "$gte": dateMin, "$lt": dateMax } }, function(err, data) {
     if (err) {
       logger.error(err);
       return res.status(500).send("Erreur lors de la récupération des données.");
@@ -125,14 +143,14 @@ exports.importFileData = function(req, res) {
     console.log(err);
     console.log(fields);
     console.log(files);
-    fs.rename(files['CsvFile'].path, `${files['CsvFile'].path}-${files['CsvFile'].name}`,(err) => {
-      if(err){
+    fs.rename(files['CsvFile'].path, `${files['CsvFile'].path}-${files['CsvFile'].name}`, (err) => {
+      if (err) {
         logger.error('[IMPORTFILE] Rename :  ', err);
         fs.unlink(files['CsvFile'].path, (err) => {
           logger.error('[IMPORTFILE] remove : ', err);
         })
         res.status(500).send("Le fichier n'a pas pu etre importé.");
-      }else{
+      } else {
         res.status(200).send()
       }
     });
@@ -148,14 +166,15 @@ function push() {
   const id_user = "5bbdb325d7aec61a195afc96";
   const id_station = "5bcf2b454d8f03350c5cf73e";
   let ptr = 0;
-  for (let i = 0; i < 24; i++) {
+  for (let i = 2; i <= 25; i++) {
     for (let j = 0; j < 60; j++) {
       let item = {};
       item.id_station = id_station;
       item.id_user = id_user;
 
-      let date2 = new Date('2018-10-12T' + padInt(i) + ':' + padInt(j) + ':00');
+      let date2 = new Date(2018, 9, 11, i, j);
       item.date = date2;
+      //console.log(date2);
       item.value = getRandomInt(80);
       datas[ptr] = item;
       ptr++
@@ -179,13 +198,7 @@ function push() {
     } else {
       //res.status(200).send();
     }
-  })
-}
-
-function padInt(val) {
-  if (val.toString().length <= 1)
-    return "0" + val.toString();
-  return val.toString();
+  });
 }
 
 function getRandomInt(max) {

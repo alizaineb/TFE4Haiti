@@ -105,14 +105,14 @@ exports.routes = [
 
   // Méthodes liées aux stations
 
-  {//      /api/stations/5bbdb51dd7aec61a195afc9b/import
+  { //      /api/stations/5bbdb51dd7aec61a195afc9b/import
     path: "/api/stations/:id/import",
     httpMethod: "POST",
     middleWare: [controllers.data.importManualData],
     access: [roles.WORKER, roles.ADMIN]
 
   },
-  {//      /api/stations/5bbdb51dd7aec61a195afc9b/import
+  { //      /api/stations/5bbdb51dd7aec61a195afc9b/import
     path: "/api/stations/:id/importFile",
     httpMethod: "POST",
     middleWare: [controllers.data.importFileData],
@@ -207,6 +207,13 @@ exports.routes = [
     httpMethod: "GET",
     middleWare: [controllers.data.get],
     access: [roles.ADMIN, roles.WORKER]
+  },
+
+
+  {
+    path: "/api/data/:stationId/:date",
+    httpMethod: "GET",
+    middleWare: [controllers.data.getForDay]
   },
 
 
