@@ -28,9 +28,12 @@
   </div>
 </div>
 <div *ngIf="noDateSelected || noIntervalSelected" class="container">
-  <h1>Veuillez sélectionner une date et un intervalle.</h1>
+  <h1>Veuillez sélectionner une date et un intervalle</h1>
 </div>
 
 <div *ngIf="dateLoading && !noIntervalSelected" class="text-center container">
   <i class="fas fa-spinner fa-spin fa-7x"></i>
+</div>
+<div *ngIf="noData" class="text-center container">
+  <h1>Pas de donnée(s) pour la date sélectionnée</h1>
 </div>

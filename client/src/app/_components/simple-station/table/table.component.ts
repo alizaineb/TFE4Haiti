@@ -23,6 +23,7 @@ export class TableComponent implements OnInit, OnChanges {
   private noDateSelected: boolean;
   private noIntervalSelected: boolean;
   private dateLoading: boolean;
+  private noData: boolean;
 
   constructor(private stationService: StationsService, private alertService: AlertService) { }
 
@@ -30,6 +31,8 @@ export class TableComponent implements OnInit, OnChanges {
     this.noDateSelected = true;
     this.noIntervalSelected = true;
     this.dateLoading = false;
+    this.noData = false;
+
     let self = this;
     this.datePicker = flatpickr('#datePicker', {
       locale: French,
@@ -70,16 +73,23 @@ export class TableComponent implements OnInit, OnChanges {
     this.noDateSelected = false;
     // Va falloir récup pour la date choisie ==> Lancer le loader
     this.dateLoading = true;
+    this.noData = false;
     // Lorsque la promesse est terminée ==> Stop le loader
     this.stationService.getData(this.stationId, dateStr).subscribe(rainDatas => {
       console.log(rainDatas);
       this.dateLoading = false;
+      if (rainDatas.length == 0) {
+        this.noData = true;
+      }
     }, error => {
       this.alertService.error(error);
     });
     // Load les dates afficher loading
   }
   intervalleChanged(val) {
+    if (this.intervalsFiltered.indexOf(val) < 0) {
+      return;
+    }
     this.noIntervalSelected = false;
     console.log(val);
   }
