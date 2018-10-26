@@ -6,6 +6,17 @@
   color: #4286f4;
 }
 
-.noBorder {
-  border-style: none !important;
+.topLeftCell {
+  border-top: 1px solid Transparent !important;
+  border-left: 1px solid Transparent !important;
+  border-bottom: 1px solid !important;
+  border-right: 1px solid !important;
+}
+
+.solidBorderBot {
+  border-bottom: 1px solid !important;
+}
+
+.solidBorderRight {
+  border-right: 1px solid !important;
 }

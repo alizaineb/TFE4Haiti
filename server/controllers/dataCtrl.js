@@ -67,7 +67,7 @@ exports.getForDay = function(req, res) {
   let dateMax = new Date(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate());
   dateMax.setHours(dateMax.getHours() + 24);
   //console.log(dateMax);
-  dataModel.rainDataModel.find({ id_station: req.params.stationId, date: { "$gte": dateMin, "$lt": dateMax } }, function(err, data) {
+  dataModel.rainDataModel.find({ id_station: req.params.stationId, date: { "$gte": dateMin, "$lt": dateMax } }, ['_id', 'id_station', 'id_user', 'date', 'value'], { sort: { date: 1 } }, function(err, data) {
     if (err) {
       logger.error(err);
       return res.status(500).send("Erreur lors de la récupération des données.");
@@ -80,7 +80,7 @@ exports.getForDay = function(req, res) {
 
 
 exports.getRainDataGraphLine = function(req, res) {
-  dataModel.rainDataModel.find({ id_station: req.params.stationId},'date value', function (err, rainData) {
+  dataModel.rainDataModel.find({ id_station: req.params.stationId }, 'date value', function(err, rainData) {
     if (err) {
       logger.error(err);
       return res.status(500).send("Erreur lors de la récupération des données.");

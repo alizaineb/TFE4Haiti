@@ -39,18 +39,19 @@
 </div>
 
 <div *ngIf="dataToShow && !noIntervalSelected" class="someSpace">
-  Les colonnes représentent les heures et les lignes les minutes.
-  <br>
+  <h5>Les colonnes représentent les heures et les lignes les minutes</h5>
+  <h5>Le tableau se lit donc de haut en bas</h5>
+
   <table class="table table-bordered">
     <thead>
       <tr>
-        <th scope="col" class="noBorder"></th>
-        <th scope="col" *ngFor="let colName of cols">{{colName}}</th>
+        <th scope="col" class="topLeftCell"></th>
+        <th scope="col" class="solidBorderBot" *ngFor="let colName of cols">{{colName}}</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let rowName of rows; let i = index">
-        <th scope="row">{{rowName}}</th>
+        <th scope="row" class="solidBorderRight">{{rowName}}</th>
         <th *ngFor="let tmp of getRange(24); let idx = index">{{aggregatedDatas[(idx*60)+i].value}}</th>
       </tr>
     </tbody>
