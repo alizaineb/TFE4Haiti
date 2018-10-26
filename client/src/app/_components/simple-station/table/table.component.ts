@@ -20,15 +20,24 @@ export class TableComponent implements OnInit, OnChanges {
 
   private allIntervals: string[];
   private intervalsFiltered: string[];
+  private noDateSelected: boolean;
+  private noIntervalSelected: boolean;
+  private dateLoading: boolean;
 
   constructor(private stationService: StationsService, private alertService: AlertService) { }
 
   ngOnInit() {
+    this.noDateSelected = true;
+    this.noIntervalSelected = true;
+    this.dateLoading = false;
+    let self = this;
     this.datePicker = flatpickr('#datePicker', {
       locale: French,
       altInput: true,
-      altFormat: 'd-m-Y',
-      dateFormat: 'd-m-Y',
+      dateFormat: 'Y-m-d',
+      onChange: function(selectedDates, dateStr, instance) {
+        self.dateChanged(selectedDates, dateStr, instance);
+      }
     });
   }
 
@@ -53,5 +62,24 @@ export class TableComponent implements OnInit, OnChanges {
 
   filterIntervals() {
     this.intervalsFiltered = this.allIntervals.slice(this.allIntervals.indexOf(this.currentStation.interval), this.allIntervals.length);
+  }
+
+
+  dateChanged(selectedDates, dateStr, instance) {
+    this.noDateSelected = false;
+    // Va falloir récup pour la date choisie ==> Lancer le loader
+    this.dateLoading = true;
+    // Lorsque la promesse est terminée ==> Stop le loader
+    console.log(selectedDates);
+    console.log(dateStr);
+    console.log(instance);
+    this.stationService.getData(stationId, date).pipe().subscribe(rainDatas => {
+      console.log(rainDatas);
+    });
+    // Load les dates afficher loading
+  }
+  intervalleChanged(val) {
+    this.noIntervalSelected = false;
+    console.log(val);
   }
 }
