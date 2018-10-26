@@ -80,7 +80,7 @@ exports.getForDay = function(req, res) {
 
 
 exports.getRainDataGraphLine = function(req, res) {
-  dataModel.rainDataModel.find({ id_station: req.params.stationId},'date value',{skip:1400}, function (err, rainData) {
+  dataModel.rainDataModel.find({ id_station: req.params.stationId},'date value', function (err, rainData) {
     if (err) {
       logger.error(err);
       return res.status(500).send("Erreur lors de la récupération des données.");
