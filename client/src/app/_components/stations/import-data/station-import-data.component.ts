@@ -77,7 +77,7 @@ export class StationImportDataComponent implements OnInit {
 
   sendData() {
     let currentUser = this.localStorageService.getItem('currentUser');
-    //TODO Send file instead of data
+
     if (this.selectedZone == 'file') {
       const fd = new FormData();
       fd.append('CsvFile', this.selectedFile, this.selectedFile.name);

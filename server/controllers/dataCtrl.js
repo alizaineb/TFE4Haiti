@@ -1,3 +1,6 @@
+const path = require('path');
+const fs = require('fs');
+
 const formidable = require('formidable');
 const logger = require('../config/logger');
 const dataModel = require('./../models/data');
@@ -116,11 +119,24 @@ exports.importManualData = function(req, res) {
 
 exports.importFileData = function(req, res) {
   let form = new formidable.IncomingForm();
+  const pathDir = path.join(__dirname, '..', 'public', 'upload');
+  form.uploadDir = pathDir;
   form.parse(req, function(err, fields, files) {
     console.log(err);
     console.log(fields);
     console.log(files);
-    res.status(200).send();
+    fs.rename(files['CsvFile'].path, `${files['CsvFile'].path}-${files['CsvFile'].name}`,(err) => {
+      if(err){
+        logger.error('[IMPORTFILE] Rename :  ', err);
+        fs.unlink(files['CsvFile'].path, (err) => {
+          logger.error('[IMPORTFILE] remove : ', err);
+        })
+        res.status(500).send("Le fichier n'a pas pu etre importé.");
+      }else{
+        res.status(200).send()
+      }
+    });
+
   })
 
 };
