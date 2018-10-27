@@ -1,6 +1,6 @@
 <div *ngIf="station">
   <h1>
-    Assigner des utilisateurs pour la station {{station.name}}
+    Assigner un utilisateur pour la station {{station.name}}
   </h1>
   <br>
 
@@ -8,14 +8,6 @@
     <div class="row">
       <div class="col">
         <h3>Utilisateurs disponibles: </h3>
-      </div>
-      <div class="col">
-        <h3>Utilisateurs assignés:</h3>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col">
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
@@ -32,7 +24,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let user of listAllUsers index as i;">
+          <tr *ngFor="let user of listAllUsersFiltered index as i;">
             <td> {{user.first_name}} </td>
             <td> {{user.last_name}} </td>
             <td> {{user.mail}} </td>
@@ -42,6 +34,7 @@
       </div>
 
       <div class="col">
+        <h3>Utilisateurs assignés:</h3>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
             <span class="input-group-text" id="basic-addon0"><i class="fas fa-search"></i></span>
@@ -58,7 +51,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let user of listUsers index as i">
+          <tr *ngFor="let user of listUsersFiltered index as i">
             <td> {{user.first_name}} </td>
             <td> {{user.last_name}} </td>
             <td> {{user.mail}} </td>

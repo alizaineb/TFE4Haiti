@@ -49,6 +49,7 @@ export class AssignUsersComponent implements OnInit {
             )
             .subscribe(users => {
               this.listAllUsers = users;
+              this.listAllUsersFiltered = this.listAllUsers;
             });
 
           const listUser = [];
@@ -65,9 +66,26 @@ export class AssignUsersComponent implements OnInit {
         this.station = data[0];
         // @ts-ignore
         this.listUsers = data[1];
+        this.listUsersFiltered = this.listUsers;
       });
 
 
+  }
+
+  filterUser() {
+    this.listUsersFiltered = this.listUsers.filter((value) => {
+      return value.mail.toLowerCase().includes(this.searchKeyWord.toLowerCase()) ||
+        value.first_name.toLowerCase().includes(this.searchKeyWord.toLowerCase()) ||
+        value.last_name.toLowerCase().includes(this.searchKeyWord.toLowerCase());
+    });
+  }
+
+  filterAllUser() {
+    this.listAllUsersFiltered = this.listAllUsers.filter((value) => {
+      return value.mail.toLowerCase().includes(this.searchAllKeyWord.toLowerCase()) ||
+        value.first_name.toLowerCase().includes(this.searchAllKeyWord.toLowerCase()) ||
+          value.last_name.toLowerCase().includes(this.searchAllKeyWord.toLowerCase());
+    });
   }
 
   addUser(user: User) {
