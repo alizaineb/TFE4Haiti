@@ -138,20 +138,22 @@ export class TableComponent implements OnInit, OnChanges {
   private computeDataToShow() {
     console.log("Y'a qqchse à faire :3");
     this.aggregatedDatas = this.allDatas.slice();
+    if (this.intervalSelected == this.currentStation.interval) {
+      return;
+    }
     // Va falloir use computeStep()
     let hopSize = this.computeStep(this.intervalSelected, this.currentStation.interval);
+    let idx = 0;
     for (let i = 0; i < this.allDatas.length; i = i + hopSize) {
-      console.log(i);
       let sum = 0;
       for (let j = i; j < i + hopSize; j++) {
-        console.log(j);
         if (this.allDatas[j].value) {
           sum += this.allDatas[j].value;
         }
       }
       // Update val
-      console.log("SUM : " + sum);
-      this.aggregatedDatas[i].value = sum;
+      // Pas correct atm
+      this.aggregatedDatas[idx++].value = sum;
     }
   }
 
