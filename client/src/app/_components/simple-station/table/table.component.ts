@@ -55,10 +55,12 @@ export class TableComponent implements OnInit, OnChanges {
       }
     });
     for (let i = 0; i < 24; i++) {
-      this.cols[i] = "" + i;
+      this.cols[i] = this.minTwoDigits(i);
     }
   }
-
+  private minTwoDigits(n) {
+    return (n < 10 ? '0' : '') + n;
+  }
   ngOnChanges(changes: SimpleChanges): void {
     const self = this;
     const prom1 = new Promise((resolve, reject) => {
@@ -119,7 +121,7 @@ export class TableComponent implements OnInit, OnChanges {
     let jump = this.getHopSize(val);
     this.rows = [];
     for (let i = 0; i < 60 / jump; i++) {
-      this.rows[i] = (i * jump) + "";
+      this.rows[i] = this.minTwoDigits(i * jump);
     }
     // Mtn faut bosser sur les données
   }
