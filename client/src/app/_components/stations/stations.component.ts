@@ -51,7 +51,9 @@ export class StationsComponent implements OnInit {
 
   filterStation() {
     this.stationsFiltered = this.stations.filter((value) => {
-      return value.name.toLowerCase().includes(this.searchKeyWord.toLowerCase());
+      return value.name.toLowerCase().includes(this.searchKeyWord.toLowerCase()) ||
+        value.river.toLowerCase().includes(this.searchKeyWord.toLowerCase()) ||
+        value.commune.toLowerCase().includes(this.searchKeyWord.toLowerCase());
     });
   }
 

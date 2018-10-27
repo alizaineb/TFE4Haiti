@@ -4,9 +4,11 @@ const states = require('../config/constants').stationState;
 
 
 // TODO En attente de confirmation
-exports.communes = ['commune1', 'commune2'];
-exports.rivers = ['river1', 'river2'];
+exports.communes = ['Port-au-Prince', 'Carrefour','Delmas','Cap-Haïtien','Pétionville'];
+exports.rivers = ['Grande Rivière du Nord', 'Haut-du-Cap','Limbé','Marion'];
 exports.intervals = ['1min', '5min', '10min', '15min', '30min', '1h', '2h', '6h', '12h', '24h'];
+
+
 // schema pour récupérer un mot de passe
 const Schema = mongoose.Schema;
 const Station = new Schema({
