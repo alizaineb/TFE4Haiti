@@ -58,7 +58,6 @@ export class StationsService {
 
 
   getData(id_station: string, date: string) {
-    console.log(date)
     return this.http.get<RainData[]>(environment.apiUrl + '/data/' + id_station + '/' + date);
   }
 

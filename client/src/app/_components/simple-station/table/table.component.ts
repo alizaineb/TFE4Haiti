@@ -80,6 +80,9 @@ export class TableComponent implements OnInit, OnChanges {
 
   filterIntervals() {
     this.intervalsFiltered = this.allIntervals.slice(this.allIntervals.indexOf(this.currentStation.interval), this.allIntervals.length);
+    if (this.currentStation.interval == '10min') {
+      this.intervalsFiltered.splice(this.intervalsFiltered.indexOf("15min"), 1);
+    }
   }
 
 
@@ -96,15 +99,17 @@ export class TableComponent implements OnInit, OnChanges {
         this.noData = true;
       } else {
         this.dataToShow = true;
+        this.allDatas = rainDatas;
+        this.aggregatedDatas = rainDatas.slice():
       }
-      this.allDatas = rainDatas;
-      this.aggregatedDatas = rainDatas.slice();
-      console.log(this.aggregatedDatas);
     }, error => {
+      this.dataLoading = false;
+      this.dataToShow = false;
       this.alertService.error(error);
     });
     // Load les dates afficher loading
   }
+
 
   intervalleChanged(val) {
     if (this.intervalsFiltered.indexOf(val) < 0) {
@@ -123,6 +128,22 @@ export class TableComponent implements OnInit, OnChanges {
     return Array(num);
   }
 
+  // Méthode utilisée pour calculer le bon entre chaque donnée
+  computeStep(visée, current) {
+    let biggest = this.getHopSize(visée);
+    let small = this.getHopSize(current);
+    if (small > biggest) {
+      return;
+    }
+    // ça devrait jamais arriver mais on vérifie quand même
+    // ça arrivera si l'utilisateur modifie les éléments html
+    // ça arrive aps car si intervalle == 10 on retire le choix 15 du la liste des intervalles
+    if (biggest == 15 && small == 10) {
+      return;
+    }
+    return biggest / small;
+
+  }
   private getHopSize(interval) {
     switch (interval) {
       case "1min":

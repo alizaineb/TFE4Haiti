@@ -67,17 +67,96 @@ exports.getForDay = function(req, res) {
   let dateMax = new Date(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate());
   dateMax.setHours(dateMax.getHours() + 24);
   //console.log(dateMax);
-  dataModel.rainDataModel.find({ id_station: req.params.stationId, date: { "$gte": dateMin, "$lt": dateMax } }, ['_id', 'id_station', 'id_user', 'date', 'value'], { sort: { date: 1 } }, function(err, data) {
+  Station.stationModel.findById(req.params.stationId, (err, station) => {
     if (err) {
-      logger.error(err);
-      return res.status(500).send("Erreur lors de la récupération des données.");
+      return res.status(500).send("Erreur lors de la station liée .");
     }
-    let tabD = [];
-    data.forEach(data => tabD.push(data.toDto()));
-    return res.status(200).send(tabD);
+    dataModel.rainDataModel.find({ id_station: req.params.stationId, date: { "$gte": dateMin, "$lt": dateMax } }, ['_id', 'id_station', 'id_user', 'date', 'value'], { sort: { date: 1 } }, function(err, data) {
+      if (err) {
+        logger.error(err);
+        return res.status(500).send("Erreur lors de la récupération des données.");
+      }
+      let tabD = [];
+      data.forEach(data => tabD.push(data.toDto()));
+      console.log(preprocessData(tabD, req.params.stationId, station.interval));
+      return res.status(200).send(tabD);
+    });
   });
 };
 
+
+// Cette méthode va remplir les trous de données potentiels en créant une structure de données avec la value à -1
+// va entrer les données traitées dans le tableau : this.allDatas
+function preprocessData(dataToProcess, stationId, interval) {
+  // Si pas de tableau ou tableau vide
+  if (!dataToProcess || dataToProcess.length == 0) {
+    return;
+  }
+  let hopSize = getHopSize(interval.interval);
+  // Get first doit etre minuit sinon on la créée et l'ajoute en 1er
+  let firstValueDate = dataToProcess[0].date;
+  if (firstValueDate.getHours() != 0 && firstValueDate.getMinutes() != 0) {
+    let correctedDate = new Date(firstValueDate.getFullYear() + "-" + (firstValueDate.getMonth() + 1) + "-" + firstValueDate.getDate());
+    let tmp = {};
+    tmp._id = "-1";
+    tmp.id_station = stationId;
+    tmp.id_user = "-1";
+    tmp.date = correctedDate;
+    tmp.value = -1;
+    dataToProcess.splice(0, 0, tmp);
+  }
+  intervalInMs = hopSize * 60000;
+  for (let i = 0; i < dataToProcess.length - 1; i++) {
+    // Comparer i à i+1
+    let firstVal = dataToProcess[i];
+    let secVal = dataToProcess[i + 1];
+    // Si modulo pas repsecté on créée une nvelle donnée initialisée à -1
+    if (firstVal.date.getTime() + intervalInMs != secVal.date.getTime()) {
+      let correctedDate = new Date(firstVal.date.getTime() + intervalInMs);
+      let tmp = {};
+      tmp._id = "-1";
+      tmp.id_station = stationId;
+      tmp.id_user = "-1";
+      tmp.date = correctedDate;
+      tmp.value = -1;
+      dataToProcess.splice(i + 1, 0, tmp);
+    }
+  }
+  // Check dernière valeur si last valeur + intervalle pas le lendemain, faut ajouter une valeur
+  let lastDate = dataToProcess[dataToProcess.length - 1].date;
+  let dateShouldBeNextDay = new Date(lastDate.getTime() + intervalInMs);
+  if (dateShouldBeNextDay.getDate() == lastDate.getDate()) {
+    let tmp = {};
+    tmp._id = "-1";
+    tmp.id_station = stationId;
+    tmp.id_user = "-1";
+    tmp.date = dateShouldBeNextDay;
+    tmp.value = -1;
+    dataToProcess.push(tmp);
+  }
+  return dataToProcess;
+};
+
+function minTwoDigits(n) {
+  return (n < 10 ? '0' : '') + n;
+}
+
+function getHopSize(interval) {
+  switch (interval) {
+    case "1min":
+      return 1;
+    case "5min":
+      return 5;
+    case "10min":
+      return 10;
+    case "15min":
+      return 15;
+    case "30min":
+      return 30;
+    default:
+      return 1;
+  }
+}
 
 exports.getRainDataGraphLine = function(req, res) {
   dataModel.rainDataModel.find({ id_station: req.params.stationId }, 'date value', function(err, rainData) {
@@ -174,11 +253,14 @@ exports.importFileData = function(req, res) {
 };
 
 //push();
-
+/* Méthode utilisée pour tester en pushant des données dans base de données
+ * En décommentant la ligne //push();
+ * Une série de données va être envoyée en DB.
+ */
 function push() {
   const datas = [];
   const id_user = "5bbdb325d7aec61a195afc96";
-  const id_station = "5bcf2b454d8f03350c5cf73e";
+  const id_station = "5bbf1bf686649912d4642b53";
   let ptr = 0;
   for (let i = 2; i <= 25; i++) {
     for (let j = 0; j < 60; j++) {
