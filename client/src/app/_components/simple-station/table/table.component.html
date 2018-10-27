@@ -53,8 +53,8 @@
       <tr *ngFor="let rowName of rows; let i = index">
         <th scope="row" class="solidBorderRight">{{rowName}}</th>
         <th *ngFor="let tmp of getRange(24); let idx = index">
-          <div *ngIf="aggregatedDatas[(idx*60)+i].value == -1; else has_data"> - </div>
-          <ng-template #has_data> {{aggregatedDatas[(idx*60)+i].value}}</ng-template>
+          <div *ngIf="aggregatedDatas[(idx*60)+i].value || aggregatedDatas[(idx*60)+i].value == 0 ; else has_data"> {{aggregatedDatas[(idx*60)+i].value}} </div>
+          <ng-template #has_data> - </ng-template>
         </th>
       </tr>
     </tbody>

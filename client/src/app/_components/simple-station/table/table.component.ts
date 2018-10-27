@@ -89,6 +89,7 @@ export class TableComponent implements OnInit, OnChanges {
 
 
   dateChanged(selectedDates, dateStr, instance) {
+    let self = this;
     this.noDateSelected = false;
     // Va falloir récup pour la date choisie ==> Lancer le loader
     this.dataLoading = true;
@@ -96,18 +97,21 @@ export class TableComponent implements OnInit, OnChanges {
     this.dataToShow = false;
     // Lorsque la promesse est terminée ==> Stop le loader
     this.stationService.getData(this.stationId, dateStr).subscribe(rainDatas => {
-      this.dataLoading = false;
+      self.dataLoading = false;
       if (rainDatas.length == 0) {
-        this.noData = true;
+        self.noData = true;
       } else {
-        this.dataToShow = true;
-        this.allDatas = rainDatas;
-        this.aggregatedDatas = rainDatas.slice():
+        self.dataToShow = true;
+        self.allDatas = rainDatas;
+        self.aggregatedDatas = rainDatas.slice();
+        if (!self.noIntervalSelected) {
+          self.computeDataToShow();
+        }
       }
     }, error => {
-      this.dataLoading = false;
-      this.dataToShow = false;
-      this.alertService.error(error);
+      self.dataLoading = false;
+      self.dataToShow = false;
+      self.alertService.error(error);
     });
     // Load les dates afficher loading
   }
@@ -123,7 +127,18 @@ export class TableComponent implements OnInit, OnChanges {
     for (let i = 0; i < 60 / jump; i++) {
       this.rows[i] = this.minTwoDigits(i * jump);
     }
-    // Mtn faut bosser sur les données
+    // Si y'a des données, compute les
+    if (this.dataToShow) {
+      this.computeDataToShow();
+    }
+  }
+
+  private computeDataToShow() {
+    console.log("Y'a qqchse à faire :3");
+    // Va falloir use computeStep()
+    // double for
+    // Si ==-1 ignorer dans le calcul
+
   }
 
   getRange(num) {

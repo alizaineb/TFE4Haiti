@@ -98,11 +98,8 @@ function preprocessData(dataToProcess, stationId, interval) {
   if (firstValueDate.getHours() != 0 && firstValueDate.getMinutes() != 0) {
     let correctedDate = new Date(firstValueDate.getFullYear() + "-" + (firstValueDate.getMonth() + 1) + "-" + firstValueDate.getDate());
     let tmp = {};
-    tmp._id = "-1";
     tmp.id_station = stationId;
-    tmp.id_user = "-1";
     tmp.date = correctedDate;
-    tmp.value = -1;
     dataToProcess.splice(0, 0, tmp);
   }
   intervalInMs = hopSize * 60000;
@@ -114,11 +111,8 @@ function preprocessData(dataToProcess, stationId, interval) {
     if (firstVal.date.getTime() + intervalInMs != secVal.date.getTime()) {
       let correctedDate = new Date(firstVal.date.getTime() + intervalInMs);
       let tmp = {};
-      tmp._id = "-1";
       tmp.id_station = stationId;
-      tmp.id_user = "-1";
       tmp.date = correctedDate;
-      tmp.value = -1;
       dataToProcess.splice(i + 1, 0, tmp);
     }
   }
@@ -127,11 +121,8 @@ function preprocessData(dataToProcess, stationId, interval) {
   let dateShouldBeNextDay = new Date(lastDate.getTime() + intervalInMs);
   if (dateShouldBeNextDay.getDate() == lastDate.getDate()) {
     let tmp = {};
-    tmp._id = "-1";
     tmp.id_station = stationId;
-    tmp.id_user = "-1";
     tmp.date = dateShouldBeNextDay;
-    tmp.value = -1;
     dataToProcess.push(tmp);
   }
   return dataToProcess;
