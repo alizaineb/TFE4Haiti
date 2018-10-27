@@ -27,6 +27,8 @@ export class TableComponent implements OnInit, OnChanges {
   private allDatas: RainData[];
   private aggregatedDatas: RainData[];
 
+  private intervalSelected: string;
+
   private noDateSelected: boolean;
   private noIntervalSelected: boolean;
   private dataLoading: boolean;
@@ -103,7 +105,6 @@ export class TableComponent implements OnInit, OnChanges {
       } else {
         self.dataToShow = true;
         self.allDatas = rainDatas;
-        self.aggregatedDatas = rainDatas.slice();
         if (!self.noIntervalSelected) {
           self.computeDataToShow();
         }
@@ -121,6 +122,7 @@ export class TableComponent implements OnInit, OnChanges {
     if (this.intervalsFiltered.indexOf(val) < 0) {
       return;
     }
+    this.intervalSelected = val;
     this.noIntervalSelected = false;
     let jump = this.getHopSize(val);
     this.rows = [];
@@ -135,10 +137,22 @@ export class TableComponent implements OnInit, OnChanges {
 
   private computeDataToShow() {
     console.log("Y'a qqchse à faire :3");
+    this.aggregatedDatas = this.allDatas.slice();
     // Va falloir use computeStep()
-    // double for
-    // Si ==-1 ignorer dans le calcul
-
+    let hopSize = this.computeStep(this.intervalSelected, this.currentStation.interval);
+    for (let i = 0; i < this.allDatas.length; i = i + hopSize) {
+      console.log(i);
+      let sum = 0;
+      for (let j = i; j < i + hopSize; j++) {
+        console.log(j);
+        if (this.allDatas[j].value) {
+          sum += this.allDatas[j].value;
+        }
+      }
+      // Update val
+      console.log("SUM : " + sum);
+      this.aggregatedDatas[i].value = sum;
+    }
   }
 
   getRange(num) {
