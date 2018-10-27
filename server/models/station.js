@@ -4,8 +4,8 @@ const states = require('../config/constants').stationState;
 
 
 // TODO En attente de confirmation
-exports.communes = ['Port-au-Prince', 'Carrefour','Delmas','Cap-Haïtien','Pétionville'];
-exports.rivers = ['Grande Rivière du Nord', 'Haut-du-Cap','Limbé','Marion'];
+exports.communes = ['commune1','commune2','Port-au-Prince', 'Carrefour','Delmas','Cap-Haïtien','Pétionville'];
+exports.rivers = ['river1','river2','Grande Rivière du Nord', 'Haut-du-Cap','Limbé','Marion'];
 exports.intervals = ['1min', '5min', '10min', '15min', '30min', '1h', '2h', '6h', '12h', '24h'];
 
 
