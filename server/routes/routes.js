@@ -212,7 +212,6 @@ exports.routes = [
     path: "/api/rainDataGraphLine/:stationId",
     httpMethod: "GET",
     middleWare: [controllers.data.getRainDataGraphLine],
-    access: [roles.ADMIN, roles.WORKER]
   },
 
 
