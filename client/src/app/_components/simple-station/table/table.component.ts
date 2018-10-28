@@ -138,9 +138,9 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   private computeDataToShow() {
+    //Slice fontionne pas cor slice copie pas des objets!
     this.aggregatedDatas = JSON.parse(JSON.stringify(this.allDatas));
     if (this.intervalSelected == this.currentStation.interval) {
-      console.log(this.aggregatedDatas);
       return;
     }
     // Va falloir use computeStep()
@@ -156,8 +156,6 @@ export class TableComponent implements OnInit, OnChanges {
       // Update val
       this.aggregatedDatas[idx++].value = sum;
     }
-    console.log(this.aggregatedDatas);
-    console.log(this.allDatas);
   }
 
   getRange(num) {
