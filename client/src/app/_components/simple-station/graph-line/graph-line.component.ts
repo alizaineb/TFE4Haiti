@@ -26,8 +26,6 @@ export class GraphLineComponent implements OnInit {
 
   ngOnInit() {
     this.dataService.getAllRainDataGraphLine(this.stationId).subscribe(data => {
-      console.log(data);
-
       Highcharts.setOptions({
         lang: {
           loading: 'Chargement...',
@@ -49,16 +47,33 @@ export class GraphLineComponent implements OnInit {
       });
 
       // Create the chart
-      this.highChart = Highcharts.stockChart('container', {
+      this.highChart = Highcharts.stockChart('containerLine', {
+        scrollbar: {
+          barBackgroundColor: 'gray',
+          barBorderRadius: 7,
+          barBorderWidth: 0,
+          buttonBackgroundColor: 'gray',
+          buttonBorderWidth: 0,
+          buttonBorderRadius: 7,
+          trackBackgroundColor: 'none',
+          trackBorderWidth: 1,
+          trackBorderRadius: 8,
+          trackBorderColor: '#CCC'
+        },
 
         rangeSelector: {
           inputEnabled: false,
-          selected: 1,
+          selected: 6,
           buttons: [
             {
               type: 'minute',
               count: 5,
               text: '5min'
+            },
+            {
+              type: 'minute',
+              count: 30,
+              text: '30min'
             },
             {
               type: 'minute',
@@ -87,13 +102,82 @@ export class GraphLineComponent implements OnInit {
         },
 
         title: {
-          text: 'AAPL Stock Price'
-        },
-        xAxis: {
-          type: 'datetime'
+          text: 'Données pluviométriques:'
         },
         series: [{
-          name: 'Données pluviométriques',
+          name: 'Value:',
+          data: data,
+          tooltip: {
+            valueDecimals: 2
+          }
+        }]
+      });
+
+
+      // Create the chart
+      this.highChart = Highcharts.stockChart('containerBar', {
+        scrollbar: {
+          barBackgroundColor: 'gray',
+          barBorderRadius: 7,
+          barBorderWidth: 0,
+          buttonBackgroundColor: 'gray',
+          buttonBorderWidth: 0,
+          buttonBorderRadius: 7,
+          trackBackgroundColor: 'none',
+          trackBorderWidth: 1,
+          trackBorderRadius: 8,
+          trackBorderColor: '#CCC'
+        },
+
+        chart: {
+          alignTicks: false
+        },
+        rangeSelector: {
+          inputEnabled: false,
+          selected: 6,
+          buttons: [
+            {
+              type: 'minute',
+              count: 5,
+              text: '5min'
+            },
+            {
+              type: 'minute',
+              count: 30,
+              text: '30min'
+            },
+            {
+              type: 'minute',
+              count: 60,
+              text: '1h'
+            }, {
+              type: 'day',
+              count: 1,
+              text: '1d'
+            }, {
+              type: 'week',
+              count: 1,
+              text: '1w'
+            }, {
+              type: 'month',
+              count: 1,
+              text: '1m'
+            }, {
+              type: 'year',
+              count: 1,
+              text: '1y'
+            }, {
+              type: 'all',
+              text: 'All'
+            }]
+        },
+
+        title: {
+          text: 'Données pluviométriques:'
+        },
+        series: [{
+          type: 'column',
+          name: 'Value:',
           data: data,
           tooltip: {
             valueDecimals: 2
