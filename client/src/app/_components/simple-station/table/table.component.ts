@@ -28,6 +28,7 @@ export class TableComponent implements OnInit, OnChanges {
   private aggregatedDatas: RainData[];
 
   private intervalSelected: string;
+  private ratio: number;
 
   private noDateSelected: boolean;
   private noIntervalSelected: boolean;
@@ -125,8 +126,9 @@ export class TableComponent implements OnInit, OnChanges {
     this.intervalSelected = val;
     this.noIntervalSelected = false;
     let jump = this.getHopSize(val);
+    this.ratio = 60 / jump;
     this.rows = [];
-    for (let i = 0; i < 60 / jump; i++) {
+    for (let i = 0; i < this.ratio; i++) {
       this.rows[i] = this.minTwoDigits(i * jump);
     }
     // Si y'a des données, compute les
@@ -136,9 +138,9 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   private computeDataToShow() {
-    console.log("Y'a qqchse à faire :3");
-    this.aggregatedDatas = this.allDatas.slice();
+    this.aggregatedDatas = JSON.parse(JSON.stringify(this.allDatas));
     if (this.intervalSelected == this.currentStation.interval) {
+      console.log(this.aggregatedDatas);
       return;
     }
     // Va falloir use computeStep()
@@ -152,9 +154,10 @@ export class TableComponent implements OnInit, OnChanges {
         }
       }
       // Update val
-      // Pas correct atm
       this.aggregatedDatas[idx++].value = sum;
     }
+    console.log(this.aggregatedDatas);
+    console.log(this.allDatas);
   }
 
   getRange(num) {
@@ -189,6 +192,8 @@ export class TableComponent implements OnInit, OnChanges {
         return 15;
       case "30min":
         return 30;
+      case "1h":
+        return 60;
       default:
         return 1;
     }
