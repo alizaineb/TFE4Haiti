@@ -44,7 +44,8 @@ export class GraphLineComponent implements OnInit {
             'Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil',
             'Août', 'Sept', 'Oct', 'Nov', 'Dec'
           ],
-        }
+        },
+        turboThreshold:0
       });
 
       // Create the chart
@@ -92,7 +93,7 @@ export class GraphLineComponent implements OnInit {
           type: 'datetime'
         },
         series: [{
-          name: 'AAPL',
+          name: 'Données pluviométriques',
           data: data,
           tooltip: {
             valueDecimals: 2
@@ -100,28 +101,6 @@ export class GraphLineComponent implements OnInit {
         }]
       });
     });
-
-    /*
-        this.data = [
-          [
-            1540552440000,
-            0.2
-          ],
-          [
-            1540552500000,
-            0
-          ],
-          [
-            1540552560000,
-            0.1
-          ],
-          [
-            1540552620000,
-            0.2
-          ],
-        ];
-
-        */
   }
 
 }

@@ -150,14 +150,20 @@ function getHopSize(interval) {
 }
 
 exports.getRainDataGraphLine = function(req, res) {
-  dataModel.rainDataModel.find({ id_station: req.params.stationId }, 'date value', function(err, rainData) {
+  Station.stationModel.findById(req.params.stationId, (err, station) => {
     if (err) {
-      logger.error(err);
-      return res.status(500).send("Erreur lors de la récupération des données.");
+      return res.status(500).send("Erreur lors de la station liée .");
     }
-    let tabD = [];
-    rainData.forEach(rainData => tabD.push(rainData.toDtoGraphLine()));
-    return res.status(200).send(tabD);
+    dataModel.rainDataModel.find({ id_station: req.params.stationId }, 'date value', function(err, data) {
+      if (err) {
+        logger.error(err);
+        return res.status(500).send("Erreur lors de la récupération des données.");
+      }
+      preprocessData(data, req.params.stationId, station.interval);
+      let tabD = [];
+      data.forEach(data => tabD.push(dataModel.rainDataModel.toDtoGraphLine(data)));
+      return res.status(200).send(tabD);
+    });
   });
 };
 

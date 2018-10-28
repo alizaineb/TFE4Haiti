@@ -9,8 +9,6 @@ const RainData = new Schema({
   value: { type: Number, required: true, min: 0 }
 });
 
-
-
 RainData.methods.toDto = function() {
   return {
     _id: this._id,
@@ -21,10 +19,10 @@ RainData.methods.toDto = function() {
   };
 };
 
-RainData.methods.toDtoGraphLine = function() {
+RainData.statics.toDtoGraphLine = function toDtoGraphLine (data) {
   return [
-    new Date(this.date).valueOf(),
-    this.value
+    new Date(data.date).valueOf(),
+    data.value
   ]
 };
 
@@ -33,4 +31,5 @@ const rainDataModel = mongoose.model("rainData", RainData);
 
 // Export du modèle
 exports.rainDataModel = rainDataModel;
+
 
