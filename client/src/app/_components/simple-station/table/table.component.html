@@ -70,12 +70,24 @@
     <tbody>
       <tr>
         <th scope="row" class="solidBorderRight">Moyenne</th>
+        <th *ngFor="let tmp of sums">
+          <div *ngIf="tmp; else has_data">{{tmp | number:'1.1-2'}}</div>
+          <ng-template #has_data> - </ng-template>
+        </th>
       </tr>
       <tr>
-        <th scope="row" class="solidBorderRight">Min (date)</th>
+        <th scope="row" class="solidBorderRight">Min (minute)</th>
+        <th *ngFor="let tmp of mins">
+          <div *ngIf="tmp; else has_data">{{tmp.value}} <br /> {{tmp.date | date: 'mm'}}</div>
+          <ng-template #has_data> - </ng-template>
+        </th>
       </tr>
       <tr>
-        <th scope="row" class="solidBorderRight">Max (date)</th>
+        <th scope="row" class="solidBorderRight">Max (minute)</th>
+        <th *ngFor="let tmp of maxs">
+          <div *ngIf="tmp; else has_data">{{tmp.value}} <br /> {{tmp.date | date: 'mm'}}</div>
+          <ng-template #has_data> - </ng-template>
+        </th>
       </tr>
     </tbody>
   </table>
