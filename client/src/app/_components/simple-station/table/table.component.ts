@@ -148,13 +148,20 @@ export class TableComponent implements OnInit, OnChanges {
     let idx = 0;
     for (let i = 0; i < this.allDatas.length; i = i + hopSize) {
       let sum = 0;
+      let empty = 0;
       for (let j = i; j < i + hopSize; j++) {
         if (this.allDatas[j].value) {
           sum += this.allDatas[j].value;
+        } else {
+          empty++;
         }
       }
       // Update val
-      this.aggregatedDatas[idx++].value = sum;
+      if (empty == hopSize) {
+        this.aggregatedDatas[idx++].value = undefined;
+      } else {
+        this.aggregatedDatas[idx++].value = sum;
+      }
     }
   }
 
