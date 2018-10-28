@@ -59,4 +59,18 @@
       </tr>
     </tbody>
   </table>
+  <h2>Récapitulatif</h2>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col" class="topLeftCell"></th>
+        <th scope="col" class="solidBorderBot" *ngFor="let colName of cols">{{colName}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let rowName of rowsSum; let i = index">
+        <th scope="row" class="solidBorderRight">{{rowName}}</th>
+      </tr>
+    </tbody>
+  </table>
 </div>

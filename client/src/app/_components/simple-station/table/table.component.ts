@@ -21,6 +21,7 @@ export class TableComponent implements OnInit, OnChanges {
 
   private cols: string[];
   private rows: string[];
+  private rowsSum: string[];
 
   private allIntervals: string[];
   private intervalsFiltered: string[];
@@ -41,6 +42,7 @@ export class TableComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.cols = [];
     this.rows = [];
+    this.rowsSum = ["Moyenne", "Min (date)", "Max (date)"];
     this.noDateSelected = true;
     this.noIntervalSelected = true;
     this.dataLoading = false;

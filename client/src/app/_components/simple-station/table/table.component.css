@@ -19,6 +19,9 @@
 
 .solidBorderRight {
   border-right: 1px solid !important;
+  width: 80px;
+  min-width: 80px;
+  max-width: 80px;
 }
 
 table {
