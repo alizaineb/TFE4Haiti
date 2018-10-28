@@ -71,15 +71,16 @@ exports.getForDay = function(req, res) {
     if (err) {
       return res.status(500).send("Erreur lors de la station liée .");
     }
+    // TODO Tu peux sélectionner seulement les champs que t'as besoin. J'ai mis en com ce que j'ai changé avant le return.
     dataModel.rainDataModel.find({ id_station: req.params.stationId, date: { "$gte": dateMin, "$lt": dateMax } }, ['_id', 'id_station', 'id_user', 'date', 'value'], { sort: { date: 1 } }, function(err, data) {
       if (err) {
         logger.error(err);
         return res.status(500).send("Erreur lors de la récupération des données.");
       }
-      let tabD = [];
-      data.forEach(data => tabD.push(data.toDto()));
-      console.log(preprocessData(tabD, req.params.stationId, station.interval));
-      return res.status(200).send(tabD);
+      //let tabD = [];
+      //data.forEach(data => tabD.push(data.toDto()));
+      preprocessData(data, req.params.stationId, station.interval);
+      return res.status(200).send(data);
     });
   });
 };
@@ -89,13 +90,13 @@ exports.getForDay = function(req, res) {
 // va entrer les données traitées dans le tableau : this.allDatas
 function preprocessData(dataToProcess, stationId, interval) {
   // Si pas de tableau ou tableau vide
-  if (!dataToProcess || dataToProcess.length == 0) {
+  if (!dataToProcess || dataToProcess.length === 0) {
     return;
   }
   let hopSize = getHopSize(interval.interval);
   // Get first doit etre minuit sinon on la créée et l'ajoute en 1er
   let firstValueDate = dataToProcess[0].date;
-  if (firstValueDate.getHours() != 0 && firstValueDate.getMinutes() != 0) {
+  if (firstValueDate.getHours() !== 0 && firstValueDate.getMinutes() !== 0) {
     let correctedDate = new Date(firstValueDate.getFullYear() + "-" + (firstValueDate.getMonth() + 1) + "-" + firstValueDate.getDate());
     let tmp = {};
     tmp.id_station = stationId;
@@ -108,7 +109,7 @@ function preprocessData(dataToProcess, stationId, interval) {
     let firstVal = dataToProcess[i];
     let secVal = dataToProcess[i + 1];
     // Si modulo pas repsecté on créée une nvelle donnée initialisée à -1
-    if (firstVal.date.getTime() + intervalInMs != secVal.date.getTime()) {
+    if (firstVal.date.getTime() + intervalInMs !== secVal.date.getTime()) {
       let correctedDate = new Date(firstVal.date.getTime() + intervalInMs);
       let tmp = {};
       tmp.id_station = stationId;
@@ -119,7 +120,7 @@ function preprocessData(dataToProcess, stationId, interval) {
   // Check dernière valeur si last valeur + intervalle pas le lendemain, faut ajouter une valeur
   let lastDate = dataToProcess[dataToProcess.length - 1].date;
   let dateShouldBeNextDay = new Date(lastDate.getTime() + intervalInMs);
-  if (dateShouldBeNextDay.getDate() == lastDate.getDate()) {
+  if (dateShouldBeNextDay.getDate() === lastDate.getDate()) {
     let tmp = {};
     tmp.id_station = stationId;
     tmp.date = dateShouldBeNextDay;
@@ -215,7 +216,6 @@ exports.importManualData = function(req, res) {
             data.date = d.date;
             data.value = d.value;
             tmp.push(data);
-
           }
           insertData(req, res, datas, station, user);
         }
@@ -324,5 +324,5 @@ function isCorrect(interval, date) {
     default:
       console.log("NOT SUPPORTED TODO A TRAITER");
   }
-  return date.getTime() % val == 0;
+  return date.getTime() % val === 0;
 }
