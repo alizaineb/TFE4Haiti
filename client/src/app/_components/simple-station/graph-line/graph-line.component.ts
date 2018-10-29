@@ -26,6 +26,9 @@ export class GraphLineComponent implements OnInit {
 
   ngOnInit() {
     this.dataService.getAllRainDataGraphLine(this.stationId).subscribe(data => {
+
+      console.log(data);
+
       Highcharts.setOptions({
         lang: {
           loading: 'Chargement...',

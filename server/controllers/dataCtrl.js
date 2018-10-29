@@ -93,7 +93,7 @@ function preprocessData(dataToProcess, stationId, interval) {
   if (!dataToProcess || dataToProcess.length === 0) {
     return;
   }
-  let hopSize = getHopSize(interval.interval);
+  let hopSize = getHopSize(interval);
   // Get first doit etre minuit sinon on la créée et l'ajoute en 1er
   let firstValueDate = dataToProcess[0].date;
   if (firstValueDate.getHours() !== 0 && firstValueDate.getMinutes() !== 0) {
@@ -103,7 +103,7 @@ function preprocessData(dataToProcess, stationId, interval) {
     tmp.date = correctedDate;
     dataToProcess.splice(0, 0, tmp);
   }
-  intervalInMs = hopSize * 60000;
+  let intervalInMs = hopSize * 60000;
   for (let i = 0; i < dataToProcess.length - 1; i++) {
     // Comparer i à i+1
     let firstVal = dataToProcess[i];
