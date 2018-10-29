@@ -104,7 +104,6 @@ export class TableComponent implements OnInit, OnChanges {
     this.dataToShow = false;
     // Lorsque la promesse est terminée ==> Stop le loader
     this.stationService.getData(this.stationId, dateStr).subscribe(rainDatas => {
-      console.log(rainDatas);
       self.dataLoading = false;
       if (rainDatas.length == 0) {
         self.noData = true;
@@ -165,7 +164,7 @@ export class TableComponent implements OnInit, OnChanges {
         let sum = 0;
         let empty = 0;
         for (let j = i; j < i + hopSize; j++) {
-          if (this.allDatas[j].value) {
+          if (this.allDatas[j] && this.allDatas[j].value) {
             sum += this.allDatas[j].value;
           } else {
             empty++;
@@ -185,7 +184,7 @@ export class TableComponent implements OnInit, OnChanges {
       this.aggregatedDatas.push(tabToBePushed);
       // ICI push moy, min et max
       this.sums.push(moy / this.ratio);
-      this.mins.push(tabToBePushed.reduce((acc, num) => {
+      let minTmp = tabToBePushed.reduce((acc, num) => {
         if (!acc.value && num.value) {
           acc = num;
         }
@@ -193,8 +192,11 @@ export class TableComponent implements OnInit, OnChanges {
           acc = num;
         }
         return acc;
-      }, { value: Number.MAX_SAFE_INTEGER }));
-      this.maxs.push(tabToBePushed.reduce((acc, num) => {
+      }, { value: Number.MAX_SAFE_INTEGER });
+
+      this.mins.push(minTmp);
+
+      let maxTmp = tabToBePushed.reduce((acc, num) => {
         if (!acc.value && num.value) {
           acc = num;
         }
@@ -202,7 +204,8 @@ export class TableComponent implements OnInit, OnChanges {
           acc = num;
         }
         return acc;
-      }, { value: -1 }));
+      }, { value: -1 });
+      this.maxs.push(maxTmp);
     }
   }
 

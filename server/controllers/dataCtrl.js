@@ -40,7 +40,7 @@ insertData = function(req, res, datas, station, user) {
       if (err) {
         // console.log('erreur : ', err);
 
-        res.status(500).send(err);//'Les données n\'ont pas sur être insérer...');
+        res.status(500).send(err); //'Les données n\'ont pas sur être insérer...');
       } else {
         res.status(200).send();
       }
@@ -126,7 +126,7 @@ function preprocessData(dataToProcess, stationId, interval) {
   // Check dernière valeur si last valeur + intervalle pas le lendemain, faut ajouter une valeur
   let lastDate = dataToProcess[dataToProcess.length - 1].date;
   let dateShouldBeNextDay = new Date(lastDate.getTime() + intervalInMs);
-  if (dateShouldBeNextDay.getDate() === lastDate.getDate()) {
+  if (dateShouldBeNextDay.getHours() === lastDate.getHours()) {
     let tmp = {};
     tmp.id_station = stationId;
     tmp.date = dateShouldBeNextDay;
