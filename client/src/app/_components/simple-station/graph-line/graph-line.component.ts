@@ -26,6 +26,9 @@ export class GraphLineComponent implements OnInit {
 
   ngOnInit() {
     this.dataService.getAllRainDataGraphLine(this.stationId).subscribe(data => {
+
+      console.log(data);
+
       Highcharts.setOptions({
         lang: {
           loading: 'Chargement...',
@@ -62,7 +65,7 @@ export class GraphLineComponent implements OnInit {
         },
 
         rangeSelector: {
-          inputEnabled: false,
+          inputEnabled: true,
           selected: 6,
           buttons: [
             {
@@ -105,7 +108,7 @@ export class GraphLineComponent implements OnInit {
           text: 'Données pluviométriques:'
         },
         series: [{
-          name: 'Value:',
+          name: 'Value',
           data: data,
           tooltip: {
             valueDecimals: 2
@@ -133,7 +136,7 @@ export class GraphLineComponent implements OnInit {
           alignTicks: false
         },
         rangeSelector: {
-          inputEnabled: false,
+          inputEnabled: true,
           selected: 6,
           buttons: [
             {

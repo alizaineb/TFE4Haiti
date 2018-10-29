@@ -119,7 +119,7 @@ export class StationImportDataComponent implements OnInit {
   }
 
   moreData() {
-    this.addData()
+    this.addData();
   }
 
   removeData(d) {
@@ -134,8 +134,13 @@ export class StationImportDataComponent implements OnInit {
     const self = this;
     const f = <File> $event.target.files[0];
     if (f.type.toLowerCase() === "text/csv") {
-      self.selectedFile = f;
-      self.alertService.success("coucou");
+      if ((f.size / 1024) > 2048) { //passer la size en ko et la comparer a 2mo en ko
+        self.alertService.error("La taille max est de 2Mo");
+      }
+      else {
+        self.selectedFile = f;
+        self.alertService.success("Fichier accepté");
+      }
     } else {
       self.alertService.error("Seul les fichier CSV sont acceptés.")
     }
