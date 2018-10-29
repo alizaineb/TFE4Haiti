@@ -63,10 +63,87 @@ exports.get = function(req, res) {
 };
 
 
+exports.getRainDataGraphLine = function(req, res) {
+  Station.stationModel.findById(req.params.stationId, (err, station) => {
+    if (err) {
+      return res.status(500).send("Erreur lors de la station liée .");
+    }
+    dataModel.rainDataModel.find({ id_station: req.params.stationId }, 'date value', function(err, data) {
+      if (err) {
+        logger.error(err);
+        return res.status(500).send("Erreur lors de la récupération des données.");
+      }
+      preprocessData(data, req.params.stationId, station.interval);
+      let tabD = [];
+      data.forEach(data => tabD.push(dataModel.rainDataModel.toDtoGraphLine(data)));
+      return res.status(200).send(tabD);
+    });
+  });
+};
+
+
+exports.getMonthly = function(req, res) {
+  Station.stationModel.findById(req.params.stationId, (err, station) => {
+    if (err) {
+      return res.status(500).send("Erreur lors de la station liée .");
+    }
+    //let year = req.params.year;
+    let date = new Date(req.params.date);
+    //console.log(date);
+    let dateMin = new Date(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate());
+    let dateMax = new Date(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate());
+    dateMax.setFullYear(dateMax.getFullYear() + 1);
+
+    dataModel.rainDataModel.find({
+      id_station: req.params.stationId,
+      date: { "$gte": dateMin, "$lt": dateMax }
+    }, 'date value', { sort: { date: 1 } }, function(err, data) {
+      if (err) {
+        logger.error(err);
+        return res.status(500).send("Erreur lors de la récupération des données.");
+      }
+
+      let mapValue = new Map();
+      let i;
+      for(i = 1; i <= 12; i++){
+        mapValue.set(i, 0)
+      }
+
+      for (let i = 0; i < data.length - 1; i++) {
+        let month = data[i].date.getMonth();
+        let value = data[i].value;
+        mapValue.set(month+1,mapValue.get(month+1)+value);
+      }
+      let tabD = [];
+      for(i = 1; i <= 12; i++){
+
+        let dateStr = date.getFullYear()+'-'+i+'-01';
+        let d = new Date (2018,i,0, 0,0,0,0);
+        console.log(d);
+        console.log(d.getHours());
+
+        let val = mapValue.get(i);
+        if (val === 0)
+          val = null;
+
+        d.setHours(d.getHours()+1);
+        tabD.push(
+          [
+            d.valueOf(),
+            val
+          ]
+        )
+      }
+      return res.status(200).send(tabD);
+    });
+  });
+};
+
+
 exports.getForDay = function(req, res) {
   let date = new Date(req.params.date);
+  console.log(date);
   let dateMin = new Date(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate());
-  //console.log(dateMin);
   let dateMax = new Date(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate());
   dateMax.setHours(dateMax.getHours() + 24);
   //console.log(dateMax);
@@ -156,24 +233,6 @@ function getHopSize(interval) {
   }
 }
 
-exports.getRainDataGraphLine = function(req, res) {
-  Station.stationModel.findById(req.params.stationId, (err, station) => {
-    if (err) {
-      return res.status(500).send("Erreur lors de la station liée .");
-    }
-    dataModel.rainDataModel.find({ id_station: req.params.stationId }, 'date value', function(err, data) {
-      if (err) {
-        logger.error(err);
-        return res.status(500).send("Erreur lors de la récupération des données.");
-      }
-      preprocessData(data, req.params.stationId, station.interval);
-      let tabD = [];
-      data.forEach(data => tabD.push(dataModel.rainDataModel.toDtoGraphLine(data)));
-      return res.status(200).send(tabD);
-    });
-  });
-};
-
 
 exports.importManualData = function(req, res) {
   const datas = req.body;
@@ -225,7 +284,6 @@ exports.importManualData = function(req, res) {
           }
           insertData(req, res, datas, station, user);
         }
-
       });
     }
   });
@@ -319,9 +377,9 @@ exports.importFileData = function(req, res) {
 function push() {
   const datas = [];
   const id_user = "5bbdb325d7aec61a195afc96";
-  const id_station = "5bd089d9fe0e4f1f60d06ffb";
+  const id_station = "5bbdb55fd7aec61a195afc9c";
   let ptr = 0;
-  let intervalle = 30;
+  let intervalle = 15;
   for (let jour = 2; jour < 29; jour++) {
     for (let i = 2; i <= 25; i++) {
       for (let j = 0; j < 60; j += intervalle) {
@@ -329,10 +387,10 @@ function push() {
         item.id_station = id_station;
         item.id_user = id_user;
 
-        let date2 = new Date(2018, 9, jour, i, j);
+        let date2 = new Date(2018, 6, jour, i, j);
         item.date = date2;
         console.log(date2);
-        item.value = getRandomInt(80);
+        item.value = getRandomInt(10);
         datas[ptr] = item;
         ptr++
       }
