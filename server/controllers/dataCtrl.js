@@ -105,20 +105,20 @@ exports.getMonthly = function(req, res) {
 
       let mapValue = new Map();
       let i;
-      for(i = 1; i <= 12; i++){
+      for (i = 1; i <= 12; i++) {
         mapValue.set(i, 0)
       }
 
       for (let i = 0; i < data.length - 1; i++) {
         let month = data[i].date.getMonth();
         let value = data[i].value;
-        mapValue.set(month+1,mapValue.get(month+1)+value);
+        mapValue.set(month + 1, mapValue.get(month + 1) + value);
       }
       let tabD = [];
-      for(i = 1; i <= 12; i++){
+      for (i = 1; i <= 12; i++) {
 
-        let dateStr = date.getFullYear()+'-'+i+'-01';
-        let d = new Date (2018,i,0, 0,0,0,0);
+        let dateStr = date.getFullYear() + '-' + i + '-01';
+        let d = new Date(2018, i, 0, 0, 0, 0, 0);
         console.log(d);
         console.log(d.getHours());
 
@@ -126,7 +126,7 @@ exports.getMonthly = function(req, res) {
         if (val === 0)
           val = null;
 
-        d.setHours(d.getHours()+1);
+        d.setHours(d.getHours() + 1);
         tabD.push(
           [
             d.valueOf(),
@@ -328,10 +328,10 @@ exports.importFileData = function(req, res) {
                     let datas = [];
                     let lines = data.split('\n');
                     // console.log(lines);
+                    let prevDate = null;
+                    let first = true;
                     for (var i = 0; i < lines.length; i++) {
                       var l = lines[i];
-
-
                       const d = l.split(';');
                       // console.log(d);
                       if (d.length > 1) {
@@ -339,8 +339,21 @@ exports.importFileData = function(req, res) {
                         data.id_station = station._id;
                         data.id_user = user._id;
                         data.date = new Date(d[0]);
-                        data.value = d[1];
-                        datas.push(data);
+                        if(first){
+                          data.value = d[1];
+                          datas.push(data);
+                        }else{
+                          if (checkDateInterval(prevDate, data.date, station.interval)) {
+                            data.value = d[1];
+                            datas.push(data);
+                          } else {
+                            res.status(500).send("Les dates du fichier ne se suivent pas, ou ne corresponde pas à l'interval de la station..")
+                            return;
+                          }
+                        }
+
+
+                        prevDate = data.date;
                       }
                     }
                     insertData(req, res, datas, station, user)
@@ -360,6 +373,21 @@ exports.importFileData = function(req, res) {
 
 
 };
+
+function checkDateInterval(date1, date2, interval) {
+  if(!date1 || !date2 || !interval){
+    return false;
+  }
+  var date1_ms = date1.getTime();
+  var date2_ms = date2.getTime();
+  var diff_ms = date2_ms - date1_ms;
+  var interval_minute = getHopSize(interval);
+  console.log("Date1 : ", date1, " -> ", date1_ms);
+  console.log("Date2 : ", date2, " -> ", date2_ms);
+  console.log("Diff : ", diff_ms, " Interval : ", interval_minute);
+  return ((diff_ms / 1000) / 60) == interval_minute;
+
+}
 
 //push();
 /* Méthode utilisée pour tester en pushant des données dans base de données
