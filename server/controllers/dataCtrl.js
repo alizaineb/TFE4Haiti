@@ -252,15 +252,7 @@ exports.importManualData = function(req, res) {
     data.value = d.value;
     tmp.push(data);
   }
-  dataModel.rainDataModel.insertMany(tmp, (err, docs) => {
-    // console.log(err);
-    // console.log(docs);
-    if (err) {
-      res.status(500).send('Les données n\'ont pas sur être insérer...');
-    } else {
-      res.status(200).send();
-    }
-  });
+
   Station.stationModel.findById({ _id: stationId }, (err, station) => {
     if (err) {
       logger.error(err);
