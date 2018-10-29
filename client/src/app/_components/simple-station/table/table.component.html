@@ -78,14 +78,14 @@
       <tr>
         <th scope="row" class="solidBorderRight">Min (heure)</th>
         <th *ngFor="let tmp of mins">
-          <div *ngIf="tmp; else has_data">{{tmp.value}} <br /> {{tmp.date | date:'HH:mm' : 'UTC'}}</div>
+          <div *ngIf="tmp; else has_data">{{tmp.value}} <br /> {{tmp.date}}</div>
           <ng-template #has_data> - </ng-template>
         </th>
       </tr>
       <tr>
         <th scope="row" class="solidBorderRight">Max (heure)</th>
         <th *ngFor="let tmp of maxs">
-          <div *ngIf="tmp; else has_data">{{tmp.value}} <br /> {{tmp.date | date:'HH:mm' : 'UTC'}}</div>
+          <div *ngIf="tmp; else has_data">{{tmp.value}} <br /> {{tmp.date}}</div>
           <ng-template #has_data> - </ng-template>
         </th>
       </tr>

@@ -158,7 +158,10 @@ export class TableComponent implements OnInit, OnChanges {
 
       // Used to compute moyenne
       let moy = 0;
-
+      let min = Number.MAX_SAFE_INTEGER;
+      let minIdx = -1;
+      let max = -1;
+      let maxIdx = -1;
       // This loop will compute for one hour
       for (let i = h; i < h + (hopSize * this.ratio); i = i + hopSize) {
         let sum = 0;
@@ -177,6 +180,17 @@ export class TableComponent implements OnInit, OnChanges {
         } else {
           moy += sum;
           cloneObj.value = sum;
+          // Min
+          if (sum < min) {
+            min = sum;
+            minIdx = idx;
+          }
+          // Max
+          if (sum > max) {
+            max = sum;
+            maxIdx = idx;
+          }
+
         }
         tabToBePushed.push(cloneObj);
         idx++;
@@ -184,28 +198,14 @@ export class TableComponent implements OnInit, OnChanges {
       this.aggregatedDatas.push(tabToBePushed);
       // ICI push moy, min et max
       this.sums.push(moy / this.ratio);
-      let minTmp = tabToBePushed.reduce((acc, num) => {
-        if (!acc.value && num.value) {
-          acc = num;
-        }
-        if (acc.value && num.value && num.value < acc.value) {
-          acc = num;
-        }
-        return acc;
-      }, { value: Number.MAX_SAFE_INTEGER });
-
-      this.mins.push(minTmp);
-
-      let maxTmp = tabToBePushed.reduce((acc, num) => {
-        if (!acc.value && num.value) {
-          acc = num;
-        }
-        if (acc.value && num.value && num.value > acc.value) {
-          acc = num;
-        }
-        return acc;
-      }, { value: -1 });
-      this.maxs.push(maxTmp);
+      let minObjModified = {};
+      minObjModified.value = min;
+      minObjModified.date = this.rows[minIdx % this.ratio)];
+      this.mins.push(minObjModified);
+      let maxObjModified = {};
+      maxObjModified.value = max;
+      maxObjModified.date = this.rows[maxIdx % this.ratio)];
+      this.maxs.push(maxObjModified);
     }
   }
 
