@@ -76,6 +76,7 @@ export class StationImportDataComponent implements OnInit {
   }
 
   sendData() {
+    this.loading = true;
     let currentUser = this.localStorageService.getItem('currentUser');
 
     if (this.selectedZone == 'file') {
