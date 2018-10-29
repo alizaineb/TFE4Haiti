@@ -27,3 +27,9 @@
 table {
   width: 100% !important;
 }
+
+th {
+  padding: 10px 4px 10px 4px;
+  max-width: 50px;
+  min-width: 50px;
+}
