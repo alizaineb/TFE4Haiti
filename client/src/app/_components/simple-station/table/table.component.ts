@@ -25,7 +25,7 @@ export class TableComponent implements OnInit, OnChanges {
   private allIntervals: string[];
   private intervalsFiltered: string[];
   private allDatas: RainData[];
-  private aggregatedDatas: RainData[];
+  private aggregatedDatas: RainData[][];
 
   private sums: number[];
   private mins: RainData[];
@@ -45,9 +45,6 @@ export class TableComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.cols = [];
     this.rows = [];
-    this.sums = [];
-    this.mins = [];
-    this.maxs = [];
     this.noDateSelected = true;
     this.noIntervalSelected = true;
     this.dataLoading = false;
@@ -148,70 +145,66 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   private computeDataToShow() {
-    //Slice fontionne pas cor slice copie pas des objets!
-    this.aggregatedDatas = JSON.parse(JSON.stringify(this.allDatas));
-    if (this.intervalSelected == this.currentStation.interval) {
-      this.computeMinMaxMoy();
-      return;
-    }
     // Va falloir use computeStep()
+    this.aggregatedDatas = [];
+    this.mins = [];
+    this.maxs = [];
+    this.sums = [];
+
     let hopSize = this.computeStep(this.intervalSelected, this.currentStation.interval);
     let idx = 0;
-    for (let i = 0; i < this.allDatas.length; i = i + hopSize) {
-      let sum = 0;
-      let empty = 0;
-      for (let j = i; j < i + hopSize; j++) {
-        if (this.allDatas[j].value) {
-          sum += this.allDatas[j].value;
-        } else {
-          empty++;
+    for (let h = 0; h < this.allDatas.length; h = h + (hopSize * this.ratio)) {
+      let tabToBePushed = [];
+
+      // Used to compute moyenne
+      let moy = 0;
+
+      // This loop will compute for one hour
+      for (let i = h; i < h + (hopSize * this.ratio); i = i + hopSize) {
+        let sum = 0;
+        let empty = 0;
+        for (let j = i; j < i + hopSize; j++) {
+          if (this.allDatas[j].value) {
+            sum += this.allDatas[j].value;
+          } else {
+            empty++;
+          }
         }
+        // Update val
+        let cloneObj = Object.assign({}, this.allDatas[i + hopSize - 1]);
+        if (empty == hopSize) {
+          cloneObj.value = undefined;
+        } else {
+          moy += sum;
+          cloneObj.value = sum;
+        }
+        tabToBePushed.push(cloneObj);
+        idx++;
       }
-      // Update val
-      if (empty == hopSize) {
-        this.aggregatedDatas[idx++].value = undefined;
-      } else {
-        this.aggregatedDatas[idx++].value = sum;
-      }
+      this.aggregatedDatas.push(tabToBePushed);
+      // ICI push moy, min et max
+      this.sums.push(moy / this.ratio);
+      this.mins.push(tabToBePushed.reduce((acc, num) => {
+        if (!acc.value && num.value) {
+          acc = num;
+        }
+        if (acc.value && num.value && num.value < acc.value) {
+          acc = num;
+        }
+        return acc;
+      }, { value: Number.MAX_SAFE_INTEGER }));
+      this.maxs.push(tabToBePushed.reduce((acc, num) => {
+        if (!acc.value && num.value) {
+          acc = num;
+        }
+        if (acc.value && num.value && num.value > acc.value) {
+          acc = num;
+        }
+        return acc;
+      }, { value: -1 }));
     }
-    this.computeMinMaxMoy();
   }
 
-  computeMinMaxMoy() {
-    let hopSize = this.computeStep(this.intervalSelected, this.currentStation.interval);
-    // Compute min max and moyenne
-    let idx = 0
-    for (let i = 0; i < this.allDatas.length; i = i + (hopSize * this.ratio)) {
-      let moy = 0;
-      let min = 99999999;
-      let minObj = undefined;
-      let max = -1;
-      let maxObj = undefined;
-      let n = 0;
-      for (let j = i; j < i + (hopSize * this.ratio); j = j + hopSize) {
-        if (this.aggregatedDatas[j].value) {
-          let tmp = this.aggregatedDatas[j];
-          // min
-          if (min > tmp.value) {
-            min = tmp.value;
-            minObj = tmp;
-          }
-          // max
-          if (max < tmp.value) {
-            max = tmp.value;
-            maxObj = tmp;
-          }
-          // Moyenne
-          moy += tmp.value;
-        }
-        n++;
-      }
-      this.sums[idx] = moy / n;
-      this.mins[idx] = minObj;
-      this.maxs[idx] = maxObj;
-      idx++;
-    }
-  }
   getRange(num) {
     return Array(num);
   }

@@ -53,7 +53,7 @@
       <tr *ngFor="let rowName of rows; let i = index">
         <th scope="row" class="solidBorderRight">{{rowName}}</th>
         <th *ngFor="let tmp of getRange(24); let idx = index">
-          <div *ngIf="aggregatedDatas[(idx*ratio)+i].value || aggregatedDatas[(idx*ratio)+i].value == 0 ; else has_data"> {{aggregatedDatas[(idx*ratio)+i].value}} </div>
+          <div *ngIf="aggregatedDatas[idx][i].value || aggregatedDatas[idx][i].value == 0 ; else has_data"> {{aggregatedDatas[idx][i].value}} </div>
           <ng-template #has_data> - </ng-template>
         </th>
       </tr>
@@ -76,16 +76,16 @@
         </th>
       </tr>
       <tr>
-        <th scope="row" class="solidBorderRight">Min (minute)</th>
+        <th scope="row" class="solidBorderRight">Min (heure)</th>
         <th *ngFor="let tmp of mins">
-          <div *ngIf="tmp; else has_data">{{tmp.value}} <br /> {{tmp.date | date: 'mm'}}</div>
+          <div *ngIf="tmp; else has_data">{{tmp.value}} <br /> {{tmp.date | date:'HH:mm' : 'UTC'}}</div>
           <ng-template #has_data> - </ng-template>
         </th>
       </tr>
       <tr>
-        <th scope="row" class="solidBorderRight">Max (minute)</th>
+        <th scope="row" class="solidBorderRight">Max (heure)</th>
         <th *ngFor="let tmp of maxs">
-          <div *ngIf="tmp; else has_data">{{tmp.value}} <br /> {{tmp.date | date: 'mm'}}</div>
+          <div *ngIf="tmp; else has_data">{{tmp.value}} <br /> {{tmp.date | date:'HH:mm' : 'UTC'}}</div>
           <ng-template #has_data> - </ng-template>
         </th>
       </tr>
