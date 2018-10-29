@@ -246,8 +246,8 @@ exports.importFileData = function(req, res) {
     form.uploadDir = pathDir;
     form.parse(req, function(err, fields, files) {
       // console.log(err);
-      // console.log(fields);
-      // console.log(files);
+      //       // console.log(fields);
+      //       // console.log(files);
       const newPath = `${files['CsvFile'].path}-${files['CsvFile'].name}`
       fs.rename(files['CsvFile'].path, newPath, (err) => {
 

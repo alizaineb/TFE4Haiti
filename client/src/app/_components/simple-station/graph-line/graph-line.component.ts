@@ -14,15 +14,19 @@ export class GraphLineComponent implements OnInit {
 
   @Input()
   private stationId: string;
-
   highChart;
-
   datePicker;
-
-  listData: RainData[];
+  rangeData = ['Horaires','Journalières','Mensuelles'];
+  rangeSelected;
 
   constructor(private dataService: DataService,
     private http: HttpClient) { }
+
+  rangeDataChange(val){
+    console.log(val);
+
+  }
+
 
   ngOnInit() {
     this.dataService.getAllRainDataGraphLine(this.stationId).subscribe(data => {
