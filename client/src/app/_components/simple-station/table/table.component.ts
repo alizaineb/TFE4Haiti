@@ -40,6 +40,12 @@ export class TableComponent implements OnInit, OnChanges {
   private noData: boolean;
   private dataToShow: boolean;
 
+
+  // Recap values
+  private totVals: number;
+  private totSum: number;
+  private totMin: number;
+  private totMax: number;
   constructor(private stationService: StationsService, private alertService: AlertService) { }
 
   ngOnInit() {
@@ -151,6 +157,8 @@ export class TableComponent implements OnInit, OnChanges {
     this.maxs = [];
     this.sums = [];
 
+    this.totVals = 0;
+    this.totSum = 0;
     let hopSize = this.computeStep(this.intervalSelected, this.currentStation.interval);
     let idx = 0;
     for (let h = 0; h < this.allDatas.length; h = h + (hopSize * this.ratio)) {
@@ -178,6 +186,8 @@ export class TableComponent implements OnInit, OnChanges {
         if (empty == hopSize) {
           cloneObj.value = undefined;
         } else {
+          this.totVals++;
+          this.totSum += sum;
           moy += sum;
           cloneObj.value = sum;
           // Min
@@ -198,15 +208,32 @@ export class TableComponent implements OnInit, OnChanges {
       this.aggregatedDatas.push(tabToBePushed);
       // ICI push moy, min et max
       this.sums.push(moy / this.ratio);
-      let minObjModified = {};
+      let minObjModified = {} as any;
       minObjModified.value = min;
-      minObjModified.date = this.rows[minIdx % this.ratio)];
+      minObjModified.date = this.rows[minIdx % this.ratio];
       this.mins.push(minObjModified);
-      let maxObjModified = {};
+      let maxObjModified = {} as any;
       maxObjModified.value = max;
-      maxObjModified.date = this.rows[maxIdx % this.ratio)];
+      maxObjModified.date = this.rows[maxIdx % this.ratio];
       this.maxs.push(maxObjModified);
     }
+    this.totMin = 0;
+    this.totMax = 0;
+    // calcul minimum aboslu et max absolu
+    let min = Number.MAX_SAFE_INTEGER;
+    for (let i = 0; i < this.mins.length; i++) {
+      if (this.mins[i].value < min) {
+        min = this.mins[i].value;
+      }
+    }
+    let max = -1;
+    for (let i = 0; i < this.maxs.length; i++) {
+      if (this.maxs[i].value > min) {
+        max = this.maxs[i].value;
+      }
+    }
+    this.totMin = min;
+    this.totMax = max;
   }
 
   getRange(num) {
