@@ -136,7 +136,7 @@ export class TableComponent implements OnInit, OnChanges {
     for (let i = 0; i < this.ratio; i++) {
       this.rows[i] = this.minTwoDigits(i * jump);
       if (this.intervalSelected != this.currentStation.interval) {
-        this.rows[i] = this.rows[i] + " 🡒 " + this.minTwoDigits(((i + 1) * jump) - 1);
+        this.rows[i] = this.rows[i] + " à " + this.minTwoDigits(((i + 1) * jump) - 1);
       }
     }
     // Si y'a des données, compute les
