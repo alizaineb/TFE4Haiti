@@ -115,18 +115,12 @@ exports.getMonthly = function(req, res) {
         mapValue.set(month + 1, mapValue.get(month + 1) + value);
       }
       let tabD = [];
-      for (i = 1; i <= 12; i++) {
-
+      for (i = 0; i < 12; i++) {
         let dateStr = date.getFullYear() + '-' + i + '-01';
-        let d = new Date(2018, i, 0, 0, 0, 0, 0);
-        console.log(d);
-        console.log(d.getHours());
-
-        let val = mapValue.get(i);
+        let d = new Date(2018, i, 1, 12, 0, 0, 0);
+        let val = mapValue.get(i+1);
         if (val === 0)
           val = null;
-
-        d.setHours(d.getHours() + 1);
         tabD.push(
           [
             d.valueOf(),
