@@ -233,6 +233,33 @@ function getHopSize(interval) {
   }
 }
 
+function getIntervalInMinute(interval){
+  switch (interval) {
+    case "1min":
+      return 1;
+    case "5min":
+      return 5;
+    case "10min":
+      return 10;
+    case "15min":
+      return 15;
+    case "30min":
+      return 30;
+    case '1h':
+      return 60;
+    case '2h':
+      return 120;
+    case '6h':
+      return 360;
+    case '12h':
+      return 720;
+    case '24h':
+      return 1440;
+    default:
+      return -1;
+  }
+}
+
 
 exports.importManualData = function(req, res) {
   const datas = req.body;
@@ -381,7 +408,7 @@ function checkDateInterval(date1, date2, interval) {
   var date1_ms = date1.getTime();
   var date2_ms = date2.getTime();
   var diff_ms = date2_ms - date1_ms;
-  var interval_minute = getHopSize(interval);
+  var interval_minute = getIntervalInMinute(interval);
   console.log("Date1 : ", date1, " -> ", date1_ms);
   console.log("Date2 : ", date2, " -> ", date2_ms);
   console.log("Diff : ", diff_ms, " Interval : ", interval_minute);
