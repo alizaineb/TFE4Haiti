@@ -14,8 +14,11 @@ export class DataService {
   getAll(stationId): Observable <RainData[]> {
     return this.http.get<RainData[]>(environment.apiUrl + '/rainData/' + stationId);
   }
+
   getAllRainDataGraphLine(stationId): Observable <RainData[]> {
     return this.http.get<RainData[]>(environment.apiUrl + '/rainDataGraphLine/' + stationId);
   }
+
+
 
 }
