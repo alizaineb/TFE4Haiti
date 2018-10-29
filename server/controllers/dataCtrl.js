@@ -33,12 +33,14 @@ insertData = function(req, res, datas, station, user) {
 
     // Va falloir utiliser Promise.all(les promesses).then etc : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
 
-    console.log("data inserted")
+    console.log("Insert Data : ", datas)
     dataModel.rainDataModel.insertMany(datas, (err, docs) => {
-      console.log(err);
-      console.log(docs);
+      // console.log(err);
+      // console.log(docs);
       if (err) {
-        res.status(500).send('Les données n\'ont pas sur être insérer...');
+        // console.log('erreur : ', err);
+
+        res.status(500).send(err);//'Les données n\'ont pas sur être insérer...');
       } else {
         res.status(200).send();
       }
@@ -60,6 +62,7 @@ exports.get = function(req, res) {
   });
 };
 
+
 exports.getForDay = function(req, res) {
   let date = new Date(req.params.date);
   let dateMin = new Date(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate());
@@ -72,7 +75,10 @@ exports.getForDay = function(req, res) {
       return res.status(500).send("Erreur lors de la station liée .");
     }
     // TODO Tu peux sélectionner seulement les champs que t'as besoin. J'ai mis en com ce que j'ai changé avant le return.
-    dataModel.rainDataModel.find({ id_station: req.params.stationId, date: { "$gte": dateMin, "$lt": dateMax } }, ['_id', 'id_station', 'id_user', 'date', 'value'], { sort: { date: 1 } }, function(err, data) {
+    dataModel.rainDataModel.find({
+      id_station: req.params.stationId,
+      date: { "$gte": dateMin, "$lt": dateMax }
+    }, ['_id', 'id_station', 'id_user', 'date', 'value'], { sort: { date: 1 } }, function(err, data) {
       if (err) {
         logger.error(err);
         return res.status(500).send("Erreur lors de la récupération des données.");
@@ -175,7 +181,7 @@ exports.importManualData = function(req, res) {
   const stationId = req.params.id || '';
   const self = this;
 
-  console.log('[USERID] ', req.token_decoded);
+  // console.log('[USERID] ', req.token_decoded);
 
   let tmp = [];
   for (let i = 0; i < datas.length; i++) {
@@ -188,8 +194,8 @@ exports.importManualData = function(req, res) {
     tmp.push(data);
   }
   dataModel.rainDataModel.insertMany(tmp, (err, docs) => {
-    console.log(err);
-    console.log(docs);
+    // console.log(err);
+    // console.log(docs);
     if (err) {
       res.status(500).send('Les données n\'ont pas sur être insérer...');
     } else {
@@ -201,13 +207,13 @@ exports.importManualData = function(req, res) {
       logger.error(err);
       res.status(500).send(`erreur lors de la recupération de la station ${stationId}`)
     } else {
-      console.log('[STATION] : ', station);
+      // console.log('[STATION] : ', station);
       UsersModel.userModel.findById({ _id: userId }, (err, user) => {
         if (err) {
           logger.error(err);
           res.status(500).send(`erreur lors de la recupération de l'utilisateur ${userId}`)
         } else {
-          console.log('[USER] : ', user);
+          // console.log('[USER] : ', user);
           for (let i = 0; i < datas.length; i++) {
             const d = datas[i];
             let data = new dataModel.rainDataModel();
@@ -226,26 +232,82 @@ exports.importManualData = function(req, res) {
 };
 
 exports.importFileData = function(req, res) {
-  let form = new formidable.IncomingForm();
   const pathDir = path.join(__dirname, '..', 'public', 'upload');
-  form.uploadDir = pathDir;
-  form.parse(req, function(err, fields, files) {
-    console.log(err);
-    console.log(fields);
-    console.log(files);
-    fs.rename(files['CsvFile'].path, `${files['CsvFile'].path}-${files['CsvFile'].name}`, (err) => {
-      if (err) {
-        logger.error('[IMPORTFILE] Rename :  ', err);
-        fs.unlink(files['CsvFile'].path, (err) => {
-          logger.error('[IMPORTFILE] remove : ', err);
-        })
-        res.status(500).send("Le fichier n'a pas pu etre importé.");
-      } else {
-        res.status(200).send()
-      }
-    });
+  if (!fs.existsSync(pathDir)) {
+    fs.mkdirSync(pathDir);
+    res.status(500).send("Veuillez réessyer d'importer le fichier.")
+  } else {
 
-  })
+    const userId = req.token_decoded.id;
+    const stationId = req.params.id || '';
+    const self = this;
+
+    let form = new formidable.IncomingForm();
+    form.uploadDir = pathDir;
+    form.parse(req, function(err, fields, files) {
+      // console.log(err);
+      // console.log(fields);
+      // console.log(files);
+      const newPath = `${files['CsvFile'].path}-${files['CsvFile'].name}`
+      fs.rename(files['CsvFile'].path, newPath, (err) => {
+
+        if (err) {
+          logger.error('[IMPORTFILE] Rename :  ', err);
+          fs.unlink(files['CsvFile'].path, (err) => {
+            logger.error('[IMPORTFILE] remove : ', err);
+          });
+          res.status(500).send("Le fichier n'a pas pu etre importé.");
+        } else {
+
+          fs.readFile(newPath, 'utf-8', (err, data) => {
+            if (err) {
+              res.status(500).send("Le fichier n'a pas pu etre lu.")
+            }
+
+            Station.stationModel.findById({ _id: stationId }, (err, station) => {
+              if (err) {
+                logger.error(err);
+                res.status(500).send(`erreur lors de la recupération de la station ${stationId}`)
+              } else {
+                // console.log('[STATION] : ', station);
+                UsersModel.userModel.findById({ _id: userId }, (err, user) => {
+                  if (err) {
+                    logger.error(err);
+                    res.status(500).send(`erreur lors de la recupération de l'utilisateur ${userId}`)
+                  } else {
+                    let datas = [];
+                    let lines = data.split('\n');
+                    console.log(lines);
+                    for (var i = 0; i < lines.length; i++) {
+                      var l = lines[i];
+
+
+                      const d = l.split(';');
+                      console.log(d);
+                      if (d.length > 1) {
+                        let data = new dataModel.rainDataModel();
+                        data.id_station = station._id;
+                        data.id_user = user._id;
+                        data.date = new Date(d[0]);
+                        data.value = d[1];
+                        datas.push(data);
+                      }
+                    }
+                    insertData(req, res, datas, station, user)
+                  }
+
+                });
+              }
+            });
+
+          })
+
+        }
+      });
+
+    })
+  }
+
 
 };
 
@@ -300,6 +362,7 @@ function push() {
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
+
 /*
  * Méthode utilisée pour vérifier que la date passée corresponde à l'intervalle donnée.
  * @param {string} interval L'intervalle de la id_station

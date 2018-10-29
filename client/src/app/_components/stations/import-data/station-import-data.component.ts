@@ -119,7 +119,7 @@ export class StationImportDataComponent implements OnInit {
   }
 
   moreData() {
-    this.addData()
+    this.addData();
   }
 
   removeData(d) {
