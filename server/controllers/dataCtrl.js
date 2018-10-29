@@ -33,7 +33,7 @@ insertData = function(req, res, datas, station, user) {
 
     // Va falloir utiliser Promise.all(les promesses).then etc : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
 
-    console.log("Insert Data : ", datas)
+    // console.log("Insert Data : ", datas)
     dataModel.rainDataModel.insertMany(datas, (err, docs) => {
       // console.log(err);
       // console.log(docs);
@@ -277,13 +277,13 @@ exports.importFileData = function(req, res) {
                   } else {
                     let datas = [];
                     let lines = data.split('\n');
-                    console.log(lines);
+                    // console.log(lines);
                     for (var i = 0; i < lines.length; i++) {
                       var l = lines[i];
 
 
                       const d = l.split(';');
-                      console.log(d);
+                      // console.log(d);
                       if (d.length > 1) {
                         let data = new dataModel.rainDataModel();
                         data.id_station = station._id;
