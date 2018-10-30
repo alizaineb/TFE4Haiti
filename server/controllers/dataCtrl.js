@@ -159,7 +159,7 @@ exports.getForDay = function(req, res) {
       }
       //let tabD = [];
       //data.forEach(data => tabD.push(data.toDto()));
-      preprocessData(data, req.params.stationId, station.interval, dateMin, dateMax);
+      data = preprocessData(data, req.params.stationId, station.interval, dateMin, dateMax);
       return res.status(200).send(data);
     });
   });
@@ -175,6 +175,7 @@ function preprocessData(dataToProcess, stationId, interval, dateDebut, dateFin) 
   }
   let hopSize = getIntervalInMinute(interval);
 
+  let tabToReturn = [];
   let currDate = dateDebut;
   let idx = 0;
   let intervalInMs = hopSize * 60000;
@@ -185,9 +186,11 @@ function preprocessData(dataToProcess, stationId, interval, dateDebut, dateFin) 
       let tmp = {};
       tmp.id_station = stationId;
       tmp.date = correctedDate;
-      dataToProcess.splice(idx, 0, tmp);
+      tabToReturn.push(tmp);
+    } else {
+      tabToReturn.push(dataToProcess[idx]);
+      idx++;
     }
-    idx++;
     currDate = new Date(currDateMilis + intervalInMs);
   }
   //While pour compléter la fin
@@ -197,11 +200,10 @@ function preprocessData(dataToProcess, stationId, interval, dateDebut, dateFin) 
     let tmp = {};
     tmp.id_station = stationId;
     tmp.date = correctedDate;
-    dataToProcess.splice(idx, 0, tmp);
-    idx++;
+    tabToReturn.push(tmp);
     currDate = new Date(currDateMilis + intervalInMs);
   }
-  return dataToProcess;
+  return tabToReturn;
 };
 
 function minTwoDigits(n) {
