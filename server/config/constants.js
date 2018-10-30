@@ -17,3 +17,8 @@ exports.stationState = {
   DELETED: "deleted",
   BROKEN: "broken"
 }
+
+exports.DataType = {
+  FILE: "file",
+  INDIVIDUAL: "individual"
+}
