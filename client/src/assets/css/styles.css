@@ -496,6 +496,10 @@ i:hover {
   cursor: pointer;
 }
 
+.fa-spinner {
+  color: #4286f4;
+}
+
 tbody>tr:hover {
   background: LightSkyBlue !important;
 }
