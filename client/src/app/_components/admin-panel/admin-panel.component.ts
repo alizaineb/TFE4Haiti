@@ -130,11 +130,26 @@ export class AdminPanelComponent implements OnInit {
   }
 
   acceptData(data: RainDataAwaiting) {
+    const self = this;
+    self.rainDataService.accepteAwaiting(data._id).subscribe(res => {
+        self.alertService.success("La donnée a été acceptée avec succès.");
+        self.loadAwaitingData();
 
+      },
+      err => {
+        self.alertService.error(err);
+      });
   }
 
   refuseData(data: RainDataAwaiting) {
-
+    const self = this;
+    self.rainDataService.accepteAwaiting(data._id).subscribe(res => {
+        self.alertService.success("La donnée a été refusée avec succès.");
+        self.loadAwaitingData();
+      },
+      err => {
+        self.alertService.error(err);
+      });
   }
 
   setCurrUser(id: string) {
