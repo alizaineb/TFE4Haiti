@@ -73,7 +73,7 @@ exports.getRainDataGraphLine = function(req, res) {
         logger.error(err);
         return res.status(500).send("Erreur lors de la récupération des données.");
       }
-      preprocessData(data, req.params.stationId, station.interval);
+      //preprocessData(data, req.params.stationId, station.interval);
       let tabD = [];
       data.forEach(data => tabD.push(dataModel.rainDataModel.toDtoGraphLine(data)));
       return res.status(200).send(tabD);
@@ -87,12 +87,9 @@ exports.getMonthly = function(req, res) {
     if (err) {
       return res.status(500).send("Erreur lors de la station liée .");
     }
-    //let year = req.params.year;
-    let date = new Date(req.params.date);
-    //console.log(date);
-    let dateMin = new Date(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate());
-    let dateMax = new Date(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate());
-    dateMax.setFullYear(dateMax.getFullYear() + 1);
+    let year = req.params.year;
+    let dateMin = new Date(year,0,1,12,0,0,0);
+    let dateMax = new Date(year, 11, 31, 12,0,0,0);
 
     dataModel.rainDataModel.find({
       id_station: req.params.stationId,
@@ -102,13 +99,11 @@ exports.getMonthly = function(req, res) {
         logger.error(err);
         return res.status(500).send("Erreur lors de la récupération des données.");
       }
-
       let mapValue = new Map();
       let i;
-      for (i = 1; i <= 12; i++) {
+      for (i = 0; i < 12; i++) {
         mapValue.set(i, 0)
       }
-
       for (let i = 0; i < data.length - 1; i++) {
         let month = data[i].date.getMonth();
         let value = data[i].value;
@@ -116,9 +111,13 @@ exports.getMonthly = function(req, res) {
       }
       let tabD = [];
       for (i = 0; i < 12; i++) {
-        let dateStr = date.getFullYear() + '-' + i + '-01';
-        let d = new Date(2018, i, 1, 12, 0, 0, 0);
-        let val = mapValue.get(i+1);
+        let d;
+        if(i === 11 ){
+          d = dateMax;
+        }else {
+          d = new Date(year,i,1,12,0,0,0);
+        }
+        let val = mapValue.get(i);
         if (val === 0)
           val = null;
         tabD.push(
