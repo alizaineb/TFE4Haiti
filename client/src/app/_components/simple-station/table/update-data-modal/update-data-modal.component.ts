@@ -20,11 +20,11 @@ export class UpdateDataModalComponent implements OnInit {
 
   resetInput() {
     if (this.dataToUpdate) {
-      document.getElementById("inputValue").value = this.dataToUpdate.value;
+      (<HTMLInputElement>document.getElementById("inputValue")).value = "" + this.dataToUpdate.value;
     }
   }
 
   updateData() {
-    console.log(document.getElementById("inputValue").value);
+    console.log((<HTMLInputElement>document.getElementById("inputValue")).value);
   }
 }
