@@ -29,6 +29,12 @@ export class DataService {
   getAllAwaiting(){
     return this.http.get<RainDataAwaiting[]>(environment.apiUrl + '/rainData/awaiting');
   }
+  accepteAwaiting(id: string){
+    return this.http.post<RainDataAwaiting[]>(environment.apiUrl + '/rainData/accept/', {id: id});
+  }
+  refuseAwaiting(id: string){
+    return this.http.delete<RainDataAwaiting[]>(environment.apiUrl + '/rainData/refuse/' + id);
+  }
 
 
 

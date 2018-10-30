@@ -91,7 +91,7 @@
       <td>{{data.station}}</td>
       <td>{{data.user}}</td>
       <td>{{data.type}}</td>
-      <td>{{data.date}}</td>
+      <td>{{data.date | date: 'd/MM/yyyy h:mm'}}</td>
       <td>{{data.value}}</td>
       <td>
         <i class="fas fa-check fa-fw fa-1x" (click)="acceptData(data)"></i>
