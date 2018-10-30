@@ -13,6 +13,7 @@ export class UpdateDataModalComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log("JMINIT");
   }
 
 }
