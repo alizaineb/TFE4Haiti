@@ -68,7 +68,7 @@ exports.getRainDataGraphLine = function(req, res) {
     if (err) {
       return res.status(500).send("Erreur lors de la station liée .");
     }
-    dataModel.rainDataModel.find({ id_station: req.params.stationId }, 'date value', function(err, data) {
+    dataModel.rainDataModel.find({ id_station: req.params.stationId }, 'date value', { sort: { date: 1 } }, function(err, data) {
       if (err) {
         logger.error(err);
         return res.status(500).send("Erreur lors de la récupération des données.");
