@@ -209,6 +209,12 @@ exports.routes = [
     access: [roles.ADMIN, roles.WORKER]
   },
   {
+    path: "/api/rainData/awaiting",
+    httpMethod: "GET",
+    middleWare: [controllers.data.getAwaiting],
+    access: [roles.ADMIN]
+  },
+  {
     path: "/api/rainData/:stationId",
     httpMethod: "GET",
     middleWare: [controllers.data.get],

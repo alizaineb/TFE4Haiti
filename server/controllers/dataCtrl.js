@@ -11,6 +11,7 @@ const Station = require("../models/station");
 const UsersModel = require("../models/users");
 const roles = require('../config/constants').roles;
 
+
 /*
  * Méthode utilisée pour insérer des données en base de donnée
  * @param {number[]} dates Tableau des données devant être inséérer en base de données
@@ -49,6 +50,16 @@ insertData = function(req, res, datas, station, user) {
 
   }
 };
+exports.getAwaiting = function(req, res) {
+  dataModel.RainDataAwaitingModel.find({}, (err, datas) => {
+    if(err){
+      logger.error("[DATACTRL] getAwaiting : ", err);
+      return res.status(500).send("Erreur lors de la reucpérations des données.")
+    }else{
+      return res.status(200).send(datas);
+    }
+  });
+}
 
 
 exports.get = function(req, res) {
@@ -469,6 +480,7 @@ function push() {
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
+
 
 /*
  * Méthode utilisée pour vérifier que la date passée corresponde à l'intervalle donnée.

@@ -26,4 +26,10 @@ export class DataService {
   updateData(id: string, newData: string) {
     return this.http.post(environment.apiUrl + '/rainData/updateData', { id_curr_data: id, data: newData });
   }
+  getAllAwaiting(){
+    return this.http.get<RainData[]>(environment.apiUrl + '/rainData/awaiting');
+  }
+
+
+
 }
