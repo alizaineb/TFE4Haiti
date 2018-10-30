@@ -214,7 +214,7 @@ exports.routes = [
     middleWare: [controllers.data.getRainDataGraphLine],
   },
   {
-    path: "/api/rainDataGraphLineMonthly/:stationId/:date",
+    path: "/api/rainDataGraphLineMonthly/:stationId/:year",
     httpMethod: "GET",
     middleWare: [controllers.data.getMonthly],
   },

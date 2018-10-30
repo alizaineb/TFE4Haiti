@@ -1,9 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-//import {Chart} from 'chart.js';
 import { DataService } from '../../../_services/data.service';
-import { RainData } from '../../../_models/rainData';
 import * as Highcharts from 'highcharts/highstock';
-import { HttpClient } from '@angular/common/http';
+import {Station} from "../../../_models";
+import {StationsService} from "../../../_services/stations.service";
 
 @Component({
   selector: 'app-graph-line',
@@ -14,108 +13,36 @@ export class GraphLineComponent implements OnInit {
 
   @Input()
   private stationId: string;
-  highChart;
-  datePicker;
-  rangeData = ['Horaires','Journalières','Mensuelles'];
 
-  constructor(private dataService: DataService,
-    private http: HttpClient) { }
+  station:Station;
+
+  highChartLine;
+  highChartBar;
+  datePicker;
+  rangeData = ['Mensuelles','Journalières','Horaires'];
+
+  constructor(private dataService: DataService, private stationService: StationsService) { }
+
+  loadStation(){
+    this.stationService.getById(this.stationId).subscribe(s => {this.station = s})
+  }
 
   rangeDataChange(val){
     console.log(val);
-    if(val === 'Horaires'){
-      this.loadMonthly()
-    } else {
+    if(val === 'Horaires') {
       this.loadAll()
+    } else {
+      this.loadMonthly()
     }
-
-  }
-
-
-  ngOnInit() {
-    this.loadMonthly();
   }
 
   loadAll(){
     this.dataService.getAllRainDataGraphLine(this.stationId).subscribe(data => {
       console.log(data);
-      Highcharts.setOptions({
-        lang: {
-          loading: 'Chargement...',
-          months: [
-            'Janvier', 'Février', 'Mars', 'Avril',
-            'Mai', 'Juin', 'Juillet', 'Août',
-            'Septembre', 'Octobre', 'Novembre', 'Décembre'
-          ],
-          weekdays: [
-            'Dimanche', 'Lundi', 'Mardi', 'Mercredi',
-            'Jeudi', 'Vendredi', 'Samedi'
-          ],
-          shortMonths: [
-            'Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil',
-            'Août', 'Sept', 'Oct', 'Nov', 'Dec'
-          ],
-        },
-        turboThreshold:0
-      });
-
       // Create the chart
-      this.highChart = Highcharts.stockChart('containerLine', {
-        scrollbar: {
-          barBackgroundColor: 'gray',
-          barBorderRadius: 7,
-          barBorderWidth: 0,
-          buttonBackgroundColor: 'gray',
-          buttonBorderWidth: 0,
-          buttonBorderRadius: 7,
-          trackBackgroundColor: 'none',
-          trackBorderWidth: 1,
-          trackBorderRadius: 8,
-          trackBorderColor: '#CCC'
-        },
-
-        rangeSelector: {
-          inputEnabled: true,
-          selected: 6,
-          buttons: [
-            {
-              type: 'minute',
-              count: 5,
-              text: '5min'
-            },
-            {
-              type: 'minute',
-              count: 30,
-              text: '30min'
-            },
-            {
-              type: 'minute',
-              count: 60,
-              text: '1h'
-            }, {
-              type: 'day',
-              count: 1,
-              text: '1d'
-            }, {
-              type: 'week',
-              count: 1,
-              text: '1w'
-            }, {
-              type: 'month',
-              count: 1,
-              text: '1m'
-            }, {
-              type: 'year',
-              count: 1,
-              text: '1y'
-            }, {
-              type: 'all',
-              text: 'All'
-            }]
-        },
-
+      this.highChartLine = Highcharts.stockChart('containerLine', {
         title: {
-          text: 'Données pluviométriques:'
+          text: this.station.name + ' - Données pluviométriques (mm)'
         },
         series: [{
           name: 'Value',
@@ -125,68 +52,13 @@ export class GraphLineComponent implements OnInit {
           }
         }]
       });
-
-
       // Create the chart
-      this.highChart = Highcharts.stockChart('containerBar', {
-        scrollbar: {
-          barBackgroundColor: 'gray',
-          barBorderRadius: 7,
-          barBorderWidth: 0,
-          buttonBackgroundColor: 'gray',
-          buttonBorderWidth: 0,
-          buttonBorderRadius: 7,
-          trackBackgroundColor: 'none',
-          trackBorderWidth: 1,
-          trackBorderRadius: 8,
-          trackBorderColor: '#CCC'
+      this.highChartBar = Highcharts.stockChart('containerBar', {
+        title: {
+          text: this.station.name + ' - Données pluviométriques (mm)'
         },
-
         chart: {
           alignTicks: false
-        },
-        rangeSelector: {
-          inputEnabled: true,
-          selected: 6,
-          buttons: [
-            {
-              type: 'minute',
-              count: 5,
-              text: '5min'
-            },
-            {
-              type: 'minute',
-              count: 30,
-              text: '30min'
-            },
-            {
-              type: 'minute',
-              count: 60,
-              text: '1h'
-            }, {
-              type: 'day',
-              count: 1,
-              text: '1d'
-            }, {
-              type: 'week',
-              count: 1,
-              text: '1w'
-            }, {
-              type: 'month',
-              count: 1,
-              text: '1m'
-            }, {
-              type: 'year',
-              count: 1,
-              text: '1y'
-            }, {
-              type: 'all',
-              text: 'All'
-            }]
-        },
-
-        title: {
-          text: 'Données pluviométriques:'
         },
         series: [{
           type: 'column',
@@ -202,85 +74,12 @@ export class GraphLineComponent implements OnInit {
 
 
   loadMonthly(){
-    this.dataService.getAllRainDataGraphLineMonthly(this.stationId,'2018-01-01').subscribe(data => {
+    this.dataService.getAllRainDataGraphLineMonthly(this.stationId,'2018').subscribe(data => {
       console.log(data);
-      Highcharts.setOptions({
-        lang: {
-          loading: 'Chargement...',
-          months: [
-            'Janvier', 'Février', 'Mars', 'Avril',
-            'Mai', 'Juin', 'Juillet', 'Août',
-            'Septembre', 'Octobre', 'Novembre', 'Décembre'
-          ],
-          weekdays: [
-            'Dimanche', 'Lundi', 'Mardi', 'Mercredi',
-            'Jeudi', 'Vendredi', 'Samedi'
-          ],
-          shortMonths: [
-            'Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil',
-            'Août', 'Sept', 'Oct', 'Nov', 'Dec'
-          ],
-        },
-        turboThreshold:0
-      });
-
       // Create the chart
-      this.highChart = Highcharts.stockChart('containerLine', {
-        scrollbar: {
-          barBackgroundColor: 'gray',
-          barBorderRadius: 7,
-          barBorderWidth: 0,
-          buttonBackgroundColor: 'gray',
-          buttonBorderWidth: 0,
-          buttonBorderRadius: 7,
-          trackBackgroundColor: 'none',
-          trackBorderWidth: 1,
-          trackBorderRadius: 8,
-          trackBorderColor: '#CCC'
-        },
-
-        rangeSelector: {
-          inputEnabled: true,
-          selected: 6,
-          buttons: [
-            {
-              type: 'minute',
-              count: 5,
-              text: '5min'
-            },
-            {
-              type: 'minute',
-              count: 30,
-              text: '30min'
-            },
-            {
-              type: 'minute',
-              count: 60,
-              text: '1h'
-            }, {
-              type: 'day',
-              count: 1,
-              text: '1d'
-            }, {
-              type: 'week',
-              count: 1,
-              text: '1w'
-            }, {
-              type: 'month',
-              count: 1,
-              text: '1m'
-            }, {
-              type: 'year',
-              count: 1,
-              text: '1y'
-            }, {
-              type: 'all',
-              text: 'All'
-            }]
-        },
-
+      this.highChartLine = Highcharts.stockChart('containerLine', {
         title: {
-          text: 'Données pluviométriques:'
+          text: this.station.name + ' - Données pluviométriques (mm)'
         },
         series: [{
           name: 'Value',
@@ -290,68 +89,10 @@ export class GraphLineComponent implements OnInit {
           }
         }]
       });
-
-
       // Create the chart
-      this.highChart = Highcharts.stockChart('containerBar', {
-        scrollbar: {
-          barBackgroundColor: 'gray',
-          barBorderRadius: 7,
-          barBorderWidth: 0,
-          buttonBackgroundColor: 'gray',
-          buttonBorderWidth: 0,
-          buttonBorderRadius: 7,
-          trackBackgroundColor: 'none',
-          trackBorderWidth: 1,
-          trackBorderRadius: 8,
-          trackBorderColor: '#CCC'
-        },
-
-        chart: {
-          alignTicks: false
-        },
-        rangeSelector: {
-          inputEnabled: true,
-          selected: 6,
-          buttons: [
-            {
-              type: 'minute',
-              count: 5,
-              text: '5min'
-            },
-            {
-              type: 'minute',
-              count: 30,
-              text: '30min'
-            },
-            {
-              type: 'minute',
-              count: 60,
-              text: '1h'
-            }, {
-              type: 'day',
-              count: 1,
-              text: '1d'
-            }, {
-              type: 'week',
-              count: 1,
-              text: '1w'
-            }, {
-              type: 'month',
-              count: 1,
-              text: '1m'
-            }, {
-              type: 'year',
-              count: 1,
-              text: '1y'
-            }, {
-              type: 'all',
-              text: 'All'
-            }]
-        },
-
+      this.highChartBar = Highcharts.stockChart('containerBar', {
         title: {
-          text: 'Données pluviométriques:'
+          text: this.station.name + ' - Données pluviométriques (mm)'
         },
         series: [{
           type: 'column',
@@ -360,10 +101,98 @@ export class GraphLineComponent implements OnInit {
           tooltip: {
             valueDecimals: 2
           }
-        }]
+        }],
+        chart: {
+          alignTicks: false
+        },
       });
     });
   }
 
+  ngOnInit() {
+    this.loadStation();
+    this.loadMonthly();
+    Highcharts.setOptions({
 
+      lang: {
+        loading: 'Chargement...',
+        months: [
+          'Janvier', 'Février', 'Mars', 'Avril',
+          'Mai', 'Juin', 'Juillet', 'Août',
+          'Septembre', 'Octobre', 'Novembre', 'Décembre'
+        ],
+        weekdays: [
+          'Dimanche', 'Lundi', 'Mardi', 'Mercredi',
+          'Jeudi', 'Vendredi', 'Samedi'
+        ],
+        shortMonths: [
+          'Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil',
+          'Août', 'Sept', 'Oct', 'Nov', 'Dec'
+        ],
+      },
+      turboThreshold:0,
+      scrollbar: {
+        barBackgroundColor: 'gray',
+        barBorderRadius: 7,
+        barBorderWidth: 0,
+        buttonBackgroundColor: 'gray',
+        buttonBorderWidth: 0,
+        buttonBorderRadius: 7,
+        trackBackgroundColor: 'none',
+        trackBorderWidth: 1,
+        trackBorderRadius: 8,
+        trackBorderColor: '#CCC'
+      },
+      xAxis: {
+        type: 'datetime', //ensures that xAxis is treated as datetime values
+        title: {
+          text: "Mois"
+        },
+      },
+      yAxis: {
+        title: {
+          text: "Précipitations (mm)"
+        }
+      },
+      rangeSelector: {
+        inputEnabled: true,
+        selected: 6,
+        buttons: [
+          {
+            type: 'minute',
+            count: 5,
+            text: '5min'
+          },
+          {
+            type: 'minute',
+            count: 30,
+            text: '30min'
+          },
+          {
+            type: 'minute',
+            count: 60,
+            text: '1h'
+          }, {
+            type: 'day',
+            count: 1,
+            text: '1d'
+          }, {
+            type: 'week',
+            count: 1,
+            text: '1w'
+          }, {
+            type: 'month',
+            count: 1,
+            text: '1m'
+          }, {
+            type: 'year',
+            count: 1,
+            text: '1y'
+          }, {
+            type: 'all',
+            text: 'All'
+          }]
+      },
+    });
+  }
 }
