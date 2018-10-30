@@ -65,7 +65,39 @@ exports.acceptAwaiting = function(req, res) {
   checkParam(req, res, ["id"], function() {
     let id = req.body.id;
     console.log(id);
-    res.status(200).send();
+    dataModel.RainDataAwaitingModel.findById(id, (err, data) => {
+      if(err){
+        logger.error("[DATACTRL] acceptAwaiting : ", err)
+       return res.status(500).send("Erreur lors de la recupération de la donnée.")
+      }else{
+        let status = 200;
+        switch (data.type) {
+          case state.INDIVIDUAL:
+            let rainData = new dataModel.rainDataModel();
+            rainData.date = data.date;
+            rainData.id_user = data.id_user;
+            rainData.id_station = data.id_station;
+            rainData.value = data.value;
+            rainData.save().then(() => {
+              dataModel.RainDataAwaitingModel.deleteOne({_id: data._id}).then(() => {
+                res.status(200).send()
+              });
+
+            });
+            return;
+          case state.UPDATE:
+            return;
+          case state.FILE:
+            return;
+          default:
+            status=500;
+            break;
+
+        }
+        return res.status(status).send();
+      }
+    });
+
 
   });
 };
