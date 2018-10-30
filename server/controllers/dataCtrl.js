@@ -197,37 +197,6 @@ function preprocessData(dataToProcess, stationId, interval, dateDebut, dateFin) 
     currDate = new Date(currDateMilis + intervalInMs);
   }
   return dataToProcess;
-  /*
-  if (firstValueDate.getHours() !== 0 && firstValueDate.getMinutes() !== 0) {
-    let correctedDate = new Date(firstValueDate.getFullYear() + "-" + (firstValueDate.getMonth() + 1) + "-" + firstValueDate.getDate());
-    let tmp = {};
-    tmp.id_station = stationId;
-    tmp.date = correctedDate;
-    dataToProcess.splice(0, 0, tmp);
-  }
-  let intervalInMs = hopSize * 60000;
-  for (let i = 0; i < dataToProcess.length - 1; i++) {
-    // Comparer i à i+1
-    let firstVal = dataToProcess[i];
-    let secVal = dataToProcess[i + 1];
-    // Si modulo pas repsecté on créée une nvelle donnée initialisée à -1
-    if (firstVal.date.getTime() + intervalInMs !== secVal.date.getTime()) {
-      let correctedDate = new Date(firstVal.date.getTime() + intervalInMs);
-      let tmp = {};
-      tmp.id_station = stationId;
-      tmp.date = correctedDate;
-      dataToProcess.splice(i + 1, 0, tmp);
-    }
-  }
-  // Check dernière valeur si last valeur + intervalle pas le lendemain, faut ajouter une valeur
-  let lastDate = dataToProcess[dataToProcess.length - 1].date;
-  let dateShouldBeNextDay = new Date(lastDate.getTime() + intervalInMs);
-  if (dateShouldBeNextDay.getHours() === lastDate.getHours()) {
-    let tmp = {};
-    tmp.id_station = stationId;
-    tmp.date = dateShouldBeNextDay;
-    dataToProcess.push(tmp);
-  }*/
 };
 
 function minTwoDigits(n) {
