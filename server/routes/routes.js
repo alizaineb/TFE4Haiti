@@ -203,6 +203,12 @@ exports.routes = [
 
   // Méthodes liées aux data
   {
+    path: "/api/rainData/updateData",
+    httpMethod: "POST",
+    middleWare: [controllers.data.updateData],
+    access: [roles.ADMIN, roles.WORKER]
+  },
+  {
     path: "/api/rainData/awaiting",
     httpMethod: "GET",
     middleWare: [controllers.data.getAwaiting],

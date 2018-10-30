@@ -394,6 +394,11 @@ exports.importFileData = function(req, res) {
 
 };
 
+exports.updateData = function(req, res) {
+
+  return res.status(200).send();
+}
+
 function checkDateInterval(date1, date2, interval) {
   if (!date1 || !date2 || !interval) {
     return false;
