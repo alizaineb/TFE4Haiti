@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { RainData } from '../../../../_models/rainData';
+import { AlertService } from '../../../../_services';
+import { DataService } from '../../../../_services/data.service';
 
 @Component({
   selector: 'app-update-data-modal',
@@ -10,7 +12,7 @@ export class UpdateDataModalComponent implements OnInit {
 
   @Input()
   dataToUpdate: RainData;
-  constructor() { }
+  constructor(private alertService: AlertService, private dataService: DataService) { }
 
   ngOnInit() {
   }
@@ -25,6 +27,14 @@ export class UpdateDataModalComponent implements OnInit {
   }
 
   updateData() {
-    console.log((<HTMLInputElement>document.getElementById("inputValue")).value);
+    this.dataService.updateData(this.dataToUpdate._id, (<HTMLInputElement>document.getElementById("inputValue")).value)
+      .subscribe(
+        result => {
+          // trigger sent
+          this.alertService.success('La requête a été envoyée à l\'administrateur');
+        },
+        error => {
+          this.alertService.error(error);
+        });
   }
 }

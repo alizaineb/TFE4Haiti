@@ -384,8 +384,23 @@ exports.importFileData = function(req, res) {
 };
 
 exports.updateData = function(req, res) {
+  checkParam(req, res, ["id_curr_data"], function() {
+    let id = req.body.id_curr_data;
+    let data = req.body.data;
+    if (data) {
+      // Parse
+      // Si c'est la même rien faire
+    }
+    // Si data == vide créer nvelle
+    else {
+      console.log("JE SUIS VIDE");
+    }
+    console.log(id);
+    // Recup user via token
 
-  return res.status(200).send();
+
+    return res.status(200).send();
+  });
 }
 
 function checkDateInterval(date1, date2, interval) {
