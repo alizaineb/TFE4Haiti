@@ -3,6 +3,7 @@ import {StationsService} from '../../../_services/stations.service';
 import {AlertService} from '../../../_services/';
 import * as L from 'leaflet';
 import {Station} from '../../../_models';
+import {LocalstorageService} from "../../../_services/localstorage.service";
 
 @Component({
   selector: 'app-simple-station-details',
@@ -19,6 +20,7 @@ export class DetailsStationComponent implements OnInit {
 
   constructor(
     private stationService: StationsService,
+    private localStorageService: LocalstorageService,
     private alertService: AlertService
   ) {
   }
@@ -124,7 +126,7 @@ export class DetailsStationComponent implements OnInit {
         attribution: 'Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       });
 
-
+    const currentU = this.localStorageService.getStorage()['currentUser'];
     self.mapContainer = L.map('mapId', {
       center: [self.currentStation.latitude, self.currentStation.longitude],
       zoom: 12,
@@ -142,9 +144,13 @@ export class DetailsStationComponent implements OnInit {
     legend.onAdd = function (map) {
 
       const div = L.DomUtil.create('div', 'info legend'),
-        grades = ['OK', 'En panne', 'Supprimée', 'A valider'],
+        grades = ['En activité', 'En panne', 'Pas en activitée'],
         color = ['#5cd65c', '#ffb84d', '#ff471a', '#1aa3ff'];
 
+      if (currentU) {
+        grades.push('A valider');
+        color.push('#1aa3ff');
+      }
       // loop through our density intervals and generate a label with a colored square for each interval
       for (let i = 0; i < grades.length; i++) {
         div.innerHTML +=
@@ -165,6 +171,7 @@ export class DetailsStationComponent implements OnInit {
       'Ersi - Satelite': mapLayerErsiSatelite,
       'Hydda - Full': mapLayerHyddaFull
     };
+
 
     L.control.layers(baseLayers).addTo(self.mapContainer);
   }
