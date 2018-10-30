@@ -362,11 +362,12 @@ exports.importFileData = function(req, res) {
                         data.id_station = station._id;
                         data.id_user = user._id;
                         data.date = new Date(d[0]);
+                        // console.log(data.date);
                         if(first){
-                          data.value = d[1];
+                          data.value = d[1].replace(',', '.');
                           datas.push(data);
                         }else{
-                          if (checkDateInterval(prevDate, data.date, station.interval)) {
+                          if (checkDateInterval(prevDate, data.date, station.interval || true)) {
                             data.value = d[1];
                             datas.push(data);
                           } else {
