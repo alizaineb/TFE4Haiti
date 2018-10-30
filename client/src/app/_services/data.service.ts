@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { RainData } from '../_models/rainData';
+import {RainData, RainDataAwaiting} from '../_models/rainData';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +27,7 @@ export class DataService {
     return this.http.post(environment.apiUrl + '/rainData/updateData', { id_curr_data: id, data: newData });
   }
   getAllAwaiting(){
-    return this.http.get<RainData[]>(environment.apiUrl + '/rainData/awaiting');
+    return this.http.get<RainDataAwaiting[]>(environment.apiUrl + '/rainData/awaiting');
   }
 
 

@@ -14,7 +14,9 @@ export class RainData {
 
 export class RainDataAwaiting {
   public id_station: string;
+  public station : string;
   public id_user: string;
+  public user: string;
   public date: Date;
   public value: number;
   public type: string;

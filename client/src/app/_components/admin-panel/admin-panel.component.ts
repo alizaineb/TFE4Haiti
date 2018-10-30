@@ -3,6 +3,7 @@ import {first, map} from 'rxjs/operators';
 import {UserService} from "../../_services/user.service";
 import {Station} from "../../_models";
 import {User} from "../../_models";
+import {RainDataAwaiting, RainData} from "../../_models/rainData";
 import {StationsService} from "../../_services/stations.service";
 import {AlertService} from '../../_services/index';
 import {DataService} from "../../_services/data.service";
@@ -36,7 +37,7 @@ export class AdminPanelComponent implements OnInit {
   ) {
     this.headersUsers = ["Nom", "Prénom", "Adresse mail", "Role requis", " Date de création"];
     this.headersStation = ["Nom de la station", "Latitude", "Longitude", "Intervalle", "Auteur", "Date de mise en service"];
-    this.headersData = ["Nom de la Station", "Type", "Valeur"]
+    this.headersData = ["Nom de la Station", "Ajouté par", "Type", "date", "Valeur"]
     this.showUsers = false;
     this.showStations = false;
     this.showDatas = false;
@@ -99,13 +100,40 @@ export class AdminPanelComponent implements OnInit {
 
   loadAwaitingData() {
     const self = this;
-    self.rainDataService.getAllAwaiting().subscribe(datas => {
-        self.rainDatas =  datas;
+    self.rainDataService.getAllAwaiting()
+      .pipe(map(datas => {
+          for (let n of datas) {
+            this.stationsService.getById(n.id_station).pipe(first()).subscribe(station => {
+              n.station = station.name;
+            });
+          }
+          return datas;
+        })
+      )
+      .pipe(map(datas => {
+          for (let n of datas) {
+            this.userService.getById(n.id_user).pipe(first()).subscribe(user => {
+              n.user = user.first_name + " " + user.last_name;
+            });
+          }
+          return datas;
+        })
+      ).subscribe(datas => {
+        self.rainDatas = datas;
+        console.table(datas);
         self.showDatas = this.rainDatas.length > 0;
       },
       err => {
-          this.alertService.error(err);
+        this.alertService.error(err);
       })
+
+  }
+
+  acceptData(data: RainDataAwaiting) {
+
+  }
+
+  refuseData(data: RainDataAwaiting) {
 
   }
 

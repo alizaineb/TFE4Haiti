@@ -86,17 +86,16 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let station of stations | paginate: { itemsPerPage: 10, currentPage: pageStations, id:'stationspage' } ; index as i;">
+    <tr *ngFor="let data of rainDatas | paginate: { itemsPerPage: 10, currentPage: pageStations, id:'datasPagination' } ; index as i;">
       <td>{{i+1}}</td>
-      <td>{{station.name}}</td>
-      <td>{{station.latitude}}</td>
-      <td>{{station.longitude}}</td>
-      <td>{{station.interval}}</td>
-      <td>{{station.user_creator}}</td>
-      <td>{{station.createdAt | date: 'd/MM/yyyy'}}</td>
+      <td>{{data.station}}</td>
+      <td>{{data.user}}</td>
+      <td>{{data.type}}</td>
+      <td>{{data.date}}</td>
+      <td>{{data.value}}</td>
       <td>
-        <i class="fas fa-check fa-fw fa-1x" (click)="acceptStation(station)"></i>
-        <i class="fas fa-trash fa-fw fa-1x" (click)="refuseStation(station)"></i>
+        <i class="fas fa-check fa-fw fa-1x" (click)="acceptData(data)"></i>
+        <i class="fas fa-trash fa-fw fa-1x" (click)="refuseData(data)"></i>
       </td>
     </tr>
     </tbody>
