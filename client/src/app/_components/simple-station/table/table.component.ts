@@ -160,9 +160,7 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   private computeDataToShow() {
-    // Va falloir use computeStep()
     this.aggregatedDatas = [];
-    console.log(this.allDatas);
     this.mins = [];
     this.maxs = [];
     this.sums = [];
@@ -243,9 +241,6 @@ export class TableComponent implements OnInit, OnChanges {
     }
     this.totMin = min;
     this.totMax = max;
-
-
-    console.log(this.aggregatedDatas);
   }
 
   getRange(num) {

@@ -178,21 +178,26 @@ function preprocessData(dataToProcess, stationId, interval, dateDebut, dateFin) 
   let currDate = dateDebut;
   let idx = 0;
   let intervalInMs = hopSize * 60000;
-  while (currDate < dateFin) {
+  while (idx < dataToProcess.length && currDate < dateFin) {
     let currDateMilis = currDate.getTime();
-    if (idx >= dataToProcess.length) {
-      let correctedDate = new Date(currDateMilis);
-      let tmp = {};
-      tmp.id_station = stationId;
-      tmp.date = correctedDate;
-      dataToProcess.splice(idx, 0, tmp);
-    } else if (currDateMilis < dataToProcess[idx].date.getTime()) {
+    if (currDateMilis < dataToProcess[idx].date.getTime()) {
       let correctedDate = new Date(currDateMilis);
       let tmp = {};
       tmp.id_station = stationId;
       tmp.date = correctedDate;
       dataToProcess.splice(idx, 0, tmp);
     }
+    idx++;
+    currDate = new Date(currDateMilis + intervalInMs);
+  }
+  //While pour compléter la fin
+  while (currDate < dateFin) {
+    let currDateMilis = currDate.getTime();
+    let correctedDate = new Date(currDateMilis);
+    let tmp = {};
+    tmp.id_station = stationId;
+    tmp.date = correctedDate;
+    dataToProcess.splice(idx, 0, tmp);
     idx++;
     currDate = new Date(currDateMilis + intervalInMs);
   }
