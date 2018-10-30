@@ -52,14 +52,23 @@ insertData = function(req, res, datas, station, user) {
 };
 exports.getAwaiting = function(req, res) {
   dataModel.RainDataAwaitingModel.find({}, (err, datas) => {
-    if(err){
+    if (err) {
       logger.error("[DATACTRL] getAwaiting : ", err);
       return res.status(500).send("Erreur lors de la reucpérations des données.")
-    }else{
+    } else {
       return res.status(200).send(datas);
     }
   });
 }
+
+exports.acceptAwaiting = function(req, res) {
+  checkParam(req, res, ["id"], function() {
+    let id = req.body.id;
+    console.log(id);
+    res.status(200).send();
+
+  });
+};
 
 
 exports.get = function(req, res) {

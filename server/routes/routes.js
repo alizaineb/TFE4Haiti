@@ -215,6 +215,12 @@ exports.routes = [
     access: [roles.ADMIN]
   },
   {
+    path: "/api/rainData/accept",
+    httpMethod: "POST",
+    middleWare: [controllers.data.acceptAwaiting],
+    access: [roles.ADMIN]
+  },
+  {
     path: "/api/rainData/:stationId",
     httpMethod: "GET",
     middleWare: [controllers.data.get],
