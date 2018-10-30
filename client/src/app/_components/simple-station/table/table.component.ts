@@ -162,6 +162,7 @@ export class TableComponent implements OnInit, OnChanges {
   private computeDataToShow() {
     // Va falloir use computeStep()
     this.aggregatedDatas = [];
+    console.log(this.allDatas);
     this.mins = [];
     this.maxs = [];
     this.sums = [];
