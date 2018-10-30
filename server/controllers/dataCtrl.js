@@ -404,16 +404,16 @@ exports.importFileData = function(req, res) {
 };
 
 function checkDateInterval(date1, date2, interval) {
-  if(!date1 || !date2 || !interval){
+  if (!date1 || !date2 || !interval) {
     return false;
   }
   var date1_ms = date1.getTime();
   var date2_ms = date2.getTime();
   var diff_ms = date2_ms - date1_ms;
   var interval_minute = getIntervalInMinute(interval);
-  console.log("Date1 : ", date1, " -> ", date1_ms);
-  console.log("Date2 : ", date2, " -> ", date2_ms);
-  console.log("Diff : ", diff_ms, " Interval : ", interval_minute);
+  // console.log("Date1 : ", date1, " -> ", date1_ms);
+  // console.log("Date2 : ", date2, " -> ", date2_ms);
+  // console.log("Diff : ", diff_ms, " Interval : ", interval_minute);
   return ((diff_ms / 1000) / 60) == interval_minute;
 
 }
