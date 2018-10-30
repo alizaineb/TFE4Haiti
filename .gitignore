@@ -11,3 +11,5 @@ client/package-lock\.json
 
 server/package-lock\.json
 server/config.json
+
+server/public/upload/

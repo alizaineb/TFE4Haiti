@@ -63,10 +63,81 @@ exports.get = function(req, res) {
 };
 
 
+exports.getRainDataGraphLine = function(req, res) {
+  Station.stationModel.findById(req.params.stationId, (err, station) => {
+    if (err) {
+      return res.status(500).send("Erreur lors de la station liée .");
+    }
+    dataModel.rainDataModel.find({ id_station: req.params.stationId }, 'date value', function(err, data) {
+      if (err) {
+        logger.error(err);
+        return res.status(500).send("Erreur lors de la récupération des données.");
+      }
+      preprocessData(data, req.params.stationId, station.interval);
+      let tabD = [];
+      data.forEach(data => tabD.push(dataModel.rainDataModel.toDtoGraphLine(data)));
+      return res.status(200).send(tabD);
+    });
+  });
+};
+
+
+exports.getMonthly = function(req, res) {
+  Station.stationModel.findById(req.params.stationId, (err, station) => {
+    if (err) {
+      return res.status(500).send("Erreur lors de la station liée .");
+    }
+    //let year = req.params.year;
+    let date = new Date(req.params.date);
+    //console.log(date);
+    let dateMin = new Date(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate());
+    let dateMax = new Date(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate());
+    dateMax.setFullYear(dateMax.getFullYear() + 1);
+
+    dataModel.rainDataModel.find({
+      id_station: req.params.stationId,
+      date: { "$gte": dateMin, "$lt": dateMax }
+    }, 'date value', { sort: { date: 1 } }, function(err, data) {
+      if (err) {
+        logger.error(err);
+        return res.status(500).send("Erreur lors de la récupération des données.");
+      }
+
+      let mapValue = new Map();
+      let i;
+      for (i = 1; i <= 12; i++) {
+        mapValue.set(i, 0)
+      }
+
+      for (let i = 0; i < data.length - 1; i++) {
+        let month = data[i].date.getMonth();
+        let value = data[i].value;
+        mapValue.set(month + 1, mapValue.get(month + 1) + value);
+      }
+      let tabD = [];
+      for (i = 0; i < 12; i++) {
+        let dateStr = date.getFullYear() + '-' + i + '-01';
+        let d = new Date(2018, i, 1, 12, 0, 0, 0);
+        let val = mapValue.get(i+1);
+        if (val === 0)
+          val = null;
+        tabD.push(
+          [
+            d.valueOf(),
+            val
+          ]
+        )
+      }
+      return res.status(200).send(tabD);
+    });
+  });
+};
+
+
 exports.getForDay = function(req, res) {
   let date = new Date(req.params.date);
+  console.log(date);
   let dateMin = new Date(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate());
-  //console.log(dateMin);
   let dateMax = new Date(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate());
   dateMax.setHours(dateMax.getHours() + 24);
   //console.log(dateMax);
@@ -156,23 +227,32 @@ function getHopSize(interval) {
   }
 }
 
-exports.getRainDataGraphLine = function(req, res) {
-  Station.stationModel.findById(req.params.stationId, (err, station) => {
-    if (err) {
-      return res.status(500).send("Erreur lors de la station liée .");
-    }
-    dataModel.rainDataModel.find({ id_station: req.params.stationId }, 'date value', function(err, data) {
-      if (err) {
-        logger.error(err);
-        return res.status(500).send("Erreur lors de la récupération des données.");
-      }
-      preprocessData(data, req.params.stationId, station.interval);
-      let tabD = [];
-      data.forEach(data => tabD.push(dataModel.rainDataModel.toDtoGraphLine(data)));
-      return res.status(200).send(tabD);
-    });
-  });
-};
+function getIntervalInMinute(interval){
+  switch (interval) {
+    case "1min":
+      return 1;
+    case "5min":
+      return 5;
+    case "10min":
+      return 10;
+    case "15min":
+      return 15;
+    case "30min":
+      return 30;
+    case '1h':
+      return 60;
+    case '2h':
+      return 120;
+    case '6h':
+      return 360;
+    case '12h':
+      return 720;
+    case '24h':
+      return 1440;
+    default:
+      return -1;
+  }
+}
 
 
 exports.importManualData = function(req, res) {
@@ -193,15 +273,7 @@ exports.importManualData = function(req, res) {
     data.value = d.value;
     tmp.push(data);
   }
-  dataModel.rainDataModel.insertMany(tmp, (err, docs) => {
-    // console.log(err);
-    // console.log(docs);
-    if (err) {
-      res.status(500).send('Les données n\'ont pas sur être insérer...');
-    } else {
-      res.status(200).send();
-    }
-  });
+
   Station.stationModel.findById({ _id: stationId }, (err, station) => {
     if (err) {
       logger.error(err);
@@ -225,7 +297,6 @@ exports.importManualData = function(req, res) {
           }
           insertData(req, res, datas, station, user);
         }
-
       });
     }
   });
@@ -278,10 +349,10 @@ exports.importFileData = function(req, res) {
                     let datas = [];
                     let lines = data.split('\n');
                     // console.log(lines);
+                    let prevDate = null;
+                    let first = true;
                     for (var i = 0; i < lines.length; i++) {
                       var l = lines[i];
-
-
                       const d = l.split(';');
                       // console.log(d);
                       if (d.length > 1) {
@@ -289,8 +360,21 @@ exports.importFileData = function(req, res) {
                         data.id_station = station._id;
                         data.id_user = user._id;
                         data.date = new Date(d[0]);
-                        data.value = d[1];
-                        datas.push(data);
+                        if(first){
+                          data.value = d[1];
+                          datas.push(data);
+                        }else{
+                          if (checkDateInterval(prevDate, data.date, station.interval)) {
+                            data.value = d[1];
+                            datas.push(data);
+                          } else {
+                            res.status(500).send("Les dates du fichier ne se suivent pas, ou ne corresponde pas à l'interval de la station..")
+                            return;
+                          }
+                        }
+
+
+                        prevDate = data.date;
                       }
                     }
                     insertData(req, res, datas, station, user)
@@ -311,6 +395,21 @@ exports.importFileData = function(req, res) {
 
 };
 
+function checkDateInterval(date1, date2, interval) {
+  if(!date1 || !date2 || !interval){
+    return false;
+  }
+  var date1_ms = date1.getTime();
+  var date2_ms = date2.getTime();
+  var diff_ms = date2_ms - date1_ms;
+  var interval_minute = getIntervalInMinute(interval);
+  console.log("Date1 : ", date1, " -> ", date1_ms);
+  console.log("Date2 : ", date2, " -> ", date2_ms);
+  console.log("Diff : ", diff_ms, " Interval : ", interval_minute);
+  return ((diff_ms / 1000) / 60) == interval_minute;
+
+}
+
 //push();
 /* Méthode utilisée pour tester en pushant des données dans base de données
  * En décommentant la ligne //push();
@@ -319,9 +418,9 @@ exports.importFileData = function(req, res) {
 function push() {
   const datas = [];
   const id_user = "5bbdb325d7aec61a195afc96";
-  const id_station = "5bd089d9fe0e4f1f60d06ffb";
+  const id_station = "5bbdb55fd7aec61a195afc9c";
   let ptr = 0;
-  let intervalle = 30;
+  let intervalle = 15;
   for (let jour = 2; jour < 29; jour++) {
     for (let i = 2; i <= 25; i++) {
       for (let j = 0; j < 60; j += intervalle) {
@@ -329,10 +428,10 @@ function push() {
         item.id_station = id_station;
         item.id_user = id_user;
 
-        let date2 = new Date(2018, 9, jour, i, j);
+        let date2 = new Date(2018, 6, jour, i, j);
         item.date = date2;
         console.log(date2);
-        item.value = getRandomInt(80);
+        item.value = getRandomInt(10);
         datas[ptr] = item;
         ptr++
       }

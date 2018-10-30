@@ -76,6 +76,7 @@ export class StationImportDataComponent implements OnInit {
   }
 
   sendData() {
+    this.loading = true;
     let currentUser = this.localStorageService.getItem('currentUser');
 
     if (this.selectedZone == 'file') {
@@ -84,9 +85,11 @@ export class StationImportDataComponent implements OnInit {
       this.stationService.importDataFile(this.currentStation._id, fd).subscribe(
         res => {
           this.alertService.success('Fichier importé.');
+          this.loading = false;
         },
         err => {
           this.alertService.error(`Erreur lors de l'importation du fichier.`);
+          this.loading = false;
         }
       );
     } else {
@@ -109,9 +112,11 @@ export class StationImportDataComponent implements OnInit {
           this.alertService.success("données importées.");
           this.data = [];
           this.addData();
+          this.loading = false;
         },
         err => {
           this.alertService.error(err);
+          this.loading = false;
         });
     }
 
