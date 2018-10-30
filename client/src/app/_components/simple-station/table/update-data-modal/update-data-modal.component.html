@@ -8,13 +8,13 @@
     </div>
     <div class="modal-body">
       <div class="container">
-        <p> ok </p>
+        <input id="inputValue" type="number">
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-primary">Réinitialiser</button>
-      <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-      <button type="submit" class="btn btn-success" data-dismiss="modal">Envoyer
+      <button type="button" class="btn btn-primary btn-sm" (click)="resetInput();">Réinitialiser</button>
+      <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Fermer</button>
+      <button type="submit" class="btn btn-success btn-sm" data-dismiss="modal" (click)="updateData();">Envoyer
       </button>
     </div>
   </div>

@@ -286,14 +286,10 @@ export class TableComponent implements OnInit, OnChanges {
 
   editData(data) {
     // ! peut être une data 'vide' en passant de - à qqchose
-    console.log(data);
     if (data) {
       this.dataToEdit = data;
-      console.log(data._id);
-      console.log(data.value);
     } else {
       this.dataToEdit = {} as any;
-      console.log("NO DATA");
     }
   }
 }

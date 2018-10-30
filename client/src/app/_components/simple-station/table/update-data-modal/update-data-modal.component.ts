@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import { RainData } from '../../../../_models/rainData';
 
 @Component({
@@ -13,7 +13,18 @@ export class UpdateDataModalComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log("JMINIT");
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    this.resetInput();
   }
 
+  resetInput() {
+    if (this.dataToUpdate) {
+      document.getElementById("inputValue").value = this.dataToUpdate.value;
+    }
+  }
+
+  updateData() {
+    console.log(document.getElementById("inputValue").value);
+  }
 }
