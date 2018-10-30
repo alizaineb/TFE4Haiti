@@ -20,6 +20,8 @@ export class GraphLineComponent implements OnInit {
   highChartBar;
   datePicker;
   rangeData = ['Mensuelles','Journalières','Horaires'];
+  rangeSelected = 'Mensuelles';
+  yearSelected = new Date().getFullYear();
 
   constructor(private dataService: DataService, private stationService: StationsService) { }
 
@@ -29,11 +31,21 @@ export class GraphLineComponent implements OnInit {
 
   rangeDataChange(val){
     console.log(val);
+    this.rangeSelected = val;
     if(val === 'Horaires') {
       this.loadAll()
     } else {
       this.loadMonthly()
     }
+  }
+
+  updateYearSelected(op){
+    if (op === "add"){
+      this.yearSelected = this.yearSelected-1;
+    } else {
+      this.yearSelected = this.yearSelected+1;
+    }
+    this.loadMonthly();
   }
 
   loadAll(){
@@ -74,7 +86,7 @@ export class GraphLineComponent implements OnInit {
 
 
   loadMonthly(){
-    this.dataService.getAllRainDataGraphLineMonthly(this.stationId,'2018').subscribe(data => {
+    this.dataService.getAllRainDataGraphLineMonthly(this.stationId,this.yearSelected).subscribe(data => {
       console.log(data);
       // Create the chart
       this.highChartLine = Highcharts.stockChart('containerLine', {

@@ -427,7 +427,7 @@ function push() {
         item.id_station = id_station;
         item.id_user = id_user;
 
-        let date2 = new Date(2018, 6, jour, i, j);
+        let date2 = new Date(2017, 4, jour, i, j);
         item.date = date2;
         console.log(date2);
         item.value = getRandomInt(10);
