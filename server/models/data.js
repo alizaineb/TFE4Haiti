@@ -21,7 +21,13 @@ RainData.methods.toDto = function() {
 
 RainData.statics.toDtoGraphLine = function toDtoGraphLine (data) {
   return [
-    new Date(data.date).valueOf(),
+    new Date(Date.UTC(
+      data.date.getFullYear(),
+      data.date.getMonth(),
+      data.date.getDay(),
+      data.date.getHours(),
+      data.date.getMinutes())
+    ).valueOf(),
     data.value
   ]
 };

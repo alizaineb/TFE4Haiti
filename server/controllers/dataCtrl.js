@@ -88,8 +88,11 @@ exports.getMonthly = function(req, res) {
       return res.status(500).send("Erreur lors de la station liée .");
     }
     let year = req.params.year;
-    let dateMin = new Date(year,0,1,12,0,0,0);
-    let dateMax = new Date(year, 11, 31, 12,0,0,0);
+    let dateMin = new Date(Date.UTC(year,0,1,12,0,0,0));
+    let dateMax = new Date(Date.UTC(year, 11, 31, 12,0,0,0));
+
+    console.log(dateMin);
+    console.log(dateMax);
 
     dataModel.rainDataModel.find({
       id_station: req.params.stationId,
@@ -115,7 +118,7 @@ exports.getMonthly = function(req, res) {
         if(i === 11 ){
           d = dateMax;
         }else {
-          d = new Date(year,i,1,12,0,0,0);
+          d = new Date(Date.UTC(year,i,1,12,0,0,0));
         }
         let val = mapValue.get(i);
         if (val === 0)
