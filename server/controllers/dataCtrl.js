@@ -5,6 +5,7 @@ const formidable = require('formidable');
 const logger = require('../config/logger');
 const dataModel = require('./../models/data');
 const checkParam = require('./utils').checkParam;
+const state = require('../config/constants').DataType;
 
 const Station = require("../models/station");
 const UsersModel = require("../models/users");
@@ -33,8 +34,8 @@ insertData = function(req, res, datas, station, user) {
 
     // Va falloir utiliser Promise.all(les promesses).then etc : https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
 
-    // console.log("Insert Data : ", datas)
-    dataModel.rainDataModel.insertMany(datas, (err, docs) => {
+    // console.log("Data to insert : ", datas);
+    dataModel.RainDataAwaitingModel.insertMany(datas, (err, docs) => {
       // console.log(err);
       // console.log(docs);
       if (err) {
@@ -266,38 +267,31 @@ exports.importManualData = function(req, res) {
   // console.log('[USERID] ', req.token_decoded);
 
   let tmp = [];
-  for (let i = 0; i < datas.length; i++) {
-    let d = datas[i];
-    let data = new dataModel.rainDataModel();
-    data.id_station = d.id_station;
-    data.id_user = d.id_user;
-    data.date = d.date;
-    data.value = d.value;
-    tmp.push(data);
-  }
 
   Station.stationModel.findById({ _id: stationId }, (err, station) => {
     if (err) {
       logger.error(err);
-      res.status(500).send(`erreur lors de la recupération de la station ${stationId}`)
+      res.status(500).send(`erreur lors de la récupération de la station ${stationId}`)
     } else {
       // console.log('[STATION] : ', station);
       UsersModel.userModel.findById({ _id: userId }, (err, user) => {
         if (err) {
           logger.error(err);
-          res.status(500).send(`erreur lors de la recupération de l'utilisateur ${userId}`)
+          res.status(500).send(`erreur lors de la récupération de l'utilisateur ${userId}`)
         } else {
           // console.log('[USER] : ', user);
           for (let i = 0; i < datas.length; i++) {
             const d = datas[i];
-            let data = new dataModel.rainDataModel();
+            let data = new dataModel.RainDataAwaitingModel();
             data.id_station = station._id;
             data.id_user = user._id;
             data.date = d.date;
             data.value = d.value;
+            data.type = state.INDIVIDUAL;
             tmp.push(data);
+            // console.log(data);
           }
-          insertData(req, res, datas, station, user);
+          insertData(req, res, tmp, station, user);
         }
       });
     }
@@ -380,7 +374,18 @@ exports.importFileData = function(req, res) {
                         prevDate = data.date;
                       }
                     }
-                    insertData(req, res, datas, station, user)
+                    // insertData(req, res, datas, station, user)
+                    dataModel.rainDataModel.insertMany(datas, (err, docs) => {
+                      // console.log(err);
+                      // console.log(docs);
+                      if (err) {
+                        // console.log('erreur : ', err);
+
+                        res.status(500).send(err); //'Les données n\'ont pas sur être insérer...');
+                      } else {
+                        res.status(200).send();
+                      }
+                    })
                   }
 
                 });
