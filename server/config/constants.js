@@ -20,5 +20,6 @@ exports.stationState = {
 
 exports.DataType = {
   FILE: "file",
-  INDIVIDUAL: "individual"
+  INDIVIDUAL: "individual",
+  UPDATE: "update"
 }

@@ -43,7 +43,8 @@ const RainDataAwaiting = new Schema({
   id_user: { type: String, required: true },
   date: { type: Date, required: true },
   value: { type: Number, required: true, min: 0 },
-  type: {type: String, enum: [state.FILE, state.INDIVIDUAL], required: true }
+  type: {type: String, enum: [state.FILE, state.INDIVIDUAL, state.UPDATE], required: true },
+  id_old_data: {type: String, default: '-1'}
 });
 
 RainDataAwaiting.index({ "id_station": 1, "date": 1 }, { "unique": true });
