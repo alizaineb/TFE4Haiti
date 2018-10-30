@@ -1,3 +1,4 @@
+
 const mongoose = require('mongoose');
 const state = require('../config/constants').DataType;
 
@@ -52,3 +53,12 @@ const RainDataAwaitingModel = mongoose.model("rainDataAwaiting", RainDataAwaitin
 
 // Export du modèle
 exports.RainDataAwaitingModel = RainDataAwaitingModel;
+
+exports.RainDataAwaitinToAccepted = function(dataAwaiting){
+  let rainData = new rainDataModel();
+  rainData.date = dataAwaiting.date;
+  rainData.id_user = dataAwaiting.id_user;
+  rainData.id_station = dataAwaiting.id_station;
+  rainData.value = dataAwaiting.value;
+  return rainData
+}

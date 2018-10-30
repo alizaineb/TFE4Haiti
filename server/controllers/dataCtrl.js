@@ -61,6 +61,8 @@ exports.getAwaiting = function(req, res) {
   });
 }
 
+
+
 exports.acceptAwaiting = function(req, res) {
   checkParam(req, res, ["id"], function() {
     let id = req.body.id;
@@ -73,11 +75,7 @@ exports.acceptAwaiting = function(req, res) {
         let status = 200;
         switch (data.type) {
           case state.INDIVIDUAL:
-            let rainData = new dataModel.rainDataModel();
-            rainData.date = data.date;
-            rainData.id_user = data.id_user;
-            rainData.id_station = data.id_station;
-            rainData.value = data.value;
+            const rainData = dataModel.RainDataAwaitinToAccepted(data);
             rainData.save().then(() => {
               dataModel.RainDataAwaitingModel.deleteOne({_id: data._id}).then(() => {
                 res.status(200).send()
