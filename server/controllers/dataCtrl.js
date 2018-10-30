@@ -89,8 +89,8 @@ exports.getMonthly = function(req, res) {
       return res.status(500).send("Erreur lors de la station liée .");
     }
     let year = req.params.year;
-    let dateMin = new Date(Date.UTC(year,0,1,12,0,0,0));
-    let dateMax = new Date(Date.UTC(year, 11, 31, 12,0,0,0));
+    let dateMin = new Date(Date.UTC(year, 0, 1, 12, 0, 0, 0));
+    let dateMax = new Date(Date.UTC(year, 11, 31, 12, 0, 0, 0));
 
     console.log(dateMin);
     console.log(dateMax);
@@ -116,10 +116,10 @@ exports.getMonthly = function(req, res) {
       let tabD = [];
       for (i = 0; i < 12; i++) {
         let d;
-        if(i === 11 ){
+        if (i === 11) {
           d = dateMax;
-        }else {
-          d = new Date(Date.UTC(year,i,1,12,0,0,0));
+        } else {
+          d = new Date(Date.UTC(year, i, 1, 12, 0, 0, 0));
         }
         let val = mapValue.get(i);
         if (val === 0)
@@ -159,7 +159,7 @@ exports.getForDay = function(req, res) {
       }
       //let tabD = [];
       //data.forEach(data => tabD.push(data.toDto()));
-      preprocessData(data, req.params.stationId, station.interval);
+      preprocessData(data, req.params.stationId, station.interval, dateMin, dateMax);
       return res.status(200).send(data);
     });
   });
@@ -168,14 +168,32 @@ exports.getForDay = function(req, res) {
 
 // Cette méthode va remplir les trous de données potentiels en créant une structure de données avec la value à -1
 // va entrer les données traitées dans le tableau : this.allDatas
-function preprocessData(dataToProcess, stationId, interval) {
+function preprocessData(dataToProcess, stationId, interval, dateDebut, dateFin) {
   // Si pas de tableau ou tableau vide
   if (!dataToProcess || dataToProcess.length === 0) {
     return;
   }
-  let hopSize = getHopSize(interval);
-  // Get first doit etre minuit sinon on la créée et l'ajoute en 1er
-  let firstValueDate = dataToProcess[0].date;
+  let hopSize = getIntervalInMinute(interval);
+
+  let currDate = dateDebut;
+  let idx = 0;
+  let intervalInMs = hopSize * 60000;
+  while (currDate < dateFin) {
+    let currDateMilis = currDate.getTime();
+    if (currDateMilis < dataToProcess[idx].date.getTime()) {
+      let correctedDate = new Date(currDateMilis);
+      let tmp = {};
+      tmp.id_station = stationId;
+      tmp.date = correctedDate;
+      dataToProcess.splice(0, 0, tmp);
+    }
+    currDate = new Date(currDateMilis + intervalInMs);
+  }
+  console.log("___________________________________________________________________________");
+  console.log(dataToProcess);
+  console.log("___________________________________________________________________________");
+  return dataToProcess;
+  /*
   if (firstValueDate.getHours() !== 0 && firstValueDate.getMinutes() !== 0) {
     let correctedDate = new Date(firstValueDate.getFullYear() + "-" + (firstValueDate.getMonth() + 1) + "-" + firstValueDate.getDate());
     let tmp = {};
@@ -205,32 +223,14 @@ function preprocessData(dataToProcess, stationId, interval) {
     tmp.id_station = stationId;
     tmp.date = dateShouldBeNextDay;
     dataToProcess.push(tmp);
-  }
-  return dataToProcess;
+  }*/
 };
 
 function minTwoDigits(n) {
   return (n < 10 ? '0' : '') + n;
 }
 
-function getHopSize(interval) {
-  switch (interval) {
-    case "1min":
-      return 1;
-    case "5min":
-      return 5;
-    case "10min":
-      return 10;
-    case "15min":
-      return 15;
-    case "30min":
-      return 30;
-    default:
-      return 1;
-  }
-}
-
-function getIntervalInMinute(interval){
+function getIntervalInMinute(interval) {
   switch (interval) {
     case "1min":
       return 1;
@@ -357,10 +357,10 @@ exports.importFileData = function(req, res) {
                         data.id_user = user._id;
                         data.date = new Date(d[0]);
                         // console.log(data.date);
-                        if(first){
+                        if (first) {
                           data.value = d[1].replace(',', '.');
                           datas.push(data);
-                        }else{
+                        } else {
                           if (checkDateInterval(prevDate, data.date, station.interval || true)) {
                             data.value = d[1];
                             datas.push(data);
@@ -426,17 +426,17 @@ function checkDateInterval(date1, date2, interval) {
 function push() {
   const datas = [];
   const id_user = "5bbdb325d7aec61a195afc96";
-  const id_station = "5bbdb55fd7aec61a195afc9c";
+  const id_station = "5bbf1bf686649912d4642b53";
   let ptr = 0;
-  let intervalle = 15;
-  for (let jour = 2; jour < 29; jour++) {
+  let intervalle = 1;
+  for (let jour = 2; jour < 14; jour++) {
     for (let i = 2; i <= 25; i++) {
       for (let j = 0; j < 60; j += intervalle) {
         let item = {};
         item.id_station = id_station;
         item.id_user = id_user;
 
-        let date2 = new Date(2017, 4, jour, i, j);
+        let date2 = new Date(2018, 09, jour, i, j);
         item.date = date2;
         console.log(date2);
         item.value = getRandomInt(10);

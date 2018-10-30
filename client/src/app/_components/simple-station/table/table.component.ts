@@ -165,7 +165,6 @@ export class TableComponent implements OnInit, OnChanges {
     this.mins = [];
     this.maxs = [];
     this.sums = [];
-
     this.totVals = 0;
     this.totSum = 0;
     let hopSize = this.computeStep(this.intervalSelected, this.currentStation.interval);
@@ -184,7 +183,7 @@ export class TableComponent implements OnInit, OnChanges {
         let sum = 0;
         let empty = 0;
         for (let j = i; j < i + hopSize; j++) {
-          if (this.allDatas[j] && this.allDatas[j].value) {
+          if (this.allDatas[j] && (this.allDatas[j].value || this.allDatas[j].value == 0)) {
             sum += this.allDatas[j].value;
           } else {
             empty++;
@@ -243,6 +242,9 @@ export class TableComponent implements OnInit, OnChanges {
     }
     this.totMin = min;
     this.totMax = max;
+
+
+    console.log(this.aggregatedDatas);
   }
 
   getRange(num) {
