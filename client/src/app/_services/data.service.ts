@@ -23,6 +23,10 @@ export class DataService {
     return this.http.get<RainData[]>(environment.apiUrl + '/rainDataGraphLineMonthly/' + stationId+ '/'+ year);
   }
 
+  getAllAwaiting(){
+    return this.http.get<RainData[]>(environment.apiUrl + '/rainData/awaiting');
+  }
+
 
 
 }

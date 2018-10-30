@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { first, map } from 'rxjs/operators';
-import { UserService } from "../../_services/user.service";
-import { Station } from "../../_models";
-import { User } from "../../_models";
-import { StationsService } from "../../_services/stations.service";
-import { AlertService } from '../../_services/index';
+import {Component, OnInit} from '@angular/core';
+import {first, map} from 'rxjs/operators';
+import {UserService} from "../../_services/user.service";
+import {Station} from "../../_models";
+import {User} from "../../_models";
+import {StationsService} from "../../_services/stations.service";
+import {AlertService} from '../../_services/index';
+import {DataService} from "../../_services/data.service";
 
 @Component({
   selector: 'app-admin-panel',
@@ -20,13 +21,22 @@ export class AdminPanelComponent implements OnInit {
 
   headersUsers: string[];
   headersStation: string[];
+  headersData: string[];
   users = [];
   stations = [];
+  rainDatas = [];
   private map: Map<string, string>;
   private mapUserFilter: Map<string, string>;
-  constructor(private userService: UserService, private stationsService: StationsService, private alertService: AlertService) {
+
+  constructor(
+    private userService: UserService,
+    private stationsService: StationsService,
+    private alertService: AlertService,
+    private rainDataService: DataService
+  ) {
     this.headersUsers = ["Nom", "Prénom", "Adresse mail", "Role requis", " Date de création"];
     this.headersStation = ["Nom de la station", "Latitude", "Longitude", "Intervalle", "Auteur", "Date de mise en service"];
+    this.headersData = ["Nom de la Station", "Type", "Valeur"]
     this.showUsers = false;
     this.showStations = false;
     this.showDatas = false;
@@ -35,6 +45,7 @@ export class AdminPanelComponent implements OnInit {
   ngOnInit() {
     this.loadAwaitingUsers();
     this.loadAwaitingStation();
+    this.loadAwaitingData();
     this.map = new Map();
     this.map.set("Nom de la station", "name");
     this.map.set("Latitude", "latitude");
@@ -68,13 +79,13 @@ export class AdminPanelComponent implements OnInit {
     let self = this;
     this.stationsService.getAllAwaiting()
       .pipe(map(stations => {
-        for (let n of stations) {
-          this.userService.getById(n.user_creator_id).pipe(first()).subscribe(user => {
-            n.user_creator = user.mail;
-          });
-        }
-        return stations;
-      })
+          for (let n of stations) {
+            this.userService.getById(n.user_creator_id).pipe(first()).subscribe(user => {
+              n.user_creator = user.mail;
+            });
+          }
+          return stations;
+        })
       )
       .subscribe(res => {
         self.stations = res;
@@ -87,7 +98,15 @@ export class AdminPanelComponent implements OnInit {
   }
 
   loadAwaitingData() {
-    this.showDatas = false;
+    const self = this;
+    self.rainDataService.getAllAwaiting().subscribe(datas => {
+        self.rainDatas =  datas;
+        self.showDatas = this.rainDatas.length > 0;
+      },
+      err => {
+          this.alertService.error(err);
+      })
+
   }
 
   setCurrUser(id: string) {
@@ -99,9 +118,9 @@ export class AdminPanelComponent implements OnInit {
     this.userService.acceptUser(id)
       .pipe(first())
       .subscribe(result => {
-        self.loadAwaitingUsers();
-        self.alertService.success("L'utilisateur a été accepté avec succès");
-      },
+          self.loadAwaitingUsers();
+          self.alertService.success("L'utilisateur a été accepté avec succès");
+        },
         error => {
           self.alertService.error(error);
         });
@@ -112,9 +131,9 @@ export class AdminPanelComponent implements OnInit {
     this.stationsService.acceptStation(station._id)
       .pipe(first())
       .subscribe(result => {
-        self.loadAwaitingStation();
-        self.alertService.success("La station a été accepté avec succès");
-      },
+          self.loadAwaitingStation();
+          self.alertService.success("La station a été accepté avec succès");
+        },
         error => {
           self.alertService.error(error);
         });
@@ -125,9 +144,9 @@ export class AdminPanelComponent implements OnInit {
     this.stationsService.delete(station._id)
       .pipe(first())
       .subscribe(result => {
-        self.loadAwaitingStation();
-        self.alertService.success("La station a été refusée avec succès");
-      },
+          self.loadAwaitingStation();
+          self.alertService.success("La station a été refusée avec succès");
+        },
         error => {
           self.alertService.error(error);
         });

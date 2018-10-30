@@ -74,6 +74,34 @@
   <h1>
     Donnée(s) en attente de validation
   </h1>
+  <table class="table table-striped table-bordered">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th *ngFor="let head of headersData">
+        {{head}}
+        <i class="fa fa-sort float-right" aria-hidden="true" (click)="sortDataStation(head)"></i>
+      </th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let station of stations | paginate: { itemsPerPage: 10, currentPage: pageStations, id:'stationspage' } ; index as i;">
+      <td>{{i+1}}</td>
+      <td>{{station.name}}</td>
+      <td>{{station.latitude}}</td>
+      <td>{{station.longitude}}</td>
+      <td>{{station.interval}}</td>
+      <td>{{station.user_creator}}</td>
+      <td>{{station.createdAt | date: 'd/MM/yyyy'}}</td>
+      <td>
+        <i class="fas fa-check fa-fw fa-1x" (click)="acceptStation(station)"></i>
+        <i class="fas fa-trash fa-fw fa-1x" (click)="refuseStation(station)"></i>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <pagination-controls (pageChange)="pageStations = $event" id="datasPagination" autoHide="true"></pagination-controls>
 </div>
 
 <!-- Modal refuse user -->
