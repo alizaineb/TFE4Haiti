@@ -40,6 +40,7 @@ import { StationImportDataComponent } from './_components/stations/import-data/s
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { GraphLineComponent } from './_components/simple-station/graph-line/graph-line.component';
 import { TableComponent } from './_components/simple-station/table/table.component';
+import { UpdateDataModalComponent } from './_components/simple-station/table/update-data-modal/update-data-modal.component';
 
 
 @NgModule({
@@ -81,7 +82,8 @@ import { TableComponent } from './_components/simple-station/table/table.compone
     AssignUsersComponent,
     StationImportDataComponent,
     GraphLineComponent,
-    TableComponent],
+    TableComponent,
+    UpdateDataModalComponent],
   providers: [
     AuthGuard,
     AlertService,

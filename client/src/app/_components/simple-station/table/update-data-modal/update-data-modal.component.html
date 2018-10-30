@@ -1,0 +1,21 @@
+<div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h1 class="modal-title">Modifier une donnée</h1>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="container">
+        <p> ok </p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="resetStation()">Réinitialiser</button>
+      <button (click)="resetStation()" type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+      <button (click)="sendStation()" type="submit" class="btn btn-success" data-dismiss="modal" [disabled]="!updateStationFormNg.form.valid">Envoyer
+      </button>
+    </div>
+  </div>
+</div>

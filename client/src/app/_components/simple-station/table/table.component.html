@@ -53,8 +53,14 @@
       <tr *ngFor="let rowName of rows; let i = index">
         <th scope="row" class="solidBorderRight">{{rowName}}</th>
         <th *ngFor="let tmp of getRange(24); let idx = index">
-          <div *ngIf="aggregatedDatas[idx][i].value || aggregatedDatas[idx][i].value == 0 ; else has_data"> {{aggregatedDatas[idx][i].value}} </div>
-          <ng-template #has_data> - </ng-template>
+          <div *ngIf="aggregatedDatas[idx][i].value || aggregatedDatas[idx][i].value == 0 ; else has_no_data">
+            <div *ngIf="sameIntervalAsStation; else no_interval_with_data" (dblclick)="editData(aggregatedDatas[idx][i])" data-toggle="modal" data-target="#updateDataModal">{{aggregatedDatas[idx][i].value}}</div>
+            <ng-template #no_interval_with_data> {{aggregatedDatas[idx][i].value}} </ng-template>
+          </div>
+          <ng-template #has_no_data>
+            <div *ngIf="sameIntervalAsStation; else no_interval_noData" (dblclick)="editData(undefined)" data-toggle="modal" data-target="#updateDataModal"> - </div>
+            <ng-template #no_interval_noData> - </ng-template>
+          </ng-template>
         </th>
       </tr>
     </tbody>
@@ -106,5 +112,11 @@
         Nombre de valeurs : {{totVals}}
       </div>
     </div>
+  </div>
+</div>
+
+<div class="modal fade" id="updateDataModal" tabindex="-1" role="dialog" aria-labelledby="updateDataModalLabel" aria-hidden="true">
+  <div *ngIf="dataToEdit">
+    <app-update-data-modal [dataToUpdate]="dataToEdit"></app-update-data-modal>
   </div>
 </div>

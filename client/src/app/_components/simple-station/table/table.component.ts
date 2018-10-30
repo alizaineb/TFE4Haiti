@@ -39,13 +39,16 @@ export class TableComponent implements OnInit, OnChanges {
   private dataLoading: boolean;
   private noData: boolean;
   private dataToShow: boolean;
-
+  private sameIntervalAsStation: boolean;
+  private dataToEdit: RainData;
 
   // Recap values
   private totVals: number;
   private totSum: number;
   private totMin: number;
   private totMax: number;
+
+
   constructor(private stationService: StationsService, private alertService: AlertService) { }
 
   ngOnInit() {
@@ -56,6 +59,7 @@ export class TableComponent implements OnInit, OnChanges {
     this.dataLoading = false;
     this.noData = false;
     this.dataToShow = false;
+    this.sameIntervalAsStation = false;
 
     let self = this;
     this.datePicker = flatpickr('#datePicker', {
@@ -71,9 +75,11 @@ export class TableComponent implements OnInit, OnChanges {
       this.cols[i] = this.minTwoDigits(i);
     }
   }
+
   private minTwoDigits(n) {
     return (n < 10 ? '0' : '') + n;
   }
+
   ngOnChanges(changes: SimpleChanges): void {
     const self = this;
     const prom1 = new Promise((resolve, reject) => {
@@ -99,7 +105,6 @@ export class TableComponent implements OnInit, OnChanges {
       this.intervalsFiltered.splice(this.intervalsFiltered.indexOf("15min"), 1);
     }
   }
-
 
   dateChanged(selectedDates, dateStr, instance) {
     let self = this;
@@ -130,8 +135,12 @@ export class TableComponent implements OnInit, OnChanges {
 
 
   intervalleChanged(val) {
-    if (this.intervalsFiltered.indexOf(val) < 0) {
+    this.sameIntervalAsStation = false;
+    let intervalIdx = this.intervalsFiltered.indexOf(val);
+    if (intervalIdx < 0) {
       return;
+    } else if (intervalIdx == 0) {
+      this.sameIntervalAsStation = true;
     }
     this.intervalSelected = val;
     this.noIntervalSelected = false;
@@ -272,6 +281,18 @@ export class TableComponent implements OnInit, OnChanges {
         return 60;
       default:
         return 1;
+    }
+  }
+
+  editData(data) {
+    // ! peut être une data 'vide' en passant de - à qqchose
+    if (data) {
+      this.dataToEdit = data;
+      console.log(data._id);
+      console.log(data.value);
+    } else {
+      this.dataToEdit = {} as any;
+      console.log("NO DATA");
     }
   }
 }
