@@ -19,7 +19,7 @@ RainData.methods.toDto = function() {
   };
 };
 
-RainData.statics.toDtoGraphLine = function toDtoGraphLine (data) {
+RainData.statics.toDtoGraphLine = function toDtoGraphLine(data) {
   return [
     new Date(data.date).valueOf(),
     data.value
@@ -27,6 +27,7 @@ RainData.statics.toDtoGraphLine = function toDtoGraphLine (data) {
 };
 
 //Definition du modèle
+RainData.index({ "id_station": 1, "date": 1 }, { "unique": true });
 const rainDataModel = mongoose.model("rainData", RainData);
 
 // Export du modèle
