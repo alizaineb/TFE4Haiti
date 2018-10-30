@@ -13,6 +13,7 @@ export class RainData {
 }
 
 export class RainDataAwaiting {
+  public _id: string;
   public id_station: string;
   public station : string;
   public id_user: string;
