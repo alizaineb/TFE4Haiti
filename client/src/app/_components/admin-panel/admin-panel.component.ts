@@ -132,6 +132,10 @@ export class AdminPanelComponent implements OnInit {
   isIndividual(data: RainDataAwaiting){
     return data.type == "individual";
   }
+  isUpdate(data: RainDataAwaiting){
+    console.log(data.type == "update")
+    return data.type == "update";
+  }
 
   isAFile(data: RainDataAwaiting){
     return data.type == "file";

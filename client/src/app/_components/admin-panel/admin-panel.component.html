@@ -87,14 +87,15 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of rainDatas | paginate: { itemsPerPage: 10, currentPage: pageStations, id:'datasPagination' } ; index as i;">
-        <td>{{i+1}}</td>
-        <td>{{data.station}}</td>
-        <td>{{data.user}}</td>
-        <td>{{data.type}}</td>
-        <td>{{data.date | date: 'd/MM/yyyy HH:mm'}}</td>
+    <tr *ngFor="let data of rainDatas | paginate: { itemsPerPage: 10, currentPage: pageStations, id:'datasPagination' } ; index as i;">
+      <td>{{i+1}}</td>
+      <td>{{data.station}}</td>
+      <td>{{data.user}}</td>
+      <td>{{data.type}}</td>
+      <td>{{data.date | date: 'd/MM/yyyy HH:mm'}}</td>
 
-        <td *ngIf="isIndividual(data)">{{data.value}}</td>
+      <td *ngIf="isIndividual(data)">{{data.value}}</td>
+      <td *ngIf="isUpdate(data)">{{data.value || 'Données à supprimée'}}</td>
 
         <td *ngIf="isAFile(data)"><a href="/upload/{{data.value}}" individual>{{data.value}}</a></td>
         <td>
