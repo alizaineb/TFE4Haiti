@@ -94,6 +94,7 @@
       <td>{{data.date | date: 'd/MM/yyyy h:mm'}}</td>
 
       <td *ngIf="isIndividual(data)">{{data.value}}</td>
+      <td *ngIf="isUpdate(data)">{{data.value || 'Données à supprimée'}}</td>
 
       <td *ngIf="isAFile(data)"><a href="/upload/{{data.value}}" individual>{{data.value}}</a></td>
       <td>
