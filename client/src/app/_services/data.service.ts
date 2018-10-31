@@ -15,12 +15,16 @@ export class DataService {
     return this.http.get<RainData[]>(environment.apiUrl + '/rainData/' + stationId);
   }
 
-  getAllRainDataGraphLine(stationId): Observable<RainData[]> {
-    return this.http.get<RainData[]>(environment.apiUrl + '/rainDataGraphLine/' + stationId);
+  getAllRainDataGraphLine(stationId) {
+    return this.http.get(environment.apiUrl + '/rainDataGraphLine/' + stationId);
   }
 
-  getAllRainDataGraphLineMonthly(stationId, year): Observable<RainData[]> {
-    return this.http.get<RainData[]>(environment.apiUrl + '/rainDataGraphLineMonthly/' + stationId + '/' + year);
+  getAllRainDataGraphLineOneYear(stationId, year) {
+    return this.http.get(environment.apiUrl + '/rainDataGraphLineOneYear/' + stationId + '/' + year);
+  }
+
+  getAllRainDataGraphLineOneMonth(stationId, month, year) {
+    return this.http.get(environment.apiUrl + '/rainDataGraphLineOneMonth/' + stationId + '/' + month + '/' + year);
   }
 
   updateData(id: string, newData: string) {

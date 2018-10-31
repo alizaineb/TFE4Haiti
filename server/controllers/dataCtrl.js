@@ -62,7 +62,6 @@ exports.getAwaiting = function(req, res) {
   });
 };
 
-
 exports.acceptAwaiting = function(req, res) {
   checkParam(req, res, ["id"], function() {
     let id = req.body.id;
@@ -209,7 +208,7 @@ exports.get = function(req, res) {
   });
 };
 
-
+//TODO Check si la station n'existe pas
 exports.getRainDataGraphLine = function(req, res) {
   Station.stationModel.findById(req.params.stationId, (err, station) => {
     if (err) {
@@ -228,18 +227,46 @@ exports.getRainDataGraphLine = function(req, res) {
   });
 };
 
+//TODO Check si la station n'existe pas
+exports.getRainDataGraphLineOneMonth = function(req, res) {
+  Station.stationModel.findById(req.params.stationId, (err, station) => {
+    if (err) {
+      return res.status(500).send("Erreur lors de la station liée .");
+    }
 
-exports.getMonthly = function(req, res) {
+    let year = req.params.year;
+    let month = req.params.month;
+
+    let dateMin = new Date(Date.UTC(year, month-1, 1, 12, 0, 0, 0));
+    let dateMax = new Date(Date.UTC(year, month-1, 31, 12, 23, 59, 0));
+
+
+    dataModel.rainDataModel.find({
+      id_station: req.params.stationId,
+      date: { "$gte": dateMin, "$lt": dateMax }
+    }, 'date value', { sort: { date: 1 } }, function(err, data) {
+      if (err) {
+        logger.error(err);
+        return res.status(500).send("Erreur lors de la récupération des données.");
+      }
+      //preprocessData(data, req.params.stationId, station.interval);
+      let tabD = [];
+      data.forEach(data => tabD.push(dataModel.rainDataModel.toDtoGraphLine(data)));
+      return res.status(200).send(tabD);
+    });
+  });
+};
+
+
+//TODO Check si la station n'existe pas
+exports.getRainDataGraphLineOneYear = function(req, res) {
   Station.stationModel.findById(req.params.stationId, (err, station) => {
     if (err) {
       return res.status(500).send("Erreur lors de la station liée .");
     }
     let year = req.params.year;
     let dateMin = new Date(Date.UTC(year, 0, 1, 12, 0, 0, 0));
-    let dateMax = new Date(Date.UTC(year, 11, 31, 12, 0, 0, 0));
-
-    console.log(dateMin);
-    console.log(dateMax);
+    let dateMax = new Date(Date.UTC(year, 11, 31, 23, 59, 59, 0));
 
     dataModel.rainDataModel.find({
       id_station: req.params.stationId,
@@ -267,6 +294,7 @@ exports.getMonthly = function(req, res) {
         } else {
           d = new Date(Date.UTC(year, i, 1, 12, 0, 0, 0));
         }
+        console.log(mapValue);
         let val = mapValue.get(i);
         if (val === 0)
           val = null;
@@ -547,8 +575,7 @@ function push() {
         let item = {};
         item.id_station = id_station;
         item.id_user = id_user;
-
-        let date2 = new Date(2018, 9, jour, i, j);
+        let date2 = new Date(2018, 12, jour, i, j);
         item.date = date2;
         console.log(date2);
         item.value = getRandomInt(10);

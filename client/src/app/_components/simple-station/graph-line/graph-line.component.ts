@@ -22,10 +22,28 @@ export class GraphLineComponent implements OnInit {
   datePicker;
   rangeData = ['Mensuelles','Journalières','Horaires'];
   rangeSelected = 'Mensuelles';
-  yearSelected = new Date().getFullYear();
-  currentYear = new Date().getFullYear();
+
+  currentDate:Date;
+  yearSelected:number;
+  currentYear:number;
+  
+  monthSelected:number;
+  currentMonth:number;
 
   constructor(private dataService: DataService, private stationService: StationsService) { }
+
+  ngOnInit() {
+    this.currentDate = new Date();
+    this.yearSelected = this.currentDate.getFullYear();
+    this.currentYear = this.currentDate.getFullYear();
+    this.monthSelected = this.currentDate.getMonth();
+    this.currentMonth = this.currentDate.getMonth();
+    
+    this.dataLoading = true;
+    this.loadStation();
+    this.loadOneYear();
+    this.loadOptionsHighCharts()
+  }
 
   loadStation(){
     this.stationService.getById(this.stationId).subscribe(s => {this.station = s})
@@ -35,9 +53,11 @@ export class GraphLineComponent implements OnInit {
     console.log(val);
     this.rangeSelected = val;
     if(val === 'Horaires') {
-      this.loadAll()
+      this.loadAll();
+    } else  if(val === 'Journalières') {
+      this.loadOneMonth();
     } else {
-      this.loadMonthly()
+      this.loadOneYear();
     }
   }
 
@@ -47,7 +67,44 @@ export class GraphLineComponent implements OnInit {
     } else {
       this.yearSelected = this.yearSelected+1;
     }
-    this.loadMonthly();
+    this.loadOneYear();
+  }
+
+  loadOneMonth(){
+    this.dataLoading = true;
+    this.dataService.getAllRainDataGraphLineOneMonth(this.stationId,this.monthSelected,this.yearSelected).subscribe(data => {
+      console.log(data);
+      // Create the chart
+      this.highChartLine = Highcharts.stockChart('containerLine', {
+        title: {
+          text: this.station.name + ' - Données pluviométriques (mm)'
+        },
+        series: [{
+          name: 'Value',
+          data: data,
+          tooltip: {
+            valueDecimals: 2
+          }
+        }]
+      });
+      // Create the chart
+      this.highChartBar = Highcharts.stockChart('containerBar', {
+        title: {
+          text: this.station.name + ' - Données pluviométriques (mm)'
+        },
+        series: [{
+          type: 'column',
+          name: 'Value:',
+          data: data,
+          tooltip: {
+            valueDecimals: 2
+          }
+        }],
+        chart: {
+          alignTicks: false
+        },
+      });
+    });
   }
 
   loadAll(){
@@ -87,10 +144,9 @@ export class GraphLineComponent implements OnInit {
     });
   }
 
-
-  loadMonthly(){
+  loadOneYear(){
     this.dataLoading = true;
-    this.dataService.getAllRainDataGraphLineMonthly(this.stationId,this.yearSelected).subscribe(data => {
+    this.dataService.getAllRainDataGraphLineOneYear(this.stationId,this.yearSelected).subscribe(data => {
       console.log(data);
       // Create the chart
       this.highChartLine = Highcharts.stockChart('containerLine', {
@@ -123,12 +179,10 @@ export class GraphLineComponent implements OnInit {
         },
       });
     });
+
   }
 
-  ngOnInit() {
-    this.dataLoading = true;
-    this.loadStation();
-    this.loadMonthly();
+  loadOptionsHighCharts(){
     const self = this;
 
     Highcharts.setOptions({
@@ -141,6 +195,7 @@ export class GraphLineComponent implements OnInit {
       },
       lang: {
         loading: 'Chargement...',
+        noData: "Pas de données",
         months: [
           'Janvier', 'Février', 'Mars', 'Avril',
           'Mai', 'Juin', 'Juillet', 'Août',
@@ -154,6 +209,13 @@ export class GraphLineComponent implements OnInit {
           'Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil',
           'Août', 'Sept', 'Oct', 'Nov', 'Dec'
         ],
+      },
+      noData: {
+        style: {
+          fontWeight: 'bold',
+          fontSize: '15px',
+          color: '#303030'
+        }
       },
       turboThreshold:0,
       scrollbar: {
@@ -220,4 +282,6 @@ export class GraphLineComponent implements OnInit {
       },
     });
   }
+
+
 }
