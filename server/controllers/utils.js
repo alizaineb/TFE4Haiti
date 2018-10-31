@@ -46,9 +46,21 @@ exports.hasAccesToStation = function(req, res, callback) {
       } else if (!station) {
         return res.status(404).send("Pas de station correspondant.");
       }
-
-
-      return res.status(500).send("TPEUX PAS");
+      // On a la station et l'utilisateur
+      // Il y a 3 checks à faire
+      // Commune :
+      if (user.commune === station.commune) {
+        return callback();
+      }
+      // Rivière :
+      if (user.river === station.river) {
+        return callback();
+      }
+      // assignée
+      if (station.users && station.users.indexOf(user._id) > -1) {
+        return callback();
+      }
+      return res.status(401).send("Vous ne pouvez pas modifier cette station.");
     });
   });
 
