@@ -1,4 +1,3 @@
-
 const mongoose = require('mongoose');
 const state = require('../config/constants').DataType;
 
@@ -43,9 +42,9 @@ const RainDataAwaiting = new Schema({
   id_station: { type: String, required: true },
   id_user: { type: String, required: true },
   date: { type: Date, required: true },
-  value: { type: String, required: true, min: 0 },
-  type: {type: String, enum: [state.FILE, state.INDIVIDUAL, state.UPDATE], required: true },
-  id_old_data: {type: String, default: '-1'}
+  value: { type: String },
+  type: { type: String, enum: [state.FILE, state.INDIVIDUAL, state.UPDATE], required: true },
+  id_old_data: { type: String, default: '-1' }
 });
 
 RainDataAwaiting.index({ "id_station": 1, "date": 1 }, { "unique": true });
@@ -54,7 +53,7 @@ const RainDataAwaitingModel = mongoose.model("rainDataAwaiting", RainDataAwaitin
 // Export du modèle
 exports.RainDataAwaitingModel = RainDataAwaitingModel;
 
-exports.RainDataAwaitinToAccepted = function(dataAwaiting){
+exports.RainDataAwaitinToAccepted = function(dataAwaiting) {
   let rainData = new rainDataModel();
   rainData.date = dataAwaiting.date;
   rainData.id_user = dataAwaiting.id_user;

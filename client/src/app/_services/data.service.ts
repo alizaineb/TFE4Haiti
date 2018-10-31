@@ -27,8 +27,8 @@ export class DataService {
     return this.http.get(environment.apiUrl + '/rainDataGraphLineOneMonth/' + stationId + '/' + month + '/' + year);
   }
 
-  updateData(id_station: string, id: string, newData: string) {
-    return this.http.post(environment.apiUrl + '/rainData/' + id_station + '/updateData', { id_curr_data: id, data: newData });
+  updateData(id_station: string, id: string, newData: string, date: Date) {
+    return this.http.post(environment.apiUrl + '/rainData/' + id_station + '/updateData', { id_curr_data: id, data: newData, date: date });
   }
   getAllAwaiting() {
     return this.http.get<RainDataAwaiting[]>(environment.apiUrl + '/rainData/awaiting');

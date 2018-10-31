@@ -30,7 +30,7 @@ export class UpdateDataModalComponent implements OnInit {
   }
 
   updateData() {
-    this.dataService.updateData(this.id_station, this.dataToUpdate._id, (<HTMLInputElement>document.getElementById("inputValue")).value)
+    this.dataService.updateData(this.id_station, this.dataToUpdate._id, (<HTMLInputElement>document.getElementById("inputValue")).value, this.dataToUpdate.date)
       .subscribe(
         result => {
           // trigger sent

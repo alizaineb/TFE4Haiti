@@ -523,21 +523,87 @@ exports.importFileData = function(req, res) {
 };
 
 exports.updateData = function(req, res) {
-  let id = req.body.id_curr_data;
+  let id_data = req.body.id_curr_data;
   let data = req.body.data;
   let number = parseInt(data);
   if (number || number == 0) {
     if (number < 0) {
       return res.status(400).send("Le paramètre doit être un chiffre positif.");
     }
-    // Créer data individual
-    console.log("DATA");
-    return res.status(200).send();
+    // une donnée ==> autre donnée
+    if (id_data) {
+      dataModel.rainDataModel.findById(id_data, (err, rainData) => {
+        if (err) {
+          logger.error("[UTILS] updateData req.body.data : ", err);
+          return res.status(500).send("Erreur lors de la récupération de la donnée.");
+        }
+        if (!rainData) {
+          return res.status(404).send("Donnée inexistante.");
+        } else {
+          let dataToSend = new dataModel.RainDataAwaitingModel();
+          dataToSend.id_station = req.params.id_station;
+          dataToSend.id_user = req.token_decoded.id;
+          dataToSend.id_old_data = req.id_data;
+          dataToSend.date = rainData.date;
+          dataToSend.type = state.UPDATE;
+          dataToSend.value = data;
+          dataToSend.save().then(() => {
+            return res.status(201).send();
+          }).catch(function(err) {
+            logger.error(err);
+            return res.status(500).send("Une erreur est survenue lors de la création de la donnée en attente");
+          });
+        }
+      });
+    }
+    // Pas de donnée => une donnée
+    else {
+      let date = req.body.date || '';
+      if (!date) {
+        return res.status(400).send("Une date est requise");
+      }
+      date = new Date(date);
+      date = new Date(date.getTime() - 7200000);
+      let dataToSend = new dataModel.RainDataAwaitingModel();
+      dataToSend.id_station = req.params.id_station;
+      dataToSend.id_user = req.token_decoded.id;
+      dataToSend.date = date;
+      dataToSend.type = state.INDIVIDUAL;
+      dataToSend.value = data;
+      dataToSend.save().then(() => {
+        return res.status(201).send();
+      }).catch(function(err) {
+        logger.error(err);
+        // TODO ICI CODE : ASEDFRTY
+        return res.status(500).send("La donnée a déjà été modifié par quelqu'un d'autre");
+      });
+    }
   }
-  // Si data est vide ==>
+  // Si data on désire passer la donnée à vide
   else if (req.body.data === undefined || req.body.data === '') {
-    console.log("JE SUIS VIDE");
-    return res.status(200).send();
+    // Si il manque la data à laquelle if faut update
+    dataModel.rainDataModel.findById(id_data, (err, rainData) => {
+      if (err) {
+        logger.error("[UTILS] updateData req.body.data : ", err);
+        return res.status(500).send("Erreur lors de la récupération de la donnée.");
+      }
+      if (!rainData) {
+        return res.status(404).send("Donnée inexistante.");
+      } else {
+        let dataToSend = new dataModel.RainDataAwaitingModel();
+        dataToSend.id_station = req.params.id_station;
+        dataToSend.id_user = req.token_decoded.id;
+        dataToSend.date = rainData.date;
+        dataToSend.id_old_data = req.id_data;
+        dataToSend.type = state.UPDATE;
+        dataToSend.save().then(() => {
+          return res.status(201).send();
+        }).catch(function(err) {
+          logger.error(err);
+          return res.status(500).send("Une erreur est survenue lors de la création de la donnée en attente");
+        });
+      }
+    });
   }
   // Si c'es pas un number
   else if (isNaN(number)) {
