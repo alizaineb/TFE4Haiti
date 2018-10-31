@@ -1,4 +1,18 @@
-
+<div *ngIf="station">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        Station : {{station.name}}
+      </div>
+      <div class="col-md-4">
+        Commune : {{station.commune}}
+      </div>
+      <div class="col-md-4">
+        Rivière : {{station.river}}
+      </div>
+    </div>
+  </div>
+</div>
 
 <div>
   <div>
@@ -13,12 +27,15 @@
   <div *ngIf="rangeSelected === 'Mensuelles'">
     <i (click)="updateYearSelected('add')" class="fas fa-arrow-left"></i>
     <input size="3" type="text" [ngModel]="yearSelected">
-    <i (click)="updateYearSelected('sub')" class="fas fa-arrow-right"></i>
+    <i  *ngIf="yearSelected !== currentYear" (click)="updateYearSelected('sub')" class="fas fa-arrow-right"></i>
   </div>
 
   <div>
-    <div id="containerLine" style="width:100%; height:400px;"></div>
-    <div id="containerBar" style="width:100%; height:400px;"></div>
+    <div [hidden]="!dataLoading" class="text-center container">
+      <i class="fas fa-spinner fa-spin fa-7x"></i>
+    </div>
+    <div [hidden]="dataLoading" id="containerLine" style="width:100%; height:400px;"></div>
+    <div [hidden]="dataLoading" id="containerBar" style="width:100%; height:400px;"></div>
   </div>
 </div>
 

@@ -59,7 +59,7 @@ exports.getAwaiting = function(req, res) {
       return res.status(200).send(datas);
     }
   });
-}
+};
 
 
 
@@ -490,9 +490,9 @@ function checkDateInterval(date1, date2, interval) {
 function push() {
   const datas = [];
   const id_user = "5bbdb325d7aec61a195afc96";
-  const id_station = "5bbf1bf686649912d4642b53";
+  const id_station = "5bbdb55fd7aec61a195afc9c";
   let ptr = 0;
-  let intervalle = 1;
+  let intervalle = 15;
   for (let jour = 2; jour < 14; jour++) {
     for (let i = 2; i <= 25; i++) {
       for (let j = 0; j < 60; j += intervalle) {
@@ -500,10 +500,10 @@ function push() {
         item.id_station = id_station;
         item.id_user = id_user;
 
-        let date2 = new Date(2018, 9, jour, i, j);
+        let date2 = new Date(2018, 09, jour, i, j);
         item.date = date2;
         console.log(date2);
-        item.value = getRandomInt(10);
+        item.value = getRandomInt(20);
         datas[ptr] = item;
         ptr++
       }
