@@ -43,7 +43,7 @@ const RainDataAwaiting = new Schema({
   id_station: { type: String, required: true },
   id_user: { type: String, required: true },
   date: { type: Date, required: true },
-  value: { type: Number, required: true, min: 0 },
+  value: { type: String, required: true, min: 0 },
   type: {type: String, enum: [state.FILE, state.INDIVIDUAL, state.UPDATE], required: true },
   id_old_data: {type: String, default: '-1'}
 });

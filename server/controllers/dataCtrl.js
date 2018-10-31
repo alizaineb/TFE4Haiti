@@ -59,25 +59,24 @@ exports.getAwaiting = function(req, res) {
       return res.status(200).send(datas);
     }
   });
-}
-
+};
 
 
 exports.acceptAwaiting = function(req, res) {
   checkParam(req, res, ["id"], function() {
     let id = req.body.id;
     console.log(id);
-    dataModel.RainDataAwaitingModel.findById(id, (err, data) => {
-      if(err){
+    dataModel.RainDataAwaitingModel.findById(id, (err, rainDataAwaiting) => {
+      if (err) {
         logger.error("[DATACTRL] acceptAwaiting : ", err)
-       return res.status(500).send("Erreur lors de la recupération de la donnée.")
-      }else{
+        return res.status(500).send("Erreur lors de la recupération de la donnée.")
+      } else {
         let status = 200;
-        switch (data.type) {
+        switch (rainDataAwaiting.type) {
           case state.INDIVIDUAL:
-            const rainData = dataModel.RainDataAwaitinToAccepted(data);
+            const rainData = dataModel.RainDataAwaitinToAccepted(rainDataAwaiting);
             rainData.save().then(() => {
-              dataModel.RainDataAwaitingModel.deleteOne({_id: data._id}).then(() => {
+              dataModel.RainDataAwaitingModel.deleteOne({ _id: rainDataAwaiting._id }).then(() => {
                 res.status(200).send()
               });
 
@@ -86,17 +85,85 @@ exports.acceptAwaiting = function(req, res) {
           case state.UPDATE:
             return;
           case state.FILE:
+            fs.readFile(rainDataAwaiting.value, 'utf-8', (err, fileData) => {
+              if (err) {
+                res.status(500).send("Le fichier n'a pas pu etre lu.")
+              }
+
+              Station.stationModel.findById({ _id: rainDataAwaiting.id_station }, (err, station) => {
+                if (err) {
+                  logger.error(err);
+                  res.status(500).send(`erreur lors de la recupération de la station ${rainDataAwaiting.id_station}`)
+                } else {
+                  // console.log('[STATION] : ', station);
+                  UsersModel.userModel.findById({ _id: rainDataAwaiting.id_user }, (err, user) => {
+                    if (err) {
+                      logger.error(err);
+                      res.status(500).send(`erreur lors de la recupération de l'utilisateur ${rainDataAwaiting.id_user}`)
+                    } else {
+                      let datas = [];
+                      let lines = fileData.split('\n');
+                      // console.log(lines);
+                      let prevDate = null;
+                      let first = true;
+                      for (var i = 0; i < lines.length; i++) {
+                        var l = lines[i];
+                        const d = l.split(';');
+                        // console.log(d);
+                        if (d.length > 1) {
+                          let data = new dataModel.rainDataModel();
+                          data.id_station = station._id;
+                          data.id_user = user._id;
+                          data.date = new Date(d[0]);
+                          // console.log(data.date);
+                          if (first) {
+                            data.value = d[1].replace(',', '.');
+                            datas.push(data);
+                          } else {
+                            if (checkDateInterval(prevDate, data.date, station.interval || true)) { //todo remove || true
+                              data.value = d[1];
+                              datas.push(data);
+                            } else {
+                              res.status(500).send("Les dates du fichier ne se suivent pas, ou ne corresponde pas à l'interval de la station..")
+                              return;
+                            }
+                          }
+                          prevDate = data.date;
+                        }
+                      }
+                      // insertData(req, res, datas, station, user)
+                      dataModel.rainDataModel.insertMany(datas, (err, docs) => {
+                        // console.log(err);
+                        // console.log(docs);
+                        if (err) {
+                          // console.log('erreur : ', err);
+
+                          res.status(500).send(err); //'Les données n\'ont pas sur être insérer...');
+                        } else {
+                          fs.unlink(rainDataAwaiting.value, (err) => {
+                            logger.error('[IMPORTFILE] remove : ', err);
+                          });
+                          dataModel.RainDataAwaitingModel.deleteOne({ _id: rainDataAwaiting._id }).then(() => {
+                            res.status(200).send()
+                          });
+                        }
+                      })
+                    }
+
+                  });
+                }
+              });
+
+            });
             return;
           default:
-            status=500;
+            status = 500;
             break;
 
         }
         return res.status(status).send();
       }
     });
-
-
   });
 };
 
@@ -370,73 +437,35 @@ exports.importFileData = function(req, res) {
           res.status(500).send("Le fichier n'a pas pu etre importé.");
         } else {
 
-          fs.readFile(newPath, 'utf-8', (err, data) => {
+          let tmp = [];
+          Station.stationModel.findById({ _id: stationId }, (err, station) => {
             if (err) {
-              res.status(500).send("Le fichier n'a pas pu etre lu.")
+              logger.error(err);
+              res.status(500).send(`erreur lors de la récupération de la station ${stationId}`)
+            } else {
+              // console.log('[STATION] : ', station);
+              UsersModel.userModel.findById({ _id: userId }, (err, user) => {
+                if (err) {
+                  logger.error(err);
+                  res.status(500).send(`erreur lors de la récupération de l'utilisateur ${userId}`)
+                } else {
+                  // console.log('[USER] : ', user);
+
+
+                  let data = new dataModel.RainDataAwaitingModel();
+                  data.id_station = station._id;
+                  data.id_user = user._id;
+                  data.date = Date.now();
+                  data.value = newPath;
+                  data.type = state.FILE;
+                  tmp.push(data);
+                  // console.log(data);
+
+                  insertData(req, res, tmp, station, user);
+                }
+              });
             }
-
-            Station.stationModel.findById({ _id: stationId }, (err, station) => {
-              if (err) {
-                logger.error(err);
-                res.status(500).send(`erreur lors de la recupération de la station ${stationId}`)
-              } else {
-                // console.log('[STATION] : ', station);
-                UsersModel.userModel.findById({ _id: userId }, (err, user) => {
-                  if (err) {
-                    logger.error(err);
-                    res.status(500).send(`erreur lors de la recupération de l'utilisateur ${userId}`)
-                  } else {
-                    let datas = [];
-                    let lines = data.split('\n');
-                    // console.log(lines);
-                    let prevDate = null;
-                    let first = true;
-                    for (var i = 0; i < lines.length; i++) {
-                      var l = lines[i];
-                      const d = l.split(';');
-                      // console.log(d);
-                      if (d.length > 1) {
-                        let data = new dataModel.rainDataModel();
-                        data.id_station = station._id;
-                        data.id_user = user._id;
-                        data.date = new Date(d[0]);
-                        // console.log(data.date);
-                        if (first) {
-                          data.value = d[1].replace(',', '.');
-                          datas.push(data);
-                        } else {
-                          if (checkDateInterval(prevDate, data.date, station.interval || true)) {
-                            data.value = d[1];
-                            datas.push(data);
-                          } else {
-                            res.status(500).send("Les dates du fichier ne se suivent pas, ou ne corresponde pas à l'interval de la station..")
-                            return;
-                          }
-                        }
-
-
-                        prevDate = data.date;
-                      }
-                    }
-                    // insertData(req, res, datas, station, user)
-                    dataModel.rainDataModel.insertMany(datas, (err, docs) => {
-                      // console.log(err);
-                      // console.log(docs);
-                      if (err) {
-                        // console.log('erreur : ', err);
-
-                        res.status(500).send(err); //'Les données n\'ont pas sur être insérer...');
-                      } else {
-                        res.status(200).send();
-                      }
-                    })
-                  }
-
-                });
-              }
-            });
-
-          })
+          });
 
         }
       });
