@@ -15,6 +15,7 @@ export class GraphLineComponent implements OnInit {
   private stationId: string;
 
   station:Station;
+  dataLoading: boolean;
 
   highChartLine;
   highChartBar;
@@ -22,6 +23,7 @@ export class GraphLineComponent implements OnInit {
   rangeData = ['Mensuelles','Journalières','Horaires'];
   rangeSelected = 'Mensuelles';
   yearSelected = new Date().getFullYear();
+  currentYear = new Date().getFullYear();
 
   constructor(private dataService: DataService, private stationService: StationsService) { }
 
@@ -49,6 +51,7 @@ export class GraphLineComponent implements OnInit {
   }
 
   loadAll(){
+    this.dataLoading = true;
     this.dataService.getAllRainDataGraphLine(this.stationId).subscribe(data => {
       console.log(data);
       // Create the chart
@@ -86,6 +89,7 @@ export class GraphLineComponent implements OnInit {
 
 
   loadMonthly(){
+    this.dataLoading = true;
     this.dataService.getAllRainDataGraphLineMonthly(this.stationId,this.yearSelected).subscribe(data => {
       console.log(data);
       // Create the chart
@@ -122,10 +126,19 @@ export class GraphLineComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.dataLoading = true;
     this.loadStation();
     this.loadMonthly();
-    Highcharts.setOptions({
+    const self = this;
 
+    Highcharts.setOptions({
+      chart: {
+        events: {
+          load: function () {
+            self.dataLoading = false;
+          }
+        }
+      },
       lang: {
         loading: 'Chargement...',
         months: [
