@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+const nconf = require('nconf');
 
 const formidable = require('formidable');
 const logger = require('../config/logger');
@@ -22,7 +23,7 @@ const roles = require('../config/constants').roles;
 insertData = function(req, res, datas, station, user) {
   // Vérifier que l'utilisateur peut insérer sur cette station
 
-  if (station.users.indexOf(user._id) < 0 && user.role !== roles.ADMIN) {
+  if (station.users.indexOf(user._id) < 0 && user.role !== roles.ADMIN) { //todo check user access riviere ou commune
     res.status(403).send(`Vous n'avez pas accès à la modification de cette station`);
   } else {
 
@@ -85,7 +86,8 @@ exports.acceptAwaiting = function(req, res) {
           case state.UPDATE:
             return;
           case state.FILE:
-            fs.readFile(rainDataAwaiting.value, 'utf-8', (err, fileData) => {
+            const filePath = path.join(nconf.get('uploadFolder'), rainDataAwaiting.value);
+            fs.readFile(filePath, 'utf-8', (err, fileData) => {
               if (err) {
                 res.status(500).send("Le fichier n'a pas pu etre lu.")
               }
@@ -140,7 +142,8 @@ exports.acceptAwaiting = function(req, res) {
 
                           res.status(500).send(err); //'Les données n\'ont pas sur être insérer...');
                         } else {
-                          fs.unlink(rainDataAwaiting.value, (err) => {
+                          const filePath = path.join(nconf.get('uploadFolder'), rainDataAwaiting.value);
+                          fs.unlink(filePath, (err) => {
                             logger.error('[IMPORTFILE] remove : ', err);
                           });
                           dataModel.RainDataAwaitingModel.deleteOne({ _id: rainDataAwaiting._id }).then(() => {
@@ -179,7 +182,8 @@ exports.refuseAwaiting = function(req, res) {
       return res.status(500).send("Erreur lors de la recupération de la donnée.")
     } else {
       dataModel.RainDataAwaitingModel.deleteOne({ _id: id }).then(() => {
-        fs.unlink(rainDataAwaiting.value, (err) => {
+        const filePath = path.join(nconf.get('uploadFolder'), rainDataAwaiting.value);
+        fs.unlink(filePath, (err) => {
           logger.error('[IMPORTFILE] remove : ', err);
         });
         return res.status(204).send("ok") //TODO remove body
@@ -421,10 +425,11 @@ exports.importManualData = function(req, res) {
 };
 
 exports.importFileData = function(req, res) {
-  const pathDir = path.join(__dirname, '..', 'public', 'upload');
+
+  const pathDir = nconf.get('uploadFolder')
   if (!fs.existsSync(pathDir)) {
     fs.mkdirSync(pathDir);
-    res.status(500).send("Veuillez réessyer d'importer le fichier.")
+    return res.status(500).send("Veuillez réessyer d'importer le fichier.")
   } else {
 
     const userId = req.token_decoded.id;
@@ -434,7 +439,7 @@ exports.importFileData = function(req, res) {
     Station.stationModel.findById({ _id: stationId }, (err, station) => {
       if (err) {
         logger.error(err);
-        res.status(500).send(`erreur lors de la récupération de la station ${stationId}`)
+        return res.status(500).send(`erreur lors de la récupération de la station ${stationId}`)
       } else {
         let form = new formidable.IncomingForm();
         form.uploadDir = pathDir;
