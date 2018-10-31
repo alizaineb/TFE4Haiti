@@ -20,25 +20,29 @@ export class GraphLineComponent implements OnInit {
   highChartLine;
   highChartBar;
   datePicker;
-  rangeData = ['Mensuelles','Journalières','Horaires'];
-  rangeSelected = 'Mensuelles';
+  rangeData:string[];
+  rangeSelected:string;
 
   currentDate:Date;
   yearSelected:number;
   currentYear:number;
-  
+
   monthSelected:number;
   currentMonth:number;
 
   constructor(private dataService: DataService, private stationService: StationsService) { }
 
   ngOnInit() {
+    this.rangeData = ['Mensuelles','Journalières','Horaires'];
+    this.rangeSelected = 'Mensuelles';
+
     this.currentDate = new Date();
     this.yearSelected = this.currentDate.getFullYear();
     this.currentYear = this.currentDate.getFullYear();
-    this.monthSelected = this.currentDate.getMonth();
-    this.currentMonth = this.currentDate.getMonth();
-    
+
+    this.monthSelected = this.currentDate.getMonth()+1;
+    this.currentMonth = this.currentDate.getMonth()+1;
+
     this.dataLoading = true;
     this.loadStation();
     this.loadOneYear();
@@ -68,6 +72,15 @@ export class GraphLineComponent implements OnInit {
       this.yearSelected = this.yearSelected+1;
     }
     this.loadOneYear();
+  }
+
+  updateMonthSelected(op){
+    if (op === "add"){
+      this.monthSelected = this.monthSelected-1;
+    } else {
+      this.monthSelected = this.monthSelected+1;
+    }
+    this.loadOneMonth();
   }
 
   loadOneMonth(){

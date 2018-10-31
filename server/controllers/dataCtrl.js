@@ -240,8 +240,13 @@ exports.getRainDataGraphLineOneMonth = function(req, res) {
     let year = req.params.year;
     let month = req.params.month;
 
-    let dateMin = new Date(Date.UTC(year, month, 1, 12, 0, 0, 0));
-    let dateMax = new Date(Date.UTC(year, month, 31, 23, 23, 59, 0));
+    month = parseInt(month, 10);
+    //Date month begin to 0 !
+    month-=1;
+
+    let dateMin = new Date(Date.UTC(year, month, 1, 0, 0, 0, 0));
+    let dateMax = new Date(Date.UTC(year, dateMin.getMonth()+1, 0, 23, 23, 59, 0));
+
 
     dataModel.rainDataModel.find({
       id_station: req.params.stationId,
