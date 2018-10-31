@@ -143,7 +143,7 @@ export class AdminPanelComponent implements OnInit {
 
   refuseData(data: RainDataAwaiting) {
     const self = this;
-    self.rainDataService.accepteAwaiting(data._id).subscribe(res => {
+    self.rainDataService.refuseAwaiting(data._id).subscribe(res => {
         self.alertService.success("La donnée a été refusée avec succès.");
         self.loadAwaitingData();
       },

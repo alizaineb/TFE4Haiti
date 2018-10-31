@@ -221,6 +221,12 @@ exports.routes = [
     access: [roles.ADMIN]
   },
   {
+    path: "/api/rainData/refuse/:id",
+    httpMethod: "DELETE",
+    middleWare: [controllers.data.refuseAwaiting],
+    access: [roles.ADMIN]
+  },
+  {
     path: "/api/rainData/:stationId",
     httpMethod: "GET",
     middleWare: [controllers.data.get],

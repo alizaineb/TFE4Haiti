@@ -101,6 +101,20 @@ exports.acceptAwaiting = function(req, res) {
 };
 
 
+exports.refuseAwaiting = function(req, res) {
+  let id = req.params.id || '';
+  if (!id) {
+    return res.status(400).send("Information manquante(s)");
+  }
+  // console.log(id);
+  dataModel.RainDataAwaitingModel.deleteOne({ _id: id }).then(() => {
+    return res.status(204).send("ok") //TODO remove body
+  }).catch(function(err) {
+    logger.error(err);
+    return res.status(500).send("Erreur lors du refus de la donnée.");
+  });
+};
+
 exports.get = function(req, res) {
   dataModel.rainDataModel.find({ id_station: req.params.stationId }, function(err, data) {
     if (err) {
@@ -486,7 +500,7 @@ function push() {
         item.id_station = id_station;
         item.id_user = id_user;
 
-        let date2 = new Date(2018, 09, jour, i, j);
+        let date2 = new Date(2018, 9, jour, i, j);
         item.date = date2;
         console.log(date2);
         item.value = getRandomInt(10);
