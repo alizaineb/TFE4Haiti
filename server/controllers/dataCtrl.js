@@ -514,32 +514,37 @@ exports.importFileData = function(req, res) {
             }
           });
 
-        })// end parse
-      }// end if station err
-    });// en station
+        }) // end parse
+      } // end if station err
+    }); // en station
   }
 
 
 };
 
 exports.updateData = function(req, res) {
-  checkParam(req, res, ["id_curr_data"], function() {
-    let id = req.body.id_curr_data;
-    let data = req.body.data;
-    if (data) {
-      // Parse
-      // Si c'est la même rien faire
+  let id = req.body.id_curr_data;
+  let data = req.body.data;
+  let number = parseInt(data);
+  if (number || number == 0) {
+    if (number < 0) {
+      return res.status(400).send("Le paramètre doit être un chiffre positif.");
     }
-    // Si data == vide créer nvelle
-    else {
-      console.log("JE SUIS VIDE");
-    }
-    console.log(id);
-    // Recup user via token
-
-
+    // Créer data individual
+    console.log("DATA");
     return res.status(200).send();
-  });
+  }
+  // Si data est vide ==>
+  else if (req.body.data === undefined || req.body.data === '') {
+    console.log("JE SUIS VIDE");
+    return res.status(200).send();
+  }
+  // Si c'es pas un number
+  else if (isNaN(number)) {
+    return res.status(400).send("Le paramètre doit être un chiffre.");
+  } else {
+    return res.status(400).send("Mauvaise utilisation de la route");
+  }
 }
 
 function checkDateInterval(date1, date2, interval) {

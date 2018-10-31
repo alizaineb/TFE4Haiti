@@ -33,9 +33,6 @@ exports.hasAccesToStation = function(req, res, callback) {
       return res.status(404).send("Pas d'utilisateur correspondant.");
     }
     // Si l'utilisateur est un admin il peut passer
-    console.log("USR");
-    console.log(user);
-
     if (user.role == roles.ADMIN) {
       return callback();
     }
