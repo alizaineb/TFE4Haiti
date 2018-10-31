@@ -91,7 +91,7 @@
       <td>{{data.station}}</td>
       <td>{{data.user}}</td>
       <td>{{data.type}}</td>
-      <td>{{data.date | date: 'd/MM/yyyy h:mm'}}</td>
+      <td>{{data.date | date: 'd/MM/yyyy HH:mm'}}</td>
 
       <td *ngIf="isIndividual(data)">{{data.value}}</td>
       <td *ngIf="isUpdate(data)">{{data.value || 'Données à supprimée'}}</td>
