@@ -173,13 +173,24 @@ exports.refuseAwaiting = function(req, res) {
   if (!id) {
     return res.status(400).send("Information manquante(s)");
   }
-  // console.log(id);
-  dataModel.RainDataAwaitingModel.deleteOne({ _id: id }).then(() => {
-    return res.status(204).send("ok") //TODO remove body
-  }).catch(function(err) {
-    logger.error(err);
-    return res.status(500).send("Erreur lors du refus de la donnée.");
+  dataModel.RainDataAwaitingModel.findById(id, (err, rainDataAwaiting) => {
+    if (err) {
+      logger.error("[DATACTRL] refuseAwaiting : ", err)
+      return res.status(500).send("Erreur lors de la recupération de la donnée.")
+    } else {
+      dataModel.RainDataAwaitingModel.deleteOne({ _id: id }).then(() => {
+        fs.unlink(rainDataAwaiting.value, (err) => {
+          logger.error('[IMPORTFILE] remove : ', err);
+        });
+        return res.status(204).send("ok") //TODO remove body
+      }).catch(function(err) {
+        logger.error(err);
+        return res.status(500).send("Erreur lors du refus de la donnée.");
+      });
+    }
   });
+  // console.log(id);
+
 };
 
 exports.get = function(req, res) {
@@ -420,29 +431,31 @@ exports.importFileData = function(req, res) {
     const stationId = req.params.id || '';
     const self = this;
 
-    let form = new formidable.IncomingForm();
-    form.uploadDir = pathDir;
-    form.parse(req, function(err, fields, files) {
-      // console.log(err);
-      //       // console.log(fields);
-      //       // console.log(files);
-      const newPath = `${files['CsvFile'].path}-${files['CsvFile'].name}`
-      fs.rename(files['CsvFile'].path, newPath, (err) => {
+    Station.stationModel.findById({ _id: stationId }, (err, station) => {
+      if (err) {
+        logger.error(err);
+        res.status(500).send(`erreur lors de la récupération de la station ${stationId}`)
+      } else {
+        let form = new formidable.IncomingForm();
+        form.uploadDir = pathDir;
+        form.parse(req, function(err, fields, files) {
+          // console.log(err);
+          //       // console.log(fields);
+          console.log(files);
+          const newName = `${station.name}-${files['CsvFile'].name}`
+          const newPath = path.join(pathDir, newName);
+          fs.rename(files['CsvFile'].path, newPath, (err) => {
 
-        if (err) {
-          logger.error('[IMPORTFILE] Rename :  ', err);
-          fs.unlink(files['CsvFile'].path, (err) => {
-            logger.error('[IMPORTFILE] remove : ', err);
-          });
-          res.status(500).send("Le fichier n'a pas pu etre importé.");
-        } else {
-
-          let tmp = [];
-          Station.stationModel.findById({ _id: stationId }, (err, station) => {
             if (err) {
-              logger.error(err);
-              res.status(500).send(`erreur lors de la récupération de la station ${stationId}`)
+              logger.error('[IMPORTFILE] Rename :  ', err);
+              fs.unlink(files['CsvFile'].path, (err) => {
+                logger.error('[IMPORTFILE] remove : ', err);
+              });
+              res.status(500).send("Le fichier n'a pas pu etre importé.");
             } else {
+              let tmp = [];
+
+
               // console.log('[STATION] : ', station);
               UsersModel.userModel.findById({ _id: userId }, (err, user) => {
                 if (err) {
@@ -456,7 +469,7 @@ exports.importFileData = function(req, res) {
                   data.id_station = station._id;
                   data.id_user = user._id;
                   data.date = Date.now();
-                  data.value = newPath;
+                  data.value = newName; //todo
                   data.type = state.FILE;
                   tmp.push(data);
                   // console.log(data);
@@ -464,13 +477,14 @@ exports.importFileData = function(req, res) {
                   insertData(req, res, tmp, station, user);
                 }
               });
+
+
             }
           });
 
-        }
-      });
-
-    })
+        })// end parse
+      }// end if station err
+    });// en station
   }
 
 

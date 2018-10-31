@@ -92,7 +92,10 @@
       <td>{{data.user}}</td>
       <td>{{data.type}}</td>
       <td>{{data.date | date: 'd/MM/yyyy h:mm'}}</td>
-      <td>{{data.value}}</td>
+
+      <td *ngIf="isIndividual(data)">{{data.value}}</td>
+
+      <td *ngIf="isAFile(data)"><a href="/upload/{{data.value}}" individual>{{data.value}}</a></td>
       <td>
         <i class="fas fa-check fa-fw fa-1x" (click)="acceptData(data)"></i>
         <i class="fas fa-trash fa-fw fa-1x" (click)="refuseData(data)"></i>

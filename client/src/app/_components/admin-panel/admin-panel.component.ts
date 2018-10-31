@@ -129,6 +129,14 @@ export class AdminPanelComponent implements OnInit {
 
   }
 
+  isIndividual(data: RainDataAwaiting){
+    return data.type == "individual";
+  }
+
+  isAFile(data: RainDataAwaiting){
+    return data.type == "file";
+  }
+
   acceptData(data: RainDataAwaiting) {
     const self = this;
     self.rainDataService.accepteAwaiting(data._id).subscribe(res => {

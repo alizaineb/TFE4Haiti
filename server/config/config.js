@@ -24,7 +24,7 @@
 /**
  * Load modules
  */
-
+const path = require('path');
 const fs = require('fs');
 const nconf = require('nconf');
 const logger = require('./logger.js');
@@ -75,6 +75,7 @@ function createDefaultCfgFile(callback) {
   logger.error('/!\\ Un fichier de configuration par défaut a été créé.\nLe serveur va fonctionner avec des valeurs par défaut. Pour des raisons de sécurité et assurer une fonctionnement total de l\'application, veuillez le modifier.\nPour de plus amples informations référez-vous à la documentation.');
   nconf.argv().env().file({ file: fullConfigFileName });
   nconf.set('development', true);
+  nconf.set('uploadFolder', path.join(__dirname, '..', 'public', 'upload'));
   nconf.set('token:privateKey', 'somethingsomethingjsontoken'); // 1h
   nconf.set('token:expiration', 1440); // 1h
   nconf.set('server:host', '0.0.0.0');
@@ -112,6 +113,10 @@ function checkCfg(callback) {
   nconf.file(fullConfigFileName);
   if (typeof nconf.get('development') === "undefined") {
     nconf.set('development', true)
+    cfgModified = true;
+  }
+  if (typeof nconf.get('uploadFolder') === "undefined") {
+    nconf.set('uploadFolder', path.join(__dirname, '..', 'public', 'upload'))
     cfgModified = true;
   }
   if (typeof nconf.get('server:host') === "undefined") {
