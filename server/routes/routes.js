@@ -204,7 +204,7 @@ exports.routes = [
 
   // Méthodes liées aux data
   {
-    path: "/api/rainData/updateData",
+    path: "/api/rainData/:id_station/updateData",
     httpMethod: "POST",
     middleWare: [hasAccesToStation, controllers.data.updateData],
     access: [roles.ADMIN, roles.WORKER]

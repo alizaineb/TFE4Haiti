@@ -1,6 +1,7 @@
 'use strict';
 
 const UsersModel = require("../models/users");
+const StationModel = require('./../models/station');
 const roles = require('../config/constants').roles;
 const logger = require('../config/logger');
 
@@ -26,10 +27,10 @@ exports.checkParam = function(req, res, params, callback) {
 exports.hasAccesToStation = function(req, res, callback) {
   UsersModel.userModel.findById(req.token_decoded.id, (err, user) => {
     if (err) {
-      logger.error("[UTILS] hasAccesToStation : ", err)
+      logger.error("[UTILS] hasAccesToStation user : ", err)
       return res.status(500).send("Erreur lors de la vérification de votre accès à la station.");
     } else if (!user) {
-      return res.status(500).send("Pas d'utilisateur correspondant.");
+      return res.status(404).send("Pas d'utilisateur correspondant.");
     }
     // Si l'utilisateur est un admin il peut passer
     console.log("USR");
@@ -38,7 +39,17 @@ exports.hasAccesToStation = function(req, res, callback) {
     if (user.role == roles.ADMIN) {
       return callback();
     }
-    return res.status(500).send("TPEUX PAS");
+    StationModel.stationModel.findById(req.params.id_station, (err, station) => {
+      if (err) {
+        logger.error("[UTILS] hasAccesToStation station : ", err)
+        return res.status(500).send("Erreur lors de la vérification de votre accès à la station.");
+      } else if (!station) {
+        return res.status(404).send("Pas de station correspondant.");
+      }
+
+
+      return res.status(500).send("TPEUX PAS");
+    });
   });
 
   // Trouver l'utilisateur

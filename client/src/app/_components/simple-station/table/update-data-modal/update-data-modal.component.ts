@@ -12,6 +12,9 @@ export class UpdateDataModalComponent implements OnInit {
 
   @Input()
   dataToUpdate: RainData;
+  @Input()
+  id_station: string;
+
   constructor(private alertService: AlertService, private dataService: DataService) { }
 
   ngOnInit() {
@@ -27,7 +30,7 @@ export class UpdateDataModalComponent implements OnInit {
   }
 
   updateData() {
-    this.dataService.updateData(this.dataToUpdate._id, (<HTMLInputElement>document.getElementById("inputValue")).value)
+    this.dataService.updateData(this.id_station, this.dataToUpdate._id, (<HTMLInputElement>document.getElementById("inputValue")).value)
       .subscribe(
         result => {
           // trigger sent
