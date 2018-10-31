@@ -25,9 +25,9 @@
   </div>
 
   <div *ngIf="rangeSelected === 'Mensuelles'">
-    <i (click)="updateYearSelected('add')" class="fas fa-arrow-left"></i>
+    <i (click)="updateYearSelected('add')" class="fas fa-arrow-circle-left"></i>
     <input size="3" type="text" [ngModel]="yearSelected">
-    <i  *ngIf="yearSelected !== currentYear" (click)="updateYearSelected('sub')" class="fas fa-arrow-right"></i>
+    <i *ngIf="yearSelected !== currentYear" (click)="updateYearSelected('sub')" class="fas fa-arrow-circle-right"></i>
   </div>
 
   <div>
