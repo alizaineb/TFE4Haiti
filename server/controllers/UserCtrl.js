@@ -123,6 +123,7 @@ exports.update = function(req, res) {
         user.last_name = req.body.last_name;
         user.role = req.body.role;
         user.state = req.body.state;
+        // Je crois pas que ces checks soient utiles la tu peux direct req.body.item non ?
         if (!req.body.commune) {
           user.commune = undefined;
         } else {
@@ -133,6 +134,7 @@ exports.update = function(req, res) {
         } else {
           user.river = req.body.river;
         }
+        console.log(user);
         user.save((err) => {
           if (err) {
             logger.error(err);

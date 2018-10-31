@@ -76,7 +76,7 @@ export class UpdateUserModalComponent implements OnInit {
     userToSend._id = this.userToUpdate._id;
     userToSend.first_name = this.updateUserForm.get('first_name').value;
     userToSend.last_name = this.updateUserForm.get('last_name').value;
-    userToSend.mail = this.userToUpdate.mail;
+    userToSend.mail = this.updateUserForm.get('mail').value;
     userToSend.role = this.updateUserForm.get('role').value;
     userToSend.state = this.updateUserForm.get('state').value;
     userToSend.commune = this.updateUserForm.get('commune').value;
@@ -88,7 +88,7 @@ export class UpdateUserModalComponent implements OnInit {
         this.alertService.success("L'utilisateur a bien été mis à jour");
       },
       error => {
-        this.alertService.error("Une erreur est survenue lors de la mise à jour de l'utilisateur");
+        this.alertService.error(error);
       });
   }
 

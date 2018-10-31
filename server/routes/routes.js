@@ -6,6 +6,7 @@ controllers.users = require('../controllers/UserCtrl');
 controllers.stations = require('../controllers/StationCtrl');
 controllers.note = require('../controllers/noteCtrl');
 controllers.rainData = require('../controllers/dataCtrl');
+hasAccesToStation = require('../controllers/utils').hasAccesToStation;
 // Route par défaut récupère l'index
 // controllers.angular = function(req, res) { res.sendFile(path.join(__dirname, '../public/index.html')); };
 
@@ -205,7 +206,7 @@ exports.routes = [
   {
     path: "/api/rainData/updateData",
     httpMethod: "POST",
-    middleWare: [controllers.data.updateData],
+    middleWare: [hasAccesToStation, controllers.data.updateData],
     access: [roles.ADMIN, roles.WORKER]
   },
   {
