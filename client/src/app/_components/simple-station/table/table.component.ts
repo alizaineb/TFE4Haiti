@@ -116,7 +116,7 @@ export class TableComponent implements OnInit, OnChanges {
     // Lorsque la promesse est terminée ==> Stop le loader
     this.stationService.getData(this.stationId, dateStr).subscribe(rainDatas => {
       self.dataLoading = false;
-      if (rainDatas.length == 0) {
+      if (!rainDatas || rainDatas.length == 0) {
         self.noData = true;
       } else {
         self.dataToShow = true;

@@ -2,6 +2,7 @@
 
 const UsersModel = require("../models/users");
 const roles = require('../config/constants').roles;
+const logger = require('../config/logger');
 
 // Cette méthode va vérifier que chaque paramètre soit bien présent dans le body de la requête
 // Si il manque un paramètre, elle va renvoyer un status 400 en indiquant que des inforamtions son manquantes
@@ -23,10 +24,12 @@ exports.checkParam = function(req, res, params, callback) {
 
 // Middleware vérifia,t si une personne a accès à la station présente dans les paramètres de l'url.
 exports.hasAccesToStation = function(req, res, callback) {
-  UsersModel.userModel.findById(req.params.id_station, (err, user) => {
+  UsersModel.userModel.findById(req.token_decoded.id, (err, user) => {
     if (err) {
       logger.error("[UTILS] hasAccesToStation : ", err)
       return res.status(500).send("Erreur lors de la vérification de votre accès à la station.");
+    } else if (!user) {
+      return res.status(500).send("Pas d'utilisateur correspondant.");
     }
     // Si l'utilisateur est un admin il peut passer
     console.log("USR");
