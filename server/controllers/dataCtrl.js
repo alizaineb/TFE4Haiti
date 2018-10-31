@@ -161,7 +161,6 @@ exports.acceptAwaiting = function(req, res) {
           default:
             status = 500;
             break;
-
         }
         return res.status(status).send();
       }
@@ -237,9 +236,8 @@ exports.getRainDataGraphLineOneMonth = function(req, res) {
     let year = req.params.year;
     let month = req.params.month;
 
-    let dateMin = new Date(Date.UTC(year, month-1, 1, 12, 0, 0, 0));
-    let dateMax = new Date(Date.UTC(year, month-1, 31, 12, 23, 59, 0));
-
+    let dateMin = new Date(Date.UTC(year, month, 1, 12, 0, 0, 0));
+    let dateMax = new Date(Date.UTC(year, month, 31, 23, 23, 59, 0));
 
     dataModel.rainDataModel.find({
       id_station: req.params.stationId,
@@ -282,11 +280,13 @@ exports.getRainDataGraphLineOneYear = function(req, res) {
         mapValue.set(i, 0)
       }
       for (let i = 0; i < data.length - 1; i++) {
+        console.log(data[i]);
         let month = data[i].date.getMonth();
         let value = data[i].value;
         mapValue.set(month + 1, mapValue.get(month + 1) + value);
       }
       let tabD = [];
+      console.log(mapValue);
       for (i = 0; i < 12; i++) {
         let d;
         if (i === 11) {
@@ -294,7 +294,6 @@ exports.getRainDataGraphLineOneYear = function(req, res) {
         } else {
           d = new Date(Date.UTC(year, i, 1, 12, 0, 0, 0));
         }
-        console.log(mapValue);
         let val = mapValue.get(i);
         if (val === 0)
           val = null;
@@ -566,16 +565,16 @@ function checkDateInterval(date1, date2, interval) {
 function push() {
   const datas = [];
   const id_user = "5bbdb325d7aec61a195afc96";
-  const id_station = "5bbf1bf686649912d4642b53";
+  const id_station = "5bbdb55fd7aec61a195afc9c";
   let ptr = 0;
-  let intervalle = 1;
-  for (let jour = 2; jour < 14; jour++) {
+  let intervalle = 15;
+  for (let jour = 1; jour < 29; jour++) {
     for (let i = 2; i <= 25; i++) {
       for (let j = 0; j < 60; j += intervalle) {
         let item = {};
         item.id_station = id_station;
         item.id_user = id_user;
-        let date2 = new Date(2018, 12, jour, i, j);
+        let date2 = new Date(2018, 9, jour, i, j);
         item.date = date2;
         console.log(date2);
         item.value = getRandomInt(10);
