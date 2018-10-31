@@ -283,11 +283,6 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   editData(data) {
-    // ! peut être une data 'vide' en passant de - à qqchose
-    if (data) {
-      this.dataToEdit = data;
-    } else {
-      this.dataToEdit = {} as any;
-    }
+    this.dataToEdit = data;
   }
 }
