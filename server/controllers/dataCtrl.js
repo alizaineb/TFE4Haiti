@@ -121,7 +121,7 @@ exports.acceptAwaiting = function(req, res) {
                             data.value = d[1].replace(',', '.');
                             datas.push(data);
                           } else {
-                            if (checkDateInterval(prevDate, data.date, station.interval || true)) { //todo remove || true
+                            if (checkDateInterval(prevDate, data.date, station.interval)) { //todo remove || true
                               data.value = d[1];
                               datas.push(data);
                             } else {
@@ -138,12 +138,12 @@ exports.acceptAwaiting = function(req, res) {
                         // console.log(docs);
                         if (err) {
                           // console.log('erreur : ', err);
-
+                          logger.error('[IMPORTFILE] InsertMany : ', err);
                           res.status(500).send(err); //'Les données n\'ont pas sur être insérer...');
                         } else {
                           const filePath = path.join(nconf.get('uploadFolder'), rainDataAwaiting.value);
                           fs.unlink(filePath, (err) => {
-                            logger.error('[IMPORTFILE] remove : ', err);
+                            logger.error('[IMPORTFILE] unlink : ', err);
                           });
                           dataModel.RainDataAwaitingModel.deleteOne({ _id: rainDataAwaiting._id }).then(() => {
                             res.status(200).send()
@@ -175,18 +175,22 @@ exports.refuseAwaiting = function(req, res) {
     return res.status(400).send("Information manquante(s)");
   }
   dataModel.RainDataAwaitingModel.findById(id, (err, rainDataAwaiting) => {
+    logger.info("[DATACTRL] refuseAwaiting.findbyid : ", id," - ",  rainDataAwaiting);
     if (err) {
       logger.error("[DATACTRL] refuseAwaiting : ", err)
       return res.status(500).send("Erreur lors de la recupération de la donnée.")
     } else {
       dataModel.RainDataAwaitingModel.deleteOne({ _id: id }).then(() => {
-        const filePath = path.join(nconf.get('uploadFolder'), rainDataAwaiting.value);
-        fs.unlink(filePath, (err) => {
-          logger.error('[IMPORTFILE] remove : ', err);
-        });
+        if(rainDataAwaiting.type == "file"){
+          const filePath = path.join(nconf.get('uploadFolder'), rainDataAwaiting.value);
+          fs.unlink(filePath, (err) => {
+            logger.error('[IMPORTFILE] remove : ', err);
+          });
+        }
+
         return res.status(204).send("ok") //TODO remove body
       }).catch(function(err) {
-        logger.error(err);
+        logger.error("[DATACTRL] refuseAwaiting.deleteone : ", err);
         return res.status(500).send("Erreur lors du refus de la donnée.");
       });
     }
