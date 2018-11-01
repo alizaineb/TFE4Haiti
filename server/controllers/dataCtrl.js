@@ -83,6 +83,37 @@ exports.acceptAwaiting = function(req, res) {
             });
             return;
           case state.UPDATE:
+            if(!rainDataAwaiting.value){
+              // donnée modifier vers rien, on supprime l'ancienne donnée et la donnée en attente
+                dataModel.RainDataAwaitingModel.deleteOne({_id: rainDataAwaiting._id}).then(() => {
+                    dataModel.rainDataModel.deleteOne({_id: rainDataAwaiting.id_old_data}).then( () => {
+                        return res.status(200).send();
+                    });
+                });
+
+            }else{
+              // on met à jour l'ancienne valeur
+                console.log("hello", rainDataAwaiting);
+                // old to new
+                // new = undef => delete old
+                //
+
+                dataModel.rainDataModel.findById(rainDataAwaiting.id_old_data, (err, rainData) => {
+                    rainData.value = rainDataAwaiting.value;
+                    rainData.save().then(() => {
+                        dataModel.RainDataAwaitingModel.deleteOne({_id: rainDataAwaiting._id}).then(() => {
+                            dataModel.rainDataModel.deleteOne({_id: rainDataAwaiting.id_old_data}).then( () => {
+                                return res.status(200).send();
+                            });
+                        });
+                    }).catch(function(err) {
+                        logger.error(err);
+                        return res.status(500).send("Une erreur est survenue lors de la mise à jours de la donnée.");
+                    });
+                });
+
+            }
+
             return;
           case state.FILE:
             const filePath = path.join(nconf.get('uploadFolder'), rainDataAwaiting.value);
