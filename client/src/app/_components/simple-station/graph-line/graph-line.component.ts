@@ -145,7 +145,6 @@ export class GraphLineComponent implements OnInit {
   loadRangeDate(dateMin, dateMax) {
     this.dataLoading = true;
     this.dataService.getAllRainDataGraphLineRangeDate(this.stationId, dateMin, dateMax).subscribe(data => {
-      
       this.hide = false;
       // Create the chart
       this.highChartLine = Highcharts.stockChart('containerLine', {
@@ -157,7 +156,8 @@ export class GraphLineComponent implements OnInit {
           step: true,
           data: data,
           tooltip: {
-            valueDecimals: 2
+            valueDecimals: 2,
+            valueSuffix: 'mm'
           }
         }]
       });
@@ -187,7 +187,6 @@ export class GraphLineComponent implements OnInit {
   loadOneMonth() {
     this.dataLoading = true;
     this.dataService.getAllRainDataGraphLineOneMonth(this.stationId, this.monthSelected, this.yearSelected).subscribe(data => {
-      
       // Create the chart
       this.highChartLine = Highcharts.stockChart('containerLine', {
         title: {
@@ -198,7 +197,8 @@ export class GraphLineComponent implements OnInit {
           step: true,
           data: data,
           tooltip: {
-            valueDecimals: 2
+            valueDecimals: 2,
+            valueSuffix: 'mm'
           }
         }]
       });
@@ -212,7 +212,8 @@ export class GraphLineComponent implements OnInit {
           name: 'Value:',
           data: data,
           tooltip: {
-            valueDecimals: 2
+            valueDecimals: 2,
+            valueSuffix: 'mm'
           }
         }],
         chart: {
@@ -222,43 +223,6 @@ export class GraphLineComponent implements OnInit {
       if (data.length === 0) {
         this.showNoData();
       }
-    });
-  }
-  loadAll() {
-    this.dataLoading = true;
-    this.dataService.getAllRainDataGraphLine(this.stationId).subscribe(data => {
-      
-      // Create the chart
-      this.highChartLine = Highcharts.stockChart('containerLine', {
-        title: {
-          text: this.station.name + ' - Données pluviométriques (mm)'
-        },
-        series: [{
-          name: 'Value',
-          step: true,
-          data: data,
-          tooltip: {
-            valueDecimals: 2
-          }
-        }]
-      });
-      // Create the chart
-      this.highChartBar = Highcharts.stockChart('containerBar', {
-        title: {
-          text: this.station.name + ' - Données pluviométriques (mm)'
-        },
-        chart: {
-          alignTicks: false
-        },
-        series: [{
-          type: 'column',
-          name: 'Value:',
-          data: data,
-          tooltip: {
-            valueDecimals: 2
-          }
-        }]
-      });
     });
   }
 
@@ -275,7 +239,9 @@ export class GraphLineComponent implements OnInit {
           step: true,
           data: data,
           tooltip: {
-            valueDecimals: 2
+            valueDecimals: 2,
+            valueSuffix: 'mm'
+
           }
         }]
       });
@@ -289,7 +255,8 @@ export class GraphLineComponent implements OnInit {
           name: 'Value:',
           data: data,
           tooltip: {
-            valueDecimals: 2
+            valueDecimals: 2,
+            valueSuffix: 'mm'
           }
         }],
         chart: {
@@ -344,7 +311,6 @@ export class GraphLineComponent implements OnInit {
           color: '#303030'
         }
       },
-      turboThreshold: 0,
       scrollbar: {
         barBackgroundColor: 'gray',
         barBorderRadius: 7,
