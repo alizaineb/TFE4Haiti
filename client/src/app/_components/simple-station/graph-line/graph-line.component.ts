@@ -71,12 +71,12 @@ export class GraphLineComponent implements OnInit {
 
   dateChanged(selectedDates, dateStr, instance) {
     if (selectedDates.length === 2) {
-      console.log(selectedDates[0]);
-      console.log(selectedDates[1]);
       const dateMin: Date = selectedDates[0];
       const dateMax: Date = selectedDates[1];
       dateMin.setHours(0, 0, 0, 0);
       dateMax.setHours(23, 59, 59, 0);
+      console.log(selectedDates[0]);
+      console.log(selectedDates[1]);
       this.loadRangeDate(dateMin, dateMax);
     }
   }
