@@ -97,7 +97,7 @@
         <td *ngIf="isIndividual(data)">{{data.value}}</td>
         <td *ngIf="isUpdate(data)">{{data.value || 'Donnée à supprimer'}}</td>
 
-        <td *ngIf="isAFile(data)"><a href="/upload/{{data.value}}" individual>{{data.value}}</a></td>
+        <td *ngIf="isAFile(data)"><a href="{{pathApi}}/upload/{{data.value}}" download>{{data.value}}</a></td>
         <td>
           <i class="fas fa-check fa-fw fa-1x" (click)="acceptData(data)"></i>
           <i class="fas fa-trash fa-fw fa-1x" (click)="refuseData(data)"></i>

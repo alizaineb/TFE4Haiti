@@ -22,6 +22,7 @@ function configureServer() {
   app.use(bodyParser.json({ limit: '50mb', strict: true }));
 
   app.use('/', express.static('public'));
+    app.use('/upload/*', express.static('public/upload'));
 
 
   app.use(function(request, response, next) {
