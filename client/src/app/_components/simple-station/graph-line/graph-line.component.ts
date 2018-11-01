@@ -49,11 +49,20 @@ export class GraphLineComponent implements OnInit {
     this.loadOptionsHighCharts();
   }
 
+  changeYear(newYear){
+    this.yearSelected = newYear;
+    this.rangeDataChange(this.rangeSelected);
+  }
+
+  changeMonth(newMonth){
+    this.monthSelected = newMonth;
+    this.rangeDataChange(this.rangeSelected);
+  }
+  
   loadStation() {
     this.stationService.getById(this.stationId).subscribe(s => {this.station = s; });
   }
   rangeDataChange(val) {
-    console.log(val);
     this.rangeSelected = val;
     if (val === 'Horaires') {
       this.loadAll();
