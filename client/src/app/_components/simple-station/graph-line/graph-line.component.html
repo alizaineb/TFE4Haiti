@@ -26,13 +26,13 @@
 
   <div *ngIf="'Mensuelles'===rangeSelected">
     <i (click)="updateYearSelected('add')" class="fas fa-arrow-circle-left"></i>
-    <input (change)="loadOneYear()" size="4" type="text"  [ngModel]="yearSelected">
+    <input (change)="changeYear($event.target.value)" size="3" type="text"  [ngModel]="yearSelected">
     <i *ngIf="yearSelected !== currentYear" (click)="updateYearSelected('sub')" class="fas fa-arrow-circle-right"></i>
   </div>
 
   <div *ngIf="'Journalières'===rangeSelected">
     <i (click)="updateMonthSelected('add')" class="fas fa-arrow-circle-left"></i>
-    <input  (change)="loadOneMonth()" size="2" type="text"  [ngModel]="monthSelected"> &nbsp; / &nbsp; <input (change)="loadOneMonth()" size="4" type="text"  [ngModel]="yearSelected">
+    <input  (change)="changeMonth($event.target.value)" size="3" type="text"  [ngModel]="monthSelected"> &nbsp; / &nbsp; <input (change)="changeYear($event.target.value)" size="2" type="text"  [ngModel]="yearSelected">
     <i *ngIf="!(monthSelected === currentMonth && yearSelected === currentYear)" (click)="updateMonthSelected('sub')" class="fas fa-arrow-circle-right"></i>
   </div>
 

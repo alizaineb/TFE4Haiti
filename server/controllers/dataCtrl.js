@@ -42,7 +42,6 @@ insertData = function(req, res, datas, station, user) {
       // console.log(docs);
       if (err) {
         // console.log('erreur : ', err);
-
         res.status(500).send(err); //'Les données n\'ont pas sur être insérer...');
       } else {
         res.status(200).send();
@@ -80,9 +79,50 @@ exports.acceptAwaiting = function(req, res) {
                 res.status(200).send()
               });
 
+            }).catch((err) => {
+              return res.status(500).send(err);
             });
             return;
           case state.UPDATE:
+            if(!rainDataAwaiting.value){
+              // donnée modifier vers rien, on supprime l'ancienne donnée et la donnée en attente
+                dataModel.RainDataAwaitingModel.deleteOne({_id: rainDataAwaiting._id}).then(() => {
+                    dataModel.rainDataModel.deleteOne({_id: rainDataAwaiting.id_old_data}).then( () => {
+                        return res.status(200).send();
+                    }).catch((err) => {
+                        return res.status(500).send(err);
+                    });
+                }).catch((err) => {
+                    return res.status(500).send(err);
+                });
+
+            }else{
+              // on met à jour l'ancienne valeur
+                console.log("hello", rainDataAwaiting);
+                // old to new
+                // new = undef => delete old
+                //
+
+                dataModel.rainDataModel.findById(rainDataAwaiting.id_old_data, (err, rainData) => {
+                    rainData.value = rainDataAwaiting.value;
+                    rainData.save().then(() => {
+                        dataModel.RainDataAwaitingModel.deleteOne({_id: rainDataAwaiting._id}).then(() => {
+                            dataModel.rainDataModel.deleteOne({_id: rainDataAwaiting.id_old_data}).then( () => {
+                                return res.status(200).send();
+                            }).catch((err) => {
+                                return res.status(500).send(err);
+                            });
+                        }).catch((err) => {
+                            return res.status(500).send(err);
+                        });
+                    }).catch(function(err) {
+                        logger.error(err);
+                        return res.status(500).send("Une erreur est survenue lors de la mise à jours de la donnée.");
+                    });
+                });
+
+            }
+
             return;
           case state.FILE:
             const filePath = path.join(nconf.get('uploadFolder'), rainDataAwaiting.value);
@@ -175,13 +215,13 @@ exports.refuseAwaiting = function(req, res) {
     return res.status(400).send("Information manquante(s)");
   }
   dataModel.RainDataAwaitingModel.findById(id, (err, rainDataAwaiting) => {
-    logger.info("[DATACTRL] refuseAwaiting.findbyid : ", id," - ",  rainDataAwaiting);
+    logger.info("[DATACTRL] refuseAwaiting.findbyid : ", id, " - ", rainDataAwaiting);
     if (err) {
       logger.error("[DATACTRL] refuseAwaiting : ", err)
       return res.status(500).send("Erreur lors de la recupération de la donnée.")
     } else {
       dataModel.RainDataAwaitingModel.deleteOne({ _id: id }).then(() => {
-        if(rainDataAwaiting.type == "file"){
+        if (rainDataAwaiting.type == "file") {
           const filePath = path.join(nconf.get('uploadFolder'), rainDataAwaiting.value);
           fs.unlink(filePath, (err) => {
             logger.error('[IMPORTFILE] remove : ', err);
@@ -242,10 +282,10 @@ exports.getRainDataGraphLineOneMonth = function(req, res) {
 
     month = parseInt(month, 10);
     //Date month begin to 0 !
-    month-=1;
+    month -= 1;
 
     let dateMin = new Date(Date.UTC(year, month, 1, 0, 0, 0, 0));
-    let dateMax = new Date(Date.UTC(year, dateMin.getMonth()+1, 0, 23, 23, 59, 0));
+    let dateMax = new Date(Date.UTC(year, dateMin.getMonth() + 1, 0, 23, 23, 59, 0));
 
 
     dataModel.rainDataModel.find({
@@ -555,7 +595,7 @@ exports.updateData = function(req, res) {
           let dataToSend = new dataModel.RainDataAwaitingModel();
           dataToSend.id_station = req.params.id_station;
           dataToSend.id_user = req.token_decoded.id;
-          dataToSend.id_old_data = req.id_data;
+          dataToSend.id_old_data = id_data;
           dataToSend.date = rainData.date;
           dataToSend.type = state.UPDATE;
           dataToSend.value = data;
@@ -591,7 +631,7 @@ exports.updateData = function(req, res) {
       });
     }
   }
-  // Si data on désire passer la donnée à vide
+  // Si data ==> vide
   else if (req.body.data === undefined || req.body.data === '') {
     // Si il manque la data à laquelle if faut update
     dataModel.rainDataModel.findById(id_data, (err, rainData) => {
@@ -606,8 +646,9 @@ exports.updateData = function(req, res) {
         dataToSend.id_station = req.params.id_station;
         dataToSend.id_user = req.token_decoded.id;
         dataToSend.date = rainData.date;
-        dataToSend.id_old_data = req.id_data;
+        dataToSend.id_old_data = id_data;
         dataToSend.type = state.UPDATE;
+        console.log(dataToSend);
         dataToSend.save().then(() => {
           return res.status(201).send();
         }).catch(function(err) {
@@ -640,7 +681,7 @@ function checkDateInterval(date1, date2, interval) {
 
 }
 
-//push();
+//ush();
 /* Méthode utilisée pour tester en pushant des données dans base de données
  * En décommentant la ligne //push();
  * Une série de données va être envoyée en DB.
@@ -657,10 +698,10 @@ function push() {
         let item = {};
         item.id_station = id_station;
         item.id_user = id_user;
-        let date2 = new Date(2018, 9, jour, i, j);
+        let date2 = new Date(2017, 3, jour, i, j);
         item.date = date2;
         console.log(date2);
-        item.value = getRandomInt(10);
+        item.value = getRandomInt(2);
         datas[ptr] = item;
         ptr++
       }
