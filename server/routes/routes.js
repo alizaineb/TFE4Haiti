@@ -114,6 +114,13 @@ exports.routes = [
 
   },
   { //      /api/stations/5bbdb51dd7aec61a195afc9b/import
+    path: "/api/stations/:id/download",
+    httpMethod: "GET",
+    middleWare: [controllers.data.downloadData],
+    access: [roles.VIEWER, roles.WORKER, roles.ADMIN]
+
+  },
+  { //      /api/stations/5bbdb51dd7aec61a195afc9b/import
     path: "/api/stations/:id/importFile",
     httpMethod: "POST",
     middleWare: [controllers.data.importFileData],

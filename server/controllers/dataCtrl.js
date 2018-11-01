@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const nconf = require('nconf');
+const mailer = require('./mailer');
 
 const formidable = require('formidable');
 const logger = require('../config/logger');
@@ -573,6 +574,63 @@ exports.importFileData = function(req, res) {
 
 
 };
+
+exports.downloadData = function(req, res) {
+    const id_station = req.params.id;
+
+    //Dates filter //TODO
+
+    Station.stationModel.findById(id_station, (err, station) => {
+        dataModel.rainDataModel.find({id_station: id_station}, 'date value', (err, rainDatas) => {
+            if (err) {
+                logger.error(err);
+                return res.status(500).send(err);
+            } else {
+                console.log(rainDatas);
+                //format data to download
+                const result = rainDataToCSV(rainDatas);
+
+                // Write File
+                const dirDownload = nconf.get("downloadFolder");
+                const fileName = `${station.name} ${preFormatDate(rainDatas[0].date)}-${preFormatDate(rainDatas[rainDatas.length-1].date)}.csv`;
+                const filePath = path.join(dirDownload, fileName);
+                if (!fs.existsSync(dirDownload)) {
+                    fs.mkdirSync(dirDownload);
+                }
+                fs.writeFile(filePath, result, 'utf-8', (err) => {
+                    if (err) throw err;
+                    console.log('The file has been saved!', req.token_decoded.id);
+                    UsersModel.userModel.findById(req.token_decoded.id, (err, user) => {
+                        const url = `http://localhost:${nconf.get("server:port")}/download/${fileName}`; //TODO CHANGE AND GET HOST URL NOT LOCALHOST
+                        mailer.sendMailAndIgnoreIfMailInvalid(undefined, undefined, "Download File", user.mail, url, (err)=> {
+                            if(err){
+                                logger.error("[DATACTRL] downloadData : ", err);
+                            }
+                        })
+                    });
+
+                });
+
+            }
+        });
+    });
+    return res.status(200).send("Un mail vous sera envoyé avec le lien de téléchargement.");
+
+}
+
+function rainDataToCSV(rainDatas){
+    let fileContent = "";
+    for(let i = 0; i < rainDatas.length; i++){
+        const rainData = rainDatas[i];
+        fileContent += `${preFormatDate(rainData.date)};${rainData.value};\n`
+    }
+
+    return fileContent;
+}
+
+function preFormatDate(date) {
+    return `${date.getFullYear()}-${minTwoDigits(date.getMonth())}-${minTwoDigits(date.getDay())} ${minTwoDigits(date.getHours())}:${minTwoDigits(date.getMinutes())}`
+}
 
 exports.updateData = function(req, res) {
   let id_data = req.body.id_curr_data;

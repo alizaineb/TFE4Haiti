@@ -32,7 +32,8 @@ exports.sendMail = function(req, res, subject, to, text, callback) {
       return callback();
     }
   });
-}
+};
+
 
 exports.sendMailAndIgnoreIfMailInvalid = function(req, res, subject, to, text, callback) {
   var mailOptions = {
@@ -48,7 +49,7 @@ exports.sendMailAndIgnoreIfMailInvalid = function(req, res, subject, to, text, c
       return callback();
     }
   });
-}
+};
 // How to use it :
 /*
 var mailOptions = {
