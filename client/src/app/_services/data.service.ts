@@ -28,6 +28,10 @@ export class DataService {
     return this.http.get<any[]>(environment.apiUrl + '/rainDataGraphLineOneMonth/' + stationId + '/' + month + '/' + year);
   }
 
+  getAllRainDataGraphLineRangeDate(stationId, dateFrom, dateTo): Observable<any[]>  {
+    return this.http.get<any[]>(environment.apiUrl + '/rainDataGraphLineRangeDate/' + stationId + '/' + dateFrom + '/' + dateTo);
+  }
+
   updateData(id_station: string, id: string, newData: string, date: Date) {
     return this.http.post(environment.apiUrl + '/rainData/' + id_station + '/updateData', {
       id_curr_data: id,

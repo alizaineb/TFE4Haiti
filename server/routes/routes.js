@@ -256,6 +256,13 @@ exports.routes = [
     middleWare: [controllers.data.getRainDataGraphLineOneMonth],
   },
   {
+    path: "/api/rainDataGraphLineRangeDate/:stationId/:dateFrom/:dateTo",
+    httpMethod: "GET",
+    middleWare: [controllers.data.rainDataGraphLineRangeDate],
+  },
+
+
+  {
     path: "/api/data/:stationId/:date",
     httpMethod: "GET",
     middleWare: [controllers.data.getForDay]
