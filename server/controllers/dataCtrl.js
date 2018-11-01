@@ -614,7 +614,7 @@ exports.downloadData = function(req, res) {
             }
         });
     });
-    return res.status(200).send("Un mail vous sera envoyé avec le lien de téléchargement.");
+    return res.status(200).send();
 
 }
 

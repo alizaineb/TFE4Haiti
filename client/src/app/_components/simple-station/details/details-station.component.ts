@@ -41,6 +41,18 @@ export class DetailsStationComponent implements OnInit {
     );
   }
 
+  downloadData() {
+    const self = this;
+    self.stationService.downloadData(self.currentStation._id).subscribe(
+      res => {
+        self.alertService.success('Un email vous sera envoyé dès que le fichier sera prêt.');
+      },
+      err => {
+        self.alertService.error(err);
+      }
+    );
+  }
+
   reloadStation($event = null){
     this.loadData();
   }

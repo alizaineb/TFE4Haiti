@@ -93,4 +93,9 @@ export class StationsService {
   importDataFile(id: string, file: FormData) {
     return this.http.post(`${environment.apiUrl}/stations/${id}/importFile`, file);
   }
+
+  downloadData(id: string) {
+    return this.http.get(environment.apiUrl + '/stations/' + id + '/download');
+  }
+  
 }
