@@ -29,13 +29,13 @@ export class MenuComponent implements OnInit {
       self.updateMenu(storage);
     });
     this.updateMenu(this.localStorageService.getStorage());
-    /*this.authenticationService.isLogged().subscribe(
+    this.authenticationService.isLogged().subscribe(
       value => {
         console.log('val : ', value);
       },
       err => {
         console.log('err', err);
-      });*/
+      });
   }
 
   private updateMenu(storage) {
