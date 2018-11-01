@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DataService } from '../../../_services/data.service';
 import * as Highcharts from 'highcharts/highstock';
-import {Station} from "../../../_models";
-import {StationsService} from "../../../_services/stations.service";
+import {Station} from '../../../_models';
+import {StationsService} from '../../../_services/stations.service';
 
 @Component({
   selector: 'app-graph-line',
@@ -14,78 +14,78 @@ export class GraphLineComponent implements OnInit {
   @Input()
   private stationId: string;
 
-  station:Station;
+  station: Station;
   dataLoading: boolean;
 
   highChartLine;
   highChartBar;
   datePicker;
-  rangeData:string[];
-  rangeSelected:string;
+  rangeData: string[];
+  rangeSelected: string;
 
-  currentDate:Date;
-  yearSelected:number;
-  currentYear:number;
+  currentDate: Date;
+  yearSelected: number;
+  currentYear: number;
 
-  monthSelected:number;
-  currentMonth:number;
+  monthSelected: number;
+  currentMonth: number;
 
   constructor(private dataService: DataService, private stationService: StationsService) { }
 
   ngOnInit() {
-    this.rangeData = ['Mensuelles','Journalières','Horaires'];
+    this.rangeData = ['Mensuelles', 'Journalières', 'Horaires'];
     this.rangeSelected = 'Mensuelles';
 
     this.currentDate = new Date();
     this.yearSelected = this.currentDate.getFullYear();
     this.currentYear = this.currentDate.getFullYear();
 
-    this.monthSelected = this.currentDate.getMonth()+1;
-    this.currentMonth = this.currentDate.getMonth()+1;
+    this.monthSelected = this.currentDate.getMonth() + 1;
+    this.currentMonth = this.currentDate.getMonth() + 1;
 
     this.dataLoading = true;
     this.loadStation();
     this.loadOneYear();
-    this.loadOptionsHighCharts()
+    this.loadOptionsHighCharts();
   }
 
-  loadStation(){
-    this.stationService.getById(this.stationId).subscribe(s => {this.station = s})
+  loadStation() {
+    this.stationService.getById(this.stationId).subscribe(s => {this.station = s; });
   }
 
-  rangeDataChange(val){
+  rangeDataChange(val) {
     console.log(val);
     this.rangeSelected = val;
-    if(val === 'Horaires') {
+    if (val === 'Horaires') {
       this.loadAll();
-    } else  if(val === 'Journalières') {
+    } else  if (val === 'Journalières') {
       this.loadOneMonth();
     } else {
       this.loadOneYear();
     }
   }
 
-  updateYearSelected(op){
-    if (op === "add"){
-      this.yearSelected = this.yearSelected-1;
+  updateYearSelected(op) {
+    if (op === 'add') {
+      this.yearSelected = this.yearSelected - 1;
     } else {
-      this.yearSelected = this.yearSelected+1;
+      this.yearSelected = this.yearSelected + 1;
     }
     this.loadOneYear();
   }
 
-  updateMonthSelected(op){
-    if (op === "add"){
-      this.monthSelected = this.monthSelected-1;
+  updateMonthSelected(op) {
+    if (op === 'add') {
+      this.monthSelected = this.monthSelected - 1;
     } else {
-      this.monthSelected = this.monthSelected+1;
+      this.monthSelected = this.monthSelected + 1;
     }
     this.loadOneMonth();
   }
 
-  loadOneMonth(){
+  loadOneMonth() {
     this.dataLoading = true;
-    this.dataService.getAllRainDataGraphLineOneMonth(this.stationId,this.monthSelected,this.yearSelected).subscribe(data => {
+    this.dataService.getAllRainDataGraphLineOneMonth(this.stationId, this.monthSelected, this.yearSelected).subscribe(data => {
       console.log(data);
       // Create the chart
       this.highChartLine = Highcharts.stockChart('containerLine', {
@@ -94,6 +94,7 @@ export class GraphLineComponent implements OnInit {
         },
         series: [{
           name: 'Value',
+          step: true,
           data: data,
           tooltip: {
             valueDecimals: 2
@@ -120,7 +121,7 @@ export class GraphLineComponent implements OnInit {
     });
   }
 
-  loadAll(){
+  loadAll() {
     this.dataLoading = true;
     this.dataService.getAllRainDataGraphLine(this.stationId).subscribe(data => {
       console.log(data);
@@ -131,6 +132,7 @@ export class GraphLineComponent implements OnInit {
         },
         series: [{
           name: 'Value',
+          step: true,
           data: data,
           tooltip: {
             valueDecimals: 2
@@ -157,9 +159,9 @@ export class GraphLineComponent implements OnInit {
     });
   }
 
-  loadOneYear(){
+  loadOneYear() {
     this.dataLoading = true;
-    this.dataService.getAllRainDataGraphLineOneYear(this.stationId,this.yearSelected).subscribe(data => {
+    this.dataService.getAllRainDataGraphLineOneYear(this.stationId, this.yearSelected).subscribe(data => {
       console.log(data);
       // Create the chart
       this.highChartLine = Highcharts.stockChart('containerLine', {
@@ -168,6 +170,7 @@ export class GraphLineComponent implements OnInit {
         },
         series: [{
           name: 'Value',
+          step: true,
           data: data,
           tooltip: {
             valueDecimals: 2
@@ -195,7 +198,7 @@ export class GraphLineComponent implements OnInit {
 
   }
 
-  loadOptionsHighCharts(){
+  loadOptionsHighCharts() {
     const self = this;
 
     Highcharts.setOptions({
@@ -208,7 +211,7 @@ export class GraphLineComponent implements OnInit {
       },
       lang: {
         loading: 'Chargement...',
-        noData: "Pas de données",
+        noData: 'Pas de données',
         months: [
           'Janvier', 'Février', 'Mars', 'Avril',
           'Mai', 'Juin', 'Juillet', 'Août',
@@ -230,7 +233,7 @@ export class GraphLineComponent implements OnInit {
           color: '#303030'
         }
       },
-      turboThreshold:0,
+      turboThreshold: 0,
       scrollbar: {
         barBackgroundColor: 'gray',
         barBorderRadius: 7,
@@ -244,14 +247,14 @@ export class GraphLineComponent implements OnInit {
         trackBorderColor: '#CCC'
       },
       xAxis: {
-        type: 'datetime', //ensures that xAxis is treated as datetime values
+        type: 'datetime', // ensures that xAxis is treated as datetime values
         title: {
-          text: "Mois"
+          text: 'Mois'
         },
       },
       yAxis: {
         title: {
-          text: "Précipitations (mm)"
+          text: 'Précipitations (mm)'
         }
       },
       rangeSelector: {
