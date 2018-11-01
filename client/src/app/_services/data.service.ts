@@ -19,12 +19,12 @@ export class DataService {
     return this.http.get(environment.apiUrl + '/rainDataGraphLine/' + stationId);
   }
 
-  getAllRainDataGraphLineOneYear(stationId, year) {
-    return this.http.get(environment.apiUrl + '/rainDataGraphLineOneYear/' + stationId + '/' + year);
+  getAllRainDataGraphLineOneYear(stationId, year): Observable<any[]> {
+    return this.http.get<any[]>(environment.apiUrl + '/rainDataGraphLineOneYear/' + stationId + '/' + year);
   }
 
-  getAllRainDataGraphLineOneMonth(stationId, month, year) {
-    return this.http.get(environment.apiUrl + '/rainDataGraphLineOneMonth/' + stationId + '/' + month + '/' + year);
+  getAllRainDataGraphLineOneMonth(stationId, month, year): Observable<any[]>  {
+    return this.http.get<any[]>(environment.apiUrl + '/rainDataGraphLineOneMonth/' + stationId + '/' + month + '/' + year);
   }
 
   updateData(id_station: string, id: string, newData: string, date: Date) {

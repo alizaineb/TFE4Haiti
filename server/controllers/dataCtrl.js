@@ -640,7 +640,7 @@ function checkDateInterval(date1, date2, interval) {
 
 }
 
-//push();
+//ush();
 /* Méthode utilisée pour tester en pushant des données dans base de données
  * En décommentant la ligne //push();
  * Une série de données va être envoyée en DB.
@@ -657,10 +657,10 @@ function push() {
         let item = {};
         item.id_station = id_station;
         item.id_user = id_user;
-        let date2 = new Date(2018, 9, jour, i, j);
+        let date2 = new Date(2017, 3, jour, i, j);
         item.date = date2;
         console.log(date2);
-        item.value = getRandomInt(10);
+        item.value = getRandomInt(2);
         datas[ptr] = item;
         ptr++
       }
