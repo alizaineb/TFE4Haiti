@@ -44,8 +44,8 @@
     <div [hidden]="!dataLoading" class="text-center container">
       <i class="fas fa-spinner fa-spin fa-7x"></i>
     </div>
-    <div [hidden]="dataLoading" id="containerLine" style="width:100%; height:400px;"></div>
-    <div [hidden]="dataLoading" id="containerBar" style="width:100%; height:400px;"></div>
+    <div [hidden]="dataLoading || hide === true" id="containerLine" style="width:100%; height:400px;"></div>
+    <div [hidden]="dataLoading || hide === true" id="containerBar" style="width:100%; height:400px;"></div>
   </div>
 </div>
 

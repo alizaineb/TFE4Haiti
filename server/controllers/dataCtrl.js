@@ -278,15 +278,17 @@ exports.rainDataGraphLineRangeDate = function(req, res) {
       return res.status(500).send("Erreur lors de la station liée .");
     }
 
-    let dateFrom = req.params.dateFrom;
-    let dateTo = req.params.dateTo;
+    let dateMin = req.params.dateMin;
+    let dateMax = req.params.dateMax;
 
-    console.log(dateFrom);
-    console.log(dateTo);
+    console.log(dateMin);
+    console.log(dateMax);
+
+    //dateMin = new Date(Date.UTC() )
 
     dataModel.rainDataModel.find({
       id_station: req.params.stationId,
-      date: { "$gte": dateFrom, "$lt": dateTo }
+      date: { "$gte": dateMin, "$lt": dateMax }
     }, 'date value', { sort: { date: 1 } }, function(err, data) {
       if (err) {
         logger.error(err);

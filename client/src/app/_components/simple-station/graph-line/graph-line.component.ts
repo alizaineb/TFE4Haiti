@@ -33,6 +33,7 @@ export class GraphLineComponent implements OnInit {
   currentMonth: number;
 
   datepicker;
+  hide;
 
   constructor(private dataService: DataService, private stationService: StationsService) { }
 
@@ -48,6 +49,8 @@ export class GraphLineComponent implements OnInit {
 
     this.monthSelected = this.currentDate.getMonth() + 1;
     this.currentMonth = this.currentDate.getMonth() + 1;
+
+    this.hide = false;
 
     this.datePicker = flatpickr('#datePicker', {
       locale: French,
@@ -70,7 +73,11 @@ export class GraphLineComponent implements OnInit {
     if (selectedDates.length === 2) {
       console.log(selectedDates[0]);
       console.log(selectedDates[1]);
-      this.loadRangeDate(selectedDates[0], selectedDates[1]);
+      const dateMin: Date = selectedDates[0];
+      const dateMax: Date = selectedDates[1];
+      dateMin.setHours(0, 0, 0, 0);
+      dateMax.setHours(23, 59, 59, 0);
+      this.loadRangeDate(dateMin, dateMax);
     }
   }
 
@@ -92,8 +99,12 @@ export class GraphLineComponent implements OnInit {
     this.rangeSelected = val;
     if (val === 'Journalières') {
       this.loadOneMonth();
-    } else {
+    } else if (val === 'Mensuelles') {
       this.loadOneYear();
+    } else {
+      this.hide = true;
+      this.datePicker.setDate(null);
+
     }
   }
 
@@ -131,17 +142,52 @@ export class GraphLineComponent implements OnInit {
       .add();
   }
 
-  loadRangeDate(dateFrom, dateTo) {
+  loadRangeDate(dateMin, dateMax) {
     this.dataLoading = true;
-    this.dataService.getAllRainDataGraphLineRangeDate(this.stationId, dateFrom, dateTo).subscribe(data => {
-      console.log(data);
+    this.dataService.getAllRainDataGraphLineRangeDate(this.stationId, dateMin, dateMax).subscribe(data => {
+      
+      this.hide = false;
+      // Create the chart
+      this.highChartLine = Highcharts.stockChart('containerLine', {
+        title: {
+          text: this.station.name + ' - Données pluviométriques (mm)'
+        },
+        series: [{
+          name: 'Value',
+          step: true,
+          data: data,
+          tooltip: {
+            valueDecimals: 2
+          }
+        }]
+      });
+      // Create the chart
+      this.highChartBar = Highcharts.stockChart('containerBar', {
+        title: {
+          text: this.station.name + ' - Données pluviométriques (mm)'
+        },
+        series: [{
+          type: 'column',
+          name: 'Value:',
+          data: data,
+          tooltip: {
+            valueDecimals: 2
+          }
+        }],
+        chart: {
+          alignTicks: false
+        },
+      });
+      if (data.length === 0) {
+        this.showNoData();
+      }
     });
   }
 
   loadOneMonth() {
     this.dataLoading = true;
     this.dataService.getAllRainDataGraphLineOneMonth(this.stationId, this.monthSelected, this.yearSelected).subscribe(data => {
-      console.log(data);
+      
       // Create the chart
       this.highChartLine = Highcharts.stockChart('containerLine', {
         title: {
@@ -181,7 +227,7 @@ export class GraphLineComponent implements OnInit {
   loadAll() {
     this.dataLoading = true;
     this.dataService.getAllRainDataGraphLine(this.stationId).subscribe(data => {
-      console.log(data);
+      
       // Create the chart
       this.highChartLine = Highcharts.stockChart('containerLine', {
         title: {
