@@ -76,6 +76,7 @@ function createDefaultCfgFile(callback) {
   nconf.argv().env().file({ file: fullConfigFileName });
   nconf.set('development', true);
   nconf.set('uploadFolder', path.join(__dirname, '..', 'public', 'upload'));
+  nconf.set('downloadFolder', path.join(__dirname, '..', 'public', 'download'));
   nconf.set('token:privateKey', 'somethingsomethingjsontoken'); // 1h
   nconf.set('token:expiration', 1440); // 1h
   nconf.set('server:host', '0.0.0.0');
@@ -118,6 +119,10 @@ function checkCfg(callback) {
   if (typeof nconf.get('uploadFolder') === "undefined") {
     nconf.set('uploadFolder', path.join(__dirname, '..', 'public', 'upload'))
     cfgModified = true;
+  }
+  if (typeof nconf.get('downloadFolder') === "undefined") {
+      nconf.set('downloadFolder', path.join(__dirname, '..', 'public', 'download'))
+      cfgModified = true;
   }
   if (typeof nconf.get('server:host') === "undefined") {
     nconf.set('server:host', '0.0.0.0');
