@@ -272,8 +272,11 @@ exports.getRainDataGraphLineOneYear = function(req, res) {
       return res.status(500).send("Erreur lors de la station liée .");
     }
     let year = req.params.year;
-    let dateMin = new Date(Date.UTC(year, 0, 1, 12, 0, 0, 0));
+    let dateMin = new Date(Date.UTC(year, 0, 1, 0, 0, 0, 0));
     let dateMax = new Date(Date.UTC(year, 11, 31, 23, 59, 59, 0));
+
+    console.log(dateMin);
+    console.log(dateMax);
 
     dataModel.rainDataModel.find({
       id_station: req.params.stationId,
@@ -283,19 +286,19 @@ exports.getRainDataGraphLineOneYear = function(req, res) {
         logger.error(err);
         return res.status(500).send("Erreur lors de la récupération des données.");
       }
+
       let mapValue = new Map();
       let i;
       for (i = 0; i < 12; i++) {
         mapValue.set(i, 0)
       }
-      for (let i = 0; i < data.length - 1; i++) {
+      for (let i = 0; i < data.length; i++) {
         console.log(data[i]);
         let month = data[i].date.getMonth();
         let value = data[i].value;
-        mapValue.set(month + 1, mapValue.get(month + 1) + value);
+        mapValue.set(month, mapValue.get(month) + value);
       }
       let tabD = [];
-      console.log(mapValue);
       for (i = 0; i < 12; i++) {
         let d;
         if (i === 11) {
