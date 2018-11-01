@@ -42,7 +42,6 @@ insertData = function(req, res, datas, station, user) {
       // console.log(docs);
       if (err) {
         // console.log('erreur : ', err);
-
         res.status(500).send(err); //'Les données n\'ont pas sur être insérer...');
       } else {
         res.status(200).send();
@@ -80,6 +79,8 @@ exports.acceptAwaiting = function(req, res) {
                 res.status(200).send()
               });
 
+            }).catch((err) => {
+              return res.status(500).send(err);
             });
             return;
           case state.UPDATE:
@@ -88,7 +89,11 @@ exports.acceptAwaiting = function(req, res) {
                 dataModel.RainDataAwaitingModel.deleteOne({_id: rainDataAwaiting._id}).then(() => {
                     dataModel.rainDataModel.deleteOne({_id: rainDataAwaiting.id_old_data}).then( () => {
                         return res.status(200).send();
+                    }).catch((err) => {
+                        return res.status(500).send(err);
                     });
+                }).catch((err) => {
+                    return res.status(500).send(err);
                 });
 
             }else{
@@ -104,7 +109,11 @@ exports.acceptAwaiting = function(req, res) {
                         dataModel.RainDataAwaitingModel.deleteOne({_id: rainDataAwaiting._id}).then(() => {
                             dataModel.rainDataModel.deleteOne({_id: rainDataAwaiting.id_old_data}).then( () => {
                                 return res.status(200).send();
+                            }).catch((err) => {
+                                return res.status(500).send(err);
                             });
+                        }).catch((err) => {
+                            return res.status(500).send(err);
                         });
                     }).catch(function(err) {
                         logger.error(err);
