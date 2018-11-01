@@ -52,7 +52,6 @@ export class GraphLineComponent implements OnInit {
   loadStation() {
     this.stationService.getById(this.stationId).subscribe(s => {this.station = s; });
   }
-
   rangeDataChange(val) {
     console.log(val);
     this.rangeSelected = val;
@@ -64,7 +63,6 @@ export class GraphLineComponent implements OnInit {
       this.loadOneYear();
     }
   }
-
   updateYearSelected(op) {
     if (op === 'add') {
       this.yearSelected = this.yearSelected - 1;
@@ -73,7 +71,6 @@ export class GraphLineComponent implements OnInit {
     }
     this.loadOneYear();
   }
-
   updateMonthSelected(op) {
     if (op === 'add') {
       this.monthSelected = this.monthSelected - 1;
@@ -82,7 +79,21 @@ export class GraphLineComponent implements OnInit {
     }
     this.loadOneMonth();
   }
+  showNoData(){
+    this.highChartLine.renderer.text('Pas de données disponibles', 140, 120)
+      .css({
+        color: '#4572A7',
+        fontSize: '30px'
+      })
+      .add();
 
+    this.highChartBar.renderer.text('Pas de données disponibles', 140, 120)
+      .css({
+        color: '#4572A7',
+        fontSize: '30px'
+      })
+      .add();
+  }
   loadOneMonth() {
     this.dataLoading = true;
     this.dataService.getAllRainDataGraphLineOneMonth(this.stationId, this.monthSelected, this.yearSelected).subscribe(data => {
@@ -118,9 +129,11 @@ export class GraphLineComponent implements OnInit {
           alignTicks: false
         },
       });
+      if(data.length === 0){
+        this.showNoData();
+      }
     });
   }
-
   loadAll() {
     this.dataLoading = true;
     this.dataService.getAllRainDataGraphLine(this.stationId).subscribe(data => {
@@ -162,7 +175,6 @@ export class GraphLineComponent implements OnInit {
   loadOneYear() {
     this.dataLoading = true;
     this.dataService.getAllRainDataGraphLineOneYear(this.stationId, this.yearSelected).subscribe(data => {
-      console.log(data);
       // Create the chart
       this.highChartLine = Highcharts.stockChart('containerLine', {
         title: {
@@ -194,8 +206,17 @@ export class GraphLineComponent implements OnInit {
           alignTicks: false
         },
       });
+      let emptyData = true;
+      for(let i = 0; i < data.length; i++){
+        if(data[i][1] !== null){
+          emptyData = false;
+          break;
+        }
+      }
+      if(emptyData){
+        this.showNoData();
+      }
     });
-
   }
 
   loadOptionsHighCharts() {
