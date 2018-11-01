@@ -272,6 +272,38 @@ exports.getRainDataGraphLine = function(req, res) {
 };
 
 //TODO Check si la station n'existe pas
+exports.rainDataGraphLineRangeDate = function(req, res) {
+  Station.stationModel.findById(req.params.stationId, (err, station) => {
+    if (err) {
+      return res.status(500).send("Erreur lors de la station liée .");
+    }
+
+    let dateFrom = req.params.dateFrom;
+    let dateTo = req.params.dateTo;
+
+    console.log(dateFrom);
+    console.log(dateTo);
+
+    dataModel.rainDataModel.find({
+      id_station: req.params.stationId,
+      date: { "$gte": dateFrom, "$lt": dateTo }
+    }, 'date value', { sort: { date: 1 } }, function(err, data) {
+      if (err) {
+        logger.error(err);
+        return res.status(500).send("Erreur lors de la récupération des données.");
+      }
+      //preprocessData(data, req.params.stationId, station.interval);
+      let tabD = [];
+      data.forEach(data => tabD.push(dataModel.rainDataModel.toDtoGraphLine(data)));
+      return res.status(200).send(tabD);
+    });
+  });
+};
+
+
+
+
+//TODO Check si la station n'existe pas
 exports.getRainDataGraphLineOneMonth = function(req, res) {
   Station.stationModel.findById(req.params.stationId, (err, station) => {
     if (err) {
