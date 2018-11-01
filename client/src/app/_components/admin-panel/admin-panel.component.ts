@@ -1,12 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {first, map} from 'rxjs/operators';
-import {UserService} from "../../_services/user.service";
-import {Station} from "../../_models";
-import {User} from "../../_models";
-import {RainDataAwaiting, RainData} from "../../_models/rainData";
-import {StationsService} from "../../_services/stations.service";
+import {UserService} from '../../_services/user.service';
+import {Station} from '../../_models';
+import {User} from '../../_models';
+import {RainDataAwaiting, RainData} from '../../_models/rainData';
+import {StationsService} from '../../_services/stations.service';
 import {AlertService} from '../../_services/index';
-import {DataService} from "../../_services/data.service";
+import {DataService} from '../../_services/data.service';
+import { environment } from '../../../environments/environment';
+
 
 @Component({
   selector: 'app-admin-panel',
@@ -19,6 +21,8 @@ export class AdminPanelComponent implements OnInit {
   showUsers: boolean;
   showStations: boolean;
   showDatas: boolean;
+
+  pathApi = environment.apiHost;
 
   headersUsers: string[];
   headersStation: string[];
@@ -35,9 +39,9 @@ export class AdminPanelComponent implements OnInit {
     private alertService: AlertService,
     private rainDataService: DataService
   ) {
-    this.headersUsers = ["Nom", "Prénom", "Adresse mail", "Role requis", " Date de création"];
-    this.headersStation = ["Nom de la station", "Latitude", "Longitude", "Intervalle", "Auteur", "Date de mise en service"];
-    this.headersData = ["Nom de la Station", "Ajouté par", "Type", "date", "Valeur"]
+    this.headersUsers = ['Nom', 'Prénom', 'Adresse mail', 'Role requis', ' Date de création'];
+    this.headersStation = ['Nom de la station', 'Latitude', 'Longitude', 'Intervalle', 'Auteur', 'Date de mise en service'];
+    this.headersData = ['Nom de la Station', 'Ajouté par', 'Type', 'date', 'Valeur'];
     this.showUsers = false;
     this.showStations = false;
     this.showDatas = false;
@@ -48,22 +52,22 @@ export class AdminPanelComponent implements OnInit {
     this.loadAwaitingStation();
     this.loadAwaitingData();
     this.map = new Map();
-    this.map.set("Nom de la station", "name");
-    this.map.set("Latitude", "latitude");
-    this.map.set("Longitude", "latitude");
-    this.map.set("Intervalle", "interval");
-    this.map.set("Auteur", "user_creator");
-    this.map.set("Date de mise en service", "createdAt");
+    this.map.set('Nom de la station', 'name');
+    this.map.set('Latitude', 'latitude');
+    this.map.set('Longitude', 'latitude');
+    this.map.set('Intervalle', 'interval');
+    this.map.set('Auteur', 'user_creator');
+    this.map.set('Date de mise en service', 'createdAt');
     this.mapUserFilter = new Map();
-    this.mapUserFilter.set("Nom", "last_name");
-    this.mapUserFilter.set("Prénom", "first_name");
-    this.mapUserFilter.set("Adresse mail", "mail");
-    this.mapUserFilter.set("Role requis mail", "role");
-    this.mapUserFilter.set("Date de création", "created_at");
+    this.mapUserFilter.set('Nom', 'last_name');
+    this.mapUserFilter.set('Prénom', 'first_name');
+    this.mapUserFilter.set('Adresse mail', 'mail');
+    this.mapUserFilter.set('Role requis mail', 'role');
+    this.mapUserFilter.set('Date de création', 'created_at');
   }
 
   loadAwaitingUsers($event = null) {
-    let self = this;
+    const self = this;
     this.userService.getAllAwaiting()
       .pipe(first())
       .subscribe(res => {
@@ -77,10 +81,10 @@ export class AdminPanelComponent implements OnInit {
   }
 
   loadAwaitingStation() {
-    let self = this;
+    const self = this;
     this.stationsService.getAllAwaiting()
       .pipe(map(stations => {
-          for (let n of stations) {
+          for (const n of stations) {
             this.userService.getById(n.user_creator_id).pipe(first()).subscribe(user => {
               n.user_creator = user.mail;
             });
@@ -102,7 +106,7 @@ export class AdminPanelComponent implements OnInit {
     const self = this;
     self.rainDataService.getAllAwaiting()
       .pipe(map(datas => {
-          for (let n of datas) {
+          for (const n of datas) {
             this.stationsService.getById(n.id_station).pipe(first()).subscribe(station => {
               n.station = station.name;
             });
@@ -111,9 +115,9 @@ export class AdminPanelComponent implements OnInit {
         })
       )
       .pipe(map(datas => {
-          for (let n of datas) {
+          for (const n of datas) {
             this.userService.getById(n.id_user).pipe(first()).subscribe(user => {
-              n.user = user.first_name + " " + user.last_name;
+              n.user = user.first_name + ' ' + user.last_name;
             });
           }
           return datas;
@@ -125,26 +129,26 @@ export class AdminPanelComponent implements OnInit {
       },
       err => {
         this.alertService.error(err);
-      })
+      });
 
   }
 
-  isIndividual(data: RainDataAwaiting){
-    return data.type == "individual";
+  isIndividual(data: RainDataAwaiting) {
+    return data.type == 'individual';
   }
-  isUpdate(data: RainDataAwaiting){
-    console.log(data.type == "update")
-    return data.type == "update";
+  isUpdate(data: RainDataAwaiting) {
+    console.log(data.type == 'update');
+    return data.type == 'update';
   }
 
-  isAFile(data: RainDataAwaiting){
-    return data.type == "file";
+  isAFile(data: RainDataAwaiting) {
+    return data.type == 'file';
   }
 
   acceptData(data: RainDataAwaiting) {
     const self = this;
     self.rainDataService.accepteAwaiting(data._id).subscribe(res => {
-        self.alertService.success("La donnée a été acceptée avec succès.");
+        self.alertService.success('La donnée a été acceptée avec succès.');
         self.loadAwaitingData();
 
       },
@@ -156,7 +160,7 @@ export class AdminPanelComponent implements OnInit {
   refuseData(data: RainDataAwaiting) {
     const self = this;
     self.rainDataService.refuseAwaiting(data._id).subscribe(res => {
-        self.alertService.success("La donnée a été refusée avec succès.");
+        self.alertService.success('La donnée a été refusée avec succès.');
         self.loadAwaitingData();
       },
       err => {
@@ -169,12 +173,12 @@ export class AdminPanelComponent implements OnInit {
   }
 
   acceptUser(id: string) {
-    let self = this;
+    const self = this;
     this.userService.acceptUser(id)
       .pipe(first())
       .subscribe(result => {
           self.loadAwaitingUsers();
-          self.alertService.success("L'utilisateur a été accepté avec succès");
+          self.alertService.success('L\'utilisateur a été accepté avec succès');
         },
         error => {
           self.alertService.error(error);
@@ -182,12 +186,12 @@ export class AdminPanelComponent implements OnInit {
   }
 
   acceptStation(station: Station) {
-    let self = this;
+    const self = this;
     this.stationsService.acceptStation(station._id)
       .pipe(first())
       .subscribe(result => {
           self.loadAwaitingStation();
-          self.alertService.success("La station a été accepté avec succès");
+          self.alertService.success('La station a été accepté avec succès');
         },
         error => {
           self.alertService.error(error);
@@ -195,12 +199,12 @@ export class AdminPanelComponent implements OnInit {
   }
 
   refuseStation(station: Station) {
-    let self = this;
+    const self = this;
     this.stationsService.delete(station._id)
       .pipe(first())
       .subscribe(result => {
           self.loadAwaitingStation();
-          self.alertService.success("La station a été refusée avec succès");
+          self.alertService.success('La station a été refusée avec succès');
         },
         error => {
           self.alertService.error(error);
@@ -213,7 +217,7 @@ export class AdminPanelComponent implements OnInit {
       return;
     }
     // TODO gérer intervalle sort propre
-    let key = this.map.get(head);
+    const key = this.map.get(head);
     let i = 1;
     while (i < this.stations.length && this.stations[0][key] == this.stations[i][key]) {
       i++;
@@ -225,16 +229,16 @@ export class AdminPanelComponent implements OnInit {
     if (this.stations[0][key] <= this.stations[i][key]) {
       this.stations.sort((val1: Station, val2: Station) => {
         if (typeof (val1[key]) == 'number') {
-          return val1[key] > val2[key] ? -1 : 1
+          return val1[key] > val2[key] ? -1 : 1;
         }
-        return val1[key].toLowerCase() > val2[key].toLowerCase() ? -1 : 1
+        return val1[key].toLowerCase() > val2[key].toLowerCase() ? -1 : 1;
       });
     } else {
       this.stations.sort((val1: Station, val2: Station) => {
         if (typeof (val1[key]) == 'number') {
-          return val2[key] > val1[key] ? -1 : 1
+          return val2[key] > val1[key] ? -1 : 1;
         }
-        return val2[key].toLowerCase() > val1[key].toLowerCase() ? -1 : 1
+        return val2[key].toLowerCase() > val1[key].toLowerCase() ? -1 : 1;
       });
     }
   }
@@ -244,7 +248,7 @@ export class AdminPanelComponent implements OnInit {
       return;
     }
     // TODO gérer intervalle sort propre
-    let key = this.mapUserFilter.get(head);
+    const key = this.mapUserFilter.get(head);
     let i = 1;
     while (i < this.users.length && this.users[0][key] == this.users[i][key]) {
       i++;
@@ -255,11 +259,11 @@ export class AdminPanelComponent implements OnInit {
     }
     if (this.users[0][key] <= this.users[i][key]) {
       this.users.sort((val1: User, val2: User) => {
-        return val1[key].toLowerCase() > val2[key].toLowerCase() ? -1 : 1
+        return val1[key].toLowerCase() > val2[key].toLowerCase() ? -1 : 1;
       });
     } else {
       this.users.sort((val1: User, val2: User) => {
-        return val2[key].toLowerCase() > val1[key].toLowerCase() ? -1 : 1
+        return val2[key].toLowerCase() > val1[key].toLowerCase() ? -1 : 1;
       });
     }
   }
