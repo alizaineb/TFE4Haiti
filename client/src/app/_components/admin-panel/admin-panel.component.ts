@@ -8,7 +8,7 @@ import {StationsService} from '../../_services/stations.service';
 import {AlertService} from '../../_services/index';
 import {DataService} from '../../_services/data.service';
 import { environment } from '../../../environments/environment';
-
+import { Constantes } from '../../_helpers/constantes'
 
 @Component({
   selector: 'app-admin-panel',
@@ -134,15 +134,14 @@ export class AdminPanelComponent implements OnInit {
   }
 
   isIndividual(data: RainDataAwaiting) {
-    return data.type == 'individual';
+    return data.type == Constantes.DataType.INDIVIDUAL;
   }
   isUpdate(data: RainDataAwaiting) {
-    console.log(data.type == 'update');
-    return data.type == 'update';
+    return data.type == Constantes.DataType.UPDATE;
   }
 
   isAFile(data: RainDataAwaiting) {
-    return data.type == 'file';
+    return data.type == Constantes.DataType.FILE;
   }
 
   acceptData(data: RainDataAwaiting) {
