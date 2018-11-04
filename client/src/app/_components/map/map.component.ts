@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 
 import * as L from 'leaflet';
 import { StationsService } from '../../_services/stations.service';
-import { st } from "@angular/core/src/render3";
 import { Station } from "../../_models";
 import { LocalstorageService } from "../../_services/localstorage.service";
-import { layerGroup } from "leaflet";
+import {Constantes} from '../../_helpers/constantes'
 
 @Component({
   selector: 'app-map',
@@ -207,7 +206,7 @@ export class MapComponent implements OnInit {
       self.mapContainer.removeLayer(overlays);
       L.control.layers(baseLayers).addTo(self.mapContainer);
       self.filteredStation = self.allStations.filter(station => {
-        return station.state.toLowerCase() != 'awaiting'.toLowerCase()
+        return station.state.toLowerCase() !=  Constantes.stationState.AWAITING.toLowerCase()
       })
     } else {
       L.control.layers(baseLayers, overlays).addTo(self.mapContainer);

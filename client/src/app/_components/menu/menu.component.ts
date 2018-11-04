@@ -3,6 +3,7 @@ import {MenuService} from '../../_services/menu.service';
 import {Router} from '@angular/router';
 import {LocalstorageService} from '../../_services/localstorage.service';
 import {AuthenticationService} from '../../_services';
+import {Constantes} from "../../_helpers/constantes";
 
 @Component({
   selector: 'app-menu',
@@ -45,16 +46,16 @@ export class MenuComponent implements OnInit {
       const role = User.current.role;
       // console.log('role : ', role);
       switch (role) {
-        case 'administrateur':
+        case Constantes.roles.ADMIN:
           this.menu.left = this.menuService.getLeftAdminMenu();
           this.menu.right = this.menuService.getRightAdminMenu();
           break;
-        case 'employé':
+        case Constantes.roles.WORKER:
           console.log('Ime a workder');
           this.menu.left = this.menuService.getleftWorkerMenu();
           this.menu.right = this.menuService.getRightWorkerMenu();
           break;
-        case 'chercheur':
+        case Constantes.roles.VIEWER:
           this.menu.left = this.menuService.getLeftViewerMenu();
           this.menu.right = this.menuService.getRightViewerMenu();
           break;
