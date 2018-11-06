@@ -2,13 +2,6 @@ const mongoose = require('mongoose');
 var timestamps = require('mongoose-timestamp');
 const states = require('../config/constants').stationState;
 
-
-// TODO En attente de confirmation
-exports.communes = ['commune1','commune2','Port-au-Prince', 'Carrefour','Delmas','Cap-Haïtien','Pétionville'];
-exports.rivers = ['river1','river2','Grande Rivière du Nord', 'Haut-du-Cap','Limbé','Marion'];
-exports.intervals = ['1min', '5min', '10min', '15min', '30min', '1h', '2h', '6h', '12h', '24h'];
-
-
 // schema pour récupérer un mot de passe
 const Schema = mongoose.Schema;
 const Station = new Schema({
@@ -49,3 +42,46 @@ Station.methods.toDto = function() {
 
 const stationModel = mongoose.model("station", Station);
 exports.stationModel = stationModel;
+
+// TODO En attente de confirmation
+exports.communes = [
+  'Port-au-Prince',
+  'Carrefour',
+  'Delmas',
+  'Cap-Haïtien',
+  'Pétionville',
+  'Les Gonaïves',
+  'Saint-Marc',
+  'Les Cayes',
+  'Verretes',
+  'Port-de-Paix',
+  'Jacmel',
+  'Limbé',
+  'Jérémie',
+  'Petite-Rivière-de-l\'Artibonite',
+  'Hinche',
+  'Petit-Goâve',
+  'Desdunes',
+  'Dessalines',
+  'Saint-Louis-du-Nord',
+  'Saint-Michel-de-l\'Attalaye',
+  'Léogâne',
+  'Fort-Liberté',
+  'Trou-du-Nord',
+  'Ouanaminthe',
+  'Mirebalais',
+  'Grande-Rivière-du-Nord',
+  'Lascahobas',
+  'Anse-d\'Ainault',
+  'Gros-Morne',
+  'Anse-à-Galets',
+  'Pignon',
+  'Croix-des-Bouquets',
+  'Dame-Marie',
+  'Miragoâne',
+  'Saint-Raphael',
+  'Aquin',
+  'Kenscoff'
+];
+exports.rivers = ['river1','river2','Grande Rivière du Nord', 'Haut-du-Cap','Limbé','Marion'];
+exports.intervals = ['1min', '5min', '10min', '15min', '30min', '1h', '2h', '6h', '12h', '24h'];
