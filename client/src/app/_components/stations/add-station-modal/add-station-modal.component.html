@@ -45,7 +45,7 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
-                    <input class="form-control" id="commune" formControlName="commune" required list="communes">
+                    <input class="form-control" id="commune" formControlName="commune" placeholder="Commune" required list="communes">
                     <datalist id="communes">
                       <option *ngFor="let i of communes" [value]="i">{{i}}</option>
                     </datalist>
@@ -59,7 +59,7 @@
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
-                    <input class="form-control" id="river" formControlName="river" required list="rivers">
+                    <input class="form-control" id="river" placeholder="Bassin versant" formControlName="river" required list="rivers">
                     <datalist id="rivers">
                       <option *ngFor="let i of rivers" [value]="i">{{i}}</option>
                     </datalist>
