@@ -281,11 +281,6 @@ exports.rainDataGraphLineRangeDate = function(req, res) {
     let dateMin = req.params.dateMin;
     let dateMax = req.params.dateMax;
 
-    console.log(dateMin);
-    console.log(dateMax);
-
-    //dateMin = new Date(Date.UTC() )
-
     dataModel.rainDataModel.find({
       id_station: req.params.stationId,
       date: { "$gte": dateMin, "$lt": dateMax }
@@ -350,9 +345,6 @@ exports.getRainDataGraphLineOneYear = function(req, res) {
     let dateMin = new Date(Date.UTC(year, 0, 1, 0, 0, 0, 0));
     let dateMax = new Date(Date.UTC(year, 11, 31, 23, 59, 59, 0));
 
-    console.log(dateMin);
-    console.log(dateMax);
-
     dataModel.rainDataModel.find({
       id_station: req.params.stationId,
       date: { "$gte": dateMin, "$lt": dateMax }
@@ -368,7 +360,6 @@ exports.getRainDataGraphLineOneYear = function(req, res) {
         mapValue.set(i, 0)
       }
       for (let i = 0; i < data.length; i++) {
-        console.log(data[i]);
         let month = data[i].date.getMonth();
         let value = data[i].value;
         mapValue.set(month, mapValue.get(month) + value);
@@ -399,11 +390,9 @@ exports.getRainDataGraphLineOneYear = function(req, res) {
 
 exports.getForDay = function(req, res) {
   let date = new Date(req.params.date);
-  console.log(date);
   let dateMin = new Date(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate());
   let dateMax = new Date(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate());
   dateMax.setHours(dateMax.getHours() + 24);
-  //console.log(dateMax);
   Station.stationModel.findById(req.params.stationId, (err, station) => {
     if (err) {
       return res.status(500).send("Erreur lors de la station liée .");
