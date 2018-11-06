@@ -66,9 +66,9 @@ export class GraphLineComponent implements OnInit {
       }
     });
 
-    //this.dataLoading = true;
+    this.dataLoading = true;
     this.loadStation();
-    //this.loadOneYear();
+    this.loadOneYear();
     this.loadOptionsHighCharts();
   }
 
@@ -176,7 +176,7 @@ export class GraphLineComponent implements OnInit {
           name: 'Value:',
           data: data,
           tooltip: {
-            valueDecimals: 2,
+            valueDecimals: self.valueDecimal,
             valueSuffix: 'mm'
           }
         }],
@@ -214,7 +214,7 @@ export class GraphLineComponent implements OnInit {
       });
       // Create the chart
       this.highChartBar = Highcharts.stockChart('containerBar', {
-        title: {
+      title: {
           text: this.station.name + ' - Données pluviométriques (mm)'
         },
         series: [{
@@ -222,7 +222,7 @@ export class GraphLineComponent implements OnInit {
           name: 'Value:',
           data: data,
           tooltip: {
-            valueDecimals: 2,
+            valueDecimals: self.valueDecimal,
             valueSuffix: 'mm'
           }
         }],
@@ -237,6 +237,7 @@ export class GraphLineComponent implements OnInit {
   }
 
   loadOneYear() {
+    const self = this;
     this.dataLoading = true;
     this.dataService.getAllRainDataGraphLineOneYear(this.stationId, this.yearSelected).subscribe(data => {
       // Create the chart
@@ -249,7 +250,7 @@ export class GraphLineComponent implements OnInit {
           step: true,
           data: data,
           tooltip: {
-            valueDecimals: 2,
+            valueDecimals: this.valueDecimal,
             valueSuffix: 'mm'
           }
         }]
@@ -264,7 +265,7 @@ export class GraphLineComponent implements OnInit {
           name: 'Value:',
           data: data,
           tooltip: {
-            valueDecimals: 2,
+            valueDecimals: this.valueDecimal,
             valueSuffix: 'mm'
           }
         }],
