@@ -220,9 +220,9 @@ exports.getIntervals = function(req, res) {
 };
 
 exports.getCommunes = function(req, res) {
-  return res.status(200).send(Station.communes);
+  return res.status(200).send(Station.communes.sort((val1, val2) => val1.toLowerCase() < val2.toLowerCase() ? -1 : 1));
 };
 
 exports.getRivers = function(req, res) {
-  return res.status(200).send(Station.rivers);
+  return res.status(200).send(Station.rivers.sort((val1, val2) => val1.toLowerCase() < val2.toLowerCase() ? -1 : 1));
 };
