@@ -35,6 +35,9 @@ export class GraphLineComponent implements OnInit {
   datepicker;
   hide;
 
+  groupPixelWidth = 50;
+  valueDecimal = 2;
+
   constructor(private dataService: DataService, private stationService: StationsService) { }
 
   ngOnInit() {
@@ -63,9 +66,9 @@ export class GraphLineComponent implements OnInit {
       }
     });
 
-    this.dataLoading = true;
+    //this.dataLoading = true;
     this.loadStation();
-    this.loadOneYear();
+    //this.loadOneYear();
     this.loadOptionsHighCharts();
   }
 
@@ -75,8 +78,6 @@ export class GraphLineComponent implements OnInit {
       const dateMax: Date = selectedDates[1];
       dateMin.setHours(0, 0, 0, 0);
       dateMax.setHours(23, 59, 59, 0);
-      console.log(selectedDates[0]);
-      console.log(selectedDates[1]);
       this.loadRangeDate(dateMin, dateMax);
     }
   }
@@ -145,6 +146,7 @@ export class GraphLineComponent implements OnInit {
   loadRangeDate(dateMin, dateMax) {
     this.dataLoading = true;
     this.dataService.getAllRainDataGraphLineRangeDate(this.stationId, dateMin, dateMax).subscribe(data => {
+      const self = this;
       this.hide = false;
       // Create the chart
       this.highChartLine = Highcharts.stockChart('containerLine', {
@@ -155,8 +157,11 @@ export class GraphLineComponent implements OnInit {
           name: 'Value',
           step: true,
           data: data,
+          dataGrouping: {
+            groupPixelWidth: self.groupPixelWidth // Quantity of points to group
+          },
           tooltip: {
-            valueDecimals: 2,
+            valueDecimals: self.valueDecimal,
             valueSuffix: 'mm'
           }
         }]
@@ -171,7 +176,8 @@ export class GraphLineComponent implements OnInit {
           name: 'Value:',
           data: data,
           tooltip: {
-            valueDecimals: 2
+            valueDecimals: 2,
+            valueSuffix: 'mm'
           }
         }],
         chart: {
@@ -187,6 +193,7 @@ export class GraphLineComponent implements OnInit {
   loadOneMonth() {
     this.dataLoading = true;
     this.dataService.getAllRainDataGraphLineOneMonth(this.stationId, this.monthSelected, this.yearSelected).subscribe(data => {
+      const self = this;
       // Create the chart
       this.highChartLine = Highcharts.stockChart('containerLine', {
         title: {
@@ -196,8 +203,11 @@ export class GraphLineComponent implements OnInit {
           name: 'Value',
           step: true,
           data: data,
+          dataGrouping: {
+            groupPixelWidth: self.groupPixelWidth // Quantity of points to group
+          },
           tooltip: {
-            valueDecimals: 2,
+            valueDecimals: self.valueDecimal,
             valueSuffix: 'mm'
           }
         }]
@@ -241,7 +251,6 @@ export class GraphLineComponent implements OnInit {
           tooltip: {
             valueDecimals: 2,
             valueSuffix: 'mm'
-
           }
         }]
       });
