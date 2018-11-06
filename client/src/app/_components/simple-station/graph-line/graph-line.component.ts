@@ -43,8 +43,8 @@ export class GraphLineComponent implements OnInit {
   ngOnInit() {
     const self = this;
 
-    this.rangeData = ['Mensuelles', 'Journalières', 'Horaires'];
-    this.rangeSelected = 'Mensuelles';
+    this.rangeData = ['Annuelles', 'Mensuelles', 'Quotidiennes'];
+    this.rangeSelected = 'Annuelles';
 
     this.currentDate = new Date();
     this.yearSelected = this.currentDate.getFullYear();
@@ -98,9 +98,9 @@ export class GraphLineComponent implements OnInit {
 
   rangeDataChange(val) {
     this.rangeSelected = val;
-    if (val === 'Journalières') {
+    if (val === 'Mensuelles') {
       this.loadOneMonth();
-    } else if (val === 'Mensuelles') {
+    } else if (val === 'Annuelles') {
       this.loadOneYear();
     } else {
       this.hide = true;
