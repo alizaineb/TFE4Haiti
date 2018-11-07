@@ -4,7 +4,7 @@ import * as L from 'leaflet';
 import { StationsService } from '../../_services/stations.service';
 import { Station } from "../../_models";
 import { LocalstorageService } from "../../_services/localstorage.service";
-import {Constantes} from '../../_helpers/constantes'
+import { Constantes } from '../../_helpers/constantes'
 
 @Component({
   selector: 'app-map',
@@ -206,7 +206,7 @@ export class MapComponent implements OnInit {
       self.mapContainer.removeLayer(overlays);
       L.control.layers(baseLayers).addTo(self.mapContainer);
       self.filteredStation = self.allStations.filter(station => {
-        return station.state.toLowerCase() !=  Constantes.stationState.AWAITING.toLowerCase()
+        return station.state.toLowerCase() != Constantes.stationState.AWAITING.toLowerCase()
       })
     } else {
       L.control.layers(baseLayers, overlays).addTo(self.mapContainer);
@@ -263,9 +263,23 @@ export class MapComponent implements OnInit {
     this.applyFilter();
   }
 
+  communeEmpty(val) {
+    if (val.length == 0) {
+      this.communeFilter = val;
+      this.applyFilter();
+    }
+  }
+
   riverSelected(val) {
     this.riverFilter = val;
     this.applyFilter();
+  }
+
+  riverEmpty(val) {
+    if (val.length == 0) {
+      this.riverFilter = val;
+      this.applyFilter();
+    }
   }
 
   filterStation(event) {
