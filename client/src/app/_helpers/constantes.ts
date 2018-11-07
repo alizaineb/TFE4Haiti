@@ -26,4 +26,10 @@ export class Constantes {
     INDIVIDUAL: "individual",
     UPDATE: "update"
   }
+  public static DownloadIntervals = {
+    STATION :"default",
+    DAYS : "days",
+    MONTHS : "month",
+    YEARS: "years"
+  }
 }
