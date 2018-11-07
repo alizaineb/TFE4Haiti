@@ -32,11 +32,11 @@ export class DetailsStationComponent implements OnInit {
     this.loadData();
   }
 
-  setDownloadClick(){
+  setDownloadClick() {
     this.DownloadData = !this.DownloadData;
   }
 
-  loadData(){
+  loadData() {
     this.stationService.getById(this.stationId).subscribe(
       station => {
         this.currentStation = station;
@@ -48,10 +48,16 @@ export class DetailsStationComponent implements OnInit {
     );
   }
 
-  downloadData() {
+  downloadData(event) {
     const self = this;
     self.DownloadData = false;
-    self.stationService.downloadData(self.currentStation._id).subscribe(
+    console.log("download")
+    const params = {
+      from: self.preFormatDate(event.dates.from),
+      to: self.preFormatDate(event.dates.to),
+      interval: event.interval
+    }
+    self.stationService.downloadData(self.currentStation._id, params).subscribe(
       res => {
         self.alertService.success('Un email vous sera envoyé dès que le fichier sera prêt.');
       },
@@ -61,7 +67,15 @@ export class DetailsStationComponent implements OnInit {
     );
   }
 
-  reloadStation($event = null){
+  preFormatDate(date: Date) {
+    return `${date.getFullYear()}-${this.minTwoDigits(date.getMonth())}-${this.minTwoDigits(date.getDay())}`
+  }
+
+   minTwoDigits(n) {
+    return (n < 10 ? '0' : '') + n;
+  }
+
+  reloadStation($event = null) {
     this.loadData();
   }
 
@@ -111,7 +125,6 @@ export class DetailsStationComponent implements OnInit {
 
 
     const stationGroup = L.layerGroup();
-
 
 
     L.marker([self.currentStation.latitude, self.currentStation.longitude], {icon: icon[self.currentStation.state]}).bindPopup(`<b>${self.currentStation.name} </b><br/>`).addTo(stationGroup);

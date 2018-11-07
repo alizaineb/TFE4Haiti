@@ -17,14 +17,14 @@ import {Constantes} from "../../../_helpers/constantes";
 export class DownloadDataModalComponent implements OnInit {
 
 
-  dateFrom: Date;
-  dateTo: Date;
 
-  @Output()
-  updated = new EventEmitter<boolean>();
+  @Output('downlaod')
+  updated = new EventEmitter<any>();
 
   intervals: string[] = [];
   datePicker;
+  datesSelected;
+  selectedInterval: string;
 
   mark;
 
@@ -33,13 +33,16 @@ export class DownloadDataModalComponent implements OnInit {
 
   ngOnInit(): void {
     const self = this;
+    self.datesSelected = {
+      from: new Date(),
+      to: new Date()
+    };
+    this.selectedInterval = Constantes.DownloadIntervals.DAYS;
+
     for (var i in Constantes.DownloadIntervals) {
       this.intervals.push(i);
     }
 
-    // this.dateFrom = new Date();
-    // this.dateTo = new Date();
-    // // this.initDatePicker();
     if(!this.datePicker){
       this.datePicker = flatpickr('#datePickerDownload', {
         locale: French,
@@ -58,7 +61,12 @@ export class DownloadDataModalComponent implements OnInit {
 
   sendStation() {
 
-    // this.updated.emit(true);
+    let obj = {
+      dates : this.datesSelected,
+      interval : this.selectedInterval
+    }
+    console.log(obj);
+    this.updated.emit(obj);
     // this.stationService.update(s)
     //   .subscribe(
     //     result => {
@@ -74,14 +82,14 @@ export class DownloadDataModalComponent implements OnInit {
   initDatePicker() {
     const self = this;
     this.datePicker = flatpickr('#datePickerDownload', {
-      // locale: French,
+      locale: French,
       mode: 'range',
-      // altInput: true,
-      // dateFormat: 'Y-m-d',
-      // altFormat: 'd-m-Y',
-      // onChange: function(selectedDates, dateStr, instance) {
-      //   self.dateChanged(selectedDates, dateStr, instance);
-      // }
+      altInput: true,
+      dateFormat: 'Y-m-d',
+      altFormat: 'd-m-Y',
+      onChange: function(selectedDates, dateStr, instance) {
+        self.dateChanged(selectedDates, dateStr, instance);
+      }
     });
   }
 
@@ -89,9 +97,9 @@ export class DownloadDataModalComponent implements OnInit {
     if (selectedDates.length === 2) {
       const dateMin: Date = selectedDates[0];
       const dateMax: Date = selectedDates[1];
-      console.log("Range : ", dateMin, dateMax)
+      this.datesSelected.from = dateMin;
+      this.datesSelected.to = dateMax;
     }
-    // console.log("Range : ", selectedDates, dateStr, instance)
   }
 }
 

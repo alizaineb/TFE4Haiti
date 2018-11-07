@@ -94,8 +94,8 @@ export class StationsService {
     return this.http.post(`${environment.apiUrl}/stations/${id}/importFile`, file);
   }
 
-  downloadData(id: string) {
-    return this.http.get(environment.apiUrl + '/stations/' + id + '/download');
+  downloadData(id: string, param) {
+    return this.http.get(environment.apiUrl + '/stations/' + id + '/download', {params: param});
   }
   
 }
