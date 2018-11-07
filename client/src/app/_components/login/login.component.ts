@@ -2,8 +2,9 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
+import { Constantes } from "../../_helpers/constantes";
 
-import { AlertService, AuthenticationService, UserService } from '../../_services/index';
+import { AlertService, AuthenticationService, UserService, StationsService } from '../../_services/index';
 import { LocalstorageService } from "../../_services/localstorage.service";
 
 @Component({
@@ -18,6 +19,9 @@ export class LoginComponent implements OnInit {
   registerSubmitted = false;
   returnUrl: string;
   roles: string[];
+  private roleWorker: string;
+  private communes: string[];
+  private rivers: string[];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -26,11 +30,18 @@ export class LoginComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private alertService: AlertService,
     private localStorageService: LocalstorageService,
-    private userService: UserService
+    private userService: UserService,
+    private stationsService: StationsService
   ) {
   }
 
   ngOnInit() {
+    this.stationsService.getCommunes().subscribe(communes => {
+      this.communes = communes;
+    });
+    this.stationsService.getRivers().subscribe(rivers => {
+      this.rivers = rivers;
+    });
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
@@ -42,7 +53,8 @@ export class LoginComponent implements OnInit {
       last_name: ['', Validators.required],
       role: ['', Validators.required]
     });
-    this.userService.getRoles().subscribe(roles => { this.roles = roles; });
+    this.roles = Object.values(Constantes.roles);
+    this.roleWorker = Constantes.roles.WORKER;
 
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
