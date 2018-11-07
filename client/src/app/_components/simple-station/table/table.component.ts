@@ -52,6 +52,9 @@ export class TableComponent implements OnInit, OnChanges {
   constructor(private stationService: StationsService, private alertService: AlertService) { }
 
   ngOnInit() {
+    window.onresize = () => {
+      this.computeWidth();
+    };
     this.cols = [];
     this.rows = [];
     this.noDateSelected = true;
@@ -246,12 +249,16 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   computeWidth() {
-    let width = this.aggregatedDatas.length * 55 + 80 + 20; // 80 == width of first column and 20 = 10 padding + 10 padding
-    width = width + "px";
-    let el = document.getElementById('switchDivs');
-    el.style.width = width;
-    el = document.getElementById('switchNav');
-    el.style.width = width;
+    if (this.aggregatedDatas) {
+      let width = this.aggregatedDatas.length * 55 + 80 + 20; // 80 == width of first column and 20 = 10 padding + 10 padding
+      let el = document.getElementById('switchDivs');
+      if (el.offsetWidth < width) {
+        width = width + "px";
+        el.style.width = width;
+        el = document.getElementById('switchNav');
+        el.style.width = width;
+      }
+    }
   }
 
   getRange(num) {
