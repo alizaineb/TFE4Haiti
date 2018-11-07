@@ -32,13 +32,14 @@ export class AuthenticationService {
     this.localStorageService.removeItem('currentUser');
   }
 
-  register(first_name: string, last_name: string, username: string, role: string) {
+  register(first_name: string, last_name: string, username: string, role: string, commune: string, bassin_versant: string) {
     return this.http.post<any>(environment.apiUrl + '/users', {
       first_name: first_name,
       last_name: last_name,
       mail: username,
       role: role,
-
+      commune: commune,
+      bassin_versant: bassin_versant
     })
       .pipe(map(user => {
         // login successful if there's a jwt token in the response
