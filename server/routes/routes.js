@@ -256,7 +256,7 @@ exports.routes = [
     middleWare: [controllers.data.getRainDataGraphLineOneMonth],
   },
   {
-    path: "/api/rainDataGraphLineRangeDate/:stationId/:dateMin/:dateMax",
+    path: "/api/rainDataGraphLineRangeDate/:stationId/:minDate/:minMonth/:minYear/:maxDate/:maxMonth/:maxYear",
     httpMethod: "GET",
     middleWare: [controllers.data.rainDataGraphLineRangeDate],
   },

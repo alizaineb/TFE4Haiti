@@ -76,9 +76,7 @@ export class GraphLineComponent implements OnInit {
     if (selectedDates.length === 2) {
       const dateMin: Date = selectedDates[0];
       const dateMax: Date = selectedDates[1];
-      dateMin.setHours(0, 0, 0, 0);
-      dateMax.setHours(23, 59, 59, 0);
-      this.loadRangeDate(dateMin, dateMax);
+      this.loadRangeDate(dateMin.getDate(), dateMin.getMonth(), dateMin.getFullYear(), dateMax.getDate(), dateMax.getMonth(), dateMax.getFullYear());
     }
   }
 
@@ -143,9 +141,10 @@ export class GraphLineComponent implements OnInit {
       .add();
   }
 
-  loadRangeDate(dateMin, dateMax) {
+  loadRangeDate(minDate, minMonth, minYear, maxDate, maxMonth, maxYear) {
     this.dataLoading = true;
-    this.dataService.getAllRainDataGraphLineRangeDate(this.stationId, dateMin, dateMax).subscribe(data => {
+    this.dataService.getAllRainDataGraphLineRangeDate(this.stationId, minDate, minMonth, minYear, maxDate, maxMonth, maxYear).subscribe(data => {
+      console.log(data);
       const self = this;
       this.hide = false;
       // Create the chart
