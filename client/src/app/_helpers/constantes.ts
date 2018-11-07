@@ -19,7 +19,7 @@ export class Constantes {
     WORKING: "working",
     DELETED: "deleted",
     BROKEN: "broken"
-  }
+  };
 
   public static DataType = {
     FILE: "file",

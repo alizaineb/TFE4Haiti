@@ -28,8 +28,8 @@ export class DataService {
     return this.http.get<any[]>(environment.apiUrl + '/rainDataGraphLineOneMonth/' + stationId + '/' + month + '/' + year);
   }
 
-  getAllRainDataGraphLineRangeDate(stationId, dateFrom, dateTo): Observable<any[]>  {
-    return this.http.get<any[]>(environment.apiUrl + '/rainDataGraphLineRangeDate/' + stationId + '/' + dateFrom + '/' + dateTo);
+  getAllRainDataGraphLineRangeDate(stationId,minDate, minMonth, minYear, maxDate, maxMonth, maxYear): Observable<any[]>  {
+    return this.http.get<any[]>(environment.apiUrl + '/rainDataGraphLineRangeDate/' + stationId + '/' + minDate  + '/' + minMonth + '/' + minYear +'/' + maxDate + '/' + maxMonth + '/' + maxYear);
   }
 
   updateData(id_station: string, id: string, newData: string, date: Date) {
