@@ -4,7 +4,7 @@
       <div class="col-md-12">
         <h5>Nom :
           <div class="float-right">
-          <i class="fas fa-edit fa-fw fa-1x" data-toggle="modal" data-target="#updateStationModal"></i>
+          <i class="fas fa-edit fa-fw fa-1x" ></i> <!--data-toggle="modal" data-target="#updateStationModal"-->
         </div></h5>
       </div>
       <div class="col-md-11 offset-md-1">
@@ -58,7 +58,7 @@
         <h2>{{getState(currentStation)}}</h2>
       </div>
       <div class="col-md-12">
-        <button class="btn btn-primary" (click)="downloadData()">Télécharger les Données</button>
+        <button class="btn btn-primary" (click)="setDownloadClick()" data-toggle="modal" data-target="#DownloadStationModalLabel">Télécharger les Données</button>
       </div>
     </div>
   </div>
@@ -73,7 +73,15 @@
 
 <!-- Modal -->
 <div class="modal fade" id="updateStationModal" tabindex="-1" role="dialog" aria-labelledby="updateStationModalLabel" aria-hidden="true">
-  <div *ngIf="currentStation != null">
+  <div *ngIf="currentStation">
     <app-update-sation-modal [stationToUpdate]=currentStation (updated)="reloadStation($event)"></app-update-sation-modal>
   </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="DownloadStationModalLabel" tabindex="-1" role="dialog" aria-labelledby="DownloadStationModalLabel" aria-hidden="true">
+  <div *ngIf="currentStation">
+    <app-download-data-modal [stationToUpdate]=currentStation (sent)="downloadData($event)"></app-download-data-modal>
+  </div>
+
 </div>

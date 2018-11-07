@@ -15,8 +15,10 @@ export class DetailsStationComponent implements OnInit {
   @Input()
   private stationId: string;
 
-  public currentStation;
+  public currentStation: Station;
   private mapContainer;
+
+  public DownloadData: boolean;
 
   constructor(
     private stationService: StationsService,
@@ -26,7 +28,12 @@ export class DetailsStationComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.DownloadData = false;
     this.loadData();
+  }
+
+  setDownloadClick(){
+    this.DownloadData = !this.DownloadData;
   }
 
   loadData(){
@@ -43,6 +50,7 @@ export class DetailsStationComponent implements OnInit {
 
   downloadData() {
     const self = this;
+    self.DownloadData = false;
     self.stationService.downloadData(self.currentStation._id).subscribe(
       res => {
         self.alertService.success('Un email vous sera envoyé dès que le fichier sera prêt.');
