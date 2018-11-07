@@ -30,6 +30,7 @@ export class Constantes {
     STATION :"default",
     DAYS : "days",
     MONTHS : "month",
-    YEARS: "years"
+    YEARS: "years",
+    ALL: "all",
   }
 }

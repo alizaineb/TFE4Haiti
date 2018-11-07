@@ -1,13 +1,10 @@
 import {
   Component,
-  EventEmitter, Input,
+  EventEmitter,
   OnInit,
-  Output, SimpleChanges
+  Output
 } from '@angular/core';
-import {Station} from '../../../_models';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {AlertService} from '../../../_services';
-import {StationsService} from '../../../_services/stations.service';
+
 import flatpickr from 'flatpickr';
 import {French} from 'flatpickr/dist/l10n/fr';
 import {Constantes} from "../../../_helpers/constantes";
@@ -20,91 +17,32 @@ import {Constantes} from "../../../_helpers/constantes";
 export class DownloadDataModalComponent implements OnInit {
 
 
-  @Input('stationToUpdate')
-  stationToUpdate: Station = null;
+  dateFrom: Date;
+  dateTo: Date;
 
   @Output()
   updated = new EventEmitter<boolean>();
 
   intervals: string[] = [];
-  communes: string[];
-  rivers: string[];
-  submitted = false;
-
-  DownloadStationForm: FormGroup;
   datePicker;
 
   mark;
 
-  constructor(private alertService: AlertService,
-              private stationService: StationsService) {
+  constructor() {
   }
 
   ngOnInit(): void {
-    for(var i in Constantes.DownloadIntervals) {
+    for (var i in Constantes.DownloadIntervals) {
       this.intervals.push(i);
-      console.log("coucou", i);
     }
 
-    if(this.stationToUpdate){
-      this.initForm();
-      this.initDatePicker();
-    }
+    this.dateFrom = new Date();
+    this.dateTo = new Date();
+    this.initDatePicker();
 
-  }
-
-
-  initForm() {
-    this.DownloadStationForm = new FormGroup({
-
-      'interval': new FormControl(this.stationToUpdate.interval, [
-        Validators.required
-      ]),
-
-      'createdAt': new FormControl(this.stationToUpdate.createdAt, [
-        Validators.required
-      ])
-      // Ajouter la méthode get en dessous pour chaque field
-    });
-  }
-
-
-  get interval() { return this.DownloadStationForm.get('interval'); }
-  get createdAt() {return this.DownloadStationForm.get('createdAt'); }
- 
-
-  ngAfterViewChecked(): void {
-    // this.map.invalidateSize();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    this.resetStation();
-  }
-
-  onSubmit() { this.submitted = true; }
-
-  resetStation() {
-    this.initForm();
-    if (this.datePicker) {
-      this.datePicker.setDate(this.stationToUpdate.createdAt);
-    }
-    if (this.mark) {
-      this.mark.setLatLng([this.stationToUpdate.latitude, this.stationToUpdate.longitude]);
-    }
   }
 
   sendStation() {
-    this.submitted = true;
-    // stop here if form is invalid
-    if (this.DownloadStationForm.invalid) {
-      return;
-    }
-
-    const s = new Station();
-    s._id = this.stationToUpdate._id;
-
-    s.interval = this.DownloadStationForm.controls['interval'].value;
-    s.createdAt = this.DownloadStationForm.controls['createdAt'].value;
 
     // this.updated.emit(true);
     // this.stationService.update(s)
@@ -121,16 +59,25 @@ export class DownloadDataModalComponent implements OnInit {
 
   initDatePicker() {
     const self = this;
-    this.datePicker = flatpickr('#createdAt2', {
-      defaultDate: self.stationToUpdate.createdAt,
-      locale: French,
-      altInput: true,
-      altFormat: 'd-m-Y',
-      dateFormat: 'd-m-Y',
-      onChange: function(selectedDates, dateStr, instance) {
-        self.DownloadStationForm.controls['createdAt'].setValue(new Date(selectedDates[0]));
-      }
+    this.datePicker = flatpickr('#datePickerDownload', {
+      // locale: French,
+      mode: 'range',
+      // altInput: true,
+      // dateFormat: 'Y-m-d',
+      // altFormat: 'd-m-Y',
+      // onChange: function(selectedDates, dateStr, instance) {
+      //   self.dateChanged(selectedDates, dateStr, instance);
+      // }
     });
+  }
+
+  dateChanged(selectedDates, dateStr, instance) {
+    if (selectedDates.length === 2) {
+      const dateMin: Date = selectedDates[0];
+      const dateMax: Date = selectedDates[1];
+      console.log("Range : ", dateMin, dateMax)
+    }
+    console.log("Range : ", selectedDates, dateStr, instance)
   }
 }
 

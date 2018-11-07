@@ -8,58 +8,39 @@
     </div>
     <div class="modal-body">
       <div class="container">
-        <form (ngSubmit)="onSubmit()" [formGroup]="DownloadStationForm" #updateStationFormNg="ngForm">
-          <div class="row">
-            <div class="col-md-12">
+
+        <div class="row">
+          <div class="col-md-12">
 
 
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
 
-                    <select class="form-control" id="interval" formControlName="interval" required>
-                      <option value="" disabled selected>Intervalle</option>
-                      <option *ngFor="let i of intervals" [value]="i">{{i}}</option>
-                    </select>
-
-                    <div *ngIf="interval.invalid && (interval.dirty || interval.touched)" class="alert alert-danger">
-                      <div *ngIf="interval.errors.required">
-                        Une intervalle est requise
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-
-              <div class="row">
-                <div class="col-md">
-                  <div class="form-group">
-                    <input id="createdAt2" placeholder="Date de création" type="text" class="flatpickr flatpickr-input form-control" formControlName="createdAt" required>
-                    <div *ngIf="createdAt.invalid && (createdAt.dirty || createdAt.touched)" class="alert alert-danger">
-                      <div *ngIf="createdAt.errors.required">
-                        La longitude est requise
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md">
+                  <select class="form-control" id="interval" >
+                    <option value="" disabled selected>Intervalle</option>
+                    <option *ngFor="let i of intervals" [value]="i">{{i}}</option>
+                  </select>
 
                 </div>
               </div>
-
+              <div class="col-md-3">
+                <div class="form-group">
+                  <input id="datePickerDownload" placeholder="Intervale de date" type="text" class="flatpickr flatpickr-input form-control">
+                </div>
+              </div>
             </div>
+
           </div>
+        </div>
 
 
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" (click)="resetStation()">Réinitialiser</button>
-            <button (click)="resetStation()" type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-            <button (click)="sendStation()" type="submit" class="btn btn-success" data-dismiss="modal" [disabled]="!updateStationFormNg.form.valid">Envoyer
-            </button>
-          </div>
-        </form>
-
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+          <button (click)="sendStation()" type="submit" class="btn btn-success" data-dismiss="modal">
+            Télécharger
+          </button>
+        </div>
       </div>
     </div>
   </div>
