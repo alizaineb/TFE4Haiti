@@ -32,13 +32,27 @@ export class DownloadDataModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const self = this;
     for (var i in Constantes.DownloadIntervals) {
       this.intervals.push(i);
     }
 
-    this.dateFrom = new Date();
-    this.dateTo = new Date();
-    this.initDatePicker();
+    // this.dateFrom = new Date();
+    // this.dateTo = new Date();
+    // // this.initDatePicker();
+    if(!this.datePicker){
+      this.datePicker = flatpickr('#datePickerDownload', {
+        locale: French,
+        mode: 'range',
+        altInput: true,
+        dateFormat: 'Y-m-d',
+        altFormat: 'd-m-Y',
+        onChange: function(selectedDates, dateStr, instance) {
+          self.dateChanged(selectedDates, dateStr, instance);
+        }
+      });
+    }
+
 
   }
 
@@ -77,7 +91,7 @@ export class DownloadDataModalComponent implements OnInit {
       const dateMax: Date = selectedDates[1];
       console.log("Range : ", dateMin, dateMax)
     }
-    console.log("Range : ", selectedDates, dateStr, instance)
+    // console.log("Range : ", selectedDates, dateStr, instance)
   }
 }
 
