@@ -253,10 +253,10 @@ export class TableComponent implements OnInit, OnChanges {
       let width = this.aggregatedDatas.length * 55 + 80 + 20; // 80 == width of first column and 20 = 10 padding + 10 padding
       let el = document.getElementById('switchDivs');
       if (el.offsetWidth < width) {
-        width = width + "px";
-        el.style.width = width;
+        let widthStr = width + "px";
+        el.style.width = widthStr;
         el = document.getElementById('switchNav');
-        el.style.width = width;
+        el.style.width = widthStr;
       }
     }
   }
