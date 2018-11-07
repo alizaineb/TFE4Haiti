@@ -296,10 +296,14 @@ exports.rainDataGraphLineRangeDate = function(req, res) {
         logger.error(err);
         return res.status(500).send("Erreur lors de la récupération des données.");
       }
-      data = preprocessData(data, req.params.stationId, station.interval, dateMin, dateMax);
-      let tabD = [];
-      data.forEach(data => tabD.push(dataModel.rainDataModel.toDtoGraphLine(data)));
-      return res.status(200).send(tabD);
+      if(data.length === 0){
+        return res.status(200).send([]);
+      } else {
+        data = preprocessData(data, req.params.stationId, station.interval, dateMin, dateMax);
+        let tabD = [];
+        data.forEach(data => tabD.push(dataModel.rainDataModel.toDtoGraphLine(data)));
+        return res.status(200).send(tabD);
+      }
     });
   });
 };
@@ -333,10 +337,14 @@ exports.getRainDataGraphLineOneMonth = function(req, res) {
         logger.error(err);
         return res.status(500).send("Erreur lors de la récupération des données.");
       }
-      data = preprocessData(data, req.params.stationId, station.interval, dateMin, dateMax);
-      let tabD = [];
-      data.forEach(data => tabD.push(dataModel.rainDataModel.toDtoGraphLine(data)));
-      return res.status(200).send(tabD);
+      if(data.length === 0){
+        return res.status(200).send([]);
+      } else {
+        data = preprocessData(data, req.params.stationId, station.interval, dateMin, dateMax);
+        let tabD = [];
+        data.forEach(data => tabD.push(dataModel.rainDataModel.toDtoGraphLine(data)));
+        return res.status(200).send(tabD);
+      }
     });
   });
 };
