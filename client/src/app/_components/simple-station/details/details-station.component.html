@@ -79,7 +79,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="DownloadStationModalLabel" tabindex="-1" role="dialog" aria-labelledby="DownloadStationModalLabel" aria-hidden="true">
+<div class="modal fade" id="DownloadStationModalLabel" role="dialog" aria-labelledby="DownloadStationModalLabel" aria-hidden="true">
   <div *ngIf="currentStation">
     <app-download-data-modal (sent)="downloadData($event)"></app-download-data-modal>
   </div>
