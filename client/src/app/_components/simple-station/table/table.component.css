@@ -15,9 +15,9 @@
 
 .solidBorderRight {
   border-right: 1px solid !important;
-  width: 80px;
-  min-width: 80px;
-  max-width: 80px;
+  width: 80px !important;
+  min-width: 80px !important;
+  max-width: 80px !important;
 }
 
 table {
@@ -25,7 +25,7 @@ table {
 }
 
 th {
-  padding: 10px 2px 10px 2px;
+  padding: 6px 1px 6px 1px;
   max-width: 55px;
   min-width: 55px;
   text-align: center;

@@ -241,6 +241,17 @@ export class TableComponent implements OnInit, OnChanges {
     }
     this.totMin = min;
     this.totMax = max;
+
+    this.computeWidth();
+  }
+
+  computeWidth() {
+    let width = this.aggregatedDatas.length * 55 + 80 + 20; // 80 == width of first column and 20 = 10 padding + 10 padding
+    width = width + "px";
+    let el = document.getElementById('switchDivs');
+    el.style.width = width;
+    el = document.getElementById('switchNav');
+    el.style.width = width;
   }
 
   getRange(num) {
@@ -284,5 +295,12 @@ export class TableComponent implements OnInit, OnChanges {
 
   editData(data) {
     this.dataToEdit = data;
+  }
+
+  ngOnDestroy() {
+    let el = document.getElementById('switchDivs');
+    el.style.width = "";
+    el = document.getElementById('switchNav');
+    el.style.width = "";
   }
 }

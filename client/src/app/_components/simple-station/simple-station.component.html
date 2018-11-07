@@ -1,4 +1,4 @@
-<ul class="nav nav-tabs">
+<ul class="nav nav-tabs" id="switchNav">
 
   <!-- Tab Detail d'une station -->
   <li class="nav-item" *ngFor="let tab of tabList">
@@ -10,7 +10,7 @@
     </a>
   </li>
 </ul>
-<div class="tableBorder">
+<div class="tableBorder" id="switchDivs">
   <div *ngIf="getSelectedClass(tabList[0])">
     <app-simple-station-details [stationId]="stationId"></app-simple-station-details>
   </div>
