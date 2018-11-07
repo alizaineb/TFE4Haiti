@@ -68,7 +68,7 @@ export class DetailsStationComponent implements OnInit {
   }
 
   preFormatDate(date: Date) {
-    return `${date.getFullYear()}-${this.minTwoDigits(date.getMonth())}-${this.minTwoDigits(date.getDay())}`
+    return `${date.getUTCFullYear()}-${this.minTwoDigits(date.getUTCMonth())}-${this.minTwoDigits(date.getUTCDate())}`
   }
 
    minTwoDigits(n) {
