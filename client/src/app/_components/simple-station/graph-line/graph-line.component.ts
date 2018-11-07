@@ -249,7 +249,7 @@ export class GraphLineComponent implements OnInit {
           step: true,
           data: data,
           tooltip: {
-            valueDecimals: this.valueDecimal,
+            valueDecimals: self.valueDecimal,
             valueSuffix: 'mm'
           }
         }]
@@ -263,8 +263,11 @@ export class GraphLineComponent implements OnInit {
           type: 'column',
           name: 'Value:',
           data: data,
+          dataGrouping: {
+            groupPixelWidth: self.groupPixelWidth // Quantity of points to group
+          },
           tooltip: {
-            valueDecimals: this.valueDecimal,
+            valueDecimals: self.valueDecimal,
             valueSuffix: 'mm'
           }
         }],
@@ -272,6 +275,7 @@ export class GraphLineComponent implements OnInit {
           alignTicks: false
         },
       });
+
       let emptyData = true;
       for (let i = 0; i < data.length; i++) {
         if (data[i][1] !== null) {
@@ -283,6 +287,7 @@ export class GraphLineComponent implements OnInit {
         this.showNoData();
       }
     });
+
   }
 
   loadOptionsHighCharts() {
@@ -335,7 +340,7 @@ export class GraphLineComponent implements OnInit {
       xAxis: {
         type: 'datetime', // ensures that xAxis is treated as datetime values
         title: {
-          text: 'Mois'
+          text: 'Mois' // TODO
         },
       },
       yAxis: {
