@@ -51,7 +51,9 @@ export class LoginComponent implements OnInit {
       username: ['', Validators.required],
       first_name: ['', Validators.required],
       last_name: ['', Validators.required],
-      role: ['', Validators.required]
+      role: ['', Validators.required],
+      commune: [''],
+      bassin_versant: ['']
     });
     this.roles = Object.values(Constantes.roles);
     this.roleWorker = Constantes.roles.WORKER;
@@ -102,7 +104,7 @@ export class LoginComponent implements OnInit {
 
     this.loading = true;
     const self = this;
-    this.authenticationService.register(this.r.first_name.value, this.r.last_name.value, this.r.username.value, this.r.role.value)
+    this.authenticationService.register(this.r.first_name.value, this.r.last_name.value, this.r.username.value, this.r.role.value, this.r.commune.value, this.r.bassin_versant.value)
       .pipe(first())
       .subscribe(
         data => {
