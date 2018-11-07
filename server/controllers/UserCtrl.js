@@ -6,6 +6,7 @@ var crypto = require('crypto');
 // Nos modules
 const logger = require('../config/logger');
 const UsersModel = require('./../models/users');
+const StationModel = require('./../models/station');
 const tokenManager = require('./../config/tokenManager');
 const roles = require('../config/constants').roles;
 const userState = require('../config/constants').userState;
@@ -99,6 +100,18 @@ exports.create = function(req, res) {
     uTmp.mail = user.mail;
     uTmp.role = user.role;
     uTmp.state = userState.AWAITING;
+    if (user.role == roles.WORKER) {
+      if (user.commune && StationModel.communes.indexOf(user.commune) >= 0) {
+        uTmp.commune = user.commune;
+      } else {
+        return res.status(404).send("La commune que vous renseignez n'existe pas.");
+      }
+      if (user.bassin_versant && StationModel.rivers.indexOf(user.bassin_versant) >= 0) {
+        uTmp.river = user.bassin_versant;
+      } else {
+        return res.status(404).send("Le bassin versant que vous renseignez n'existe pas.");
+      }
+    }
     uTmp.save().then(() => {
       return res.status(201).send(uTmp.toDto());
     }).catch(function(err) {
