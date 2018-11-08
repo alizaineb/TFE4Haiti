@@ -1,3 +1,5 @@
+
+
 const path = require('path');
 const fs = require('fs');
 const nconf = require('nconf');
@@ -12,6 +14,7 @@ const state = require('../config/constants').DataType;
 const Station = require("../models/station");
 const UsersModel = require("../models/users");
 const roles = require('../config/constants').roles;
+const DownloadInterval = require('../config/constants').DownloadIntervals;
 
 
 /*
@@ -607,7 +610,7 @@ exports.importManualData = function(req, res) {
             tmp.push(data);
             // console.log(data);
           }
-          console.log(groupByDay(tmp));
+
           insertData(req, res, tmp, station, user);
         }
       });
@@ -691,7 +694,7 @@ exports.downloadData = function(req, res) {
     const from = new Date(req.query.from), to = new Date(req.query.to), interval = req.query.interval;
 
     console.log(from, " => ", to, " | ", interval);
-    //Dates filter //TODO
+
 
     Station.stationModel.findById(id_station, (err, station) => {
         dataModel.rainDataModel.find({
@@ -702,10 +705,23 @@ exports.downloadData = function(req, res) {
                 logger.error(err);
                 return res.status(500).send(err);
             } else {
+                let dataGrouped = rainDatas;
 
-                // console.log(rainDatas);
-                //format data to download
-                const result = rainDataToCSV(rainDatas);
+                switch (interval) {
+                  case DownloadInterval.YEARS:
+                    dataGrouped = groupByYear(rainDatas);
+                    break;
+                  case DownloadInterval.DAYS:
+                    dataGrouped = groupByDay(rainDatas);
+                    break;
+                  case DownloadInterval.MONTHS:
+                    dataGrouped = groupByMonth(rainDatas);
+                    break;
+                  default:
+
+
+                }
+                const result = rainDataToCSV(dataGrouped);
                 if(result.length > 0){
                   console.log("DATAAS8!!")
                   // Write File
@@ -729,18 +745,21 @@ exports.downloadData = function(req, res) {
 
                   });
                 }else{
+                  console.log("no data...");
                   console.log(result);
+                  return res.status(404).send("Pas de données trouvées pour la périodes souhaitée.");
                 }
 
-
+              return res.status(200).send();
             }
         });
     });
-    return res.status(200).send();
+
 
 }
 
 function rainDataToCSV(rainDatas){
+  console.log(typeof rainDatas);
     let fileContent = "";
     for(let i = 0; i < rainDatas.length; i++){
         const rainData = rainDatas[i];

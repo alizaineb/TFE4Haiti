@@ -1,4 +1,3 @@
-
 export class Constantes {
 
     public  static roles = {
@@ -25,12 +24,13 @@ export class Constantes {
     FILE: "file",
     INDIVIDUAL: "individual",
     UPDATE: "update"
-  }
+  };
+
   public static DownloadIntervals = {
     STATION :"default",
     DAYS : "days",
     MONTHS : "month",
     YEARS: "years",
     ALL: "all",
-  }
+  };
 }

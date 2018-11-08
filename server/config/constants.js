@@ -23,3 +23,11 @@ exports.DataType = {
   INDIVIDUAL: "individual",
   UPDATE: "update"
 }
+
+exports.DownloadIntervals = {
+  STATION :"default",
+  DAYS : "days",
+  MONTHS : "month",
+  YEARS: "years",
+  ALL: "all",
+}
