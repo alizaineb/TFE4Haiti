@@ -19,13 +19,8 @@
     <label class="col-form-label">
       Données
     </label>
-<<<<<<< Updated upstream
     <select class="form-control col-sm-6" (change)="rangeDataChange($event.target.value)">
       <option>Sélectionner une option</option>
-=======
-    <select class="form-control col-sm-3" (change)="rangeDataChange($event.target.value)">
-      <option>Sélectionner</option>
->>>>>>> Stashed changes
       <option *ngFor="let i of rangeData" [value]="i">{{i}}</option>
     </select>
   </div>
