@@ -32,18 +32,18 @@
   </div>
 
 </div>
-<div *ngIf="noDateSelected || noIntervalSelected" class="container">
-  <h1>Veuillez sélectionner une date et un intervalle</h1>
+<div *ngIf="noDateSelected" class="container">
+  <h1>Veuillez sélectionner une date</h1>
 </div>
 
-<div *ngIf="dataLoading && !noIntervalSelected" class="text-center container">
+<div *ngIf="dataLoading" class="text-center container">
   <i class="fas fa-spinner fa-spin fa-7x"></i>
 </div>
-<div *ngIf="noData && !noIntervalSelected" class="text-center container">
+<div *ngIf="noData" class="text-center container">
   <h1>Pas de donnée(s) pour la date sélectionnée</h1>
 </div>
 
-<div *ngIf="dataToShow && !noIntervalSelected" class="someSpace">
+<div *ngIf="dataToShow" class="someSpace">
   <h5>Les colonnes représentent les heures et les lignes les minutes</h5>
   <h5>Le tableau se lit donc de haut en bas</h5>
 

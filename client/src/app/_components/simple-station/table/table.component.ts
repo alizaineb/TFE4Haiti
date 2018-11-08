@@ -35,7 +35,6 @@ export class TableComponent implements OnInit, OnChanges {
   private ratio: number;
 
   private noDateSelected: boolean;
-  private noIntervalSelected: boolean;
   private dataLoading: boolean;
   private noData: boolean;
   private dataToShow: boolean;
@@ -58,7 +57,6 @@ export class TableComponent implements OnInit, OnChanges {
     this.cols = [];
     this.rows = [];
     this.noDateSelected = true;
-    this.noIntervalSelected = true;
     this.dataLoading = false;
     this.noData = false;
     this.dataToShow = false;
@@ -99,6 +97,7 @@ export class TableComponent implements OnInit, OnChanges {
     });
     Promise.all([prom1, prom2]).then(function(values) {
       self.filterIntervals();
+      self.intervalleChanged(self.currentStation.interval);
     });
   }
 
@@ -124,9 +123,8 @@ export class TableComponent implements OnInit, OnChanges {
       } else {
         self.dataToShow = true;
         self.allDatas = rainDatas;
-        if (!self.noIntervalSelected) {
-          self.computeDataToShow();
-        }
+        self.computeDataToShow();
+
       }
     }, error => {
       self.dataLoading = false;
@@ -146,7 +144,6 @@ export class TableComponent implements OnInit, OnChanges {
       this.sameIntervalAsStation = true;
     }
     this.intervalSelected = val;
-    this.noIntervalSelected = false;
     let jump = this.getHopSize(val);
     this.ratio = 60 / jump;
     this.rows = [];
