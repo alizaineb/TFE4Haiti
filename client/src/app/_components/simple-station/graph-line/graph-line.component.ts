@@ -66,7 +66,6 @@ export class GraphLineComponent implements OnInit {
       }
     });
 
-    this.dataLoading = true;
     this.loadStation();
     this.loadOptionsHighCharts();
   }
