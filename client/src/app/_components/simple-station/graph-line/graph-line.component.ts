@@ -66,7 +66,6 @@ export class GraphLineComponent implements OnInit {
       }
     });
 
-    this.dataLoading = true;
     this.loadStation();
     this.loadOptionsHighCharts();
   }
@@ -94,6 +93,7 @@ export class GraphLineComponent implements OnInit {
   }
 
   rangeDataChange(val) {
+    this.hide = false;
     this.rangeSelected = val;
     if (val === 'Mensuelles') {
       this.loadOneMonth();
