@@ -474,6 +474,24 @@ function groupByDay(RainData){
   return mapValue;
 }
 
+function groupByInterval(RainData){
+  let mapValue = {};
+
+  for (let i = 0; i < RainData.length; i++) {
+    let year = RainData[i].date.getUTCFullYear();
+    let month = RainData[i].date.getUTCMonth();
+    let day = RainData[i].date.getUTCDate();
+    let hour = RainData[i].date.getUTCHours();
+    let min = RainData[1].date.getUTCMinutes();
+    let value = parseInt(RainData[i].value);
+    const key = `${year}-${month}-${day} ${hour}:${min}`;
+    let oldVal = parseInt(mapValue[key]);
+    if(!oldVal){
+      oldVal = 0;
+    }
+    mapValue[key] =  (oldVal + value);
+  }
+}
 
 exports.getForDay = function(req, res) {
   let date = new Date(req.params.date);
@@ -707,33 +725,36 @@ exports.downloadData = function(req, res) {
             } else {
                 let dataGrouped = rainDatas;
 
+                console.log(interval)
                 switch (interval) {
-                  case DownloadInterval.YEARS:
-                    dataGrouped = groupByYear(rainDatas);
-                    break;
                   case DownloadInterval.DAYS:
                     dataGrouped = groupByDay(rainDatas);
                     break;
                   case DownloadInterval.MONTHS:
                     dataGrouped = groupByMonth(rainDatas);
                     break;
+                  case DownloadInterval.YEARS:
+                    dataGrouped = groupByYear(rainDatas);
+                    break;
+                  case DownloadInterval.STATION:
+                    dataGrouped = groupByInterval(rainDatas);
+                    break;
                   default:
-
-
+                    dataGrouped = groupByInterval(rainDatas);
                 }
                 const result = rainDataToCSV(dataGrouped);
                 if(result.length > 0){
-                  console.log("DATAAS8!!")
+                  // console.log("DATAAS8!!")
                   // Write File
                   const dirDownload = nconf.get("downloadFolder");
-                  const fileName = `${station.name} ${preFormatDate(rainDatas[0].date)}-${preFormatDate(rainDatas[rainDatas.length-1].date)}.csv`;
+                  const fileName = `${station.name} ${preFormatDate(rainDatas[0].date)}-${preFormatDate(rainDatas[rainDatas.length-1].date)} - ${interval}.csv`;
                   const filePath = path.join(dirDownload, fileName);
                   if (!fs.existsSync(dirDownload)) {
                     fs.mkdirSync(dirDownload);
                   }
                   fs.writeFile(filePath, result, 'utf-8', (err) => {
                     if (err) throw err;
-                    console.log('The file has been saved!', req.token_decoded.id);
+                    // console.log('The file has been saved!', req.token_decoded.id);
                     UsersModel.userModel.findById(req.token_decoded.id, (err, user) => {
                       const url = `http://localhost:${nconf.get("server:port")}/download/${fileName}`; //TODO CHANGE AND GET HOST URL NOT LOCALHOST
                       mailer.sendMailAndIgnoreIfMailInvalid(undefined, undefined, "Download File", user.mail, url, (err)=> {
@@ -746,7 +767,7 @@ exports.downloadData = function(req, res) {
                   });
                 }else{
                   console.log("no data...");
-                  console.log(result);
+                  // console.log(result);
                   return res.status(404).send("Pas de données trouvées pour la périodes souhaitée.");
                 }
 
@@ -755,17 +776,15 @@ exports.downloadData = function(req, res) {
         });
     });
 
-
 }
 
 function rainDataToCSV(rainDatas){
-  console.log(typeof rainDatas);
+  // console.log("coucou", rainDatas);
     let fileContent = "";
-    for(let i = 0; i < rainDatas.length; i++){
-        const rainData = rainDatas[i];
-        fileContent += `${preFormatDate(rainData.date)};${rainData.value};\n`
+    for(let i in rainDatas){//= 0; i < rainDatas.length; i++){
+      const rainData = rainDatas[i];
+      fileContent += `${i};${rainData};\n`
     }
-
     return fileContent;
 }
 

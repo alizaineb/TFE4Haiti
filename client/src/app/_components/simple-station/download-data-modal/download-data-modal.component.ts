@@ -40,7 +40,7 @@ export class DownloadDataModalComponent implements OnInit {
     this.selectedInterval = Constantes.DownloadIntervals.DAYS;
 
     for (var i in Constantes.DownloadIntervals) {
-      this.intervals.push(i);
+      this.intervals.push(Constantes.DownloadIntervals[i]);
     }
 
     if(!this.datePicker){

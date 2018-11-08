@@ -31,6 +31,5 @@ export class Constantes {
     DAYS : "days",
     MONTHS : "month",
     YEARS: "years",
-    ALL: "all",
   };
 }
