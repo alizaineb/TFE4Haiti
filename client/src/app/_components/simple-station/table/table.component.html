@@ -22,7 +22,7 @@
       </select>
     </div>
   </div>
-  <div *ngIf="intervalDay" class="col-md-2">
+  <div [hidden]="!intervalDay" class="col-md-2">
     <input id="datePicker" placeholder="Date" type="text" class="flatpickr flatpickr-input form-control" required>
   </div>
   <div *ngIf="!intervalDay" class="col-md-4">
