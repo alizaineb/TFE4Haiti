@@ -43,7 +43,7 @@ insertData = function(req, res, datas, station, user) {
       // console.log(docs);
       if (err) {
         // console.log('erreur : ', err);
-        res.status(500).send(err); //'Les données n\'ont pas sur être insérer...');
+        res.status(500).send(err.message); //'Les données n\'ont pas sur être insérer...');
       } else {
         res.status(200).send();
       }
@@ -421,6 +421,52 @@ function groupByYear(RainData){
     mapValue[year] =  (oldVal + value);
   }
 
+  return mapValue;
+}
+
+/**
+ * Fonction qui regroupe les données d'une stations par années-mois.
+ * @param RainData Tableau de RainData.
+ * @return An Hash map of string => number (ex ('2018' => 500, ...)
+ */
+function groupByMonth(RainData){
+  let mapValue = {};
+
+  for (let i = 0; i < RainData.length; i++) {
+    let year = RainData[i].date.getUTCFullYear();
+    let month = RainData[i].date.getUTCMonth();
+    let value = parseInt(RainData[i].value);
+    const key = `${year}-${month}`
+    let oldVal = parseInt(mapValue[key]);
+    if(!oldVal){
+      oldVal = 0;
+    }
+    mapValue[key] =  (oldVal + value);
+  }
+
+  return mapValue;
+}
+
+/**
+ * Fonction qui regroupe les données d'une stations par années-mois.
+ * @param RainData Tableau de RainData.
+ * @return An Hash map of string => number (ex ('2018' => 500, ...)
+ */
+function groupByDay(RainData){
+  let mapValue = {};
+
+  for (let i = 0; i < RainData.length; i++) {
+    let year = RainData[i].date.getUTCFullYear();
+    let month = RainData[i].date.getUTCMonth();
+    let day = RainData[i].date.getUTCDate();
+    let value = parseInt(RainData[i].value);
+    const key = `${year}-${month}-${day}`
+    let oldVal = parseInt(mapValue[key]);
+    if(!oldVal){
+      oldVal = 0;
+    }
+    mapValue[key] =  (oldVal + value);
+  }
 
   return mapValue;
 }
@@ -528,6 +574,7 @@ function getIntervalInMinute(interval) {
 
 
 exports.importManualData = function(req, res) {
+
   const datas = req.body;
   const userId = req.token_decoded.id;
   const stationId = req.params.id || '';
@@ -560,6 +607,7 @@ exports.importManualData = function(req, res) {
             tmp.push(data);
             // console.log(data);
           }
+          console.log(groupByDay(tmp));
           insertData(req, res, tmp, station, user);
         }
       });
@@ -642,7 +690,7 @@ exports.downloadData = function(req, res) {
     const id_station = req.params.id;
     const from = new Date(req.query.from), to = new Date(req.query.to), interval = req.query.interval;
 
-    console.log(from, " => ", to);
+    console.log(from, " => ", to, " | ", interval);
     //Dates filter //TODO
 
     Station.stationModel.findById(id_station, (err, station) => {
@@ -810,7 +858,6 @@ function checkDateInterval(date1, date2, interval) {
   // console.log("Date2 : ", date2, " -> ", date2_ms);
   // console.log("Diff : ", diff_ms, " Interval : ", interval_minute);
   return ((diff_ms / 1000) / 60) == interval_minute;
-
 }
 
 //push();
