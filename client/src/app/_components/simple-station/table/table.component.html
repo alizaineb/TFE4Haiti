@@ -25,12 +25,8 @@
   <div [hidden]="!intervalDay" class="col-md-2">
     <input id="datePicker" placeholder="Date" type="text" class="flatpickr flatpickr-input form-control" required>
   </div>
-  <div *ngIf="!intervalDay" class="col-md-4">
-    <i (click)="updateMonthSelected('add')" class="fas fa-arrow-left"> </i>
-    <span>&nbsp;</span>
-    <input (change)="changeMonth($event.target.value)" type="number" [ngModel]="monthSelected" min="1" max="12"> &nbsp; / &nbsp; <input (change)="changeYear($event.target.value)" type="number" [ngModel]="yearSelected" min="1900" max="2100">
-    <span>&nbsp;</span>
-    <i *ngIf="!(monthSelected === currentMonth && yearSelected === currentYear)" (click)="updateMonthSelected('sub')" class="fas fa-arrow-right"> </i>
+  <div [hidden]="intervalDay" class="col-md-4">
+    <input type="month" id="monthSelector" min="1990-01" max="2038-01">
   </div>
 
 </div>
