@@ -18,14 +18,19 @@
   <div class="col-md-2">
     <div class="form-group">
       <select class="form-control" (change)="intervalleChanged($event.target.value)">
-        <option value="" disabled selected>Intervalle</option>
-        <option *ngFor="let i of intervalsFiltered" [value]="i">{{i}}</option>
+        <option *ngFor="let i of intervalsFiltered; let first= first;" [value]="i" [selected]="first">{{i}}</option>
       </select>
     </div>
   </div>
   <div class="col-md-2">
     <input id="datePicker" placeholder="Date" type="text" class="flatpickr flatpickr-input form-control" required>
   </div>
+  <div class="col-md-2">
+    <i (click)="updateMonthSelected('add')" class="fas fa-arrow-circle-left"></i>
+    <input (change)="changeMonth($event.target.value)" size="2" type="text" [ngModel]="monthSelected"> &nbsp; / &nbsp; <input (change)="changeYear($event.target.value)" size="4" type="text" [ngModel]="yearSelected">
+    <i *ngIf="!(monthSelected === currentMonth && yearSelected === currentYear)" (click)="updateMonthSelected('sub')" class="fas fa-arrow-circle-right"></i>
+  </div>
+
 </div>
 <div *ngIf="noDateSelected || noIntervalSelected" class="container">
   <h1>Veuillez sélectionner une date et un intervalle</h1>
