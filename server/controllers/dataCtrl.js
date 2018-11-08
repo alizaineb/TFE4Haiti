@@ -403,6 +403,29 @@ exports.getRainDataGraphLineOneYear = function(req, res) {
 };
 
 
+/**
+ * Fonction qui regroupe les données d'une stations par années.
+ * @param RainData Tableau de RainData.
+ * @return An Hash map of string => number (ex ('2018' => 500, ...)
+ */
+function groupByYear(RainData){
+  let mapValue = {};
+
+  for (let i = 0; i < RainData.length; i++) {
+    let year = RainData[i].date.getUTCFullYear();
+    let value = parseInt(RainData[i].value);
+    let oldVal = parseInt(mapValue[year]);
+    if(!oldVal){
+      oldVal = 0;
+    }
+    mapValue[year] =  (oldVal + value);
+  }
+
+
+  return mapValue;
+}
+
+
 exports.getForDay = function(req, res) {
   let date = new Date(req.params.date);
 
