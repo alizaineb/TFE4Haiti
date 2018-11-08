@@ -66,6 +66,7 @@ export class GraphLineComponent implements OnInit {
       }
     });
 
+    this.dataLoading = true;
     this.loadStation();
     this.loadOptionsHighCharts();
   }
@@ -79,12 +80,12 @@ export class GraphLineComponent implements OnInit {
   }
 
   changeYear(newYear) {
-    this.yearSelected = newYear;
+    this.yearSelected = parseInt(newYear, 10);
     this.rangeDataChange(this.rangeSelected);
   }
 
   changeMonth(newMonth) {
-    this.monthSelected = newMonth;
+    this.monthSelected = parseInt(newMonth, 10);
     this.rangeDataChange(this.rangeSelected);
   }
 
