@@ -53,7 +53,7 @@ export class TableComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     let date = new Date(Date.now());
-    document.getElementById('monthSelector').value = date.getFullYear() + "-" + this.minTwoDigits(date.getMonth() + 1);
+    (<HTMLInputElement>document.getElementById('monthSelector')).value = date.getFullYear() + "-" + this.minTwoDigits(date.getMonth() + 1);
 
     window.onresize = () => {
       this.computeWidth();
