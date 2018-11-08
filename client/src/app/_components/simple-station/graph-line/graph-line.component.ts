@@ -44,7 +44,7 @@ export class GraphLineComponent implements OnInit {
     const self = this;
 
     this.rangeData = ['Annuelles', 'Mensuelles', 'Quotidiennes'];
-    this.rangeSelected = 'Annuelles';
+    this.rangeSelected = '';
 
     this.currentDate = new Date();
     this.yearSelected = this.currentDate.getFullYear();
@@ -66,9 +66,7 @@ export class GraphLineComponent implements OnInit {
       }
     });
 
-    this.dataLoading = true;
     this.loadStation();
-    this.loadOneYear();
     this.loadOptionsHighCharts();
   }
 
