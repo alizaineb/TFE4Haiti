@@ -500,6 +500,10 @@ i:hover {
   color: #4286f4;
 }
 
+.fa-arrow-right, .fa-arrow-left {
+  color: #4286f4;
+}
+
 tbody>tr:hover {
   background: LightSkyBlue !important;
 }
