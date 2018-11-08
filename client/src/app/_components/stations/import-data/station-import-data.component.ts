@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {Station} from "../../../_models";
-import {StationsService} from "../../../_services/stations.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {RainData} from "../../../_models/rainData";
-import {AlertService} from "../../../_services";
-import {NgbTimepickerConfig} from "@ng-bootstrap/ng-bootstrap"
-import {LocalstorageService} from "../../../_services/localstorage.service";
+import { Component, OnInit } from '@angular/core';
+import { Station } from "../../../_models";
+import { StationsService } from "../../../_services/stations.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { RainData } from "../../../_models/rainData";
+import { AlertService } from "../../../_services";
+import { NgbTimepickerConfig } from "@ng-bootstrap/ng-bootstrap"
+import { LocalstorageService } from "../../../_services/localstorage.service";
 
 @Component({
   selector: 'app-import-data',
@@ -27,10 +27,10 @@ export class StationImportDataComponent implements OnInit {
 
 
   constructor(private stationService: StationsService,
-              private localStorageService: LocalstorageService,
-              private alertService: AlertService,
-              private route: ActivatedRoute,
-              private configTimePicker: NgbTimepickerConfig
+    private localStorageService: LocalstorageService,
+    private alertService: AlertService,
+    private route: ActivatedRoute,
+    private configTimePicker: NgbTimepickerConfig
   ) {
     this.configTimePicker.spinners = false;
   }
@@ -61,14 +61,14 @@ export class StationImportDataComponent implements OnInit {
     });
   }
 
-  private addData(date = "", time = {hour: 0, time: 0}, value = 0) {
-    this.data.push({date: date, time: time, value: value});
+  private addData(date = "", time = { hour: 0, time: 0 }, value = 0) {
+    this.data.push({ date: date, time: time, value: value });
   }
 
 
   isSelectetd(item: string) {
     const res = this.selectedZone == item;
-    return {"col-md-10": res, "col-md-2": !res, 'notselected': !res};
+    return { "col-md-10": res, "col-md-2": !res, 'notselected': !res };
   }
 
   changeZone(item: string) {
@@ -102,8 +102,7 @@ export class StationImportDataComponent implements OnInit {
         tmp.id_station = this.currentStation._id;
         tmp.id_user = currentUser.current._id;
         tmp.value = this.data[i].value;
-        tmp.date = new Date(`${this.data[i].date}T${this.data[i].time.hour}:${this.data[i].time.time | this.data[i].time['minutes']}:00`);
-        console.log(`${this.data[i].date}T${this.data[i].time.hour}:${this.data[i].time.time | this.data[i].time['minutes']}:00`);
+        tmp.date = new Date(`${this.data[i].date}T${this.data[i].time.hour}:${this.data[i].time.time | this.data[i].time['minute']}:00`);
         dataToSend.push(tmp);
       }
       console.table(dataToSend);
@@ -137,7 +136,7 @@ export class StationImportDataComponent implements OnInit {
 
   onFileSelected($event) {
     const self = this;
-    const f = <File> $event.target.files[0];
+    const f = <File>$event.target.files[0];
     if (f.type.toLowerCase() === "text/csv") {
       if ((f.size / 1024) > 2048) { //passer la size en ko et la comparer a 2mo en ko
         self.alertService.error("La taille max est de 2Mo");
