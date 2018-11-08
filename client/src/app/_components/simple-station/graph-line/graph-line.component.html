@@ -19,14 +19,20 @@
     <label class="col-form-label">
       Données
     </label>
+<<<<<<< Updated upstream
     <select class="form-control col-sm-6" (change)="rangeDataChange($event.target.value)">
       <option>Sélectionner une option</option>
+=======
+    <select class="form-control col-sm-3" (change)="rangeDataChange($event.target.value)">
+      <option>Sélectionner</option>
+>>>>>>> Stashed changes
       <option *ngFor="let i of rangeData" [value]="i">{{i}}</option>
     </select>
   </div>
 </div>
 
 <div class="col-md-3" *ngIf="'Annuelles'===rangeSelected">
+<<<<<<< Updated upstream
   <div class="form-row">
     <label class="col-form-label">
       Année
@@ -47,6 +53,21 @@
       <input class="form-control col-sm-3" (change)="changeYear($event.target.value)" size="4" type="number" min="1900" max="{{currentYear}}" [ngModel]="yearSelected">
       <!--<i *ngIf="!(monthSelected === currentMonth && yearSelected === currentYear)" (click)="updateMonthSelected('sub')" class="fas fa-arrow-circle-right"></i>-->
     </div>
+=======
+  <label class="col-form-label">
+    Année
+  </label>
+    <!--<i (click)="updateYearSelected('add')" class="fas fa-arrow-circle-left"></i>-->
+    <input class="form-control" (change)="changeYear($event.target.value)" size="4" type="number" min="1900" max="{{currentYear}}" [ngModel]="yearSelected">
+    <!--<i *ngIf="yearSelected !== currentYear" (click)="updateYearSelected('sub')" class="fas fa-arrow-circle-right"></i>-->
+</div>
+
+  <div *ngIf="'Mensuelles'===rangeSelected">
+    <i (click)="updateMonthSelected('add')" class="fas fa-arrow-circle-left"></i>
+    <input *ngIf="currentMonth > 0" (change)="changeMonth($event.target.value)" size="2" type="number" min="1" max="12" [ngModel]="monthSelected"> &nbsp; / &nbsp;
+    <input (change)="changeYear($event.target.value)" min="1900" max="{{currentYear}}" size="4" type="number" [ngModel]="yearSelected">
+    <i *ngIf="!(monthSelected === currentMonth && yearSelected === currentYear)" (click)="updateMonthSelected('sub')" class="fas fa-arrow-circle-right"></i>
+>>>>>>> Stashed changes
   </div>
 
   <div [hidden]="'Quotidiennes'!==rangeSelected">
