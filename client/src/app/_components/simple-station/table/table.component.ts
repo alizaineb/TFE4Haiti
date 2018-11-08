@@ -34,6 +34,7 @@ export class TableComponent implements OnInit, OnChanges {
   private intervalSelected: string;
   private ratio: number;
 
+  private intervalDay: boolean;
   private noDateSelected: boolean;
   private dataLoading: boolean;
   private noData: boolean;
@@ -61,6 +62,7 @@ export class TableComponent implements OnInit, OnChanges {
     this.noData = false;
     this.dataToShow = false;
     this.sameIntervalAsStation = false;
+    this.intervalDay = true;
 
     let self = this;
     this.datePicker = flatpickr('#datePicker', {
@@ -143,6 +145,13 @@ export class TableComponent implements OnInit, OnChanges {
     } else if (intervalIdx == 0) {
       this.sameIntervalAsStation = true;
     }
+    // Check if we need to show date picker for date or month
+    if (val.indexOf("m") >= 0) {
+      this.intervalDay = true;
+    } else {
+      this.intervalDay = false;;
+    }
+
     this.intervalSelected = val;
     let jump = this.getHopSize(val);
     this.ratio = 60 / jump;
