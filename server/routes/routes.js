@@ -267,6 +267,11 @@ exports.routes = [
     httpMethod: "GET",
     middleWare: [controllers.data.getForDay]
   },
+  {
+    path: "/api/data/:stationId/:year/:month",
+    httpMethod: "GET",
+    middleWare: [controllers.data.getForMonth]
+  },
 
 
   // Routes used to test

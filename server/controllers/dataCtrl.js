@@ -1,5 +1,3 @@
-
-
 const path = require('path');
 const fs = require('fs');
 const nconf = require('nconf');
@@ -88,42 +86,42 @@ exports.acceptAwaiting = function(req, res) {
             });
             return;
           case state.UPDATE:
-            if(!rainDataAwaiting.value){
+            if (!rainDataAwaiting.value) {
               // donnée modifier vers rien, on supprime l'ancienne donnée et la donnée en attente
-                dataModel.RainDataAwaitingModel.deleteOne({_id: rainDataAwaiting._id}).then(() => {
-                    dataModel.rainDataModel.deleteOne({_id: rainDataAwaiting.id_old_data}).then( () => {
-                        return res.status(200).send();
-                    }).catch((err) => {
-                        return res.status(500).send(err);
-                    });
+              dataModel.RainDataAwaitingModel.deleteOne({ _id: rainDataAwaiting._id }).then(() => {
+                dataModel.rainDataModel.deleteOne({ _id: rainDataAwaiting.id_old_data }).then(() => {
+                  return res.status(200).send();
                 }).catch((err) => {
-                    return res.status(500).send(err);
+                  return res.status(500).send(err);
                 });
+              }).catch((err) => {
+                return res.status(500).send(err);
+              });
 
-            }else{
+            } else {
               // on met à jour l'ancienne valeur
-                console.log("hello", rainDataAwaiting);
-                // old to new
-                // new = undef => delete old
-                //
+              console.log("hello", rainDataAwaiting);
+              // old to new
+              // new = undef => delete old
+              //
 
-                dataModel.rainDataModel.findById(rainDataAwaiting.id_old_data, (err, rainData) => {
-                    rainData.value = rainDataAwaiting.value;
-                    rainData.save().then(() => {
-                        dataModel.RainDataAwaitingModel.deleteOne({_id: rainDataAwaiting._id}).then(() => {
-                            dataModel.rainDataModel.deleteOne({_id: rainDataAwaiting.id_old_data}).then( () => {
-                                return res.status(200).send();
-                            }).catch((err) => {
-                                return res.status(500).send(err);
-                            });
-                        }).catch((err) => {
-                            return res.status(500).send(err);
-                        });
-                    }).catch(function(err) {
-                        logger.error(err);
-                        return res.status(500).send("Une erreur est survenue lors de la mise à jours de la donnée.");
+              dataModel.rainDataModel.findById(rainDataAwaiting.id_old_data, (err, rainData) => {
+                rainData.value = rainDataAwaiting.value;
+                rainData.save().then(() => {
+                  dataModel.RainDataAwaitingModel.deleteOne({ _id: rainDataAwaiting._id }).then(() => {
+                    dataModel.rainDataModel.deleteOne({ _id: rainDataAwaiting.id_old_data }).then(() => {
+                      return res.status(200).send();
+                    }).catch((err) => {
+                      return res.status(500).send(err);
                     });
+                  }).catch((err) => {
+                    return res.status(500).send(err);
+                  });
+                }).catch(function(err) {
+                  logger.error(err);
+                  return res.status(500).send("Une erreur est survenue lors de la mise à jours de la donnée.");
                 });
+              });
 
             }
 
@@ -299,7 +297,7 @@ exports.rainDataGraphLineRangeDate = function(req, res) {
         logger.error(err);
         return res.status(500).send("Erreur lors de la récupération des données.");
       }
-      if(data.length === 0){
+      if (data.length === 0) {
         return res.status(200).send([]);
       } else {
         data = preprocessData(data, req.params.stationId, station.interval, dateMin, dateMax);
@@ -320,7 +318,9 @@ exports.getRainDataGraphLineOneMonth = function(req, res) {
     if (err) {
       return res.status(500).send("Erreur lors de la station liée .");
     }
-
+    if (!station) {
+      return res.status(400).send("Erreur : station inexistante.");
+    }
     let year = req.params.year;
     let month = req.params.month;
 
@@ -340,7 +340,7 @@ exports.getRainDataGraphLineOneMonth = function(req, res) {
         logger.error(err);
         return res.status(500).send("Erreur lors de la récupération des données.");
       }
-      if(data.length === 0){
+      if (data.length === 0) {
         return res.status(200).send([]);
       } else {
         data = preprocessData(data, req.params.stationId, station.interval, dateMin, dateMax);
@@ -411,17 +411,17 @@ exports.getRainDataGraphLineOneYear = function(req, res) {
  * @param RainData Tableau de RainData.
  * @return An Hash map of string => number (ex ('2018' => 500, ...)
  */
-function groupByYear(RainData){
+function groupByYear(RainData) {
   let mapValue = {};
 
   for (let i = 0; i < RainData.length; i++) {
     let year = RainData[i].date.getUTCFullYear();
     let value = parseInt(RainData[i].value);
     let oldVal = parseInt(mapValue[year]);
-    if(!oldVal){
+    if (!oldVal) {
       oldVal = 0;
     }
-    mapValue[year] =  (oldVal + value);
+    mapValue[year] = (oldVal + value);
   }
 
   return mapValue;
@@ -432,7 +432,7 @@ function groupByYear(RainData){
  * @param RainData Tableau de RainData.
  * @return An Hash map of string => number (ex ('2018' => 500, ...)
  */
-function groupByMonth(RainData){
+function groupByMonth(RainData) {
   let mapValue = {};
 
   for (let i = 0; i < RainData.length; i++) {
@@ -441,10 +441,10 @@ function groupByMonth(RainData){
     let value = parseInt(RainData[i].value);
     const key = `${year}-${month}`
     let oldVal = parseInt(mapValue[key]);
-    if(!oldVal){
+    if (!oldVal) {
       oldVal = 0;
     }
-    mapValue[key] =  (oldVal + value);
+    mapValue[key] = (oldVal + value);
   }
 
   return mapValue;
@@ -455,7 +455,7 @@ function groupByMonth(RainData){
  * @param RainData Tableau de RainData.
  * @return An Hash map of string => number (ex ('2018' => 500, ...)
  */
-function groupByDay(RainData){
+function groupByDay(RainData) {
   let mapValue = {};
 
   for (let i = 0; i < RainData.length; i++) {
@@ -465,16 +465,16 @@ function groupByDay(RainData){
     let value = parseInt(RainData[i].value);
     const key = `${year}-${month}-${day}`
     let oldVal = parseInt(mapValue[key]);
-    if(!oldVal){
+    if (!oldVal) {
       oldVal = 0;
     }
-    mapValue[key] =  (oldVal + value);
+    mapValue[key] = (oldVal + value);
   }
 
   return mapValue;
 }
 
-function groupByInterval(RainData){
+function groupByInterval(RainData) {
   let mapValue = {};
 
   for (let i = 0; i < RainData.length; i++) {
@@ -486,42 +486,122 @@ function groupByInterval(RainData){
     let value = parseInt(RainData[i].value);
     const key = `${year}-${month}-${day} ${hour}:${min}`;
     let oldVal = parseInt(mapValue[key]);
-    if(!oldVal){
+    if (!oldVal) {
       oldVal = 0;
     }
-    mapValue[key] =  (oldVal + value);
+    mapValue[key] = (oldVal + value);
   }
 }
 
 exports.getForDay = function(req, res) {
-  let date = new Date(req.params.date);
-
-  let dateMin = new Date(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate());
-  let dateMax = new Date(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate());
-
-  dateMax.setHours(dateMax.getHours() + 24);
   Station.stationModel.findById(req.params.stationId, (err, station) => {
     if (err) {
       return res.status(500).send("Erreur lors de la station liée .");
     }
-    // TODO Tu peux sélectionner seulement les champs que t'as besoin. J'ai mis en com ce que j'ai changé avant le return.
-    dataModel.rainDataModel.find({
-      id_station: req.params.stationId,
-      date: { "$gte": dateMin, "$lt": dateMax }
-    }, ['_id', 'id_station', 'id_user', 'date', 'value'], { sort: { date: 1 } }, function(err, data) {
+    if (!station) {
+      return res.status(400).send("Erreur : station inexistante.");
+    }
+    let date = new Date(req.params.date);
+
+    let dateMin = new Date(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate());
+    let dateMax = new Date(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate());
+
+    dateMax.setHours(dateMax.getHours() + 24);
+    Station.stationModel.findById(req.params.stationId, (err, station) => {
       if (err) {
-        logger.error(err);
-        return res.status(500).send("Erreur lors de la récupération des données.");
+        return res.status(500).send("Erreur lors de la station liée .");
       }
-      //let tabD = [];
-      //data.forEach(data => tabD.push(data.toDto()));
-      data = preprocessData(data, req.params.stationId, station.interval, dateMin, dateMax);
-      return res.status(200).send(data);
+      // TODO Tu peux sélectionner seulement les champs que t'as besoin. J'ai mis en com ce que j'ai changé avant le return.
+      dataModel.rainDataModel.find({
+        id_station: req.params.stationId,
+        date: { "$gte": dateMin, "$lt": dateMax }
+      }, ['_id', 'id_station', 'id_user', 'date', 'value'], { sort: { date: 1 } }, function(err, data) {
+        if (err) {
+          logger.error(err);
+          return res.status(500).send("Erreur lors de la récupération des données.");
+        }
+        //let tabD = [];
+        //data.forEach(data => tabD.push(data.toDto()));
+        data = preprocessData(data, req.params.stationId, station.interval, dateMin, dateMax);
+        return res.status(200).send(data);
+      });
     });
   });
 };
 
 
+exports.getForMonth = function(req, res) {
+  // TODO Check year exsists and motn 1 -> 12
+  let year = parseInt(req.params.year);
+  let month = parseInt(req.params.month);
+  if (year === NaN || year < 1990 || year > 2038) {
+    return res.status(400).send("L'année que vous avez entrée est incorrecte.");
+  }
+  if (month === NaN || month < 1 || month > 12) {
+    return res.status(400).send("Le mois que vous avez entré est incorrecte (1-12).");
+  }
+  Station.stationModel.findById(req.params.stationId, (err, station) => {
+    if (err) {
+      return res.status(500).send("Erreur lors de la station liée .");
+    }
+    if (!station) {
+      return res.status(400).send("Erreur : station inexistante.");
+    }
+    let dateMin = new Date(year + "-" + (month - 1) + "-01");
+    let dateMax = new Date(year + "-" + (month - 1) + "-01");
+
+    dateMax.setMonth(dateMax.getMonth() + 1);
+    Station.stationModel.findById(req.params.stationId, (err, station) => {
+      if (err) {
+        return res.status(500).send("Erreur lors de la station liée .");
+      }
+      // TODO Tu peux sélectionner seulement les champs que t'as besoin. J'ai mis en com ce que j'ai changé avant le return.
+      dataModel.rainDataModel.find({
+        id_station: req.params.stationId,
+        date: { "$gte": dateMin, "$lt": dateMax }
+      }, ['_id', 'id_station', 'id_user', 'date', 'value'], { sort: { date: 1 } }, function(err, data) {
+        if (err) {
+          logger.error(err);
+          return res.status(500).send("Erreur lors de la récupération des données.");
+        }
+        data = preprocessData(data, req.params.stationId, station.interval, dateMin, dateMax);
+        // Ici on vérifie si l'intervalle de la station est en mn, il faut condenser, sinon on renvoie brut.
+        if (station.interval.indexOf("h") >= 0) {
+          return res.status(200).send(data);
+        } else {
+          data = condensData(data, station.interval);
+          return res.status(200).send(data);
+        }
+      });
+    });
+  });
+}
+
+
+function condensData(datas, interval) {
+  console.log("datas");
+  let hopSize = 60 / getIntervalInMinute(interval);
+  let tableToReturn = [];
+  for (let h = 0; h < datas.length; h = h + hopSize) {
+    let tabToBePushed = [];
+    // This loop will compute for one hour
+    for (let i = h; i < h + hopSize; i = i + hopSize) {
+      let sum = 0;
+      let empty = 0;
+      for (let j = i; j < i + hopSize; j++) {
+        if (datas[j] && (datas[j].value || datas[j].value == 0)) {
+          sum += datas[j].value;
+        } else {
+          empty++;
+        }
+      }
+      let cloneObj = Object.assign({}, datas[i + hopSize - 1]);
+      tabToBePushed.push(cloneObj);
+    }
+    tableToReturn.push(tabToBePushed);
+  }
+  return tableToReturn;
+}
 // Cette méthode va remplir les trous de données potentiels en créant une structure de données avec la value à -1
 // va entrer les données traitées dans le tableau : this.allDatas
 function preprocessData(dataToProcess, stationId, interval, dateDebut, dateFin) {
@@ -708,88 +788,90 @@ exports.importFileData = function(req, res) {
 };
 
 exports.downloadData = function(req, res) {
-    const id_station = req.params.id;
-    const from = new Date(req.query.from), to = new Date(req.query.to), interval = req.query.interval;
+  const id_station = req.params.id;
+  const from = new Date(req.query.from),
+    to = new Date(req.query.to),
+    interval = req.query.interval;
 
-    console.log(from, " => ", to, " | ", interval);
+  console.log(from, " => ", to, " | ", interval);
 
 
-    Station.stationModel.findById(id_station, (err, station) => {
-        dataModel.rainDataModel.find({
-          id_station: id_station,
-          date: { "$gte": from, "$lte": to }
-        }, 'date value', (err, rainDatas) => {
-            if (err) {
-                logger.error(err);
-                return res.status(500).send(err);
-            } else {
-                let dataGrouped = rainDatas;
+  Station.stationModel.findById(id_station, (err, station) => {
+    dataModel.rainDataModel.find({
+      id_station: id_station,
+      date: { "$gte": from, "$lte": to }
+    }, 'date value', (err, rainDatas) => {
+      if (err) {
+        logger.error(err);
+        return res.status(500).send(err);
+      } else {
+        let dataGrouped = rainDatas;
 
-                console.log(interval)
-                switch (interval) {
-                  case DownloadInterval.DAYS:
-                    dataGrouped = groupByDay(rainDatas);
-                    break;
-                  case DownloadInterval.MONTHS:
-                    dataGrouped = groupByMonth(rainDatas);
-                    break;
-                  case DownloadInterval.YEARS:
-                    dataGrouped = groupByYear(rainDatas);
-                    break;
-                  case DownloadInterval.STATION:
-                    dataGrouped = groupByInterval(rainDatas);
-                    break;
-                  default:
-                    dataGrouped = groupByInterval(rainDatas);
+        console.log(interval)
+        switch (interval) {
+          case DownloadInterval.DAYS:
+            dataGrouped = groupByDay(rainDatas);
+            break;
+          case DownloadInterval.MONTHS:
+            dataGrouped = groupByMonth(rainDatas);
+            break;
+          case DownloadInterval.YEARS:
+            dataGrouped = groupByYear(rainDatas);
+            break;
+          case DownloadInterval.STATION:
+            dataGrouped = groupByInterval(rainDatas);
+            break;
+          default:
+            dataGrouped = groupByInterval(rainDatas);
+        }
+        const result = rainDataToCSV(dataGrouped);
+        if (result.length > 0) {
+          // console.log("DATAAS8!!")
+          // Write File
+          const dirDownload = nconf.get("downloadFolder");
+          const fileName = `${station.name} ${preFormatDate(rainDatas[0].date)}-${preFormatDate(rainDatas[rainDatas.length-1].date)} - ${interval}.csv`;
+          const filePath = path.join(dirDownload, fileName);
+          if (!fs.existsSync(dirDownload)) {
+            fs.mkdirSync(dirDownload);
+          }
+          fs.writeFile(filePath, result, 'utf-8', (err) => {
+            if (err) throw err;
+            // console.log('The file has been saved!', req.token_decoded.id);
+            UsersModel.userModel.findById(req.token_decoded.id, (err, user) => {
+              const url = `http://localhost:${nconf.get("server:port")}/download/${fileName}`; //TODO CHANGE AND GET HOST URL NOT LOCALHOST
+              mailer.sendMailAndIgnoreIfMailInvalid(undefined, undefined, "Download File", user.mail, url, (err) => {
+                if (err) {
+                  logger.error("[DATACTRL] downloadData : ", err);
                 }
-                const result = rainDataToCSV(dataGrouped);
-                if(result.length > 0){
-                  // console.log("DATAAS8!!")
-                  // Write File
-                  const dirDownload = nconf.get("downloadFolder");
-                  const fileName = `${station.name} ${preFormatDate(rainDatas[0].date)}-${preFormatDate(rainDatas[rainDatas.length-1].date)} - ${interval}.csv`;
-                  const filePath = path.join(dirDownload, fileName);
-                  if (!fs.existsSync(dirDownload)) {
-                    fs.mkdirSync(dirDownload);
-                  }
-                  fs.writeFile(filePath, result, 'utf-8', (err) => {
-                    if (err) throw err;
-                    // console.log('The file has been saved!', req.token_decoded.id);
-                    UsersModel.userModel.findById(req.token_decoded.id, (err, user) => {
-                      const url = `http://localhost:${nconf.get("server:port")}/download/${fileName}`; //TODO CHANGE AND GET HOST URL NOT LOCALHOST
-                      mailer.sendMailAndIgnoreIfMailInvalid(undefined, undefined, "Download File", user.mail, url, (err)=> {
-                        if(err){
-                          logger.error("[DATACTRL] downloadData : ", err);
-                        }
-                      })
-                    });
+              })
+            });
 
-                  });
-                }else{
-                  console.log("no data...");
-                  // console.log(result);
-                  return res.status(404).send("Pas de données trouvées pour la périodes souhaitée.");
-                }
+          });
+        } else {
+          console.log("no data...");
+          // console.log(result);
+          return res.status(404).send("Pas de données trouvées pour la périodes souhaitée.");
+        }
 
-              return res.status(200).send();
-            }
-        });
+        return res.status(200).send();
+      }
     });
+  });
 
 }
 
-function rainDataToCSV(rainDatas){
+function rainDataToCSV(rainDatas) {
   // console.log("coucou", rainDatas);
-    let fileContent = "";
-    for(let i in rainDatas){//= 0; i < rainDatas.length; i++){
-      const rainData = rainDatas[i];
-      fileContent += `${i};${rainData};\n`
-    }
-    return fileContent;
+  let fileContent = "";
+  for (let i in rainDatas) { //= 0; i < rainDatas.length; i++){
+    const rainData = rainDatas[i];
+    fileContent += `${i};${rainData};\n`
+  }
+  return fileContent;
 }
 
 function preFormatDate(date) {
-    return `${date.getFullYear()}-${minTwoDigits(date.getMonth())}-${minTwoDigits(date.getDay())} ${minTwoDigits(date.getHours())}:${minTwoDigits(date.getMinutes())}`
+  return `${date.getFullYear()}-${minTwoDigits(date.getMonth())}-${minTwoDigits(date.getDay())} ${minTwoDigits(date.getHours())}:${minTwoDigits(date.getMinutes())}`
 }
 
 exports.updateData = function(req, res) {

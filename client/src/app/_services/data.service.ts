@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {environment} from '../../environments/environment';
-import {RainData, RainDataAwaiting} from '../_models/rainData';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { RainData, RainDataAwaiting } from '../_models/rainData';
 
 @Injectable({
   providedIn: 'root'
@@ -28,8 +28,8 @@ export class DataService {
     return this.http.get<any[]>(environment.apiUrl + '/rainDataGraphLineOneMonth/' + stationId + '/' + month + '/' + year);
   }
 
-  getAllRainDataGraphLineRangeDate(stationId,minDate, minMonth, minYear, maxDate, maxMonth, maxYear): Observable<any[]>  {
-    return this.http.get<any[]>(environment.apiUrl + '/rainDataGraphLineRangeDate/' + stationId + '/' + minDate  + '/' + minMonth + '/' + minYear +'/' + maxDate + '/' + maxMonth + '/' + maxYear);
+  getAllRainDataGraphLineRangeDate(stationId, minDate, minMonth, minYear, maxDate, maxMonth, maxYear): Observable<any[]> {
+    return this.http.get<any[]>(environment.apiUrl + '/rainDataGraphLineRangeDate/' + stationId + '/' + minDate + '/' + minMonth + '/' + minYear + '/' + maxDate + '/' + maxMonth + '/' + maxYear);
   }
 
   updateData(id_station: string, id: string, newData: string, date: Date) {
@@ -45,11 +45,15 @@ export class DataService {
   }
 
   accepteAwaiting(id: string) {
-    return this.http.post<RainDataAwaiting[]>(environment.apiUrl + '/rainData/accept/', {id: id});
+    return this.http.post<RainDataAwaiting[]>(environment.apiUrl + '/rainData/accept/', { id: id });
   }
 
   refuseAwaiting(id: string) {
     return this.http.delete<RainDataAwaiting[]>(environment.apiUrl + '/rainData/refuse/' + id);
+  }
+
+  getDataForMonth(id_station: string, year: string, month: string) {
+    return this.http.get<RainData[]>(environment.apiUrl + `/data/${id_station}/${year}/${month}`);
   }
 
 }

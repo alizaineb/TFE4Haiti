@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { Station } from '../../../_models/';
 import { RainData } from '../../../_models/rainData';
-import { AlertService, UserService } from '../../../_services/';
+import { AlertService, UserService, DataService } from '../../../_services/';
 import { StationsService } from '../../../_services/stations.service';
 import flatpickr from 'flatpickr';
 import { French } from 'flatpickr/dist/l10n/fr';
@@ -32,7 +32,7 @@ export class TableComponent implements OnInit, OnChanges {
   private maxs: RainData[];
 
   private intervalSelected: string;
-  private ratio: number;
+  private ratio: number
 
   private intervalDay: boolean;
   private noDateSelected: boolean;
@@ -49,12 +49,12 @@ export class TableComponent implements OnInit, OnChanges {
   private totMax: number;
 
 
-  constructor(private stationService: StationsService, private alertService: AlertService) { }
+  constructor(private stationService: StationsService, private dataService: DataService, private alertService: AlertService) { }
 
   ngOnInit() {
     let date = new Date(Date.now());
     let elmnt = (<HTMLInputElement>document.getElementById('monthSelector'));
-    elmnt.value = date.getFullYear() + "-" + this.minTwoDigits(date.getMonth() + 1);
+    //elmnt.value = date.getFullYear() + "-" + this.minTwoDigits(date.getMonth() + 1);
     elmnt.max = date.getFullYear() + "-" + this.minTwoDigits(date.getMonth() + 1);
 
     window.onresize = () => {
@@ -138,7 +138,6 @@ export class TableComponent implements OnInit, OnChanges {
       self.dataToShow = false;
       self.alertService.error(error);
     });
-    // Load les dates afficher loading
   }
 
 
@@ -150,16 +149,21 @@ export class TableComponent implements OnInit, OnChanges {
     } else if (intervalIdx == 0) {
       this.sameIntervalAsStation = true;
     }
-    // Check if we need to show date picker for date or month
+    //
+    let base = 0;
+    // Minutes
     if (val.indexOf("m") >= 0) {
       this.intervalDay = true;
-    } else {
+      base = 60;
+    }// Heures
+    else {
       this.intervalDay = false;;
+      base = 24;
     }
 
     this.intervalSelected = val;
     let jump = this.getHopSize(val);
-    this.ratio = 60 / jump;
+    this.ratio = base / jump;
     this.rows = [];
     for (let i = 0; i < this.ratio; i++) {
       this.rows[i] = this.minTwoDigits(i * jump);
@@ -171,6 +175,34 @@ export class TableComponent implements OnInit, OnChanges {
     if (this.dataToShow) {
       this.computeDataToShow();
     }
+  }
+
+  intervalleMonthChanged(val) {
+    let date = val.target.value.split("-");
+    let self = this;
+    this.noDateSelected = false;
+    // Va falloir récup pour la date choisie ==> Lancer le loader
+    this.dataLoading = true;
+    this.noData = false;
+    this.dataToShow = false;
+    // Lorsque la promesse est terminée ==> Stop le loader
+    this.dataService.getDataForMonth(this.stationId, date[0], date[1]).subscribe(rainDatas => {
+      console.log(rainDatas.length);
+      console.log(rainDatas);
+      self.dataLoading = false;
+      if (!rainDatas || rainDatas.length == 0) {
+        self.noData = true;
+      } else {
+        self.dataToShow = true;
+        self.allDatas = rainDatas;
+        self.computeDataToShow();
+
+      }
+    }, error => {
+      self.dataLoading = false;
+      self.dataToShow = false;
+      self.alertService.error(error);
+    });
   }
 
   private computeDataToShow() {
@@ -305,7 +337,15 @@ export class TableComponent implements OnInit, OnChanges {
       case "30min":
         return 30;
       case "1h":
-        return 60;
+        return 1;
+      case "2h":
+        return 2;
+      case "6h":
+        return 6;
+      case "12h":
+        return 12;
+      case "24h":
+        return 24;
       default:
         return 1;
     }
