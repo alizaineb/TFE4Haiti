@@ -583,7 +583,6 @@ function condensData(datas, interval) {
     return;
   }
   let hopSize = 60 / getIntervalInMinute(interval);
-  console.log(datas.length);
   let tableToReturn = [];
   for (let h = 0; h < datas.length; h = h + hopSize) {
     let sum = 0;
