@@ -26,7 +26,7 @@
     <input id="datePicker" placeholder="Date" type="text" class="flatpickr flatpickr-input form-control" required>
   </div>
   <div [hidden]="intervalDay" class="col-md-4">
-    <input type="month" id="monthSelector" min="1990-01" (change)="intervalleMonthChanged($event)">
+    <input type="month" id="monthSelector" min="1990-01" (change)="monthPicked($event)">
   </div>
 
 </div>

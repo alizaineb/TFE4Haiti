@@ -79,9 +79,6 @@ export class TableComponent implements OnInit, OnChanges {
         self.dateChanged(selectedDates, dateStr, instance);
       }
     });
-    for (let i = 0; i < 24; i++) {
-      this.cols[i] = this.minTwoDigits(i);
-    }
   }
 
   private minTwoDigits(n) {
@@ -117,6 +114,9 @@ export class TableComponent implements OnInit, OnChanges {
 
   dateChanged(selectedDates, dateStr, instance) {
     let self = this;
+    for (let i = 0; i < 24; i++) {
+      this.cols[i] = this.minTwoDigits(i);
+    }
     this.noDateSelected = false;
     // Va falloir récup pour la date choisie ==> Lancer le loader
     this.dataLoading = true;
@@ -167,7 +167,7 @@ export class TableComponent implements OnInit, OnChanges {
     this.rows = [];
     for (let i = 0; i < this.ratio; i++) {
       this.rows[i] = this.minTwoDigits(i * jump);
-      if (this.intervalSelected != this.currentStation.interval) {
+      if (this.intervalSelected != this.currentStation.interval && this.intervalSelected != "1h") {
         this.rows[i] = this.rows[i] + " à " + this.minTwoDigits(((i + 1) * jump) - 1);
       }
     }
@@ -177,9 +177,13 @@ export class TableComponent implements OnInit, OnChanges {
     }
   }
 
-  intervalleMonthChanged(val) {
+  monthPicked(val) {
     let date = val.target.value.split("-");
     let self = this;
+
+    for (let i = 0; i < this.daysInMonth(date[1], date[0]); i++) {
+      this.cols[i] = this.minTwoDigits(i + 1);
+    }
     this.noDateSelected = false;
     // Va falloir récup pour la date choisie ==> Lancer le loader
     this.dataLoading = true;
@@ -187,8 +191,6 @@ export class TableComponent implements OnInit, OnChanges {
     this.dataToShow = false;
     // Lorsque la promesse est terminée ==> Stop le loader
     this.dataService.getDataForMonth(this.stationId, date[0], date[1]).subscribe(rainDatas => {
-      console.log(rainDatas.length);
-      console.log(rainDatas);
       self.dataLoading = false;
       if (!rainDatas || rainDatas.length == 0) {
         self.noData = true;
@@ -203,6 +205,9 @@ export class TableComponent implements OnInit, OnChanges {
       self.dataToShow = false;
       self.alertService.error(error);
     });
+  }
+  daysInMonth(month, year) {
+    return new Date(year, month, 0).getDate();
   }
 
   private computeDataToShow() {

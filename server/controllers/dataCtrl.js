@@ -547,9 +547,9 @@ exports.getForMonth = function(req, res) {
     if (!station) {
       return res.status(400).send("Erreur : station inexistante.");
     }
-    let dateMin = new Date(year + "-" + (month - 1) + "-01");
-    let dateMax = new Date(year + "-" + (month - 1) + "-01");
-
+    month = minTwoDigits(month);
+    let dateMin = new Date(year + "-" + month + "-01T00:00:00");
+    let dateMax = new Date(year + "-" + month + "-01T00:00:00");
     dateMax.setMonth(dateMax.getMonth() + 1);
     Station.stationModel.findById(req.params.stationId, (err, station) => {
       if (err) {
@@ -579,29 +579,34 @@ exports.getForMonth = function(req, res) {
 
 
 function condensData(datas, interval) {
-  console.log("datas");
+  if (!datas || datas.length === 0) {
+    return;
+  }
   let hopSize = 60 / getIntervalInMinute(interval);
+  console.log(datas.length);
   let tableToReturn = [];
   for (let h = 0; h < datas.length; h = h + hopSize) {
-    let tabToBePushed = [];
+    let sum = 0;
+    let noData = 0;
     // This loop will compute for one hour
-    for (let i = h; i < h + hopSize; i = i + hopSize) {
-      let sum = 0;
-      let empty = 0;
-      for (let j = i; j < i + hopSize; j++) {
-        if (datas[j] && (datas[j].value || datas[j].value == 0)) {
-          sum += datas[j].value;
-        } else {
-          empty++;
-        }
+    for (let i = h; i < h + hopSize; i++) {
+      if (datas[i] && datas[i].value) {
+        sum += datas[i].value;
+      } else {
+        noData++;
       }
-      let cloneObj = Object.assign({}, datas[i + hopSize - 1]);
-      tabToBePushed.push(cloneObj);
     }
-    tableToReturn.push(tabToBePushed);
+    let cloneObj = {};
+    cloneObj.id_station = datas[h].id_station;
+    cloneObj.date = datas[h].date;
+    if (noData !== hopSize) {
+      cloneObj.value = sum;
+    }
+    tableToReturn.push(cloneObj);
   }
   return tableToReturn;
 }
+
 // Cette méthode va remplir les trous de données potentiels en créant une structure de données avec la value à -1
 // va entrer les données traitées dans le tableau : this.allDatas
 function preprocessData(dataToProcess, stationId, interval, dateDebut, dateFin) {
