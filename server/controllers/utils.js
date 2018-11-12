@@ -57,7 +57,7 @@ exports.hasAccesToStation = function(req, res, callback) {
       if (station.users && station.users.indexOf(user._id) > -1) {
         return callback();
       }
-      return res.status(401).send("Vous ne pouvez pas modifier cette station.");
+      return res.status(403).send("Vous ne pouvez pas modifier cette station.");
     });
   });
 
