@@ -159,7 +159,7 @@ export class TableComponent implements OnInit, OnChanges {
     else {
       this.intervalDay = false;
       base = 24;
-      let el = document.getElementById('monthSelector');
+      let el = (<HTMLInputElement>document.getElementById('monthSelector'));
       if (!el.value) {
         this.noDateSelected = true;
         this.dataToShow = false;
@@ -223,12 +223,9 @@ export class TableComponent implements OnInit, OnChanges {
     this.totVals = 0;
     this.totSum = 0;
     let hopSize = this.computeStep(this.intervalSelected, this.currentStation.interval);
-    console.log(hopSize);
-    console.log(this.ratio);
     let idx = 0;
     for (let h = 0; h < this.allDatas.length; h = h + (hopSize * this.ratio)) {
       let tabToBePushed = [];
-
       // Used to compute moyenne
       let moy = 0;
       let min = Number.MAX_SAFE_INTEGER;
@@ -319,7 +316,6 @@ export class TableComponent implements OnInit, OnChanges {
   getRange(num) {
     return Array(num);
   }
-
   // Méthode utilisée pour calculer le bon entre chaque donnée
   computeStep(visée, current) {
     let biggest = this.getHopSize(visée);
