@@ -16,9 +16,9 @@ const checkParam = require('./utils').checkParam;
 /**
  * get - Récupère toutes les stations
  *
- * @param  {type} req description
- * @param  {type} res 500 : erreur serveur
- * @return {type}     200 : toutes les stations
+ * @param  req /
+ * @param  res 500 : erreur serveur
+ * @return     200 : toutes les stations
  */
 exports.get = function(req, res) {
   // On récupère tous les champs
@@ -32,23 +32,23 @@ exports.get = function(req, res) {
 };
 
 /**
- * getById - Récupère une station basée sur l'id passé en paramètre  
+ * getById - Récupère une station basée sur l'id passé en paramètre
  *
- * @param  {type} req description
- * @param  {type} res description
- * @return {type}     description
+ * @param  {string} req.params.station_id L'id de la station
+ * @param  res 500 : erreur serveur
+ *             404 : station non trouvée
+ * @return     200 : la station ayant l'id req.params.station_id
  */
 exports.getById = function(req, res) {
-  Station.stationModel.findById(req.params.id, function(err, station) {
+  Station.stationModel.findById(req.params.station_id, function(err, station) {
     if (err) {
-      logger.error(err);
+      logger.error("[StationCtrl] getById : " + err);
       return res.status(500).send("Erreur lors de la récupération de la station.");
     }
-    if (station === undefined || station === null) return res.status(404).send("La station n'existe pas");
-    if (station.length > 1) return res.status(500).send("Ceci n'aurait jamais dû arriver.");
-    if (station.length === 0) return res.status(404).send("La station n'existe pas");
-
-    return res.status(200).send(station.toDto());
+    if (station) {
+      return res.status(200).send(station);
+    }
+    return res.status(404).send("La station n'existe pas");
   });
 };
 
