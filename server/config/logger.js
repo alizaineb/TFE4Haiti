@@ -28,9 +28,8 @@
 // Built-in
 const winston = require('winston');
 
-
 /**
- * Initialize logger
+ * Initialisation du logger
  */
 const logger = winston.createLogger({
   level: 'info',
@@ -51,8 +50,6 @@ const logger = winston.createLogger({
 
 
 /**
- * Exports
+ * Export du logger
  */
-
-// Methods
 exports = module.exports = logger;
