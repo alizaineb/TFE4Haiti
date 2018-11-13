@@ -189,7 +189,7 @@ exports.routes = [
     access: [roles.ADMIN]
   },
   {
-    path: "/api/stations/:id",
+    path: "/api/stations/:station_id",
     httpMethod: "GET",
     middleWare: [controllers.stations.getById]
   },
@@ -209,7 +209,7 @@ exports.routes = [
 
   // Méthodes liées aux data
   {
-    path: "/api/rainData/:id_station/updateData",
+    path: "/api/rainData/:station_id/updateData",
     httpMethod: "POST",
     middleWare: [hasAccesToStation, controllers.data.updateData],
     access: [roles.ADMIN, roles.WORKER]

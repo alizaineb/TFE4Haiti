@@ -21,16 +21,23 @@ const checkParam = require('./utils').checkParam;
  * @return {type}     200 : toutes les stations
  */
 exports.get = function(req, res) {
-  Station.stationModel.find({}).then(function(stations) {
-    let tabS = [];
-    stations.forEach(stations => tabS.push(stations.toDto()));
-    return res.status(200).send(tabS);
-  }).catch(function(err) {
-    logger.error(err);
-    return res.status(500).send("Une erreur est survenue lors de la récupération des stations");
-  })
+  // On récupère tous les champs
+  Station.stationModel.find({}, function(err, stations) {
+    if (err) {
+      logger.error("[StationCtrl] get : " + err);
+      return res.status(500).send("Une erreur est survenue lors de la récupération des stations");
+    }
+    return res.status(200).send(stations);
+  });
 };
 
+/**
+ * getById - Récupère une station basée sur l'id passé en paramètre  
+ *
+ * @param  {type} req description
+ * @param  {type} res description
+ * @return {type}     description
+ */
 exports.getById = function(req, res) {
   Station.stationModel.findById(req.params.id, function(err, station) {
     if (err) {

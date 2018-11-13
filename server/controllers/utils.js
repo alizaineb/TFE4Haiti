@@ -53,7 +53,7 @@ exports.hasAccesToStation = function(req, res, callback) {
     if (user.role == roles.ADMIN) {
       return callback();
     }
-    StationModel.stationModel.findById(req.params.id_station, (err, station) => {
+    StationModel.stationModel.findById(req.params.station_id, (err, station) => {
       if (err) {
         logger.error("[UTILS] hasAccesToStation station : ", err)
         return res.status(500).send("Erreur lors de la vérification de votre accès à la station.");
