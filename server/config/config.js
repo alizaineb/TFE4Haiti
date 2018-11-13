@@ -33,14 +33,14 @@ const logger = require('./logger.js');
  * Variables
  */
 
-// An array of files that will be used to find the bootstrap.properties file
 const configFileName = 'config.json';
 const fullConfigFileName = __dirname + '/../' + configFileName;
 
 /**
- * Load configuration found in the config file.
+ * exports - Charge la configuration trouvée dans le fichier de configuration
  *
- * @param callback return an error or null
+ * @param  {method} callback la méthode suivante devant être appellée
+ * @return {method}          Callback à la suite
  */
 exports.load = function(callback) {
   // Vérification que le fichier de config existe
@@ -70,6 +70,14 @@ exports.load = function(callback) {
   });
 };
 
+
+/**
+ * createDefaultCfgFile - Méthode qui va créer le fichier de configuration par défaut avec des valeurs par défauts
+ * A modifier si une nouvelle configuration doit être ajoutée.
+ *
+ * @param  {method} callback la méthode suivante devant être appellée
+ * @return {method}          Callback à la suite
+ */
 function createDefaultCfgFile(callback) {
   logger.warn('[Config]  Création d\'un nouveau fichier de configuration');
   logger.error('/!\\ Un fichier de configuration par défaut a été créé.\nLe serveur va fonctionner avec des valeurs par défaut. Pour des raisons de sécurité et assurer une fonctionnement total de l\'application, veuillez le modifier.\nPour de plus amples informations référez-vous à la documentation.');
@@ -108,6 +116,13 @@ function createDefaultCfgFile(callback) {
   });
 }
 
+/**
+ * checkCfg - Méthode qui va vérifier que le fichier de configuration soit correct et qu'il ne manque pas de champs.   
+ * A modifier si une nouvelle configuration doit être ajoutée.
+ *
+ * @param  {method} callback la méthode suivante devant être appellée
+ * @return {method}          Callback à la suite
+ */
 function checkCfg(callback) {
   logger.info('[Config] Vérification du fichier de configuration');
   var cfgModified = false;
@@ -121,8 +136,8 @@ function checkCfg(callback) {
     cfgModified = true;
   }
   if (typeof nconf.get('downloadFolder') === "undefined") {
-      nconf.set('downloadFolder', path.join(__dirname, '..', 'public', 'download'))
-      cfgModified = true;
+    nconf.set('downloadFolder', path.join(__dirname, '..', 'public', 'download'))
+    cfgModified = true;
   }
   if (typeof nconf.get('server:host') === "undefined") {
     nconf.set('server:host', '0.0.0.0');
