@@ -7,9 +7,7 @@ const routes = routesJs.routes;
 const tokenManager = require('./../config/tokenManager');
 const db = require("./../models/users");
 
-// Applique les middleWare de vérification de sécurité
-//  redirige selon le role de méthode
-// Vérifie que le role de méthode existe (GET,POST, ...)
+/** Applique les middleWare de vérification de sécurité,  redirige selon le role de méthode et vérifie que la méthode existe (GET,POST, ...) */
 module.exports = function(app) {
   _.each(routes, function(route) {
     // Si la route contient des accès, il faut la vérifier
@@ -34,12 +32,15 @@ module.exports = function(app) {
         app.delete.apply(app, args);
         break;
       default:
-        // TODO TRAIDER DIFFEREMMENT ICI en mdoe renvoyer une erreur ?
+        // TODO TRAITER DIFFEREMMENT ICI en mdoe renvoyer une erreur ?
         throw new Error('Type de requête inconnue pour la route ' + route.path);
     }
   });
 }
-
+/**
+ * Vérifie que l'utilisateur a accès à la route
+ * @param {string} req.token_decoded - Le token décodé par la méthode tokenManager.validateToken qui aura été faite au préalable (automatiquement effectuée, si des accès sont présents).
+ */
 function ensureAuthorized(req, res, next) {
   let token = req.token_decoded;
   if (token && token.id) {
@@ -57,9 +58,7 @@ function ensureAuthorized(req, res, next) {
           return res.sendStatus(403, "Non autorisé");
         }
       } else {
-        // j'ai remplacé la 403 ici par une 401 parce que je pense que si l'utilisateur n'est pas connu,
-        // ca veut dire que la personne n'est pas connecter et pas que sont role ne donne pas accès
-
+        // Pas de d'utilisateur dans la DB
         return res.sendStatus(401, "Utilisateur inconnu");
       }
     });
