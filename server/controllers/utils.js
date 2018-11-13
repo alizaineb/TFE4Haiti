@@ -1,13 +1,23 @@
 'use strict';
+/**
+ * Ce fichier contient un ensemble de méthodes utilitaire pouvant petre utilisée dans toute l'application
+ */
 
 const UsersModel = require("../models/users");
 const StationModel = require('./../models/station');
 const roles = require('../config/constants').roles;
 const logger = require('../config/logger');
 
-// Cette méthode va vérifier que chaque paramètre soit bien présent dans le body de la requête
-// Si il manque un paramètre, elle va renvoyer un status 400 en indiquant que des inforamtions son manquantes
-// Sinon elle va appeller le callback
+/**
+ * checkParam - Cette méthode va vérifier que chaque paramètre soit bien présent dans le body de la requête
+ *              Si il manque un paramètre, elle va renvoyer un status 400 en indiquant que des inforamtions son manquantes
+ *
+ * @param  req      requete du client
+ * @param  res      réponse concernant le client
+ * @param {string[]} params   Tableau reprenant les paramètres requis
+ * @param  callback Méthode qui va être appelée si tout se passe bien
+ * @return          Si tout se passe bien appel du callback
+ */
 exports.checkParam = function(req, res, params, callback) {
   for (let i = 0; i < params.length; i++) {
     if (req.body.hasOwnProperty(params[i])) {
@@ -23,8 +33,15 @@ exports.checkParam = function(req, res, params, callback) {
   return callback();
 };
 
-// Middleware vérifia,t si une personne a accès à la station présente dans les paramètres de l'url.
+/**
+ * hasAccesToStation {Middleware} - Cette métthode va vérifier que l'utilisateur présent dans le token a accès à la station
+ *                                  Cette station doit être dans param sous le nom id_station (voir dans fichier routes/routes.js)
+ *
+ * @param  callback Méthode qui va être appelée si tout se passe bien
+ * @return          Si tout se passe bien appel du callback
+ */
 exports.hasAccesToStation = function(req, res, callback) {
+  // Trouver l'utilisateur
   UsersModel.userModel.findById(req.token_decoded.id, (err, user) => {
     if (err) {
       logger.error("[UTILS] hasAccesToStation user : ", err)
@@ -57,10 +74,7 @@ exports.hasAccesToStation = function(req, res, callback) {
       if (station.users && station.users.indexOf(user._id) > -1) {
         return callback();
       }
-      return res.status(403).send("Vous ne pouvez pas modifier cette station.");
+      return res.status(403).send("Vous n'avez pas accès à cette station.");
     });
   });
-
-  // Trouver l'utilisateur
-  // Si admin tu peux passer
 }
