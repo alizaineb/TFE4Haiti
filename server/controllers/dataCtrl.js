@@ -16,7 +16,7 @@ const roles = require('../config/constants').roles;
 const DownloadInterval = require('../config/constants').DownloadIntervals;
 
 
-/*
+/**
  * Méthode utilisée pour insérer des données en base de donnée
  * @param {number[]} dates Tableau des données devant être inséérer en base de données
  * @param {Station} station Station pour laquelle il faut insérer les données
@@ -53,6 +53,12 @@ let insertData = function(req, res, datas, station, user) {
 
   }
 };
+
+/**
+ *
+ * @param req
+ * @param res
+ */
 exports.getAwaiting = function(req, res) {
   dataModel.RainDataAwaitingModel.find({}, (err, datas) => {
     if (err) {
@@ -64,6 +70,11 @@ exports.getAwaiting = function(req, res) {
   });
 };
 
+/**
+ *
+ * @param req
+ * @param res
+ */
 exports.acceptAwaiting = function(req, res) {
   checkParam(req, res, ["id"], function() {
     let id = req.body.id;
@@ -211,7 +222,12 @@ exports.acceptAwaiting = function(req, res) {
   });
 };
 
-
+/**
+ *
+ * @param req
+ * @param res
+ * @return {*}
+ */
 exports.refuseAwaiting = function(req, res) {
   let id = req.params.id || '';
   if (!id) {
@@ -242,6 +258,11 @@ exports.refuseAwaiting = function(req, res) {
 
 };
 
+/**
+ *
+ * @param req
+ * @param res
+ */
 exports.get = function(req, res) {
   dataModel.rainDataModel.find({ id_station: req.params.stationId }, function(err, data) {
     if (err) {
@@ -254,6 +275,11 @@ exports.get = function(req, res) {
   });
 };
 
+/**
+ *
+ * @param req
+ * @param res
+ */
 //TODO Check si la station n'existe pas
 exports.getRainDataGraphLine = function(req, res) {
   Station.stationModel.findById(req.params.stationId, (err, station) => {
@@ -273,6 +299,11 @@ exports.getRainDataGraphLine = function(req, res) {
   });
 };
 
+/**
+ *
+ * @param req
+ * @param res
+ */
 //TODO Check si la station n'existe pas
 exports.rainDataGraphLineRangeDate = function(req, res) {
   Station.stationModel.findById(req.params.stationId, (err, station) => {
@@ -311,8 +342,11 @@ exports.rainDataGraphLineRangeDate = function(req, res) {
 };
 
 
-
-
+/**
+ *
+ * @param req
+ * @param res
+ */
 //TODO Check si la station n'existe pas
 exports.getRainDataGraphLineOneMonth = function(req, res) {
   Station.stationModel.findById(req.params.stationId, (err, station) => {
@@ -353,7 +387,11 @@ exports.getRainDataGraphLineOneMonth = function(req, res) {
   });
 };
 
-
+/**
+ *
+ * @param req
+ * @param res
+ */
 //TODO Check si la station n'existe pas
 exports.getRainDataGraphLineOneYear = function(req, res) {
   Station.stationModel.findById(req.params.stationId, (err, station) => {
@@ -475,6 +513,11 @@ function groupByDay(RainData) {
   return mapValue;
 }
 
+/**
+ *
+ * @param RainData
+ * @return mapValue
+ */
 function groupByInterval(RainData) {
   let mapValue = {};
 
@@ -492,8 +535,14 @@ function groupByInterval(RainData) {
     }
     mapValue[key] = (oldVal + value);
   }
+  return mapValue;
 }
 
+/**
+ *
+ * @param req
+ * @param res
+ */
 exports.getForDay = function(req, res) {
   Station.stationModel.findById(req.params.stationId, (err, station) => {
     if (err) {
@@ -530,7 +579,12 @@ exports.getForDay = function(req, res) {
   });
 };
 
-
+/**
+ *
+ * @param req
+ * @param res
+ * @return {*}
+ */
 exports.getForMonth = function(req, res) {
   // TODO Check year exsists and motn 1 -> 12
   let year = parseInt(req.params.year);
@@ -578,7 +632,12 @@ exports.getForMonth = function(req, res) {
   });
 }
 
-
+/**
+ *
+ * @param datas
+ * @param interval
+ * @return {*}
+ */
 function condensData(datas, interval) {
   if (!datas || datas.length === 0) {
     return;
@@ -609,6 +668,15 @@ function condensData(datas, interval) {
 
 // Cette méthode va remplir les trous de données potentiels en créant une structure de données avec la value à -1
 // va entrer les données traitées dans le tableau : this.allDatas
+/**
+ *
+ * @param dataToProcess
+ * @param stationId
+ * @param interval
+ * @param dateDebut
+ * @param dateFin
+ * @return {*}
+ */
 function preprocessData(dataToProcess, stationId, interval, dateDebut, dateFin) {
   // Si pas de tableau ou tableau vide
   if (!dataToProcess || dataToProcess.length === 0) {
@@ -647,10 +715,20 @@ function preprocessData(dataToProcess, stationId, interval, dateDebut, dateFin) 
   return tabToReturn;
 };
 
+/**
+ *
+ * @param n
+ * @return {string}
+ */
 function minTwoDigits(n) {
   return (n < 10 ? '0' : '') + n;
 }
 
+/**
+ *
+ * @param interval
+ * @return {number}
+ */
 function getIntervalInMinute(interval) {
   switch (interval) {
     case "1min":
@@ -678,7 +756,11 @@ function getIntervalInMinute(interval) {
   }
 }
 
-
+/**
+ *
+ * @param req
+ * @param res
+ */
 exports.importManualData = function(req, res) {
 
   const datas = req.body;
@@ -721,6 +803,12 @@ exports.importManualData = function(req, res) {
   });
 };
 
+/**
+ *
+ * @param req
+ * @param res
+ * @return {*}
+ */
 exports.importFileData = function(req, res) {
 
   const pathDir = nconf.get('uploadFolder')
@@ -792,6 +880,11 @@ exports.importFileData = function(req, res) {
 
 };
 
+/**
+ *
+ * @param req
+ * @param res
+ */
 exports.downloadData = function(req, res) {
   const id_station = req.params.id;
   const from = new Date(req.query.from),
@@ -865,6 +958,11 @@ exports.downloadData = function(req, res) {
 
 }
 
+/**
+ *
+ * @param rainDatas
+ * @return {string}
+ */
 function rainDataToCSV(rainDatas) {
   // console.log("coucou", rainDatas);
   let fileContent = "";
@@ -875,10 +973,21 @@ function rainDataToCSV(rainDatas) {
   return fileContent;
 }
 
+/**
+ *
+ * @param date
+ * @return {string}
+ */
 function preFormatDate(date) {
   return `${date.getFullYear()}-${minTwoDigits(date.getMonth())}-${minTwoDigits(date.getDay())} ${minTwoDigits(date.getHours())}:${minTwoDigits(date.getMinutes())}`
 }
 
+/**
+ *
+ * @param req
+ * @param res
+ * @return {*}
+ */
 exports.updateData = function(req, res) {
   let id_data = req.body.id_curr_data;
   let data = req.body.data;
@@ -971,6 +1080,13 @@ exports.updateData = function(req, res) {
   }
 }
 
+/**
+ *
+ * @param date1
+ * @param date2
+ * @param interval
+ * @return {boolean}
+ */
 function checkDateInterval(date1, date2, interval) {
   if (!date1 || !date2 || !interval) {
     return false;
@@ -986,7 +1102,7 @@ function checkDateInterval(date1, date2, interval) {
 }
 
 //push();
-/* Méthode utilisée pour tester en pushant des données dans base de données
+/** Méthode utilisée pour tester en pushant des données dans base de données
  * En décommentant la ligne //push();
  * Une série de données va être envoyée en DB.
  */
@@ -1032,12 +1148,17 @@ function push() {
   });
 }
 
+/**
+ *
+ * @param max
+ * @return {number}
+ */
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
 
-/*
+/**
  * Méthode utilisée pour vérifier que la date passée corresponde à l'intervalle donnée.
  * @param {string} interval L'intervalle de la id_station
  * @param {Date} date La date d'entrée de la donnée
