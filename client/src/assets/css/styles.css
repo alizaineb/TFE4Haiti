@@ -538,3 +538,8 @@ h5 {
   font-size: 18px;
   font-weight: 300;
 }
+
+
+input[type=search]::-webkit-search-cancel-button {
+  -webkit-appearance: searchfield-cancel-button;
+}

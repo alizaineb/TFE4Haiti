@@ -6,7 +6,7 @@
       <div class="input-group-prepend">
         <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
       </div>
-      <input type="text" class="form-control" placeholder="Nom d'une station" aria-label="Recherche" aria-describedby="basic-addon1" (keyup)="filterStation()" [(ngModel)]="searchKeyWord">
+      <input type="search" (search)="filterStation()" class="form-control" placeholder="Nom d'une station" aria-label="Recherche" aria-describedby="basic-addon1" (keyup)="filterStation()" [(ngModel)]="searchKeyWord">
       <!-- Button trigger modal -->
 
     </div>

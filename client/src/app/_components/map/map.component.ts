@@ -283,6 +283,7 @@ export class MapComponent implements OnInit {
   }
 
   filterStation(event) {
+    console.log("hello");
     this.term = event.target.value;
     //console.log(term)
     this.applyFilter();
