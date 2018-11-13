@@ -1,3 +1,4 @@
+'use strict';
 // Roles de l'application
 const roles = require('../config/constants').roles;
 // Tous les controllers de l'application

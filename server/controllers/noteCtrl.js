@@ -1,3 +1,4 @@
+'use strict';
 const logger = require('../config/logger');
 const Note = require('./../models/note');
 const checkParam = require('./utils').checkParam;
@@ -23,7 +24,7 @@ exports.create = function(req, res) {
 
 exports.get = function(req, res) {
   let stationId = req.params.stationId;
-  Note.noteModel.find({station_id: stationId}).then(function(notes) {
+  Note.noteModel.find({ station_id: stationId }).then(function(notes) {
     let tabN = [];
     notes.forEach(notes => tabN.push(notes.toDto()));
     return res.status(200).send(tabN);

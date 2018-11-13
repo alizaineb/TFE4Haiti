@@ -1,3 +1,4 @@
+'use strict';
 // Modules node
 const _ = require('underscore');
 

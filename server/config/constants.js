@@ -1,3 +1,4 @@
+'use strict';
 exports.roles = {
   ADMIN: "administrateur",
   VIEWER: "chercheur",
@@ -25,9 +26,9 @@ exports.DataType = {
 }
 
 exports.DownloadIntervals = {
-  STATION :"default",
-  DAYS : "days",
-  MONTHS : "month",
+  STATION: "default",
+  DAYS: "days",
+  MONTHS: "month",
   YEARS: "years",
   ALL: "all",
 }
