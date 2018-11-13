@@ -23,7 +23,7 @@ const DownloadInterval = require('../config/constants').DownloadIntervals;
  * @param {string} user L'id de l'utilisateur ayant inséré les données
  * ? Besoin d'un autre paramètre ?
  */
-insertData = function(req, res, datas, station, user) {
+let insertData = function(req, res, datas, station, user) {
   // Vérifier que l'utilisateur peut insérer sur cette station
 
   if (station.users.indexOf(user._id) < 0 && user.role !== roles.ADMIN) { //todo check user access riviere ou commune

@@ -10,7 +10,7 @@ controllers.note = require('../controllers/noteCtrl');
 controllers.rainData = require('../controllers/dataCtrl');
 
 // MiddleWare permettant de vérifier qu'un utilisateur a accès à la station (pour effectuer des actions dessus (Update, delete, etc))
-hasAccesToStation = require('../controllers/utils').hasAccesToStation;
+let hasAccesToStation = require('../controllers/utils').hasAccesToStation;
 
 // API routes
 /* Tableau reprenant toutes les routes

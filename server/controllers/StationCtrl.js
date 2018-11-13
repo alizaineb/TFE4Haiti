@@ -1,12 +1,25 @@
 'use strict';
+/**
+ * Controlleur reprenant toutes les méthodes liées aux stations
+ */
+
 const logger = require('../config/logger');
+// Modèles
 const Station = require('./../models/station');
+const UsersModel = require('./../models/users');
+// états
 const states = require('../config/constants').stationState;
 const checkParam = require('./utils').checkParam;
-const UsersModel = require('./../models/users');
 
 
 
+/**
+ * get - Récupère toutes les stations
+ *
+ * @param  {type} req description
+ * @param  {type} res 500 : erreur serveur
+ * @return {type}     200 : toutes les stations
+ */
 exports.get = function(req, res) {
   Station.stationModel.find({}).then(function(stations) {
     let tabS = [];
