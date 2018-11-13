@@ -22,13 +22,15 @@ const checkParam = require('./utils').checkParam;
  */
 exports.get = function(req, res) {
   // On récupère tous les champs
-  Station.stationModel.find({}, function(err, stations) {
-    if (err) {
-      logger.error("[StationCtrl] get : " + err);
-      return res.status(500).send("Une erreur est survenue lors de la récupération des stations");
-    }
-    return res.status(200).send(stations);
-  });
+  Station.stationModel.find({},
+    '_id name latitude longitude altitude state createdAt updatedAt interval river commune user_creator_id users',
+    function(err, stations) {
+      if (err) {
+        logger.error("[StationCtrl] get : " + err);
+        return res.status(500).send("Une erreur est survenue lors de la récupération des stations");
+      }
+      return res.status(200).send(stations);
+    });
 };
 
 /**
@@ -40,16 +42,18 @@ exports.get = function(req, res) {
  * @return     200 : la station ayant l'id req.params.station_id
  */
 exports.getById = function(req, res) {
-  Station.stationModel.findById(req.params.station_id, function(err, station) {
-    if (err) {
-      logger.error("[StationCtrl] getById : " + err);
-      return res.status(500).send("Erreur lors de la récupération de la station.");
-    }
-    if (station) {
-      return res.status(200).send(station);
-    }
-    return res.status(404).send("La station n'existe pas");
-  });
+  Station.stationModel.findById(req.params.station_id,
+    '_id name latitude longitude altitude state createdAt updatedAt interval river commune user_creator_id users',
+    function(err, station) {
+      if (err) {
+        logger.error("[StationCtrl] getById : " + err);
+        return res.status(500).send("Erreur lors de la récupération de la station.");
+      }
+      if (station) {
+        return res.status(200).send(station);
+      }
+      return res.status(404).send("La station n'existe pas");
+    });
 };
 
 exports.create = function(req, res) {
