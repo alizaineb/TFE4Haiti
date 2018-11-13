@@ -56,6 +56,23 @@ exports.getById = function(req, res) {
     });
 };
 
+/**
+ * create - Permet de créer une station en la mettant en attente de confirmation par l'administrateur
+ * access - ADMIN WORKER
+ *
+ * @param  {string} req.body.name Le nom de la station
+ * @param  {number} req.body.latitude La latitude de la station
+ * @param  {number} req.body.longitude La longitude de la station
+ * @param  {number} req.body.altitude L'altitude de la station (optionnel)
+ * @param  {string} req.token_decoded L'utilisateur créant la station
+ * @param  {date} req.body.createdAt La date de création de la station
+ * @param  {string} req.body.river
+ * @param  {string} req.body.commune 
+ * @param  {} req.body.
+ * @param  {} req.body.
+ * @param  {type} res description
+ * @return {type}     description
+ */
 exports.create = function(req, res) {
   checkParam(req, res, ["name", "latitude", "longitude", "river", "commune", "createdAt", "interval"], function() {
     let station = req.body;
@@ -64,7 +81,7 @@ exports.create = function(req, res) {
     sTmp.latitude = station.latitude;
     sTmp.longitude = station.longitude;
     sTmp.altitude = station.altitude;
-    sTmp.createdAt = new Date(station.createdAt);
+    sTmp.createdAt = new Date(station.createdAt); // TODO DATE
     //sTmp.last_update = Date.now();
     // TODO Picture
     // sTmp.picture = station.picture;
