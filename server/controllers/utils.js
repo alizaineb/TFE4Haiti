@@ -1,6 +1,6 @@
 'use strict';
 /**
- * Ce fichier contient un ensemble de méthodes utilitaire pouvant petre utilisée dans toute l'application
+ * Ce controlleur contient un ensemble de méthodes utilitaire pouvant petre utilisée dans toute l'application
  */
 
 const UsersModel = require("../models/users");
