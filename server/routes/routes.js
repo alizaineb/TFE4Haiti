@@ -4,8 +4,8 @@ const roles = require('../config/constants').roles;
 // Tous les controllers de l'application
 let controllers = {};
 controllers.data = require('../controllers/dataCtrl');
-controllers.users = require('../controllers/UserCtrl');
-controllers.stations = require('../controllers/StationCtrl');
+controllers.users = require('../controllers/userCtrl');
+controllers.stations = require('../controllers/stationCtrl');
 controllers.note = require('../controllers/noteCtrl');
 controllers.rainData = require('../controllers/dataCtrl');
 

@@ -3,7 +3,7 @@
  * Ce controlleur contient un ensemble de méthodes utilitaire pouvant petre utilisée dans toute l'application
  */
 
-const UsersModel = require("../models/users");
+const UsersModel = require("../models/user");
 const StationModel = require('./../models/station');
 const roles = require('../config/constants').roles;
 const logger = require('../config/logger');

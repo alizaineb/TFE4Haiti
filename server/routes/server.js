@@ -6,7 +6,7 @@ const _ = require('underscore');
 const routesJs = require('./routes');
 const routes = routesJs.routes;
 const tokenManager = require('./../config/tokenManager');
-const db = require("./../models/users");
+const db = require("../models/user");
 
 /** Applique les middleWare de vérification de sécurité,  redirige selon le role de méthode et vérifie que la méthode existe (GET,POST, ...) */
 module.exports = function(app) {

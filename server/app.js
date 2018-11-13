@@ -61,7 +61,7 @@ function configureDB(cb) {
       // require('./../models/donnee');
       // require('./../models/mdp_recuperation');
       // require('./../models/station');
-      require('./models/users');
+      require('./models/user');
 
       cb()
     },

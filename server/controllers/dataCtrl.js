@@ -11,7 +11,7 @@ const checkParam = require('./utils').checkParam;
 const state = require('../config/constants').DataType;
 
 const Station = require("../models/station");
-const UsersModel = require("../models/users");
+const UsersModel = require("../models/user");
 const roles = require('../config/constants').roles;
 const DownloadInterval = require('../config/constants').DownloadIntervals;
 

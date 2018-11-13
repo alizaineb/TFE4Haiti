@@ -6,7 +6,7 @@
 const logger = require('../config/logger');
 // Modèles
 const Station = require('./../models/station');
-const UsersModel = require('./../models/users');
+const UsersModel = require('../models/user');
 // états
 const states = require('../config/constants').stationState;
 const checkParam = require('./utils').checkParam;
