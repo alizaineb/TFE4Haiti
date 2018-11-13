@@ -1,30 +1,30 @@
-// Tous les controllers de l'application
+// Roles de l'application
 const roles = require('../config/constants').roles;
+// Tous les controllers de l'application
 let controllers = {};
 controllers.data = require('../controllers/dataCtrl');
 controllers.users = require('../controllers/UserCtrl');
 controllers.stations = require('../controllers/StationCtrl');
 controllers.note = require('../controllers/noteCtrl');
 controllers.rainData = require('../controllers/dataCtrl');
+
+// MiddleWare permettant de vérifier qu'un utilisateur a accès à la station (pour effectuer des actions dessus (Update, delete, etc))
 hasAccesToStation = require('../controllers/utils').hasAccesToStation;
-// Route par défaut récupère l'index
-// controllers.angular = function(req, res) { res.sendFile(path.join(__dirname, '../public/index.html')); };
 
+// API routes
+/* Tableau reprenant toutes les routes
+ * Exemple d'utilisation
+ * {
+ * path : Le chemin, commence  par /api/
+ *        ensuite vient le domaine auquel la route va être liée (p. ex. user/)
+ *        enfin l'obejectif de la route
+ * httpMethod : GET,POST, DELETE, PUT. Toute autre méthode ne sera pas reconnue
+ * middleWare : Middleware par lesquels la route doit passer, ceux-ci seront vérifié dans l'ordre dans lequel ils ont été énnoncés.
+ *              Enfin, spécifier la méthode à laquelle la route est liée
+ * access : Spécification des roles (si nécessaire), p. ex. [roles.NOM_DU_ROLE]
+ * }
+ */
 exports.routes = [
-  // API routes
-  /* Exemple
-   * {
-   * path : Le chemin, commence  par /api/
-   *        ensuite vient le domaine auquel la route va être liée (p. ex. user/)
-   *        enfin l'obejectif de la route
-   * httpMethod : GET,POST, DELETE, PUT. Toute autre méthode ne sera pas reconnue
-   * middleWare : C'est ici, que le token sera vérifié (si nécessaire) via l'ajout de [jwt({secret: secret})], tokenManager.verifyToken,
-   *              Ensuite, spécifier la méthode à laquelle la route est liée
-   * access : Spécification des roles (si nécessaire), p. ex. [1,2,3]
-   * }
-   */
-
-
   // Méthodes liées aux utilisateurs
   {
     path: "/api/users/login",
@@ -75,7 +75,6 @@ exports.routes = [
     middleWare: [controllers.users.refuseUser],
     access: [roles.ADMIN]
   },
-
   {
     path: "/api/users/:id",
     httpMethod: "DELETE",
@@ -103,9 +102,7 @@ exports.routes = [
     middleWare: [controllers.users.update]
   },
 
-
   // Méthodes liées aux stations
-
   { //      /api/stations/5bbdb51dd7aec61a195afc9b/import
     path: "/api/stations/:id/import",
     httpMethod: "POST",
@@ -273,20 +270,21 @@ exports.routes = [
     middleWare: [controllers.data.getForMonth]
   },
 
-
-  // Routes used to test
+  // Routes utiilisées pour tester
   {
     path: "/api/login/test",
     httpMethod: "GET",
     middleWare: [controllers.users.useless],
     access: [roles.VIEWER, roles.WORKER, roles.ADMIN]
   },
+  // Juste les admins doivent avoir accès à cette route
   {
     path: "/api/someSecureRouteAdminOnly",
     httpMethod: "GET",
     middleWare: [controllers.users.useless],
     access: [roles.ADMIN]
   },
+  // Personne ne doit avoir accès à cette route
   {
     path: "/api/someSecureRouteNotAccessible",
     httpMethod: "GET",
