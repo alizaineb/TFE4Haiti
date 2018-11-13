@@ -55,15 +55,15 @@ let insertData = function(req, res, datas, station, user) {
 };
 
 /**
- *
- * @param req
- * @param res
+ * Méthode de récupération des données en attente de validation.
+ * @param req L'objet "Request" de la requête
+ * @param res L'objet "Response" de la requête
  */
 exports.getAwaiting = function(req, res) {
   dataModel.RainDataAwaitingModel.find({}, (err, datas) => {
     if (err) {
       logger.error("[DATACTRL] getAwaiting : ", err);
-      return res.status(500).send("Erreur lors de la reucpérations des données.")
+      return res.status(500).send("Erreur lors de la récupérations des données.")
     } else {
       return res.status(200).send(datas);
     }
@@ -71,9 +71,10 @@ exports.getAwaiting = function(req, res) {
 };
 
 /**
- *
- * @param req
- * @param res
+ * Méthode de validation des données pluviométriques. C'est ici que le cas de la mise à jour ou la validation
+ * d'un fichier est géré.
+ * @param req req.param.id L'id de la données à valider
+ * @param res L'objet "Response" de la requête où il faut repondre
  */
 exports.acceptAwaiting = function(req, res) {
   checkParam(req, res, ["id"], function() {
@@ -109,14 +110,7 @@ exports.acceptAwaiting = function(req, res) {
               }).catch((err) => {
                 return res.status(500).send(err);
               });
-
             } else {
-              // on met à jour l'ancienne valeur
-              console.log("hello", rainDataAwaiting);
-              // old to new
-              // new = undef => delete old
-              //
-
               dataModel.rainDataModel.findById(rainDataAwaiting.id_old_data, (err, rainData) => {
                 rainData.value = rainDataAwaiting.value;
                 rainData.save().then(() => {
@@ -223,10 +217,10 @@ exports.acceptAwaiting = function(req, res) {
 };
 
 /**
- *
- * @param req
- * @param res
- * @return {*}
+ * Méthode de refus et suppression d'une données pluviométrique en attente de validation.
+ * @param req req.param.id L'id de la données à refuser.
+ * @param res L'objet "Response" de la requête où il faut repondre
+ * @return {*} /
  */
 exports.refuseAwaiting = function(req, res) {
   let id = req.params.id || '';
@@ -254,14 +248,12 @@ exports.refuseAwaiting = function(req, res) {
       });
     }
   });
-  // console.log(id);
-
 };
 
 /**
- *
- * @param req
- * @param res
+ * Méthode de récupération de toutes les données pluviométriques validées pour une station données.
+ * @param req req.param.stationId L'id de la données dont on veut récupérer les données.
+ * @param res L'objet "Response" de la requête où il faut repondre
  */
 exports.get = function(req, res) {
   dataModel.rainDataModel.find({ id_station: req.params.stationId }, function(err, data) {
