@@ -539,7 +539,7 @@ h5 {
   font-weight: 300;
 }
 
-
+/* supprime l'effet de bootstrap sur des input de type "search" */
 input[type=search]::-webkit-search-cancel-button {
   -webkit-appearance: searchfield-cancel-button;
 }
