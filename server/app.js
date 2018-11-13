@@ -15,6 +15,9 @@ const mongoose = require('mongoose');
 const config = require('./config/config');
 const logger = require('./config/logger')
 
+/**
+ * Méthode de configuration des requetes sur le serveur
+ */
 function configureServer() {
   // Parser
   app.use(bodyParser.json());
@@ -26,6 +29,7 @@ function configureServer() {
   app.use('/download/*', express.static('public/download'));
 
 
+  // methode d'autorisation pour les requêtes des provenant de client extérieurs.
   app.use(function(request, response, next) {
     logger.info('[Server] Received request for ' + request.method + ' ' + request.path);
 
@@ -40,6 +44,10 @@ function configureServer() {
   });
 }
 
+/**
+ * Methode de configuration de la Base de données
+ * @param cb callback appelé si la connection à la DB est ok.
+ */
 function configureDB(cb) {
   //Connect to mongoDB server
   let url = 'mongodb://' + nconf.get('database:login') + ':' + nconf.get('database:password') + '@' + nconf.get('database:host') + ':' + nconf.get('database:port') + '/' + nconf.get('database:name');
@@ -63,6 +71,9 @@ function configureDB(cb) {
   );
 }
 
+/**
+ * Méthode de démarrage du serveur.
+ */
 function startWebServer() {
   // Configure le serveur
   configureServer();
@@ -81,7 +92,7 @@ function startWebServer() {
 
 process.chdir(__dirname);
 
-// Vérification de la config
+// vérification et chargement des configuration et démarrage du serveur si aucune erreur est renvoyée
 config.load(function(e) {
   if (e) {
     logger.error(e);
