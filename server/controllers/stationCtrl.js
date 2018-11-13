@@ -16,8 +16,9 @@ const checkParam = require('./utils').checkParam;
 /**
  * get - Récupère toutes les stations
  *
- * @param  req /
- * @param  res 500 : erreur serveur
+ * @param {request} req Requête du client
+ * @param {response} res Réponse renvoyée au client
+ *                   500 : erreur serveur
  * @return     200 : toutes les stations
  */
 exports.get = function(req, res) {
@@ -36,9 +37,11 @@ exports.get = function(req, res) {
 /**
  * getById - Récupère une station basée sur l'id passé en paramètre
  *
+ * @param {request} req Requête du client
  * @param  {string} req.params.station_id L'id de la station
- * @param  res 500 : erreur serveur
- *             404 : station non trouvée
+ * @param {response} res Réponse renvoyée au client
+ *                   500 : erreur serveur
+ *                   404 : station non trouvée
  * @return     200 : la station ayant l'id req.params.station_id
  */
 exports.getById = function(req, res) {
@@ -67,7 +70,7 @@ exports.getById = function(req, res) {
  * @param  {string} req.token_decoded L'utilisateur créant la station
  * @param  {date} req.body.createdAt La date de création de la station
  * @param  {string} req.body.river
- * @param  {string} req.body.commune 
+ * @param  {string} req.body.commune
  * @param  {} req.body.
  * @param  {} req.body.
  * @param  {type} res description
