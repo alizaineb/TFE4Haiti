@@ -18,7 +18,7 @@ const checkParam = require('./utils').checkParam;
  *
  * @param {request} req Requête du client
  * @param {response} res Réponse renvoyée au client
- *                   500 : erreur serveur
+ *                       500 : erreur serveur
  * @return     200 : toutes les stations
  */
 exports.get = function(req, res) {
@@ -40,8 +40,8 @@ exports.get = function(req, res) {
  * @param {request} req Requête du client
  * @param  {string} req.params.station_id L'id de la station
  * @param {response} res Réponse renvoyée au client
- *                   500 : erreur serveur
- *                   404 : station non trouvée
+ *                       500 : erreur serveur
+ *                       404 : station non trouvée
  * @return     200 : la station ayant l'id req.params.station_id
  */
 exports.getById = function(req, res) {
