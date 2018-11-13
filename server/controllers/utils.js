@@ -78,3 +78,43 @@ exports.hasAccesToStation = function(req, res, callback) {
     });
   });
 }
+
+/**
+ * let checkInt - Vérifie que la valeur soit un int
+ *                "23" => true, "23a" => false, "" => false
+ *
+ * @param  {TOUT} val La valeur à tester
+ * @return {int}     va renvoyer la valeur en int ou undefined si ce n'est pas un enter
+ */
+let checkInt = function(val) {
+  if (val) {
+    let tmp = Number.parseInt(val, 10);
+    // isFinite permet d'éviter que "23a" soit accepté par parseInt
+    if (isNaN(tmp) || !isFinite(val)) {
+      return undefined;
+    }
+    return tmp;
+  }
+  return undefined;
+}
+
+exports.checkInt = checkInt;
+/**
+ * let checkIntBetween - Vérifie que la valeur soit un int et compris entre min et max inclus
+ *                ("23", 23, 25) => true, ("22", 23, 25) => false, ("23a", 23, 25) => false, ("",23,25) => false
+ *
+ * @param  {TOUT} val La valeur à tester
+ * @param  {int} min Le minimum
+ * @param  {int} max Le maximum
+ * @return {int}     va renvoyer la valeur en int ou undefined si ce n'est pas un enter
+ */
+exports.checkIntBetween = function(val, min, max) {
+  let tmp = checkInt(val);
+  if (tmp) {
+    if (tmp < min || tmp > max) {
+      return undefined;
+    }
+    return tmp;
+  }
+  return undefined;
+}

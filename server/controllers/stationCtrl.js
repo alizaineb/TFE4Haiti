@@ -10,9 +10,6 @@ const UsersModel = require('../models/user');
 // états
 const states = require('../config/constants').stationState;
 const checkParam = require('./utils').checkParam;
-
-
-
 /**
  * get - Récupère toutes les stations
  *
@@ -63,6 +60,7 @@ exports.getById = function(req, res) {
  * create - Permet de créer une station en la mettant en attente de confirmation par l'administrateur
  * access - ADMIN WORKER
  *
+ * @param {request} req Requête du client
  * @param  {string} req.body.name Le nom de la station
  * @param  {number} req.body.latitude La latitude de la station
  * @param  {number} req.body.longitude La longitude de la station
@@ -76,6 +74,7 @@ exports.getById = function(req, res) {
  * @param  {type} res description
  * @return {type}     description
  */
+// TODO Test avec les méthodes checkInt etc etc ...
 exports.create = function(req, res) {
   checkParam(req, res, ["name", "latitude", "longitude", "river", "commune", "createdAt", "interval"], function() {
     let station = req.body;
