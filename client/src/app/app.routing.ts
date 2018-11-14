@@ -13,6 +13,7 @@ import {SimpleStationComponent} from "./_components/simple-station/simple-statio
 import {LogoutComponent} from "./_components/logout/logout.component";
 import {HomeComponent} from "./_components/home/home.component";
 import {StationImportDataComponent} from "./_components/stations/import-data/station-import-data.component";
+import {NotFoundComponent} from "./_components/not-found/not-found.component";
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
@@ -27,13 +28,14 @@ const appRoutes: Routes = [
   {path: 'login/reset/:f/:id', component: ResetPasswordComponent},
   {path: 'login/askreset', component: AskresetComponent},
   {path: 'logout', component: LogoutComponent},
+  {path: 'not-found', component: NotFoundComponent},
 
 
   {path: 'faq', component: FaqComponent},
 
 
   // otherwise redirect to home
-  {path: '**', redirectTo: ''}
+  {path: '**', redirectTo: 'not-found'}
 ];
 
 export const routing = RouterModule.forRoot(appRoutes);

@@ -20,7 +20,7 @@ export class StationImportDataComponent implements OnInit {
 
   currentStation: Station;
 
-  data: { date: string, time: { hour: number, time: number }, value: number }[];
+  data: { date: string, time: { hour: number, minute: number }, value: number }[];
   private selectedZone: string;
 
   selectedFile: File = null;
@@ -61,7 +61,7 @@ export class StationImportDataComponent implements OnInit {
     });
   }
 
-  private addData(date = '', time = { hour: 0, time: 0 }, value = 0) {
+  private addData(date = '', time = { hour: 0, minute: 0 }, value = 0) {
     this.data.push({ date: date, time: time, value: value });
   }
 

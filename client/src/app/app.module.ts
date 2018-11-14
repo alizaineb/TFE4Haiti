@@ -44,7 +44,8 @@ import {UpdateDataModalComponent} from './_components/simple-station/table/updat
 
 ;
 import {DownloadDataModalComponent} from './_components/simple-station/download-data-modal/download-data-modal.component'
-
+;
+import { NotFoundComponent } from './_components/not-found/not-found.component'
 
 @NgModule({
   imports: [
@@ -88,6 +89,7 @@ import {DownloadDataModalComponent} from './_components/simple-station/download-
     TableComponent,
     UpdateDataModalComponent,
     DownloadDataModalComponent,
+    NotFoundComponent
   ],
 
   providers: [
