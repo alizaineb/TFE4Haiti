@@ -104,7 +104,7 @@ export class StationImportDataComponent implements OnInit {
         tmp.value = this.data[i].value;
         //console.log(this.data[i].date);
         //console.log(`${this.data[i].date}T${this.data[i].time.hour}:${this.data[i].time.time | this.data[i].time['minute']}:00`);
-        tmp.date = new Date(`${this.data[i].date}T${this.data[i].time.hour}:${this.data[i].time.time | this.data[i].time['minute']}:00Z`);
+        tmp.date = new Date(`${this.data[i].date}T${this.minTwoDigits(this.data[i].time.hour)}:${this.minTwoDigits(this.data[i].time.time) | this.minTwoDigits(this.data[i].time['minute'])}:00Z`);
         // tmp.date = new Date(Date.UTC(tmp.date.getFullYear(), tmp.date.getMonth(), tmp.date.getDate(), tmp.date.getHours(), tmp.date.getMinutes(), tmp.date.getSeconds()));
         dataToSend.push(tmp);
       }
@@ -121,8 +121,10 @@ export class StationImportDataComponent implements OnInit {
           this.loading = false;
         });
     }
+  }
 
-
+  private minTwoDigits(n) {
+    return (n < 10 ? '0' : '') + n;
   }
 
   moreData() {
