@@ -40,9 +40,15 @@ Station.methods.toDto = function() {
   };
 };
 
+
 const stationModel = mongoose.model("station", Station);
 exports.stationModel = stationModel;
 // TODO Mettre dans le fichier de constantes ?
+
+
+exports.rivers = ['river1', 'river2', 'Grande Rivière du Nord', 'Haut-du-Cap', 'Limbé', 'Marion'];
+exports.intervals = ['1min', '5min', '10min', '15min', '30min', '1h', '2h', '6h', '12h', '24h'];
+
 // TODO En attente de confirmation
 exports.communes = [
   'Port-au-Prince',
@@ -83,5 +89,3 @@ exports.communes = [
   'Aquin',
   'Kenscoff'
 ];
-exports.rivers = ['river1', 'river2', 'Grande Rivière du Nord', 'Haut-du-Cap', 'Limbé', 'Marion'];
-exports.intervals = ['1min', '5min', '10min', '15min', '30min', '1h', '2h', '6h', '12h', '24h'];
