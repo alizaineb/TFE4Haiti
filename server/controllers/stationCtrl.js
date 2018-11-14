@@ -83,7 +83,8 @@ exports.create = function(req, res) {
   sTmp.longitude = station.longitude;
   sTmp.altitude = station.altitude;
   sTmp.createdAt = new Date(station.createdAt); // TODO DATE
-  //sTmp.last_update = Date.now();
+  const d = new Date();
+  sTmp.updatedAt = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes()));
   // TODO Picture
   // sTmp.picture = station.picture;
   sTmp.state = states.AWAITING;

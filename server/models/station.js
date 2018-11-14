@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
-var timestamps = require('mongoose-timestamp');
 const states = require('../config/constants').stationState;
-const checkInt = require('../controllers/utils').checkInt;
 
 // schema pour récupérer un mot de passe
 const Schema = mongoose.Schema;
@@ -14,13 +12,16 @@ const Station = new Schema({
   users: { type: [String], required: true },
   user_creator_id: { type: String, required: true },
   createdAt: { type: Date, required: true },
+  updatedAt: {type: Date, required: true},
   commune: { type: String, required: true, enum: this.communes },
   river: { type: String, required: true, enum: this.rivers },
   state: { type: String, enum: [states.AWAITING, states.BROKEN, states.WORKING, states.DELETED], required: true },
   interval: { type: String, required: true, enum: ['1min', '5min', '10min', '15min', '30min', '1h', '2h', '6h', '12h', '24h'] } // TODO changer ceci, faut mettre direct le tableau qui est la + bas
-}, {
-  //Ajoute le champ updatedAt automatiquement
-  timestamps: { createdAt: false, updatedAt: true }
+});
+
+Station.pre('save', function() {
+  const d = new Date();
+  this.updatedAt = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes()));
 });
 
 Station.methods.toDto = function() {
