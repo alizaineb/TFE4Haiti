@@ -1142,7 +1142,7 @@ function push() {
 }
 
 /**
- *
+ *d
  * @param max
  * @return {number}
  */

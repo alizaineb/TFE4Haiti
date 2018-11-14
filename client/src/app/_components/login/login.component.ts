@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
   registerSubmitted = false;
   returnUrl: string;
   roles: string[];
-  private roleWorker: string;
+  roleWorker: string;
   private communes: string[];
   private rivers: string[];
 

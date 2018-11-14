@@ -2,7 +2,7 @@
 // `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-const host = 'http://localhost:3000';
+const host = 'https://rocky-tundra-94622.herokuapp.com';
 const url = '/api';
 export const environment = {
   production: false,

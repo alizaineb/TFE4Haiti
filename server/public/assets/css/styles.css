@@ -476,12 +476,32 @@ i:hover {
   color: darkBlue;
 }
 
+.fa-sticky-note {
+  color: sandyBrown;
+}
+
+.fa-sticky-note:hover {
+  color: #F4EE60;
+}
+
+.fa-sticky-note:active {
+  color: #813B00;
+}
+
 .fas {
   cursor: pointer;
 }
 
 .fa-sort {
   cursor: pointer;
+}
+
+.fa-spinner {
+  color: #4286f4;
+}
+
+.fa-arrow-right, .fa-arrow-left {
+  color: #4286f4;
 }
 
 tbody>tr:hover {
@@ -496,4 +516,30 @@ h1 {
   line-height: 32px;
   margin: 0 0 10px;
   text-align: center;
+}
+
+h2 {
+  color: #111;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 24px;
+  font-weight: 300;
+}
+
+h4 {
+  color: #111;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 300;
+}
+
+h5 {
+  color: #111;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 300;
+}
+
+/* supprime l'effet de bootstrap sur des input de type "search" */
+input[type=search]::-webkit-search-cancel-button {
+  -webkit-appearance: searchfield-cancel-button;
 }

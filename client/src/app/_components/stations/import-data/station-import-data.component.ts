@@ -16,7 +16,7 @@ export class StationImportDataComponent implements OnInit {
 
   // sub to the route
   private sub: any;
-  private loading: boolean;
+  loading: boolean;
 
   currentStation: Station;
 
