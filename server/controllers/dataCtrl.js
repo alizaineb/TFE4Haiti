@@ -545,8 +545,8 @@ exports.getForDay = function(req, res) {
     }
     let date = new Date(req.params.date);
 
-    let dateMin = new Date(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate());
-    let dateMax = new Date(date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate());
+    let dateMin = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
+    let dateMax = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
 
     dateMax.setHours(dateMax.getHours() + 24);
     Station.stationModel.findById(req.params.stationId, (err, station) => {
@@ -595,8 +595,8 @@ exports.getForMonth = function(req, res) {
       return res.status(400).send("Erreur : station inexistante.");
     }
     month = minTwoDigits(month);
-    let dateMin = new Date(year + "-" + month + "-01T00:00:00");
-    let dateMax = new Date(year + "-" + month + "-01T00:00:00");
+    let dateMin = new Date(year + "-" + month + "-01T00:00:00Z");
+    let dateMax = new Date(year + "-" + month + "-01T00:00:00Z");
     dateMax.setMonth(dateMax.getMonth() + 1);
     Station.stationModel.findById(req.params.stationId, (err, station) => {
       if (err) {

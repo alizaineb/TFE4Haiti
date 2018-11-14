@@ -58,7 +58,7 @@
         <th *ngFor="let tmp of getRange(aggregatedDatas.length); let idx = index">
           <div *ngIf="aggregatedDatas[idx][i].value || aggregatedDatas[idx][i].value == 0 ; else has_no_data">
             <div *ngIf="sameIntervalAsStation; else no_interval_with_data" (click)="editData(aggregatedDatas[idx][i])" data-toggle="modal" data-target="#updateDataModal">{{aggregatedDatas[idx][i].value}}</div>
-            <ng-template #no_interval_with_data> {{aggregatedDatas[idx][i].value}} </ng-template>
+            <ng-template #no_interval_with_data> {{aggregatedDatas[idx][i].value}}</ng-template>
           </div>
           <ng-template #has_no_data>
             <div *ngIf="sameIntervalAsStation; else no_interval_noData" (click)="editData(aggregatedDatas[idx][i])" data-toggle="modal" data-target="#updateDataModal"> - </div>
