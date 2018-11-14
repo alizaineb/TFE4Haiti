@@ -106,6 +106,7 @@ export class StationImportDataComponent implements OnInit {
         //console.log(`${this.data[i].date}T${this.data[i].time.hour}:${this.data[i].time.time | this.data[i].time['minute']}:00`);
         console.log(this.data[i].time);
         tmp.date = new Date(`${this.data[i].date}T${this.minTwoDigits(this.data[i].time.hour)}:${this.minTwoDigits(this.data[i].time['minute'])}:00Z`);
+        console.log(this.minTwoDigits(this.data[i].time['minute'] || '00'));
         console.log(tmp.date);
         // tmp.date = new Date(Date.UTC(tmp.date.getFullYear(), tmp.date.getMonth(), tmp.date.getDate(), tmp.date.getHours(), tmp.date.getMinutes(), tmp.date.getSeconds()));
         dataToSend.push(tmp);
@@ -126,6 +127,7 @@ export class StationImportDataComponent implements OnInit {
   }
 
   private minTwoDigits(n) {
+    if (!n) return '00';
     return (n < 10 ? '0' : '') + n;
   }
 
