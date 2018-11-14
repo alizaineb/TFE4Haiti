@@ -40,8 +40,8 @@
       </td>
       <td>{{station.commune}}</td>
       <td>{{station.river}}</td>
-      <td>{{station.createdAt | date: 'd/MM/yyyy'}}</td>
-      <td>{{station.updatedAt | date: 'd/MM/yyyy à HH:mm'}}</td>
+      <td>{{station.createdAt | date: 'd/MM/yyyy':'UTC'}}</td>
+      <td>{{station.updatedAt | date: 'd/MM/yyyy à HH:mm':'UTC'}}</td>
       <td>{{station.state}}</td>
       <td>
         <i class="fas fa-edit fa-fw fa-1x" (click)="setStationSelected(station)" data-toggle="modal" data-target="#updateStationModal"></i>
