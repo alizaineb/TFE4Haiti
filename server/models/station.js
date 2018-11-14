@@ -3,6 +3,7 @@ var timestamps = require('mongoose-timestamp');
 const states = require('../config/constants').stationState;
 const checkInt = require('../controllers/utils').checkInt;
 
+let intervals = ['1min', '5min', '10min', '15min', '30min', '1h', '2h', '6h', '12h', '24h'];
 // schema pour récupérer un mot de passe
 const Schema = mongoose.Schema;
 const Station = new Schema({
@@ -17,7 +18,7 @@ const Station = new Schema({
   commune: { type: String, required: true, enum: this.communes },
   river: { type: String, required: true, enum: this.rivers },
   state: { type: String, enum: [states.AWAITING, states.BROKEN, states.WORKING, states.DELETED], required: true },
-  interval: { type: String, required: true, enum: ['1min', '5min', '10min', '15min', '30min', '1h', '2h', '6h', '12h', '24h'] } // TODO changer ceci, faut mettre direct le tableau qui est la + bas
+  interval: { type: String, required: true, enum: { values: intervals, message: "LE NOM DE L'ERROR" } } // TODO changer ceci, faut mettre direct le tableau qui est la + bas
 }, {
   //Ajoute le champ updatedAt automatiquement
   timestamps: { createdAt: false, updatedAt: true }
@@ -48,8 +49,7 @@ exports.stationModel = stationModel;
 
 
 exports.rivers = ['river1', 'river2', 'Grande Rivière du Nord', 'Haut-du-Cap', 'Limbé', 'Marion'];
-exports.intervals = ['1min', '5min', '10min', '15min', '30min', '1h', '2h', '6h', '12h', '24h'];
-
+exports.intervals = intervals;
 // TODO En attente de confirmation
 exports.communes = [
   'Port-au-Prince',
