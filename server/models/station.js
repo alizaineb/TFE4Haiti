@@ -6,8 +6,8 @@ const checkInt = require('../controllers/utils').checkInt;
 // schema pour récupérer un mot de passe
 const Schema = mongoose.Schema;
 const Station = new Schema({
-  name: { type: String, required: true },
-  latitude: { type: Number, required: true, min: -90.0, max: [90.0, 'La latitude'] },
+  name: { type: String, required: [true, 'Le nom de la station est requis'] },
+  latitude: { type: Number, required: [true, 'La latitue est requise'], min: [-90.0, 'La latitue doit être supérieure à -90'], max: [90.0, 'La latitude doit être inférieure à 90'] },
   longitude: { type: Number, required: true, min: -180.0, max: [180.0, 'OFIZELF'] },
   altitude: { type: Number, min: 0, max: 10000 },
   //picture: { type: String }, // Url vers la photo
