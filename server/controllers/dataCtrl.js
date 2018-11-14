@@ -1021,9 +1021,8 @@ exports.updateData = function(req, res) {
         return res.status(400).send("Une date est requise");
       }
       date = new Date(date);
-      date = new Date(date.getTime() - 7200000);
       let dataToSend = new dataModel.RainDataAwaitingModel();
-      dataToSend.id_station = req.params.id_station;
+      dataToSend.id_station = req.params.station_id;
       dataToSend.id_user = req.token_decoded.id;
       dataToSend.date = date;
       dataToSend.type = state.INDIVIDUAL;
