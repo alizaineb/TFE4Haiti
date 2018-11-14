@@ -10,6 +10,7 @@ const UsersModel = require('../models/user');
 // états
 const states = require('../config/constants').stationState;
 const checkParam = require('./utils').checkParam;
+const errors = require('./utils').errors;
 /**
  * get - Récupère toutes les stations
  *
@@ -75,31 +76,28 @@ exports.getById = function(req, res) {
  */
 // TODO Test avec les méthodes checkInt etc etc ...
 exports.create = function(req, res) {
-  checkParam(req, res, ["name", "latitude", "longitude", "river", "commune", "createdAt", "interval"], function() {
-    let station = req.body;
-    let sTmp = new Station.stationModel();
-    sTmp.name = station.name;
-    sTmp.latitude = station.latitude;
-    sTmp.longitude = station.longitude;
-    sTmp.altitude = station.altitude;
-    sTmp.createdAt = new Date(station.createdAt); // TODO DATE
-    //sTmp.last_update = Date.now();
-    // TODO Picture
-    // sTmp.picture = station.picture;
-    sTmp.state = states.AWAITING;
-    sTmp.interval = station.interval;
-    sTmp.user_creator_id = req.token_decoded.id;
-    sTmp.users = [req.token_decoded.id];
-    sTmp.commune = station.commune;
-    sTmp.river = station.river;
-
-    sTmp.save().then(() => {
-      return res.status(201).send(sTmp);
-    }).catch(function(err) {
-      logger.error(err);
-      return res.status(500).send("Une erreur est survenue lors de la création de la station");
-    })
-  });
+  let station = req.body;
+  let sTmp = new Station.stationModel();
+  sTmp.name = station.name;
+  sTmp.latitude = station.latitude;
+  sTmp.longitude = station.longitude;
+  sTmp.altitude = station.altitude;
+  sTmp.createdAt = new Date(station.createdAt); // TODO DATE
+  //sTmp.last_update = Date.now();
+  // TODO Picture
+  // sTmp.picture = station.picture;
+  sTmp.state = states.AWAITING;
+  sTmp.interval = station.interval;
+  sTmp.user_creator_id = req.token_decoded.id;
+  sTmp.users = [req.token_decoded.id];
+  sTmp.commune = station.commune;
+  sTmp.river = station.river;
+  sTmp.save().then(() => {
+    return res.status(201).send(sTmp);
+  }).catch(function(err) {
+    logger.error(err);
+    return res.status(500).send(errors(err));
+  })
 };
 
 exports.update = function(req, res) {
