@@ -8,15 +8,15 @@
       <input type="search" (search)="filterStation($event)" class="form-control" placeholder="Recherche" aria-label="Recherche" aria-describedby="basic-addon1" (keyup)="filterStation($event)">
     </div>
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-xl-6">
         <div class="form-group">
-          <input type="search" class="form-control" (search)="communeSelected($event.target.value)"  (change)="communeSelected($event.target.value)" placeholder="Commune" list="communes">
+          <input type="search" class="form-control" (search)="communeSelected($event.target.value)" (change)="communeSelected($event.target.value)" placeholder="Commune" list="communes">
           <datalist id="communes">
             <option *ngFor="let i of communes" [value]="i">{{i}}</option>
           </datalist>
         </div>
       </div>
-      <div class="col-md-12">
+      <div class="col-xl-6">
         <div class="form-group">
           <input type="search" (search)="riverSelected($event.target.value)" class="form-control" (change)="riverSelected($event.target.value)" placeholder="Bassin versant" list="rivers">
           <datalist id="rivers">

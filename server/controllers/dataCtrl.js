@@ -999,7 +999,7 @@ exports.updateData = function(req, res) {
           return res.status(404).send("Donnée inexistante.");
         } else {
           let dataToSend = new dataModel.RainDataAwaitingModel();
-          dataToSend.id_station = req.params.id_station;
+          dataToSend.id_station = req.params.station_id;
           dataToSend.id_user = req.token_decoded.id;
           dataToSend.id_old_data = id_data;
           dataToSend.date = rainData.date;
@@ -1031,9 +1031,8 @@ exports.updateData = function(req, res) {
       dataToSend.save().then(() => {
         return res.status(201).send();
       }).catch(function(err) {
-        logger.error(err);
-        // TODO ICI CODE : ASEDFRTY
-        return res.status(500).send("La donnée a déjà été modifié par quelqu'un d'autre");
+        logger.error("[dataCtrl] updateData : ", err);
+        return res.status(500).send("Une erreur est survenue lors de la modification de la donnée en attente");
       });
     }
   }

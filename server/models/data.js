@@ -47,7 +47,7 @@ const RainDataAwaiting = new Schema({
   id_old_data: { type: String, default: '-1' }
 });
 
-RainDataAwaiting.index({ "id_station": 1, "date": 1 }, { "unique": true });
+// RainDataAwaiting.index({ "id_station": 1, "date": 1 }, { "unique": true });
 const RainDataAwaitingModel = mongoose.model("rainDataAwaiting", RainDataAwaiting);
 
 // Export du modèle
