@@ -164,6 +164,7 @@ exports.acceptAwaiting = function(req, res) {
                           data.id_station = station._id;
                           data.id_user = user._id;
                           data.date = new Date(d[0]);
+                          data.date = new Date(Date.UTC(data.date.getFullYear(), data.date.getMonth(), data.date.getDate(), data.date.getHours(), data.date.getMinutes()))
                           // console.log(data.date);
                           if (first) {
                             data.value = d[1].replace(',', '.');
