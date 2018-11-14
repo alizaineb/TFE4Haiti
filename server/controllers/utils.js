@@ -10,13 +10,18 @@ const logger = require('../config/logger');
 
 /**
  * errors - Cette methode va uniformiser les erreurs renvoyées par mongoose
- * @param err 
+ * @param err
  * @returns {string}
  */
-exports.errors = function(err){
+exports.errors = function(err) {
   let str = "";
-  for(var key in err.errors){
-    str += err.errors[key].message + "\n";
+  for (var key in err.errors) {
+    if (err.errors[key].name === "CastError") {
+      str += "Le type d'un champ est erroné <br />";
+    } else {
+      str += err.errors[key].message + "<br />";
+    }
+
   }
   return str
 };
@@ -101,7 +106,7 @@ exports.hasAccesToStation = function(req, res, callback) {
  */
 let checkInt = function(val) {
   if (val) {
-    let tmp = Number.parseInt(val, 10);
+    let tmp = Number.parseFloat(val, 10);
     // isFinite permet d'éviter que "23a" soit accepté par parseInt
     if (isNaN(tmp) || !isFinite(val)) {
       return undefined;

@@ -1,13 +1,14 @@
 const mongoose = require('mongoose');
 var timestamps = require('mongoose-timestamp');
 const states = require('../config/constants').stationState;
+const checkInt = require('../controllers/utils').checkInt;
 
 // schema pour récupérer un mot de passe
 const Schema = mongoose.Schema;
 const Station = new Schema({
   name: { type: String, required: true },
-  latitude: { type: Number, required: true, min: -90.0, max: 90.0 },
-  longitude: { type: Number, required: true, min: -180.0, max: 180.0 },
+  latitude: { type: Number, required: true, min: -90.0, max: [90.0, 'La latitude'] },
+  longitude: { type: Number, required: true, min: -180.0, max: [180.0, 'OFIZELF'] },
   altitude: { type: Number, min: 0, max: 10000 },
   //picture: { type: String }, // Url vers la photo
   users: { type: [String], required: true },
