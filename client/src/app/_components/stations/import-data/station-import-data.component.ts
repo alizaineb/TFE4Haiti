@@ -95,19 +95,20 @@ export class StationImportDataComponent implements OnInit {
     } else {
       const dataToSend = [];
 
-      console.log(currentUser);
+      // console.log(currentUser);
 
       for (let i = 0; i < this.data.length; i++) {// } d in this.data){
         const tmp = new RainData();
         tmp.id_station = this.currentStation._id;
         tmp.id_user = currentUser.current._id;
         tmp.value = this.data[i].value;
-        console.log(this.data);
-        console.log(`${this.data[i].date}T${this.data[i].time.hour}:${this.data[i].time.time | this.data[i].time['minute']}:00`);
+        //console.log(this.data[i].date);
+        //console.log(`${this.data[i].date}T${this.data[i].time.hour}:${this.data[i].time.time | this.data[i].time['minute']}:00`);
         tmp.date = new Date(`${this.data[i].date}T${this.data[i].time.hour}:${this.data[i].time.time | this.data[i].time['minute']}:00`);
+        tmp.date = new Date(Date.UTC(tmp.date.getFullYear(), tmp.date.getMonth(), tmp.date.getDate(), tmp.date.getHours(), tmp.date.getMinutes(), tmp.date.getSeconds()));
         dataToSend.push(tmp);
       }
-      console.table(dataToSend);
+      // console.table(dataToSend);
       this.stationService.importData(this.currentStation._id, dataToSend).subscribe(
         res => {
           this.alertService.success('La donnée a été envoyée à un adminstrateur afin qu\'il puisse la valider.');
