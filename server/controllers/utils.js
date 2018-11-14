@@ -9,6 +9,19 @@ const roles = require('../config/constants').roles;
 const logger = require('../config/logger');
 
 /**
+ * errors - Cette methode va uniformiser les erreurs renvoyées par mongoose
+ * @param err 
+ * @returns {string}
+ */
+exports.errors = function(err){
+  let str = "";
+  for(var key in err.errors){
+    str += err.errors[key].message + "\n";
+  }
+  return str
+};
+
+/**
  * checkParam - Cette méthode va vérifier que chaque paramètre soit bien présent dans le body de la requête
  *              Si il manque un paramètre, elle va renvoyer un status 400 en indiquant que des inforamtions son manquantes
  *
