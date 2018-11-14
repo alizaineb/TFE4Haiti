@@ -82,7 +82,7 @@ function createDefaultCfgFile(callback) {
   logger.warn('[Config]  Création d\'un nouveau fichier de configuration');
   logger.error('/!\\ Un fichier de configuration par défaut a été créé.\nLe serveur va fonctionner avec des valeurs par défaut. Pour des raisons de sécurité et assurer une fonctionnement total de l\'application, veuillez le modifier.\nPour de plus amples informations référez-vous à la documentation.');
   nconf.argv().env().file({ file: fullConfigFileName });
-  nconf.set('development', false);
+  nconf.set('development', true);
   nconf.set('uploadFolder', path.join(__dirname, '..', 'public', 'upload'));
   nconf.set('downloadFolder', path.join(__dirname, '..', 'public', 'download'));
   nconf.set('token:privateKey', 'somethingsomethingjsontoken'); // 1h
@@ -117,7 +117,7 @@ function createDefaultCfgFile(callback) {
 }
 
 /**
- * checkCfg - Méthode qui va vérifier que le fichier de configuration soit correct et qu'il ne manque pas de champs.
+ * checkCfg - Méthode qui va vérifier que le fichier de configuration soit correct et qu'il ne manque pas de champs.   
  * A modifier si une nouvelle configuration doit être ajoutée.
  *
  * @param  {method} callback la méthode suivante devant être appellée
@@ -128,7 +128,7 @@ function checkCfg(callback) {
   var cfgModified = false;
   nconf.file(fullConfigFileName);
   if (typeof nconf.get('development') === "undefined") {
-    nconf.set('development', false)
+    nconf.set('development', true)
     cfgModified = true;
   }
   if (typeof nconf.get('uploadFolder') === "undefined") {
