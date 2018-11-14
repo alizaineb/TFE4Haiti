@@ -781,8 +781,9 @@ exports.importManualData = function(req, res) {
             let data = new dataModel.RainDataAwaitingModel();
             data.id_station = station._id;
             data.id_user = user._id;
+            console.log(d.date);
             data.date = new Date(d.date);
-            data.date = new Date(Date.UTC(data.date.getFullYear(), data.date.getMonth(), data.date.getDate(), data.date.getHours(), data.date.getMinutes(), data.date.getSeconds()));
+            //data.date = new Date(Date.UTC(data.date.getFullYear(), data.date.getMonth(), data.date.getDate(), data.date.getHours(), data.date.getMinutes(), data.date.getSeconds()));
             data.value = d.value;
             data.type = state.INDIVIDUAL;
             tmp.push(data);
