@@ -3,10 +3,23 @@ const mongoose = require('mongoose');
 // schema pour récupérer un mot de passe
 const Schema = mongoose.Schema;
 const PwdRecovery = new Schema({
-  user: { type: String, required: true },
-  url: { type: String, required: true },
-  date: { type: Date, default: Date.now, required: true },
-  duration: { type: Number, required: true }
+  user: {
+    type: String,
+    required: [true, 'Utilisateur lié manquant, veuillez contactez un amdinistrateur']
+  },
+  url: {
+    type: String,
+    required: [true, 'Url lié manquant, veuillez contactez un amdinistrateur']
+  },
+  date: {
+    type: Date,
+    default: Date.now,
+    required: [true, 'Date liée manquante, veuillez contactez un amdinistrateur']
+  },
+  duration: {
+    type: Number,
+    required: [true, 'Durée liée manquante, veuillez contactez un amdinistrateur']
+  }
 });
 
 
