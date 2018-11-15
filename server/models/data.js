@@ -1,13 +1,27 @@
 const mongoose = require('mongoose');
 const state = require('../config/constants').DataType;
 
+let statesEnum = [state.FILE, state.INDIVIDUAL, state.UPDATE];
 // schema concernant les données pluviométriques
 const Schema = mongoose.Schema;
 const RainData = new Schema({
-  id_station: { type: String, required: true },
-  id_user: { type: String, required: true },
-  date: { type: Date, required: true },
-  value: { type: Number, required: true, min: 0 }
+  id_station: {
+    type: String,
+    required: [true, 'Id de la station liée manquant, veuillez contactez un amdinistrateur']
+  },
+  id_user: {
+    type: String,
+    required: [true, 'Id de l\'utilisateur lié manquant, veuillez contactez un amdinistrateur']
+  },
+  date: {
+    type: Date,
+    required: [true, 'Date liée manquante, veuillez contactez un amdinistrateur']
+  },
+  value: {
+    type: Number,
+    required: [true, 'Valeur liée manquante, veuillez contactez un amdinistrateur'],
+    min: [0, 'La valeur doit être supérieure à 0']
+  }
 });
 
 RainData.methods.toDto = function() {
@@ -39,12 +53,30 @@ exports.rainDataModel = rainDataModel;
 // awaiting
 
 const RainDataAwaiting = new Schema({
-  id_station: { type: String, required: true },
-  id_user: { type: String, required: true },
-  date: { type: Date, required: true },
-  value: { type: String },
-  type: { type: String, enum: [state.FILE, state.INDIVIDUAL, state.UPDATE], required: true },
-  id_old_data: { type: String, default: '-1' }
+  id_station: {
+    type: String,
+    required: [true, 'Id de la station liée manquant, veuillez contactez un amdinistrateur']
+  },
+  id_user: {
+    type: String,
+    required: [true, 'Id de l\'utilisateur lié manquant, veuillez contactez un amdinistrateur']
+  },
+  date: {
+    type: Date,
+    required: [true, 'Date liée manquante, veuillez contactez un amdinistrateur']
+  },
+  value: {
+    type: String
+  },
+  type: {
+    type: String,
+    enum: { values: statesEnum, message: 'Le type est inconnu' },
+    required: [true, 'Type liée manquante, veuillez contactez un amdinistrateur']
+  },
+  id_old_data: {
+    type: String,
+    default: '-1'
+  }
 });
 
 // RainDataAwaiting.index({ "id_station": 1, "date": 1 }, { "unique": true });
