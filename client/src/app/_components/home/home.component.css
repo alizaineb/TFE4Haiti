@@ -39,6 +39,7 @@ header.masthead .overlay {
 
 header.masthead h1 {
   font-size: 2rem;
+  color: white;
 }
 
 @media (min-width: 768px) {
