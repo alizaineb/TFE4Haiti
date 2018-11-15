@@ -2,24 +2,24 @@
 const logger = require('../config/logger');
 const Note = require('./../models/note');
 const checkParam = require('./utils').checkParam;
+const errors = require('./utils').errors;
 
 
 exports.create = function(req, res) {
-  checkParam(req, res, ["note", "station_id"], function() {
-    let note = req.body;
-    let nTmp = new Note.noteModel();
+  let note = req.body;
+  let nTmp = new Note.noteModel();
 
-    nTmp.station_id = note.station_id;
-    nTmp.user_id = req.token_decoded.id;
-    nTmp.note = note.note;
+  nTmp.station_id = note.station_id;
+  nTmp.user_id = req.token_decoded.id;
+  nTmp.note = note.note;
 
-    nTmp.save().then(() => {
-      return res.status(201).send(nTmp);
-    }).catch(function(err) {
-      logger.error(err);
-      return res.status(500).send("Erreur lors de la création d'une note");
-    })
-  });
+  nTmp.save().then(() => {
+    return res.status(201).send(nTmp);
+  }).catch(function(err) {
+    logger.error(err);
+    let tmp = errors(err);
+    return res.status(tmp.error).send(tmp.message);
+  })
 };
 
 exports.get = function(req, res) {
