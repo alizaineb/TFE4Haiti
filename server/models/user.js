@@ -6,19 +6,60 @@ const state = require('../config/constants').userState;
 const StationModel = require('./../models/station');
 var SALT_WORK_FACTOR = 4;
 
+let statesEnum = [state.AWAITING, state.PASSWORD_CREATION, state.OK, state.DELETED];
+let rolesEnum = [roles.ADMIN, roles.WORKER, roles.VIEWER];
 // schema d'un utilisateur
 const Schema = mongoose.Schema;
 const User = new Schema({
-  first_name: { type: String, required: true },
-  last_name: { type: String, required: true },
-  mail: { type: String, required: true, unique: true },
-  pwd: { type: String },
-  created_at: { type: Date, default: Date.now },
-  commune: { type: String, enum: StationModel.communes },
-  river: { type: String, enum: StationModel.rivers },
-  last_seen: { type: Date, default: Date.now },
-  role: { type: String, enum: [roles.ADMIN, roles.WORKER, roles.VIEWER], required: true },
-  state: { type: String, enum: [state.AWAITING, state.PASSWORD_CREATION, state.OK, state.DELETED], required: true, default: state.AWAITING }
+  first_name: {
+    type: String,
+    required: [true, 'Veuillez fournir un prénom']
+  },
+  last_name: {
+    type: String,
+    required: [true, 'Veuillez fournir un nom']
+  },
+  mail: {
+    type: String,
+    required: [true, 'Veuillez fournir un email'],
+    unique: [true, 'Veuillez fournir un email'],
+    validate: {
+      validator: function(v) {
+        return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v);
+      },
+      message: props => `Format du mail "${props.value}" invalide`
+    },
+  },
+  pwd: {
+    type: String
+  },
+  created_at: {
+    type: Date,
+    default: Date.now
+  },
+  commune: {
+    type: String,
+    enum: { values: StationModel.communes, message: 'Commune inconnue' }
+  },
+  river: {
+    type: String,
+    enum: { values: StationModel.rivers, message: 'Bassin versant inconnu' }
+  },
+  last_seen: {
+    type: Date,
+    default: Date.now
+  },
+  role: {
+    type: String,
+    enum: { values: rolesEnum, message: 'Role demandé inconnu' },
+    required: [true, 'Veuillez spécifier un role']
+  },
+  state: {
+    type: String,
+    enum: { values: statesEnum, message: 'Etat inconnu' },
+    required: [true, 'Veuillez spécifier un état, veuillez contactez un amdinistrateur'],
+    default: state.AWAITING
+  }
 });
 
 User.methods.toDto = function() {

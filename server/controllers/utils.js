@@ -24,7 +24,11 @@ exports.errors = function(err) {
       str += err.errors[key].message + "<br />";
     }
 
-    if (err.errors[key].properties && (err.errors[key].properties.type === 'required' || err.errors[key].properties.type === 'max' || err.errors[key].properties.type === 'min')) {
+    if (err.errors[key].properties &&
+      (err.errors[key].properties.type === 'required' || // Required model error
+        err.errors[key].properties.type === 'max' || // Max error model
+        err.errors[key].properties.type === 'min' || // Min error model
+        err.errors[key].properties.type === 'user defined')) { // Validator error model
       error = 400;
     }
   }

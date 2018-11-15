@@ -13,6 +13,7 @@ const userState = require('../config/constants').userState;
 const checkParam = require('./utils').checkParam;
 const mailTransporter = require('./mailer');
 const PwdRecoveryModel = require('./../models/pwdRecovery');
+const errors = require('./utils').errors;
 
 exports.login = function(req, res) {
   checkParam(req, res, ["mail", "pwd"], function() {
@@ -86,53 +87,36 @@ exports.roles = function(req, res) {
 };
 
 exports.create = function(req, res) {
-  checkParam(req, res, ["first_name", "last_name", "mail", "role"], () => {
-    let user = req.body;
-    if (!ValidateEmail(user.mail)) {
-      return res.status(400).send("Format de l'email invalide");
-    }
-    if (Object.values(roles).indexOf(user.role) == -1) {
-      return res.status(400).send("Role inconnu");
-    }
-    let uTmp = new UsersModel.userModel();
-    uTmp.first_name = user.first_name;
-    uTmp.last_name = user.last_name;
-    uTmp.mail = user.mail;
-    uTmp.role = user.role;
-    uTmp.state = userState.AWAITING;
-    if (user.role == roles.WORKER) {
-      if (user.commune && StationModel.communes.indexOf(user.commune) >= 0) {
-        uTmp.commune = user.commune;
-      } else {
-        return res.status(404).send("La commune que vous renseignez n'existe pas.");
-      }
-      if (user.bassin_versant && StationModel.rivers.indexOf(user.bassin_versant) >= 0) {
-        uTmp.river = user.bassin_versant;
-      } else {
-        return res.status(404).send("Le bassin versant que vous renseignez n'existe pas.");
-      }
-    }
-    uTmp.save().then(() => {
-      return res.status(201).send(uTmp.toDto());
-    }).catch(function(err) {
-      logger.error(err);
-      return res.status(500).send("Une erreur est survenue lors de la création de l'utilisateur");
-    });
+  let user = req.body;
+  let uTmp = new UsersModel.userModel();
+  uTmp.first_name = user.first_name;
+  uTmp.last_name = user.last_name;
+  uTmp.mail = user.mail;
+  uTmp.role = user.role;
+  uTmp.state = userState.AWAITING;
+  if (user.role == roles.WORKER) {
+    uTmp.commune = user.commune;
+    uTmp.river = user.bassin_versant;
+  }
+  uTmp.save().then(() => {
+    return res.status(201).send(uTmp.toDto());
+  }).catch(function(err) {
+    logger.error(err);
+    let tmp = errors(err);
+    return res.status(tmp.error).send(tmp.message);
   });
 };
 
 exports.update = function(req, res) {
   checkParam(req, res, ["_id", "first_name", "last_name", "mail", "role", "state"], () => {
     let id = req.body._id;
-    if (!ValidateEmail(req.body.mail)) {
-      return res.status(400).send("Format de l'email invalide");
-    }
     UsersModel.userModel.findById({ _id: id }, function(err, user) {
       if (err) {
         logger.error(err);
         return res.status(500).send("Erreur lors de la récupération de l'user.");
       } else {
         user.first_name = req.body.first_name;
+        user.mail = req.body.mail;
         user.last_name = req.body.last_name;
         user.role = req.body.role;
         user.state = req.body.state;
@@ -147,11 +131,11 @@ exports.update = function(req, res) {
         } else {
           user.river = req.body.river;
         }
-        console.log(user);
         user.save((err) => {
           if (err) {
             logger.error(err);
-            return res.status(500).send("Une erreur est survenue lors de la mise à jour de l'utilisateur");
+            let tmp = errors(err);
+            return res.status(tmp.error).send(tmp.message);
           } else {
             return res.status(200).send();
           }
