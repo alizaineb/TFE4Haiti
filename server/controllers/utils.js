@@ -15,15 +15,20 @@ const logger = require('../config/logger');
  */
 exports.errors = function(err) {
   let str = "";
+  let error = 500;
   for (var key in err.errors) {
     if (err.errors[key].name === "CastError") {
+      error = 400;
       str += "Le type d'un champ est erroné <br />";
     } else {
       str += err.errors[key].message + "<br />";
     }
 
+    if (err.errors[key].properties && (err.errors[key].properties.type === 'required' || err.errors[key].properties.type === 'max' || err.errors[key].properties.type === 'min')) {
+      error = 400;
+    }
   }
-  return str
+  return { error: error, message: str }
 };
 
 /**

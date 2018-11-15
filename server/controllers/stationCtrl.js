@@ -97,7 +97,8 @@ exports.create = function(req, res) {
     return res.status(201).send(sTmp);
   }).catch(function(err) {
     logger.error(err);
-    return res.status(500).send(errors(err));
+    let tmp = errors(err);
+    return res.status(tmp.error).send(tmp.message);
   })
 };
 
