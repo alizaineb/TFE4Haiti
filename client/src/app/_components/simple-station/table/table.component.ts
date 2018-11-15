@@ -16,14 +16,14 @@ export class TableComponent implements OnInit, OnChanges {
   @Input()
   private stationId: string;
 
-  private currentStation: Station;
+  currentStation: Station;
   datePicker;
 
   private cols: string[];
   private rows: string[];
 
   private allIntervals: string[];
-  private intervalsFiltered: string[];
+  intervalsFiltered: string[];
   private allDatas: RainData[];
   private aggregatedDatas: RainData[][];
 
@@ -34,12 +34,12 @@ export class TableComponent implements OnInit, OnChanges {
   private intervalSelected: string;
   private ratio: number
 
-  private intervalDay: boolean;
-  private noDateSelected: boolean;
-  private dataLoading: boolean;
-  private noData: boolean;
-  private dataToShow: boolean;
-  private sameIntervalAsStation: boolean;
+  intervalDay: boolean;
+  noDateSelected: boolean;
+  dataLoading: boolean;
+  noData: boolean;
+  dataToShow: boolean;
+  sameIntervalAsStation: boolean;
   dataToEdit: RainData;
 
   // Recap values

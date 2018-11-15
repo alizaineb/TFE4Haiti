@@ -19,8 +19,8 @@ export class MapComponent implements OnInit {
   private mapContainer;
   private zoom = 8;
   private centerMap = [19.099041, -72.658473];
-  private communes: string[];
-  private rivers: string[];
+  communes: string[];
+  rivers: string[];
 
   private communeFilter: string;
   private riverFilter: string;
