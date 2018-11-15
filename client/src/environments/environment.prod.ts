@@ -1,4 +1,4 @@
-const host = 'http://localhost:3000';
+const host = 'https://client-d4rk694.c9users.io';
 const url = '/api';
 export const environment = {
   production: true,
