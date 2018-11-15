@@ -135,14 +135,7 @@ export class DetailsStationComponent implements OnInit {
       'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>';
 
 
-    // Maps usage : OpenStreetMap, OpenSurferMaps
-
-    const mapLayerOSMGrayScale = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-        id: 'mapbox.light',
-        attribution: mbAttr
-      }),
-      mapLayerOSMTopo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-        id: 'mapbox.streets',
+    const mapLayerOSMGrayScale = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
         attribution: mbAttr
       }),
       mapLayerOpenStreetMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
@@ -194,12 +187,15 @@ export class DetailsStationComponent implements OnInit {
       return div;
     };
 
-    legend.addTo(self.mapContainer);
+    /*
 
+          'OSM - Opentopomap': mapLayerOSMTopo,
+     */
+    legend.addTo(self.mapContainer);
     const baseLayers = {
-      'OpenStreetMap': mapLayerOpenStreetMap,
-      'OSM - Opentopomap': mapLayerOSMTopo,
       'OSM - Grayscale': mapLayerOSMGrayScale,
+      'OpenStreetMap': mapLayerOpenStreetMap,
+
       'Ersi WorldStreetMap': mapLayerErsiWorlStreetMap,
       'Ersi - Satelite': mapLayerErsiSatelite,
       'Hydda - Full': mapLayerHyddaFull

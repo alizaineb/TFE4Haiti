@@ -169,19 +169,15 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked {
 
     // Maps usage : OpenStreetMap, OpenSurferMaps
 
-    const mapLayer2 = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYS' +
-      'I6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-        id: 'mapbox.light',
+    const mapLayer2 = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
         attribution: mbAttr
       }),
-      mapLayer1 = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-        id: 'mapbox.streets',
+      mapLayer1 =  L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
         attribution: mbAttr
       }),
-      mapLayer3 = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-        id: 'mapbox.streets',
+      mapLayer3 =  L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
         attribution: mbAttr
-      }) ;
+      });
 
     const baseLayers = {
       'Grayscale': mapLayer1,

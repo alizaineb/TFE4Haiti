@@ -175,17 +175,13 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
 
     // Maps usage : OpenStreetMap, OpenSurferMaps
 
-    const mapLayer2 = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.ey' +
-      'J1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-        id: 'mapbox.light',
+    const mapLayer2 =  L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
         attribution: mbAttr
       }),
       mapLayer1 = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-        id: 'mapbox.streets',
         attribution: mbAttr
       }),
-      mapLayer3 = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-        id: 'mapbox.streets',
+      mapLayer3 = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: mbAttr
       }) ;
 
