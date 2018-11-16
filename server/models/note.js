@@ -15,23 +15,12 @@ const Note = new Schema({
   },
   note: {
     type: String,
-    required: [true, 'La note ne pas être vide']
+    required: [true, 'La note ne peut pas être vide']
   }
 }, {
   //Ajoute le champ createdAt et updatedAt automatiquement
   timestamps: { createdAt: true, updatedAt: true }
 });
-
-Note.methods.toDto = function() {
-  return {
-    _id: this._id,
-    station_id: this.station_id,
-    user_id: this.user_id,
-    note: this.note,
-    createdAt: this.createdAt,
-    updatedAt: this.updatedAt
-  };
-};
 
 //Definition du modèle
 const noteModel = mongoose.model("note", Note);

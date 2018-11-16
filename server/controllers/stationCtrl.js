@@ -25,7 +25,7 @@ exports.get = function(req, res) {
     '_id name latitude longitude altitude state createdAt updatedAt interval river commune user_creator_id users',
     function(err, stations) {
       if (err) {
-        logger.error("[StationCtrl] get : " + err);
+        logger.error("[stationCtrl] get : ", err);
         return res.status(500).send("Une erreur est survenue lors de la récupération des stations");
       }
       return res.status(200).send(stations);
@@ -45,9 +45,9 @@ exports.get = function(req, res) {
 exports.getById = function(req, res) {
   Station.stationModel.findById(req.params.station_id,
     '_id name latitude longitude altitude state createdAt updatedAt interval river commune user_creator_id users',
-    function(err, station) {
+    function(err, station) { // Changer met (= le Gaëtan du futur) une fonciton anonyme ^^
       if (err) {
-        logger.error("[StationCtrl] getById : " + err);
+        logger.error("[stationCtrl] getById : ", err);
         return res.status(500).send("Erreur lors de la récupération de la station.");
       }
       if (station) {

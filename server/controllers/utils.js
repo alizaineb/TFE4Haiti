@@ -76,17 +76,21 @@ exports.hasAccesToStation = function(req, res, callback) {
     } else if (!user) {
       return res.status(404).send("Pas d'utilisateur correspondant.");
     }
-    // Si l'utilisateur est un admin il peut passer
-    if (user.role == roles.ADMIN) {
-      return callback();
-    }
+
+    // Avant de vérifier si c'est un admin, il faut vérifier quue la station existe
     let station_id = req.body.station_id || req.params.station_id;
     StationModel.stationModel.findById(station_id, (err, station) => {
+      console.log(station);
       if (err) {
+        // Se produira si l'utilisateur rentre un id trop court/trop long
         logger.error("[UTILS] hasAccesToStation : ", err)
         return res.status(500).send("Erreur lors de la vérification de votre accès à la station.");
       } else if (!station) {
         return res.status(404).send("Pas de station correspondante.");
+      }
+      // Si l'utilisateur est un admin il peut passer
+      if (user.role == roles.ADMIN) {
+        return callback();
       }
       // On a la station et l'utilisateur
       // Il y a 3 checks à faire
