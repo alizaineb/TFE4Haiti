@@ -80,7 +80,14 @@ const Station = new Schema({
   },
   createdAt: {
     type: Date,
-    required: [true, 'Veuillez fournir une date de création']
+    required: [true, 'Veuillez fournir une date de création'],
+    validate: {
+      validator: function(v) {
+        const d = new Date();
+        return v.getTime() < d.getTime();
+      },
+      message: props => `Vous ne pouvez pas créer une station dans le futur`
+    }
   },
   updatedAt: {
     type: Date,

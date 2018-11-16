@@ -11,6 +11,8 @@ const UsersModel = require('../models/user');
 const states = require('../config/constants').stationState;
 const checkParam = require('./utils').checkParam;
 const errors = require('./utils').errors;
+
+
 /**
  * get - Récupère toutes les stations
  *
@@ -58,23 +60,23 @@ exports.getById = function(req, res) {
 };
 
 /**
- * create - Permet de créer une station en la mettant en attente de confirmation par l'administrateur
+ * create - Permet de créer une station en la mettant en état d'attente de confirmation par l'administrateur
  *
  * @param {request} req Requête du client
  * @param  {string} req.body.name Le nom de la station
  * @param  {number} req.body.latitude La latitude de la station
  * @param  {number} req.body.longitude La longitude de la station
  * @param  {number} req.body.altitude L'altitude de la station (optionnel)
- * @param  {string} req.token_decoded L'utilisateur créant la station
+ * @param  {string} req.token_decoded.id L'id de l'utilisateur créant la station
  * @param  {date} req.body.createdAt La date de création de la station
- * @param  {string} req.body.river
- * @param  {string} req.body.commune
- * @param  {} req.body.
- * @param  {} req.body.
- * @param  {type} res description
- * @return {type}     description
+ * @param  {string} req.body.interval L'intervalle de la station (ENUM)
+ * @param  {string} req.body.river La rivière liée à la station (ENUM)
+ * @param  {string} req.body.commune La commune dans laquelle la station se situe (ENUM)
+ * @param {response} res Réponse renvoyée au client
+ *                       400 : Paramètre manquant ou incorrect (voir le modèle)
+ *                       500 : Erreur serveur
+ * @return     201 : la station ajoutée en base de donnée
  */
-// TODO Test avec les méthodes checkInt etc etc ...
 exports.create = function(req, res) {
   let station = req.body;
   let sTmp = new Station.stationModel();
@@ -82,24 +84,23 @@ exports.create = function(req, res) {
   sTmp.latitude = station.latitude;
   sTmp.longitude = station.longitude;
   sTmp.altitude = station.altitude;
-  sTmp.createdAt = new Date(station.createdAt); // TODO DATE
+  sTmp.createdAt = new Date(station.createdAt);
   const d = new Date();
   sTmp.updatedAt = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes()));
-  // TODO Picture
-  // sTmp.picture = station.picture;
   sTmp.state = states.AWAITING;
   sTmp.interval = station.interval;
   sTmp.user_creator_id = req.token_decoded.id;
   sTmp.users = [req.token_decoded.id];
   sTmp.commune = station.commune;
   sTmp.river = station.river;
-  sTmp.save().then(() => {
+  sTmp.save((err) => {
+    if (err) {
+      logger.error("[stationCtrl] create :", err);
+      let tmp = errors(err);
+      return res.status(tmp.error).send(tmp.message);
+    }
     return res.status(201).send(sTmp);
-  }).catch(function(err) {
-    logger.error(err);
-    let tmp = errors(err);
-    return res.status(tmp.error).send(tmp.message);
-  })
+  });
 };
 
 exports.update = function(req, res) {

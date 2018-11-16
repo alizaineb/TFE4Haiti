@@ -15,7 +15,7 @@ const errors = require('./utils').errors;
 /**
  * create - Permet de créer une note pour une station
  * PRE : La station a été vérifiée par le middleware hasAccesToStation
- *       nous sommes donc sûrs qu'elle existe 
+ *       nous sommes donc sûrs qu'elle existe
  *
  * @param {request} req Requête du client
  * @param {string} req.body.station_id l'id de la station pour laquelle il faut ajouter une note
@@ -23,7 +23,7 @@ const errors = require('./utils').errors;
  * @param {string} req.token_decoded.id L'id de l'utilisateur qui crée la note
  * @param {response} res Réponse renvoyée au client
  *                       400 : Paramètre manquant
- *                       500 : erreur serveur
+ *                       500 : Erreur serveur
  * @return     201 : la note ajoutée en base de données
  */
 exports.create = function(req, res) {
@@ -32,7 +32,7 @@ exports.create = function(req, res) {
   nTmp.station_id = req.body.station_id;
   nTmp.user_id = req.token_decoded.id;
   nTmp.note = req.body.note;
-  if (note.note.trim().length === 0) {
+  if (req.body.note || req.body.note.trim().length === 0) {
     return res.status(400).send("La note ne peut pas être vide");
   }
   nTmp.save((err) => {
