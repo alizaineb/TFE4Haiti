@@ -36,9 +36,9 @@ exports.get = function(req, res) {
  * getById - Récupère une station basée sur l'id passé en paramètre
  *
  * @param {request} req Requête du client
- * @param {response} res Réponse renvoyée au client <br />
- *                       500 : erreur serveur <br>
+ * @param {response} res Réponse renvoyée au client
  *                       404 : station non trouvée
+ *                       500 : erreur serveur
  * @param  {string} req.params.station_id L'id de la station
  * @return     200 : la station ayant l'id req.params.station_id
  */

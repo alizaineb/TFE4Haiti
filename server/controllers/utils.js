@@ -62,7 +62,7 @@ exports.checkParam = function(req, res, params, callback) {
 
 /**
  * hasAccesToStation {Middleware} - Cette métthode va vérifier que l'utilisateur présent dans le token a accès à la station
- *                                  Cette station doit être dans param sous le nom id_station (voir dans fichier routes/routes.js)
+ *                                  Cette station doit être dans req.param ou req.body sous le nom id_station (voir dans fichier routes/routes.js)
  *
  * @param  callback Méthode qui va être appelée si tout se passe bien
  * @return          Si tout se passe bien appel du callback
@@ -80,12 +80,13 @@ exports.hasAccesToStation = function(req, res, callback) {
     if (user.role == roles.ADMIN) {
       return callback();
     }
-    StationModel.stationModel.findById(req.params.station_id, (err, station) => {
+    let station_id = req.body.station_id || req.params.station_id;
+    StationModel.stationModel.findById(station_id, (err, station) => {
       if (err) {
-        logger.error("[UTILS] hasAccesToStation station : ", err)
+        logger.error("[UTILS] hasAccesToStation : ", err)
         return res.status(500).send("Erreur lors de la vérification de votre accès à la station.");
       } else if (!station) {
-        return res.status(404).send("Pas de station correspondant.");
+        return res.status(404).send("Pas de station correspondante.");
       }
       // On a la station et l'utilisateur
       // Il y a 3 checks à faire
@@ -104,44 +105,4 @@ exports.hasAccesToStation = function(req, res, callback) {
       return res.status(403).send("Vous n'avez pas accès à cette station.");
     });
   });
-}
-
-/**
- * let checkInt - Vérifie que la valeur soit un int
- *                "23" => true, "23a" => false, "" => false
- *
- * @param  {TOUT} val La valeur à tester
- * @return {int}     va renvoyer la valeur en int ou undefined si ce n'est pas un enter
- */
-let checkInt = function(val) {
-  if (val) {
-    let tmp = Number.parseFloat(val, 10);
-    // isFinite permet d'éviter que "23a" soit accepté par parseInt
-    if (isNaN(tmp) || !isFinite(val)) {
-      return undefined;
-    }
-    return tmp;
-  }
-  return undefined;
-}
-
-exports.checkInt = checkInt;
-/**
- * let checkIntBetween - Vérifie que la valeur soit un int et compris entre min et max inclus
- *                ("23", 23, 25) => true, ("22", 23, 25) => false, ("23a", 23, 25) => false, ("",23,25) => false
- *
- * @param  {TOUT} val La valeur à tester
- * @param  {int} min Le minimum
- * @param  {int} max Le maximum
- * @return {int}     va renvoyer la valeur en int ou undefined si ce n'est pas un enter
- */
-exports.checkIntBetween = function(val, min, max) {
-  let tmp = checkInt(val);
-  if (tmp) {
-    if (tmp < min || tmp > max) {
-      return undefined;
-    }
-    return tmp;
-  }
-  return undefined;
 }

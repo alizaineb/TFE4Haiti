@@ -197,7 +197,7 @@ exports.routes = [
   {
     path: "/api/notes",
     httpMethod: "POST",
-    middleWare: [controllers.note.create],
+    middleWare: [hasAccesToStation, controllers.note.create],
     access: [roles.ADMIN, roles.WORKER]
   },
   {
