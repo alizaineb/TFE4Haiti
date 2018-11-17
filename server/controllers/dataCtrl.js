@@ -219,8 +219,8 @@ exports.acceptAwaiting = function(req, res) {
 
 /**
  * Méthode de refus et suppression d'une données pluviométrique en attente de validation.
- * @param req req.param.id L'id de la données à refuser.
- * @param res L'objet "Response" de la requête où il faut repondre
+ * @param req L'objet "Request" de la requête
+ * @param res L'objet "Response" de la requête
  * @return {*} /
  */
 exports.refuseAwaiting = function(req, res) {
@@ -253,8 +253,8 @@ exports.refuseAwaiting = function(req, res) {
 
 /**
  * Méthode de récupération de toutes les données pluviométriques validées pour une station données.
- * @param req req.param.stationId L'id de la données dont on veut récupérer les données.
- * @param res L'objet "Response" de la requête où il faut repondre
+ * @param req L'objet "Request" de la requête
+ * @param res L'objet "Response" de la requête
  */
 exports.get = function(req, res) {
   dataModel.rainDataModel.find({ id_station: req.params.stationId }, function(err, data) {
@@ -270,9 +270,10 @@ exports.get = function(req, res) {
 
 /**
  *
- * @param req
- * @param res
+ * @param req L'objet "Request" de la requête
+ * @param res L'objet "Response" de la requête
  */
+//TODO Documentation
 //TODO Check si la station n'existe pas
 exports.getRainDataGraphLine = function(req, res) {
   Station.stationModel.findById(req.params.stationId, (err, station) => {
@@ -294,9 +295,11 @@ exports.getRainDataGraphLine = function(req, res) {
 
 /**
  *
- * @param req
- * @param res
+ * @param req L'objet "Request" de la requête
+ * @param res L'objet "Response" de la requête
  */
+//TODO Documentation
+
 //TODO Check si la station n'existe pas
 exports.rainDataGraphLineRangeDate = function(req, res) {
   Station.stationModel.findById(req.params.stationId, (err, station) => {
@@ -337,9 +340,10 @@ exports.rainDataGraphLineRangeDate = function(req, res) {
 
 /**
  *
- * @param req
- * @param res
+ * @param req L'objet "Request" de la requête
+ * @param res L'objet "Response" de la requête
  */
+//TODO Documentation
 //TODO Check si la station n'existe pas
 exports.getRainDataGraphLineOneMonth = function(req, res) {
   Station.stationModel.findById(req.params.stationId, (err, station) => {
@@ -382,9 +386,10 @@ exports.getRainDataGraphLineOneMonth = function(req, res) {
 
 /**
  *
- * @param req
- * @param res
+ * @param req L'objet "Request" de la requête
+ * @param res L'objet "Response" de la requête
  */
+//TODO Documentation
 //TODO Check si la station n'existe pas
 exports.getRainDataGraphLineOneYear = function(req, res) {
   Station.stationModel.findById(req.params.stationId, (err, station) => {
@@ -507,7 +512,7 @@ function groupByDay(RainData) {
 }
 
 /**
- *
+ * Méthode qui regroupe les données d'une station sur base de son interval
  * @param RainData
  * @return mapValue
  */
@@ -533,9 +538,10 @@ function groupByInterval(RainData) {
 
 /**
  *
- * @param req
- * @param res
+ * @param req req.param.stationId L'id de la données dont on veut récupérer les données.
+ * @param res L'objet "Response" de la requête où il faut repondre
  */
+//TODO Documentation
 exports.getForDay = function(req, res) {
   Station.stationModel.findById(req.params.stationId, (err, station) => {
     if (err) {
@@ -574,10 +580,11 @@ exports.getForDay = function(req, res) {
 
 /**
  *
- * @param req
- * @param res
+ * @param req req.param.stationId L'id de la données dont on veut récupérer les données.
+ * @param res L'objet "Response" de la requête où il faut repondre
  * @return {*}
  */
+//TODO Documentation
 exports.getForMonth = function(req, res) {
   // TODO Check year exsists and motn 1 -> 12
   let year = parseInt(req.params.year);
@@ -631,6 +638,7 @@ exports.getForMonth = function(req, res) {
  * @param interval
  * @return {*}
  */
+//TODO Documentation
 function condensData(datas, interval) {
   if (!datas || datas.length === 0) {
     return;
@@ -659,17 +667,17 @@ function condensData(datas, interval) {
   return tableToReturn;
 }
 
-// Cette méthode va remplir les trous de données potentiels en créant une structure de données avec la value à -1
-// va entrer les données traitées dans le tableau : this.allDatas
+
 /**
- *
- * @param dataToProcess
- * @param stationId
- * @param interval
- * @param dateDebut
- * @param dateFin
+ * Méthode qui va remplire les trous de données potentiels en créant une structure de données avec la value à -1
+ * @param dataToProcess Données à process
+ * @param stationId Id de la station
+ * @param interval Interval de la station
+ * @param dateDebut Date de début
+ * @param dateFin Date de fin
  * @return {*}
  */
+//TODO Documentation
 function preprocessData(dataToProcess, stationId, interval, dateDebut, dateFin) {
   // Si pas de tableau ou tableau vide
   if (!dataToProcess || dataToProcess.length === 0) {
@@ -709,18 +717,18 @@ function preprocessData(dataToProcess, stationId, interval, dateDebut, dateFin) 
 };
 
 /**
- *
- * @param n
- * @return {string}
+ * Méthode utilitaire qui renvoie 2 chiffres si on lui en pas que 1 ex: 1 => 01
+ * @param n Chiffre
+ * @return {string} String avec un 0 devant s'il y a moins de 2 chiffre dans n
  */
 function minTwoDigits(n) {
   return (n < 10 ? '0' : '') + n;
 }
 
 /**
- *
- * @param interval
- * @return {number}
+ * Méthode utilitaire qui revoit le nombre de minute dans l'interval demandé
+ * @param interval Interval d'une station
+ * @return {number} Nombre de minute dans cet interval
  */
 function getIntervalInMinute(interval) {
   switch (interval) {
@@ -750,9 +758,9 @@ function getIntervalInMinute(interval) {
 }
 
 /**
- *
- * @param req
- * @param res
+ * Méthode d'importation des données manuelles envoyées .
+ * @param req L'objet "Request" de la requête
+ * @param res L'objet "Response" de la requête
  */
 exports.importManualData = function(req, res) {
 
@@ -799,9 +807,9 @@ exports.importManualData = function(req, res) {
 };
 
 /**
- *
- * @param req
- * @param res
+ * Méthode d'importation des données envoyées dans un fichier.
+ * @param req L'objet "Request" de la requête
+ * @param res L'objet "Response" de la requête
  * @return {*}
  */
 exports.importFileData = function(req, res) {
@@ -876,9 +884,10 @@ exports.importFileData = function(req, res) {
 };
 
 /**
- *
- * @param req
- * @param res
+ * Méthode qui va créer un fichier contenant les données d'une station dont on veut télécharger les données.
+ * Un mail est envoyé à l'utilisateur une fois le ficher prêt.
+ * @param req L'objet "Request" de la requête
+ * @param res L'objet "Response" de la requête
  */
 exports.downloadData = function(req, res) {
   const id_station = req.params.id;
@@ -954,9 +963,9 @@ exports.downloadData = function(req, res) {
 }
 
 /**
- *
- * @param rainDatas
- * @return {string}
+ * Methode utilitaire qui transforme les données d'une station au format CSV
+ * @param rainDatas Liste de {Date, Valeur} des données a transformer au format CSV
+ * @return {string} String représentant les données dans le format d'un fichier CSV
  */
 function rainDataToCSV(rainDatas) {
   // console.log("coucou", rainDatas);
@@ -969,18 +978,18 @@ function rainDataToCSV(rainDatas) {
 }
 
 /**
- *
- * @param date
- * @return {string}
+ * Méthode utilitaire de formattage d'une date pour le format d'exportation des données.
+ * @param date Date à formater.
+ * @return {string} String de la date formatée.
  */
 function preFormatDate(date) {
   return `${date.getFullYear()}-${minTwoDigits(date.getMonth())}-${minTwoDigits(date.getDay())} ${minTwoDigits(date.getHours())}:${minTwoDigits(date.getMinutes())}`
 }
 
 /**
- *
- * @param req
- * @param res
+ * Methode de mise à jour d'une données.
+ * @param req L'objet "Request" de la requête
+ * @param res L'objet "Response" de la requête
  * @return {*}
  */
 exports.updateData = function(req, res) {
@@ -1074,11 +1083,11 @@ exports.updateData = function(req, res) {
 }
 
 /**
- *
- * @param date1
- * @param date2
- * @param interval
- * @return {boolean}
+ * Méthode qui check si l'interval entre 2 date est correcte.
+ * @param date1 Date de départ
+ * @param date2 Date de fin
+ * @param interval Interval entre les 2 dates.
+ * @return {boolean} True si l'interval est respécté.
  */
 function checkDateInterval(date1, date2, interval) {
   if (!date1 || !date2 || !interval) {
@@ -1142,9 +1151,9 @@ function push() {
 }
 
 /**
- *d
- * @param max
- * @return {number}
+ * Méthode utilitaire qui renvoie un nombre aléatoire < max
+ * @param max Valeur maximum pouvant etre renvoyé.
+ * @return {number} nombre aléatoire a renvoyé.
  */
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
