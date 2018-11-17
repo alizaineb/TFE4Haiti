@@ -1,8 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {StationsService} from '../../../_services/stations.service';
-import {AlertService, UserService} from '../../../_services';
-import {Station, User} from '../../../_models';
-import {map} from 'rxjs/operators';
+import { Component, Input, OnInit } from '@angular/core';
+import { StationsService } from '../../../_services/stations.service';
+import { AlertService, UserService } from '../../../_services';
+import { Station, User } from '../../../_models';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-assign-users',
@@ -84,14 +84,15 @@ export class AssignUsersComponent implements OnInit {
     this.listAllUsersFiltered = this.listAllUsers.filter((value) => {
       return value.mail.toLowerCase().includes(this.searchAllKeyWord.toLowerCase()) ||
         value.first_name.toLowerCase().includes(this.searchAllKeyWord.toLowerCase()) ||
-          value.last_name.toLowerCase().includes(this.searchAllKeyWord.toLowerCase());
+        value.last_name.toLowerCase().includes(this.searchAllKeyWord.toLowerCase());
     });
   }
 
   addUser(user: User) {
     this.stationService.addUser(this.stationId, user._id)
       .subscribe(
-        () => { this.alertService.success('L\'utilisateur a été ajoutée');
+        () => {
+          this.alertService.success('L\'utilisateur a été ajouté à la station');
           this.loadData();
         },
         error => this.alertService.error(error)
@@ -101,9 +102,10 @@ export class AssignUsersComponent implements OnInit {
   removeUser(user: User) {
     this.stationService.removeUser(this.stationId, user._id)
       .subscribe(
-        () => {this.alertService.success('L\'utilisateur a été supprimée');
+        () => {
+          this.alertService.success('L\'utilisateur a été supprimé de la station');
           this.loadData();
-          },
+        },
         error => this.alertService.error(error)
       );
   }
