@@ -6,6 +6,16 @@
                                                                                     (click)="sendData()"></i></div>
   </div>
   <div class="row">
+    <div class="col-md-12">
+      <div class="alert alert-warning" *ngIf="currentStation.state == 'broken'">
+        La station est en état broken, verifiez bien les dates des données pour qu'elles correspondent à la période où la station fonctionnait.
+      </div>
+      <div class="alert alert-danger" *ngIf="currentStation.state == 'deleted'">
+        La station n'est plus en état de marche, verifiez bien les dates des données pour qu'elles correspondent à la période où la station fonctionnait.
+      </div>
+    </div>
+  </div>
+  <div class="row">
     <div class="col-md-10" [ngClass]="isSelectetd('manual')" (click)="changeZone('manual')">
       <table class="table table-responsive table-striped">
         <thead>
