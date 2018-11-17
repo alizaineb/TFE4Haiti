@@ -248,7 +248,7 @@ exports.acceptStation = function(req, res) {
 };
 
 /**
- * addUser - Permet d'ajouter un utilisateur à une station en modifiant le tableau d'utilisateursde la station
+ * addUser - Permet d'ajouter un utilisateur, si il n'est pas déjà dedans, à une station en modifiant le tableau d'utilisateurs de la station
  *
  * @param {request}   req Requête du client
  * @param {string}   req.params.station_id L'id de la station pour laquelle il faut ajouter un utilisateur
@@ -294,7 +294,7 @@ exports.addUser = function(req, res) {
 };
 
 /**
- * removeUser - Permet de retirer un utilisateur d'une station en modifiant le tableau d'utilisateur de la station
+ * removeUser - Permet de retirer un utilisateur d'une station, si il est dedans, en modifiant le tableau d'utilisateur de la station
  *
  * @param {request}   req Requête du client
  * @param {string}   req.params.station_id L'id de la station pour laquelle il faut retirer un utilisateur
