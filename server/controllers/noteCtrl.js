@@ -32,7 +32,8 @@ exports.create = function(req, res) {
   nTmp.station_id = req.body.station_id;
   nTmp.user_id = req.token_decoded.id;
   nTmp.note = req.body.note;
-  if (req.body.note || req.body.note.trim().length === 0) {
+  if (!req.body.note || req.body.note.trim().length === 0) {
+    console.log(req.body.note);
     return res.status(400).send("La note ne peut pas être vide");
   }
   nTmp.save((err) => {
@@ -50,15 +51,14 @@ exports.create = function(req, res) {
  * get - Récupère toutes les notes liées à une station
  *
  * @param {request} req Requête du client
- * @param {strçing} req.params.station_id L'id de la station pour laquelle il faut récupérer ses notes
+ * @param {string} req.params.station_id L'id de la station pour laquelle il faut récupérer ses notes
  * @param {response} res Réponse renvoyée au client
  *                       500 : Erreur serveur
  * @return {type}    200 :  les notes de la station
  */
 exports.get = function(req, res) {
   NoteModel.noteModel.find({ station_id: req.params.station_id },
-    '_id station_id user_id note createdAt updatedAt',
-    (err, notes) => {
+    '_id station_id user_id note createdAt updatedAt', (err, notes) => {
       if (err) {
         logger.error("[noteCtrl] get : ", err);
         return res.status(500).send("Erreur lors de la récupération des notes");
