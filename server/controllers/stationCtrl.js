@@ -19,7 +19,7 @@ const errors = require('./utils').errors;
  * @param {request} req Requête du client
  * @param {response} res Réponse renvoyée au client
  *                       500 : erreur serveur
- * @return     200 : toutes les stations
+ * @return {station[]}   200 : toutes les stations
  */
 exports.get = function(req, res) {
   // On récupère tous les champs
@@ -38,11 +38,11 @@ exports.get = function(req, res) {
  * getById - Récupère une station basée sur l'id passé en paramètre
  *
  * @param {request} req Requête du client
+ * @param  {string} req.params.station_id L'id de la station
  * @param {response} res Réponse renvoyée au client
  *                       404 : station non trouvée
  *                       500 : erreur serveur
- * @param  {string} req.params.station_id L'id de la station
- * @return     200 : la station ayant l'id req.params.station_id
+ * @return {station}     200 : la station ayant l'id req.params.station_id
  */
 exports.getById = function(req, res) {
   Station.stationModel.findById(req.params.station_id,
@@ -75,7 +75,7 @@ exports.getById = function(req, res) {
  * @param {response} res Réponse renvoyée au client
  *                       400 : Paramètre manquant ou incorrect (voir le modèle)
  *                       500 : Erreur serveur
- * @return     201 : la station ajoutée en base de donnée
+ * @return {station}     201 : la station ajoutée en base de données
  */
 exports.create = function(req, res) {
   let station = req.body;
@@ -103,42 +103,141 @@ exports.create = function(req, res) {
   });
 };
 
+
+/**
+ * update - Permet de mettre à jour une station, il est possible de spécifier uniquement le champ à mettre à jour, dans ce cas, nous allons utiliser les anciens champs
+ *
+ * @param {request} req Requête du client
+ * @param {string} req.params.station_id L'id de la station à mettre à jour
+ * @param {string} req.body.name Le nom de la station à mettre à jour
+ * @param {number} req.body.latitude La latitude de la station à mettre à jour
+ * @param {number} req.body.longitude La longitude de la station à mettre à jour
+ * @param {number} req.body.altitude L'altitude de la station à mettre à jour
+ * @param {date} req.body.createdAt Le date de création de la station à mettre à jour // TODO RETIRER
+ * @param {string} req.body.interval L' intervalle de la station à mettre à jour (ENUM) // TODO RETIRER
+ * @param {string} req.body.river Le bassin versant de la station à mettre à jour (ENUM) // TODO RETIRER
+ * @param {string} req.body.commune La commune de la station à mettre à jour (ENUM) // TODO RETIRER
+ * @param {response} res Réponse renvoyée au client
+ *                       400 : Donnée erronnée
+ *                       404 : Station inexistante
+ *                       500 : Erreur serveur
+ * @return {station}     201 : la station mise à jour
+ */
 exports.update = function(req, res) {
-  checkParam(req, res, ["name", "latitude", "longitude", "river", "commune", "createdAt", "interval"], function() {
-    Station.stationModel.findById(req.params.id, function(err, station) {
+  Station.stationModel.findById(req.params.station_id, function(err, station) {
+    if (err) {
+      logger.error(err);
+      return res.status(500).send("Erreur lors de la récupération de la station.");
+    }
+    if (!station) {
+      return res.status(404).send("La station n'existe pas");
+    }
+    // Les || permettent de reprendre les anciens champs.
+    station.name = req.body.name || station.name;
+    station.latitude = req.body.latitude || station.latitude;;
+    station.longitude = req.body.longitude || station.longitude;
+    station.altitude = req.body.altitude || station.altitude;
+    station.createdAt = req.body.createdAt || station.createdAt; // TODO RETIRER
+    station.interval = req.body.interval || station.interval; // TODO RETIRER
+    station.river = req.body.river || station.river; // TODO RETIRER
+    station.commune = req.body.commune || station.commune; // TODO RETIRER
 
+    station.save((err) => {
       if (err) {
-        logger.error(err);
-        return res.status(500).send("Erreur lors de la récupération de la station.");
+        logger.error("[stationCtrl] update :", err);
+        let tmp = errors(err);
+        return res.status(tmp.error).send(tmp.message);
       }
-      if (station === undefined || station === null) return res.status(404).send("La station n'existe pas");
-      if (station.length > 1) return res.status(500).send("Ceci n'aurait jamais dû arriver.");
-      if (station.length === 0) return res.status(404).send("La station n'existe pas");
+      return res.status(201).send(station);
+    });
+  });
+};
 
-      station.name = req.body.name;
-      station.latitude = req.body.latitude;
-      station.longitude = req.body.longitude;
-      station.altitude = req.body.altitude;
-      station.createdAt = req.body.createdAt;
-      station.interval = req.body.interval;
-      station.river = req.body.river;
-      station.commune = req.body.commune;
 
-      station.save(function(err, updatedStation) {
-        if (err) {
-          logger.error(err);
-          return res.status(500).send("Erreur lors de la mise à jour d'une station");
-        }
-        return res.status(201).send(updatedStation);
-      });
+/**
+ * delete - Permet de passer l'état de la station à delete.
+ *          Etant donné le besoin de garder les données liées à la station, nous ne pouvons pas supprimer celle-ci de la base de données
+ *
+ * @param {request} req Requête du client
+ * @param {string} req.params.station_id L'id de la station à mettre à jour
+ * @param {response} res Réponse renvoyée au client
+ *                       404 : Station inexistante
+ *                       500 : Erreur serveur
+ * @return {station}     201 : la station mise à jour dont l'état est passé à deleted
+ */
+exports.delete = function(req, res) {
+  Station.stationModel.findById(req.params.station_id, function(err, station) {
+    if (err) {
+      logger.error("[stationCtrl] delete :", err);
+      let tmp = errors(err);
+      return res.status(tmp.error).send(tmp.message);
+    }
+    if (!station) {
+      return res.status(404).send("La station n'existe pas");
+    }
+    station.state = states.DELETED;
+    station.save(function(err) {
+      if (err) {
+        logger.error("[stationCtrl] delete :", err);
+        let tmp = errors(err);
+        return res.status(tmp.error).send(tmp.message);
+      }
+      return res.status(201).send(station);
+    });
+  });
+};
+
+
+
+
+/**
+ * getAllAwaiting - Permet de récupérer toutes les stations en attente
+ *                  Va récupérer les champs suivants : _id name latitude longitude createdAt interval river commune user_creator_id
+ *
+ * @param {request} req Requête du client
+ * @param {response} res Réponse renvoyée au client
+ *                       500 : Erreur serveur
+ * @return {string[]}    200 : Les stations dont l'état est en attente
+ */
+exports.getAllAwaiting = function(req, res) {
+  Station.stationModel.find({ state: states.AWAITING },
+    '_id name latitude longitude createdAt interval river commune user_creator_id',
+    (err, stations) => {
+      if (err) {
+        logger.error("[stationCtrl] getAllAwaiting :", err);
+        return res.status(500).send("Une erreur est survenue lors dela récupération des stations en attente.");
+      }
+      return res.status(200).send(stations);
+    });
+};
+
+
+exports.acceptStation = function(req, res) {
+  checkParam(req, res, ["id"], () => {
+    let id = req.body.id;
+    Station.stationModel.find({ _id: id }).then((station) => {
+      if (!station || station.length !== 1) {
+        return res.status(500).send("Un problème est survenu lors de la récupération de la station.");
+      } else {
+        let currStation = station[0];
+        currStation.state = states.WORKING;
+        currStation.save((err) => {
+          if (err) {
+            logger.error(err);
+            return res.status(500).send("Un problème est survenu lors de la mise à jour de la station.");
+          } else {
+            return res.status(200).send();
+          }
+        });
+      }
+    }).catch((err) => {
+      logger.error(err);
+      return res.status(500).send("Une erreur est survenue lors de la récupération de la station concernée.");
     });
   });
 };
 
 exports.addUser = function(req, res) {
-
-  console.log("Hello");
-
   checkParam(req, res, ["userId"], function() {
     UsersModel.userModel.findById(req.body.userId, function(err, user) {
       if (err) {
@@ -200,59 +299,6 @@ exports.removeUser = function(req, res) {
         }
         return res.status(201).send(updatedStation);
       });
-    });
-  });
-};
-
-exports.delete = function(req, res) {
-  Station.stationModel.findById(req.params.id, function(err, station) {
-
-    station.state = states.DELETED;
-
-    station.save(function(err, updatedStation) {
-      if (err) {
-        logger.error(err);
-        return res.status(500).send("Erreur lors de la suppression d'une station");
-      }
-      return res.status(201).send(updatedStation);
-    });
-  });
-};
-
-
-
-exports.getAllAwaiting = function(req, res) {
-  Station.stationModel.find({ state: states.AWAITING }).then(function(stations) {
-    let tabS = [];
-    stations.forEach(station => tabS.push(station.toDto()));
-    return res.status(200).send(tabS);
-  }).catch(function(err) {
-    logger.error(err);
-    return res.status(500).send("Une erreur est survenue lors dela récupération des stations en attente.");
-  });
-};
-
-exports.acceptStation = function(req, res) {
-  checkParam(req, res, ["id"], () => {
-    let id = req.body.id;
-    Station.stationModel.find({ _id: id }).then((station) => {
-      if (!station || station.length !== 1) {
-        return res.status(500).send("Un problème est survenu lors de la récupération de la station.");
-      } else {
-        let currStation = station[0];
-        currStation.state = states.WORKING;
-        currStation.save((err) => {
-          if (err) {
-            logger.error(err);
-            return res.status(500).send("Un problème est survenu lors de la mise à jour de la station.");
-          } else {
-            return res.status(200).send();
-          }
-        });
-      }
-    }).catch((err) => {
-      logger.error(err);
-      return res.status(500).send("Une erreur est survenue lors de la récupération de la station concernée.");
     });
   });
 };

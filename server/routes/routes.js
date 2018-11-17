@@ -165,13 +165,13 @@ exports.routes = [
   },
 
   {
-    path: "/api/stations/:id",
+    path: "/api/stations/:station_id",
     httpMethod: "DELETE",
     middleWare: [controllers.stations.delete],
     access: [roles.ADMIN]
   },
   {
-    path: "/api/stations/:id",
+    path: "/api/stations/:station_id",
     httpMethod: "PUT",
     middleWare: [controllers.stations.update],
     access: [roles.ADMIN]
