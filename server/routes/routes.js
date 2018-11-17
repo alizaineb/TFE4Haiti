@@ -177,13 +177,13 @@ exports.routes = [
     access: [roles.ADMIN]
   },
   {
-    path: "/api/stations/addUser/:id",
+    path: "/api/stations/addUser/:station_id",
     httpMethod: "PUT",
     middleWare: [controllers.stations.addUser],
     access: [roles.ADMIN]
   },
   {
-    path: "/api/stations/removeUser/:id",
+    path: "/api/stations/removeUser/:station_id",
     httpMethod: "PUT",
     middleWare: [controllers.stations.removeUser],
     access: [roles.ADMIN]

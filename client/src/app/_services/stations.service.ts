@@ -41,11 +41,11 @@ export class StationsService {
   }
 
   addUser(stationId: string, userId: string) {
-    return this.http.put(environment.apiUrl + '/stations/addUser/' + stationId, { userId: userId });
+    return this.http.put(environment.apiUrl + '/stations/addUser/' + stationId, { user_id: userId });
   }
 
   removeUser(stationId: string, userId: string) {
-    return this.http.put(environment.apiUrl + '/stations/removeUser/' + stationId, { userId: userId });
+    return this.http.put(environment.apiUrl + '/stations/removeUser/' + stationId, { user_id: userId });
   }
 
   delete(id: string) {
@@ -72,7 +72,7 @@ export class StationsService {
   }
   */
   acceptStation(id: String) {
-    return this.http.post(environment.apiUrl + '/stations/acceptStation', { id: id });
+    return this.http.post(environment.apiUrl + '/stations/acceptStation', { station_id: id });
   }
 
   getFrenchState(station: Station) {
@@ -95,7 +95,7 @@ export class StationsService {
   }
 
   downloadData(id: string, param) {
-    return this.http.get(environment.apiUrl + '/stations/' + id + '/download', {params: param});
+    return this.http.get(environment.apiUrl + '/stations/' + id + '/download', { params: param });
   }
-  
+
 }

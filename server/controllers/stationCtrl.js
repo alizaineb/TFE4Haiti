@@ -166,25 +166,27 @@ exports.update = function(req, res) {
  * @return {station}     201 : la station mise à jour dont l'état est passé à deleted
  */
 exports.delete = function(req, res) {
-  Station.stationModel.findById(req.params.station_id, function(err, station) {
-    if (err) {
-      logger.error("[stationCtrl] delete :", err);
-      let tmp = errors(err);
-      return res.status(tmp.error).send(tmp.message);
-    }
-    if (!station) {
-      return res.status(404).send("La station n'existe pas");
-    }
-    station.state = states.DELETED;
-    station.save(function(err) {
+  Station.stationModel.findById(req.params.station_id,
+    'state',
+    (err, station) => {
       if (err) {
         logger.error("[stationCtrl] delete :", err);
         let tmp = errors(err);
         return res.status(tmp.error).send(tmp.message);
       }
-      return res.status(201).send(station);
+      if (!station) {
+        return res.status(404).send("La station n'existe pas");
+      }
+      station.state = states.DELETED;
+      station.save(function(err) {
+        if (err) {
+          logger.error("[stationCtrl] delete :", err);
+          let tmp = errors(err);
+          return res.status(tmp.error).send(tmp.message);
+        }
+        return res.status(201).send(station);
+      });
     });
-  });
 };
 
 
@@ -212,106 +214,158 @@ exports.getAllAwaiting = function(req, res) {
 };
 
 
+/**
+ * acceptStation - Permet de passer une station de l'état awaiting à l'état de fonctionnement
+ *
+ * @param {request}   req Requête du client
+ * @param {string}    req.body.station_id L'id de la station à accepter
+ * @param {response}  res Réponse renvoyée au client
+ *                        500 : Erreur serveur
+ * @return {string[]} 200
+ */
 exports.acceptStation = function(req, res) {
-  checkParam(req, res, ["id"], () => {
-    let id = req.body.id;
-    Station.stationModel.find({ _id: id }).then((station) => {
-      if (!station || station.length !== 1) {
+  Station.stationModel.findById(req.body.station_id,
+    'state',
+    (err, station) => {
+      if (err) {
+        logger.error("[stationCtrl] acceptStation1 :", err);
         return res.status(500).send("Un problème est survenu lors de la récupération de la station.");
+      }
+      if (!station) {
+        return res.status(500).send("Impossible d'accepter cette station car elle n'existe pas.");
       } else {
-        let currStation = station[0];
-        currStation.state = states.WORKING;
-        currStation.save((err) => {
+        station.state = states.WORKING;
+        station.save((err) => {
           if (err) {
-            logger.error(err);
+            logger.error("[stationCtrl] acceptStation2 :", err);
             return res.status(500).send("Un problème est survenu lors de la mise à jour de la station.");
           } else {
             return res.status(200).send();
           }
         });
       }
-    }).catch((err) => {
-      logger.error(err);
-      return res.status(500).send("Une erreur est survenue lors de la récupération de la station concernée.");
     });
-  });
 };
 
+/**
+ * addUser - Permet d'ajouter un utilisateur à une station en modifiant le tableau d'utilisateursde la station
+ *
+ * @param {request}   req Requête du client
+ * @param {string}   req.params.station_id L'id de la station pour laquelle il faut ajouter un utilisateur
+ * @param {string}   req.body.user_id L'id de l'utilisateur à ajouter
+ * @param {string}   req Requête du client
+ * @param {response}  res Réponse renvoyée au client
+ *                        404 : Station ou utilisateur inexistant
+ *                        500 : Erreur serveur
+ * @return {type}     200 La station mise à jour (uniquement son tableau)
+ */
 exports.addUser = function(req, res) {
-  checkParam(req, res, ["userId"], function() {
-    UsersModel.userModel.findById(req.body.userId, function(err, user) {
-      if (err) {
-        logger.error(err);
-        return res.status(500).send("Erreur lors de la récupération de l'user.");
-      }
-      if (user === undefined || user === null) return res.status(404).send("L'utilisateur n'existe pas");
-      if (user.length > 1) return res.status(500).send("Ceci n'aurait jamais dû arriver.");
-      if (user.length === 0) return res.status(404).send("L'utilisateur n'existe pas");
-
-      Station.stationModel.findById(req.params.id, function(err, station) {
+  UsersModel.userModel.findById(req.body.user_id, function(err, user) {
+    if (err) {
+      logger.error("[stationCtrl] addUser1 :", err);
+      return res.status(500).send("Erreur lors de la récupération de l'utilisateur.");
+    }
+    if (!user) {
+      return res.status(404).send("L'utilisateur n'existe pas");
+    }
+    Station.stationModel.findById(req.params.station_id,
+      'users',
+      function(err, station) {
         if (err) {
-          logger.error(err);
+          logger.error("[stationCtrl] addUser2 :", err);
           return res.status(500).send("Erreur lors de la récupération de la station.");
         }
-        if (station.length > 1) return res.status(500).send("Ceci n'aurait jamais dû arriver.");
-        if (station.length === 0) return res.status(404).send("La station n'existe pas");
-
-        station.users.addToSet(req.body.userId);
-
-        station.save(function(err, updatedStation) {
+        if (!station) {
+          return res.status(404).send("La station n'existe pas");
+        }
+        if (station.users.indexOf(req.body.user_id) >= 0) {
+          return res.status(201).send(station);
+        }
+        station.users.push(req.body.user_id);
+        station.save(function(err) {
           if (err) {
-            logger.error(err);
+            logger.error("[stationCtrl] addUser3 :", err);
             return res.status(500).send("Erreur lors de la mise à jour des utilisateurs");
           }
-          return res.status(201).send(updatedStation);
+          return res.status(201).send(station);
         });
       });
-    });
   });
 };
 
+/**
+ * removeUser - Permet de retirer un utilisateur d'une station en modifiant le tableau d'utilisateur de la station
+ *
+ * @param {request}   req Requête du client
+ * @param {string}   req.params.station_id L'id de la station pour laquelle il faut retirer un utilisateur
+ * @param {string}   req.body.user_id L'id de l'utilisateur à retirer
+ * @param {string}   req Requête du client
+ * @param {response}  res Réponse renvoyée au client
+ *                        404 : Station ou utilisateur inexistant
+ *                        500 : Erreur serveur
+ * @return {type}     200 La station mise à jour (uniquement son tableau)
+ */
 exports.removeUser = function(req, res) {
-  checkParam(req, res, ["userId"], function() {
-    UsersModel.userModel.findById(req.body.userId, function(err, user) {
-      if (err) {
-        logger.error(err);
-        return res.status(500).send("Erreur lors de la récupération de l'user.");
-      }
-      if (user === undefined || user === null) return res.status(404).send("L'utilisateur n'existe pas");
-      if (user.length > 1) return res.status(500).send("Ceci n'aurait jamais dû arriver.");
-      if (user.length === 0) return res.status(404).send("L'utilisateur n'existe pas");
-    });
+  UsersModel.userModel.findById(req.body.user_id, function(err, user) {
+    if (err) {
+      logger.error("[stationCtrl] removeUser1 :", err);
+      return res.status(500).send("Erreur lors de la récupération de l'utilisateur.");
+    }
+    if (!user) {
+      return res.status(404).send("L'utilisateur n'existe pas");
+    }
 
-    Station.stationModel.findById(req.params.id, function(err, station) {
+    Station.stationModel.findById(req.params.station_id, function(err, station) {
       if (err) {
-        logger.error(err);
+        logger.error("[stationCtrl] removeUser2 :", err);
         return res.status(500).send("Erreur lors de la récupération de la station.");
       }
-      if (station.length > 1) return res.status(500).send("Ceci n'aurait jamais dû arriver.");
-      if (station.length === 0) return res.status(404).send("La station n'existe pas");
-
-      station.users = station.users.filter(id => id !== req.body.userId);
-
-      station.save(function(err, updatedStation) {
+      if (!station) {
+        return res.status(404).send("La station n'existe pas");
+      }
+      station.users.splice(station.users.indexOf(req.body.user_id), 1);
+      station.save(function(err, station) {
         if (err) {
-          logger.error(err);
+          logger.error("[stationCtrl] removeUser3 :", err);
           return res.status(500).send("Erreur lors de la mise à jour des utilisateurs");
         }
-        return res.status(201).send(updatedStation);
+        return res.status(201).send(station);
       });
     });
   });
 };
 
-
+/**
+ * getIntervals - Permet de récupérer toutes les intervalles des stations
+ *
+ * @param {request} req Requête du client
+ * @param {response} res Réponse renvoyée au client
+ * @return {string[]}     200 : les intervalles de temps des stations
+ */
 exports.getIntervals = function(req, res) {
   return res.status(200).send(Station.intervals);
 };
 
+
+/**
+ * getCommunes - Permet de récupérer les communes des stations
+ *
+ * @param {request} req Requête du client
+ * @param {response} res Réponse renvoyée au client
+ * @return {string[]}     200 : les communes des stations
+ */
 exports.getCommunes = function(req, res) {
   return res.status(200).send(Station.communes.sort((val1, val2) => val1.toLowerCase() < val2.toLowerCase() ? -1 : 1));
 };
 
+
+/**
+ * getRivers - Permet de récupérer les bassins versants des stations
+ *
+ * @param {request} req Requête du client
+ * @param {response} res Réponse renvoyée au client
+ * @return {string[]}     200 : les bassins versants des stations
+ */
 exports.getRivers = function(req, res) {
   return res.status(200).send(Station.rivers.sort((val1, val2) => val1.toLowerCase() < val2.toLowerCase() ? -1 : 1));
 };
