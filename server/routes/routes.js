@@ -239,11 +239,6 @@ exports.routes = [
     access: [roles.ADMIN, roles.WORKER]
   },
   {
-    path: "/api/rainDataGraphLine/:stationId",
-    httpMethod: "GET",
-    middleWare: [controllers.data.getRainDataGraphLine],
-  },
-  {
     path: "/api/rainDataGraphLineOneYear/:stationId/:year",
     httpMethod: "GET",
     middleWare: [controllers.data.getRainDataGraphLineOneYear],

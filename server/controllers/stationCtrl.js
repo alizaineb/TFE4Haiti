@@ -134,7 +134,7 @@ exports.update = function(req, res) {
     }
     // Les || permettent de reprendre les anciens champs.
     station.name = req.body.name || station.name;
-    station.latitude = req.body.latitude || station.latitude;;
+    station.latitude = req.body.latitude || station.latitude;
     station.longitude = req.body.longitude || station.longitude;
     station.altitude = req.body.altitude || station.altitude;
     station.createdAt = req.body.createdAt || station.createdAt; // TODO RETIRER

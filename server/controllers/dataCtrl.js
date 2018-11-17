@@ -268,43 +268,31 @@ exports.get = function(req, res) {
   });
 };
 
-/**
- *
- * @param req L'objet "Request" de la requête
- * @param res L'objet "Response" de la requête
- */
-//TODO Documentation
-//TODO Check si la station n'existe pas
-exports.getRainDataGraphLine = function(req, res) {
-  Station.stationModel.findById(req.params.stationId, (err, station) => {
-    if (err) {
-      return res.status(500).send("Erreur lors de la station liée .");
-    }
-    dataModel.rainDataModel.find({ id_station: req.params.stationId }, 'date value', { sort: { date: 1 } }, function(err, data) {
-      if (err) {
-        logger.error(err);
-        return res.status(500).send("Erreur lors de la récupération des données.");
-      }
-      //preprocessData(data, req.params.stationId, station.interval);
-      let tabD = [];
-      data.forEach(data => tabD.push(dataModel.rainDataModel.toDtoGraphLine(data)));
-      return res.status(200).send(tabD);
-    });
-  });
-};
 
 /**
+ * Méthode qui permet de récupérer les données d'une station pour une période définie par 2 dates.
  *
- * @param req L'objet "Request" de la requête
- * @param res L'objet "Response" de la requête
+ * @param {request} req Requête du client
+ * @param {string} req.params.stationId L'id de la station à mettre à jour
+ * @param {string} req.params.minDate Date début jour
+ * @param {string} req.params.minMonth Date début mois
+ * @param {string} req.params.minYear Date début année
+ * @param {string} req.params.maxDate Date fin jour
+ * @param {string} req.params.maxMonth Date fin mois
+ * @param {string} req.params.maxYear Date fin année
+ * @param {response} res Réponse renvoyée au client
+ *                       404 : Station inexistante
+ *                       500 : Erreur serveur
+ * @return {station}     201 : Un tableau vide ou avec des données formatées pour Highstock
  */
-//TODO Documentation
-
-//TODO Check si la station n'existe pas
 exports.rainDataGraphLineRangeDate = function(req, res) {
   Station.stationModel.findById(req.params.stationId, (err, station) => {
     if (err) {
-      return res.status(500).send("Erreur lors de la station liée .");
+      logger.error("[DATACTRL] rainDataGraphLineRangeDate : ", err);
+      return res.status(500).send("Erreur lors de la récupération de la station.");
+    }
+    if (!station) {
+      return res.status(404).send("La station n'existe pas");
     }
 
     let minDate = req.params.minDate;
@@ -317,21 +305,19 @@ exports.rainDataGraphLineRangeDate = function(req, res) {
     let dateMin = new Date(Date.UTC(minYear, minMonth, minDate, 0, 0, 0, 0));
     let dateMax = new Date(Date.UTC(maxYear, maxMonth, maxDate, 23, 59, 59, 0));
 
-    dataModel.rainDataModel.find({
-      id_station: req.params.stationId,
-      date: { "$gte": dateMin, "$lt": dateMax }
-    }, 'date value', { sort: { date: 1 } }, function(err, data) {
+    dataModel.rainDataModel.find({id_station: req.params.stationId, date: { "$gte": dateMin, "$lt": dateMax }},
+      'date value', { sort: { date: 1 } }, function(err, data) {
       if (err) {
-        logger.error(err);
+        logger.error("[DATACTRL] rainDataGraphLineRangeDate : ", err);
         return res.status(500).send("Erreur lors de la récupération des données.");
       }
       if (data.length === 0) {
-        return res.status(200).send([]);
+        return res.status(201).send([]);
       } else {
         data = preprocessData(data, req.params.stationId, station.interval, dateMin, dateMax);
         let tabD = [];
         data.forEach(data => tabD.push(dataModel.rainDataModel.toDtoGraphLine(data)));
-        return res.status(200).send(tabD);
+        return res.status(201).send(tabD);
       }
     });
   });
@@ -339,20 +325,27 @@ exports.rainDataGraphLineRangeDate = function(req, res) {
 
 
 /**
+ * Méthode qui permet de récupérer les données d'une station pour une période d'un mois
  *
- * @param req L'objet "Request" de la requête
- * @param res L'objet "Response" de la requête
+ * @param {request} req Requête du client
+ * @param {string} req.params.stationId L'id de la station à mettre à jour
+ * @param {string} req.params.year Année
+ * @param {string} req.params.month Mois
+ * @param {response} res Réponse renvoyée au client
+ *                       404 : Station inexistante
+ *                       500 : Erreur serveur
+ * @return {station}     201 : Un tableau vide ou avec des données formatées pour Highstock
  */
-//TODO Documentation
-//TODO Check si la station n'existe pas
 exports.getRainDataGraphLineOneMonth = function(req, res) {
   Station.stationModel.findById(req.params.stationId, (err, station) => {
     if (err) {
-      return res.status(500).send("Erreur lors de la station liée .");
+      logger.error("[DATACTRL] getRainDataGraphLineOneMonth : ", err);
+      return res.status(500).send("Erreur lors de la récupération de la station.");
     }
     if (!station) {
-      return res.status(400).send("Erreur : station inexistante.");
+      return res.status(404).send("La station n'existe pas");
     }
+
     let year = req.params.year;
     let month = req.params.month;
 
@@ -364,48 +357,54 @@ exports.getRainDataGraphLineOneMonth = function(req, res) {
     let dateMax = new Date(Date.UTC(year, dateMin.getMonth() + 1, 0, 23, 23, 59, 0));
 
 
-    dataModel.rainDataModel.find({
-      id_station: req.params.stationId,
-      date: { "$gte": dateMin, "$lt": dateMax }
-    }, 'date value', { sort: { date: 1 } }, function(err, data) {
+    dataModel.rainDataModel.find({id_station: req.params.stationId, date: { "$gte": dateMin, "$lt": dateMax }},
+      'date value', { sort: { date: 1 } }, function(err, data) {
       if (err) {
-        logger.error(err);
+        logger.error("[DATACTRL] getRainDataGraphLineOneMonth : ", err);
         return res.status(500).send("Erreur lors de la récupération des données.");
       }
       if (data.length === 0) {
-        return res.status(200).send([]);
+        return res.status(201).send([]);
       } else {
         data = preprocessData(data, req.params.stationId, station.interval, dateMin, dateMax);
         let tabD = [];
         data.forEach(data => tabD.push(dataModel.rainDataModel.toDtoGraphLine(data)));
-        return res.status(200).send(tabD);
+        return res.status(201).send(tabD);
       }
     });
   });
 };
 
 /**
+ * Méthode qui permet de récupérer les données d'une station pour une période d'un an
  *
- * @param req L'objet "Request" de la requête
- * @param res L'objet "Response" de la requête
+ * @param {request} req Requête du client
+ * @param {string} req.params.stationId L'id de la station à mettre à jour
+ * @param {string} req.params.year Année
+ * @param {response} res Réponse renvoyée au client
+ *                       404 : Station inexistante
+ *                       500 : Erreur serveur
+ * @return {station}     201 : Un tableau vide ou avec des données formatées pour Highstock
  */
-//TODO Documentation
-//TODO Check si la station n'existe pas
 exports.getRainDataGraphLineOneYear = function(req, res) {
   Station.stationModel.findById(req.params.stationId, (err, station) => {
     if (err) {
-      return res.status(500).send("Erreur lors de la station liée .");
+      logger.error("[DATACTRL] getRainDataGraphLineOneYear : ", err);
+      return res.status(500).send("Erreur lors de la récupération de la station.");
     }
+    if (!station) {
+      return res.status(404).send("La station n'existe pas");
+    }
+
     let year = req.params.year;
+
     let dateMin = new Date(Date.UTC(year, 0, 1, 0, 0, 0, 0));
     let dateMax = new Date(Date.UTC(year, 11, 31, 23, 59, 59, 0));
 
-    dataModel.rainDataModel.find({
-      id_station: req.params.stationId,
-      date: { "$gte": dateMin, "$lt": dateMax }
+    dataModel.rainDataModel.find({id_station: req.params.stationId, date: { "$gte": dateMin, "$lt": dateMax }
     }, 'date value', { sort: { date: 1 } }, function(err, data) {
       if (err) {
-        logger.error(err);
+        logger.error("[DATACTRL] getRainDataGraphLineOneYear : ", err);
         return res.status(500).send("Erreur lors de la récupération des données.");
       }
 
@@ -437,7 +436,7 @@ exports.getRainDataGraphLineOneYear = function(req, res) {
           ]
         )
       }
-      return res.status(200).send(tabD);
+      return res.status(201).send(tabD);
     });
   });
 };
