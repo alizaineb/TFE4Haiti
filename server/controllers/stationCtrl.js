@@ -306,33 +306,35 @@ exports.addUser = function(req, res) {
  * @return {type}     200 La station mise à jour (uniquement son tableau)
  */
 exports.removeUser = function(req, res) {
-  UsersModel.userModel.findById(req.body.user_id, function(err, user) {
-    if (err) {
-      logger.error("[stationCtrl] removeUser1 :", err);
-      return res.status(500).send("Erreur lors de la récupération de l'utilisateur.");
-    }
-    if (!user) {
-      return res.status(404).send("L'utilisateur n'existe pas");
-    }
-
-    Station.stationModel.findById(req.params.station_id, function(err, station) {
+  UsersModel.userModel.findById(req.body.user_id,
+    'users',
+    function(err, user) {
       if (err) {
-        logger.error("[stationCtrl] removeUser2 :", err);
-        return res.status(500).send("Erreur lors de la récupération de la station.");
+        logger.error("[stationCtrl] removeUser1 :", err);
+        return res.status(500).send("Erreur lors de la récupération de l'utilisateur.");
       }
-      if (!station) {
-        return res.status(404).send("La station n'existe pas");
+      if (!user) {
+        return res.status(404).send("L'utilisateur n'existe pas");
       }
-      station.users.splice(station.users.indexOf(req.body.user_id), 1);
-      station.save(function(err, station) {
+
+      Station.stationModel.findById(req.params.station_id, function(err, station) {
         if (err) {
-          logger.error("[stationCtrl] removeUser3 :", err);
-          return res.status(500).send("Erreur lors de la mise à jour des utilisateurs");
+          logger.error("[stationCtrl] removeUser2 :", err);
+          return res.status(500).send("Erreur lors de la récupération de la station.");
         }
-        return res.status(201).send(station);
+        if (!station) {
+          return res.status(404).send("La station n'existe pas");
+        }
+        station.users.splice(station.users.indexOf(req.body.user_id), 1);
+        station.save(function(err, station) {
+          if (err) {
+            logger.error("[stationCtrl] removeUser3 :", err);
+            return res.status(500).send("Erreur lors de la mise à jour des utilisateurs");
+          }
+          return res.status(201).send(station);
+        });
       });
     });
-  });
 };
 
 /**
