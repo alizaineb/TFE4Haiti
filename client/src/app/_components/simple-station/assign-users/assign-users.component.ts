@@ -103,7 +103,7 @@ export class AssignUsersComponent implements OnInit {
     this.stationService.removeUser(this.stationId, user._id)
       .subscribe(
         () => {
-          this.alertService.success('L\'utilisateur a été supprimé de la station');
+          this.alertService.success('L\'utilisateur a été retiré de la station');
           this.loadData();
         },
         error => this.alertService.error(error)
