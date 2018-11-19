@@ -88,6 +88,11 @@ export class DetailsStationComponent implements OnInit {
     return this.stationService.getFrenchState(station);
   }
 
+  hasAccessToStation(station){
+    return this.stationService.hasAccessToStation(station)
+  }
+
+
   generateMap() {
     const self = this;
 
