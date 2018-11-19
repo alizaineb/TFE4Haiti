@@ -1,5 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
+import {StationsService} from "../../_services";
+import {Station} from "../../_models";
 
 @Component({
   selector: 'app-simple-station',
@@ -12,6 +14,7 @@ export class SimpleStationComponent implements OnInit, OnDestroy {
   private sub: any;
 
   public stationId: string;
+  public currentStation: Station;
 
   public tabList: string[];
   public activeTab: string;
@@ -19,6 +22,7 @@ export class SimpleStationComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private stationService: StationsService
   ) {
   }
 
@@ -26,7 +30,7 @@ export class SimpleStationComponent implements OnInit, OnDestroy {
     const self = this;
 
     self.stationId = '';
-    self.tabList = ['Details', 'Tableaux', 'Graphiques', 'Notes', 'Utilisateurs'];
+    self.tabList = ['Details', 'Tableaux', 'Graphiques'];
     self.activeTab = self.tabList[0];
 
     self.sub = self.route.params.subscribe((params) => {
@@ -36,11 +40,26 @@ export class SimpleStationComponent implements OnInit, OnDestroy {
         self.activeTab = tab;
         self.router.navigate(['/stations', self.stationId, self.activeTab]);
       }
+      if(!this.currentStation){
+        this.stationService.getById(this.stationId).subscribe(
+          station => {
+            this.currentStation = station;
+            if(this.hasAccessToStation(this.currentStation)){
+              this.tabList.push('Notes', 'Utilisateurs');
+            }
+          },
+          err => {
+            console.log(err);
+          }
+        );
+      }
+
     });
   }
 
   ngOnDestroy() {
     this.sub.unsubscribe();
+    this.tabList=[];
   }
 
   getSelectedClass(tab) {
@@ -51,5 +70,9 @@ export class SimpleStationComponent implements OnInit, OnDestroy {
     if (this.tabList.indexOf(tab) >= 0) {
       this.activeTab = tab;
     }
+  }
+
+  hasAccessToStation(station){
+    return this.stationService.hasAccessToStation(station)
   }
 }
