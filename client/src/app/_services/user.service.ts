@@ -33,22 +33,19 @@ export class UserService {
   }
 
   acceptUser(id: String) {
-    return this.http.post(environment.apiUrl + '/users/acceptUser', { user_id: id });
+    return this.http.post(environment.apiUrl + '/users/acceptUser/' + id, {});
   }
 
   refuseUser(id: String, reason: String) {
-    return this.http.post(environment.apiUrl + '/users/refuse', { id: id, reason: reason });
+    return this.http.post(environment.apiUrl + '/users/refuse/' + id, { reason: reason });
   }
 
   update(user: User) {
     return this.http.put(environment.apiUrl + '/users/' + user._id, user);
   }
 
-  delete(id: number) {
+  delete(id: string) {
     return this.http.delete(environment.apiUrl + '/users/' + id);
-  }
-  setDeleted(id: String) {
-    return this.http.post(environment.apiUrl + '/users/setDeleted', { id: id });
   }
 
   requestChangePwd(mail: String) {

@@ -47,7 +47,7 @@ export class UsersComponent implements OnInit {
 
   deleteUser(id) {
     let self = this;
-    this.userService.setDeleted(id).pipe(first()).subscribe(result => {
+    this.userService.delete(id).pipe(first()).subscribe(result => {
       self.alertService.success("L'utilisteur a été correctement passé dans l'état correspndant");
       this.loadAllUsers()
     },

@@ -43,12 +43,6 @@ exports.routes = [
     middleWare: [controllers.users.roles]
   },
   {
-    path: "/api/users/setDeleted",
-    httpMethod: "POST",
-    middleWare: [controllers.users.setDeleted],
-    access: [roles.ADMIN]
-  },
-  {
     path: "/api/users/",
     httpMethod: "POST",
     middleWare: [controllers.users.create]
@@ -65,13 +59,13 @@ exports.routes = [
     access: [roles.ADMIN]
   },
   {
-    path: "/api/users/acceptUser",
+    path: "/api/users/acceptUser/:user_id",
     httpMethod: "POST",
     middleWare: [controllers.users.acceptUser],
     access: [roles.ADMIN]
   },
   {
-    path: "/api/users/refuse",
+    path: "/api/users/refuse/:user_id",
     httpMethod: "POST",
     middleWare: [controllers.users.refuseUser],
     access: [roles.ADMIN]

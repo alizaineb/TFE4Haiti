@@ -306,10 +306,7 @@ exports.getAllAwaiting = function(req, res) {
  * @return                200
  */
 exports.acceptUser = function(req, res) {
-  if (!req.body.user_id) {
-    return res.status(400).send("Veuillez fournir l'id de l'utilisateur à accepter.")
-  }
-  UsersModel.userModel.findOne({ _id: req.body.user_id, state: userState.AWAITING }, function(err, result) {
+  UsersModel.userModel.findOne({ _id: req.params.user_id, state: userState.AWAITING }, function(err, result) {
     if (err) {
       logger.error("[userCtrl] acceptUser :", err);
       return res.status(500).send("Erreur lors de la récupération de l'utilisateur concerné.");
@@ -323,42 +320,46 @@ exports.acceptUser = function(req, res) {
   });
 }
 
-exports.refuseUser = function(req, res) {
-  checkParam(req, res, ["id"], () => {
-    // Récupérer l'utilisateur
-    if (req.body.reason == undefined) {
-      return res.status(400).send("Information manquante");
-    }
-    let id = req.body.id;
-    let reason = req.body.reason;
-    UsersModel.userModel.findOne({ _id: id, state: userState.AWAITING }, function(err, result) {
-      if (err) {
-        logger.error(err);
-        return res.status(500).send("Erreur lors de la récupération de l'utilisateur concerné.");
-      }
 
-      if (result.length > 1) {
-        return res.status(500).send("Ceci n'aurait jamais dû arriver.");
-      } else if (result.length == 0) {
-        return res.status(404).send("Aucun utilisateur correspondant.");
-      } else {
-        // Lui envoyer un mail
-        let currUser = result[0];
-        let text = 'Bonjour ' + currUser.first_name + ' ' + currUser.last_name +
-          ',\n\nVotre demande de compte a été refusée.\nRaison :  \n"' +
-          ((reason.trim().length > 0) ? reason : 'Pas de raison donnée par l\'administrateur') +
-          '"\n\nLes informations vont concernant sont supprimées.\n\nBien à vous';
-        mailTransporter.sendMailAndIgnoreIfMailInvalid(req, res, nconf.get('mail').subjectCreationAccRefused, currUser.mail, text, (resp) => {
-          // Le supprimer de la db
-          currUser.remove(function(err, userUpdt) {
-            if (err) {
-              return res.status(500).send("Erreur lors de la suppression de l'utilisateur concerné.");
-            }
-            return res.status(200).send();
-          });
+/**
+ * refuseUser - Permet de refuser un utilisateur en lui en envoyant un mail.
+ *              Si l'email ne s'envoie pas, cela va saimplement l'ignorer et supprimer l'utilisateur de la base de données.
+ *
+ * @param {request} req Requête du client
+ * @param {request} req.params.user_id L'id de l'utilisateur à refuser
+ * @param {request} req.body.reason La raison donnée par l'administateur, si celle-ci n'est pas présente nous enverrons un mail spécifiant qu'aucune raison n'a été donnée (optionnel)
+ * @param {response} res Réponse renvoyée au client
+ *                       400 : Si il manque la raison
+ *                       404 : Si l'utilisateur n'existe pas
+ *                       500 : Erreur serveur
+ * @return               200
+ */
+exports.refuseUser = function(req, res) {
+  let reason = req.body.reason;
+  UsersModel.userModel.findOne({ _id: req.params.user_id, state: userState.AWAITING }, function(err, user) {
+    if (err) {
+      logger.error("[userCtrl] refuseUser1 :", err);
+      return res.status(500).send("Erreur lors de la récupération de l'utilisateur concerné.");
+    } else if (!user) {
+      return res.status(404).send("Utilisateur introuvable (peut-être a-t-il déjà été refusé).");
+    } else {
+      // Lui envoyer un mail
+      let text = `Bonjour  ${user.first_name} ${user.last_name},\n\n
+        Votre demande de compte a été refusée.\n
+        ${((reason) ? ("Raison : \"" + reason+"\"") : "Pas de raison donnée par l\'administrateur")}
+        \n\nLes informations vont concernant sont supprimées.\n\nBien à vous`;
+      // Envoyer un mail et ignorer si celui-ci ne c'est pas envoyé
+      mailTransporter.sendMailAndIgnoreIfMailInvalid(req, res, nconf.get('mail').subjectCreationAccRefused, user.mail, text, (resp) => {
+        // Le supprimer de la db
+        user.remove(function(err, userUpdt) {
+          if (err) {
+            logger.error("[userCtrl] refuseUse2 :", err);
+            return res.status(500).send("Erreur lors de la suppression de l'utilisateur concerné.");
+          }
+          return res.status(200).send();
         });
-      }
-    });
+      });
+    }
   });
 }
 
@@ -456,37 +457,7 @@ exports.resetPwd = function(req, res) {
     });
   });
 }
-exports.setDeleted = function(req, res) {
-  checkParam(req, res, ["id"], () => {
-    UsersModel.userModel.findOne({ _id: req.body.id }, function(err, result) {
-      if (err) {
-        logger.error(err);
-        return res.status(500).send("Impossible de modifier cet utilisateur, veuillez contacter un administrateur.");
-      }
-      if (!result) {
-        return res.status(404).send("Utilisateur introuvable");
-      } else {
-        result.state = userState.DELETED;
-        result.save((err) => {
-          if (err) {
-            logger.error(err);
-            return res.status(500).send("Une erreur est survenue lors de la création de l'url de reset");
-          } else {
-            return res.status(200).send();
-          }
-        });
-      }
-    });
-  });
-}
 
-// Private function
-function getRandomString() {
-  crypto.randomBytes(64, function(ex, buf) {
-    if (ex) throw ex; //TODO La traiter ???
-    return buf.toString('hex');
-  });
-}
 
 function sendEmailReset(req, res, user, isUserRequest) {
   // Création de l'objet permettant de reset le mdp
