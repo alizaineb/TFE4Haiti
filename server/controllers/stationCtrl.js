@@ -38,7 +38,7 @@ exports.get = function(req, res) {
  * getById - Récupère une station basée sur l'id passé en paramètre
  *
  * @param {request} req Requête du client
- * @param  {string} req.params.station_id L'id de la station
+ * @param {string} req.params.station_id L'id de la station
  * @param {response} res Réponse renvoyée au client
  *                       404 : station non trouvée
  *                       500 : erreur serveur
@@ -63,15 +63,15 @@ exports.getById = function(req, res) {
  * create - Permet de créer une station en la mettant en état d'attente de confirmation par l'administrateur
  *
  * @param {request} req Requête du client
- * @param  {string} req.body.name Le nom de la station
- * @param  {number} req.body.latitude La latitude de la station
- * @param  {number} req.body.longitude La longitude de la station
- * @param  {number} req.body.altitude L'altitude de la station (optionnel)
- * @param  {string} req.token_decoded.id L'id de l'utilisateur créant la station
- * @param  {date} req.body.createdAt La date de création de la station
- * @param  {string} req.body.interval L'intervalle de la station (ENUM)
- * @param  {string} req.body.river La rivière liée à la station (ENUM)
- * @param  {string} req.body.commune La commune dans laquelle la station se situe (ENUM)
+ * @param {string} req.body.name Le nom de la station
+ * @param {number} req.body.latitude La latitude de la station
+ * @param {number} req.body.longitude La longitude de la station
+ * @param {number} req.body.altitude L'altitude de la station (optionnel)
+ * @param {string} req.token_decoded.id L'id de l'utilisateur créant la station
+ * @param {date} req.body.createdAt La date de création de la station
+ * @param {string} req.body.interval L'intervalle de la station (ENUM)
+ * @param {string} req.body.river La rivière liée à la station (ENUM)
+ * @param {string} req.body.commune La commune dans laquelle la station se situe (ENUM)
  * @param {response} res Réponse renvoyée au client
  *                       400 : Paramètre manquant ou incorrect (voir le modèle)
  *                       500 : Erreur serveur
@@ -170,7 +170,7 @@ exports.delete = function(req, res) {
     'state',
     (err, station) => {
       if (err) {
-        logger.error("[stationCtrl] delete :", err);
+        logger.error("[stationCtrl] delete1 :", err);
         let tmp = errors(err);
         return res.status(tmp.error).send(tmp.message);
       }
@@ -180,7 +180,7 @@ exports.delete = function(req, res) {
       station.state = states.DELETED;
       station.save(function(err) {
         if (err) {
-          logger.error("[stationCtrl] delete :", err);
+          logger.error("[stationCtrl] delete2 :", err);
           let tmp = errors(err);
           return res.status(tmp.error).send(tmp.message);
         }
@@ -199,7 +199,7 @@ exports.delete = function(req, res) {
  * @param {request} req Requête du client
  * @param {response} res Réponse renvoyée au client
  *                       500 : Erreur serveur
- * @return {string[]}    200 : Les stations dont l'état est en attente
+ * @return {station[]}   200 : Les stations dont l'état est en attente
  */
 exports.getAllAwaiting = function(req, res) {
   Station.stationModel.find({ state: states.AWAITING },
@@ -221,7 +221,7 @@ exports.getAllAwaiting = function(req, res) {
  * @param {string}    req.body.station_id L'id de la station à accepter
  * @param {response}  res Réponse renvoyée au client
  *                        500 : Erreur serveur
- * @return {string[]} 200
+ * @return                200
  */
 exports.acceptStation = function(req, res) {
   Station.stationModel.findById(req.body.station_id,
@@ -232,7 +232,7 @@ exports.acceptStation = function(req, res) {
         return res.status(500).send("Un problème est survenu lors de la récupération de la station.");
       }
       if (!station) {
-        return res.status(500).send("Impossible d'accepter cette station car elle n'existe pas.");
+        return res.status(404).send("Station introuvable (peut-être a-t-elle déjà été acceptée).");
       } else {
         station.state = states.WORKING;
         station.save((err) => {
@@ -257,7 +257,7 @@ exports.acceptStation = function(req, res) {
  * @param {response}  res Réponse renvoyée au client
  *                        404 : Station ou utilisateur inexistant
  *                        500 : Erreur serveur
- * @return {type}     200 La station mise à jour (uniquement son tableau)
+ * @return {station}      200 La station mise à jour (uniquement son tableau)
  */
 exports.addUser = function(req, res) {
   UsersModel.userModel.findById(req.body.user_id, function(err, user) {
@@ -303,7 +303,7 @@ exports.addUser = function(req, res) {
  * @param {response}  res Réponse renvoyée au client
  *                        404 : Station ou utilisateur inexistant
  *                        500 : Erreur serveur
- * @return {type}     200 La station mise à jour (uniquement son tableau)
+ * @return {station}      200 La station mise à jour (uniquement son tableau)
  */
 exports.removeUser = function(req, res) {
   UsersModel.userModel.findById(req.body.user_id,

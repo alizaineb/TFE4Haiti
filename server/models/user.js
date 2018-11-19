@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const nconf = require('nconf');
+const isInDev = nconf.get('development');
 var bcrypt = require('bcryptjs');
 const roles = require('../config/constants').roles;
 const state = require('../config/constants').userState;
@@ -25,6 +26,7 @@ const User = new Schema({
     unique: [true, 'Veuillez fournir un email'],
     validate: {
       validator: function(v) {
+        // Source :  https://www.w3resource.com/javascript/form/email-validation.php
         return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v);
       },
       message: props => `Format du mail "${props.value}" invalide`
@@ -35,7 +37,8 @@ const User = new Schema({
   },
   created_at: {
     type: Date,
-    default: Date.now
+    default: Date.now,
+    required: [true, 'Veuillez spécifier une date de création, veuillez contactez un amdinistrateur']
   },
   commune: {
     type: String,
@@ -79,7 +82,7 @@ User.methods.toDto = function() {
 
 // Bcrypt middleware on UserSchema
 User.pre('save', function(next) {
-  if (!nconf.get('development')) {
+  if (!isInDev) {
     var user = this;
     if (!user.isModified('pwd')) return next();
 
@@ -101,7 +104,6 @@ User.pre('save', function(next) {
 });
 
 User.methods.hashPassword = function(password, callback) {
-
   //    var user = this;
   //    console.log(user);
   bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
@@ -120,14 +122,17 @@ User.methods.hashPassword = function(password, callback) {
 
 //Password verification
 User.methods.comparePassword = function(password, cb) {
-  if (nconf.get('development')) {
-    cb(this.pwd == password);
+  if (!password) {
+    return cb(false);
+  }
+  if (isInDev) {
+    return cb(this.pwd == password);
   } else {
     bcrypt.compare(password, this.pwd, function(err, isMatch) {
       if (err) {
         return cb(err);
       }
-      cb(isMatch);
+      return cb(isMatch);
     });
   }
 };

@@ -17,6 +17,7 @@ exports.errors = function(err) {
   let str = "";
   let error = 500;
   for (var key in err.errors) {
+    console.log(err.errors[key]);
     if (err.errors[key].name === "CastError") {
       error = 400;
       str += "Le type d'un champ est erroné <br />";
@@ -31,6 +32,9 @@ exports.errors = function(err) {
         err.errors[key].properties.type === 'user defined')) { // Validator error model
       error = 400;
     }
+  }
+  if (str.length === 0) {
+    str += "Une erreur est survenue, veuillez contacter un administrateur";
   }
   return { error: error, message: str }
 };

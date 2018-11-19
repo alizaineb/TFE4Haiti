@@ -77,7 +77,7 @@ exports.routes = [
     access: [roles.ADMIN]
   },
   {
-    path: "/api/users/:id",
+    path: "/api/users/:user_id",
     httpMethod: "DELETE",
     middleWare: [controllers.users.delete],
     access: [roles.ADMIN]
@@ -93,14 +93,15 @@ exports.routes = [
     middleWare: [controllers.users.resetPwd]
   },
   {
-    path: "/api/users/:id",
+    path: "/api/users/:user_id",
     httpMethod: "GET",
     middleWare: [controllers.users.getById]
   },
   {
-    path: "/api/users/:id",
+    path: "/api/users/:user_id",
     httpMethod: "PUT",
-    middleWare: [controllers.users.update]
+    middleWare: [controllers.users.update],
+    access: [roles.ADMIN]
   },
 
   // Méthodes liées aux stations

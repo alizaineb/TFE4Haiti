@@ -33,7 +33,7 @@ export class UserService {
   }
 
   acceptUser(id: String) {
-    return this.http.post(environment.apiUrl + '/users/acceptUser', { id: id });
+    return this.http.post(environment.apiUrl + '/users/acceptUser', { user_id: id });
   }
 
   refuseUser(id: String, reason: String) {

@@ -1,45 +1,76 @@
 'use strict';
+/**
+ * Controlleur reprenant toutes les méthodes liées aux utilisateurs
+ */
 // Modules node
 const nconf = require('nconf');
 var crypto = require('crypto');
 
 // Nos modules
 const logger = require('../config/logger');
+// Modèles
 const UsersModel = require('../models/user');
 const StationModel = require('./../models/station');
+const PwdRecoveryModel = require('./../models/pwdRecovery');
+// Gestion du token
 const tokenManager = require('./../config/tokenManager');
+// états
 const roles = require('../config/constants').roles;
 const userState = require('../config/constants').userState;
 const checkParam = require('./utils').checkParam;
-const mailTransporter = require('./mailer');
-const PwdRecoveryModel = require('./../models/pwdRecovery');
 const errors = require('./utils').errors;
+// gestion des mails
+const mailTransporter = require('./mailer');
 
+
+
+/**
+ * login - Permet à une utilisateur de se connecter à l'application
+ *
+ * @param {request} req Requête du client
+ * @param {string} req.body.mail Le mail de la personne souhaitant se connecter
+ * @param {string} req.body.pwd Le password le parsonne souhaitant se connecter
+ * @param {response} res Réponse renvoyée au client
+ *                   404 : Login et ou mot de passe inconnu (Ne pas dire lequel des deux pour des raisons de sécurité)
+ *                   500 : Erreur serveur
+ * @return {json}    201 : un token validé par le tokenManager et l'utilisateur lié /!\ sans le sont mot de passe
+ */
 exports.login = function(req, res) {
-  checkParam(req, res, ["mail", "pwd"], function() {
+  let mail = req.body.mail;
+  let pwd = req.body.pwd;
 
-    let mail = req.body.mail;
-    let pwd = req.body.pwd;
-
-    UsersModel.userModel.findOne({ mail: mail, state: userState.OK }, function(err, result) {
+  // Récupération d'un utilisateur dont l'état est OK
+  UsersModel.userModel.findOne({ mail: mail, state: userState.OK },
+    '_id first_name last_name mail role river commune created_at last_seen state pwd',
+    (err, result) => {
       if (err) {
-        logger.error(err);
-        return res.status(500).send("Impossible de créer cet utilisateur, veuillez contacter un administrateur.");
+        logger.error("[userCtrl] get1 : ", err);
+        return res.status(500).send("Erreur lors de la récupération de l'utilisateur.");
       }
       if (!result) {
         return res.status(404).send("Login et/ou mot de passe incorrect.");
       } else {
+        // /!\ Pourrait ne pas matcher si l'utilisateur a été créée en avec la configuration "development" a été changée
         result.comparePassword(pwd, function(match) {
           if (match === true) {
             var token = tokenManager.createToken(result);
-            // console.log(token);
             if (token) {
-              return res.json({
-                token: token,
-                current: result.toDto()
+              let date = new Date(Date.now());
+              result.last_seen = date;
+              result.save((err) => {
+                if (err) {
+                  logger.error("[userCtrl] get3 : ", err);
+                  return res.status(500).send("Erreur lors de la mise à jour de sa date de dernière connexion.");
+                }
+                // Retirer le mot de passe envoyé au client !
+                result.pwd = undefined;
+                return res.status(201).send({
+                  token: token,
+                  current: result
+                });
               });
             } else {
-              logger.error(err);
+              logger.error("[userCtrl] get2 : ", err);
               return res.status(500).send("Impossible de créer un token");
             }
           } else {
@@ -47,45 +78,81 @@ exports.login = function(req, res) {
           }
         });
       }
-    }).catch(function(err) {
-      logger.error(err);
-      return res.status(500).send("Erreur lors de la récupération de l'utilisateur.");
     });
-  });
 };
 
+
+/**
+ * get - Récupère tous les utilisateurs
+ *
+ * @param {request} req Requête du client
+ * @param {response} res Réponse renvoyée au client
+ *                   500 : Erreur serveur
+ * @return {user[]}  200 : Tous les utilisateurs
+ */
 exports.get = function(req, res) {
-  UsersModel.userModel.find({}).then(function(users) {
-    let tabU = [];
-    users.forEach(user => tabU.push(user.toDto()));
-    return res.status(200).send(tabU);
-  }).catch(function(err) {
-    logger.error(err);
-    return res.status(500).send("Erreur lors de la récupération des utilisateurs");
-  })
+  UsersModel.userModel.find({},
+    '_id first_name last_name mail role river commune created_at last_seen state',
+    (err, users) => {
+      if (err) {
+        logger.error("[get] get : ", err);
+        return res.status(500).send("Erreur lors de la récupération des utilisateurs.");
+      }
+      return res.status(200).send(users);
+    });
 };
 
+
+/**
+ * getById - Récupère un itlisateur spécifique
+ *
+ * @param {request} req Requête du client
+ * @param {string} req.params.user_id L'id de l'utilsateur devant être trouvé
+ * @param {response} res Réponse renvoyée au client
+ *                   404 : L'utilisateur n'existe pas
+ *                   500 : Erreur serveur
+ * @return {user[]}  200 : Tous les utilisateurs
+ */
 exports.getById = function(req, res) {
-  let _id = req.params.id;
-  UsersModel.userModel.findById({ _id: _id }, function(err, user) {
-    if (err) return res.status(500).send("Erreur lors de la récupération de l'user.");
-    if (user.length > 1) return res.status(500).send("Ceci n'aurait jamais dû arriver.");
-    if (user.length === 0) return res.status(404).send("L'utilisateur n'existe pas");
-
-    return res.status(200).send(user.toDto());
-  });
+  let id = req.params.user_id;
+  UsersModel.userModel.findById(req.params.user_id,
+    '_id first_name last_name mail role river commune created_at last_seen state',
+    function(err, user) {
+      if (err) {
+        return res.status(500).send("Erreur lors de la récupération de l'user.");
+      }
+      if (!user) {
+        return res.status(404).send("L'utilisateur n'existe pas");
+      }
+      return res.status(200).send(user);
+    });
 };
 
-exports.getByEmail = function(req, res) {
-  //TODO connect to mongodb
-  return res.status(200).send("Method to implements");
-
-};
-
+/**
+ * roles - Permet de récupérer toutes les rôles des utilisateurs
+ *
+ * @param {request} req Requête du client
+ * @param {response} res Réponse renvoyée au client
+ * @return {string[]}     200 : les roles possible pour un utilisateur
+ */
 exports.roles = function(req, res) {
   return res.status(200).send(Object.values(roles));
 };
 
+
+/**
+ * create - Permet de créer un utilisateur en le mettant en état d'attente de confirmation par l'administrateur
+ *
+ * @param {request} req Requête du client
+ * @param {string} req.body.first_name Le prénom de l'utilisateur
+ * @param {string} req.body.last_name Le nom de l'utilisateur
+ * @param {string} req.body.mail Le mail de l'utilisateur
+ * @param {string} req.body.role Le role de l'utilisateur (ENUM)
+ * @param {string} req.body.commune Le role de l'utilisateur (ENUM) (optionnel)
+ * @param {string} req.body.river Le role de l'utilisateur (ENUM) (optionnel)
+ * @param {response} res Réponse renvoyée au client
+ * @return {station}     201 : l'utilisateur ajouté en base de données
+ */
 exports.create = function(req, res) {
   let user = req.body;
   let uTmp = new UsersModel.userModel();
@@ -98,29 +165,52 @@ exports.create = function(req, res) {
     uTmp.commune = user.commune;
     uTmp.river = user.bassin_versant;
   }
-  uTmp.save().then(() => {
-    return res.status(201).send(uTmp.toDto());
-  }).catch(function(err) {
-    logger.error(err);
-    let tmp = errors(err);
-    return res.status(tmp.error).send(tmp.message);
+  uTmp.save((err) => {
+    if (err) {
+      logger.error("[userCtrl] create :", err);
+      let tmp = errors(err);
+      return res.status(tmp.error).send(tmp.message);
+    }
+    // Retirer le mot de passe envoyé au client !
+    uTmp.pwd = undefined;
+    return res.status(201).send(uTmp);
   });
 };
 
+
+/**
+ * update - Permet de mettre à jour un utilsiateur, il est possible de spécifier uniquement le champ à mettre à jour, dans ce cas, nous allons utiliser les anciens champs
+ *
+ * @param {request} req Requête du client
+ * @param {string} req.params_user_id L'id de l'utilisateur à mettre à jour
+ * @param {string} req.body.first_name Le prénom de l'utilisateur à mettre à jour
+ * @param {string} req.body.mail Le mail de l'utilisateur à mettre à jour
+ * @param {string} req.body.last_name Le nom de l'utilisateur à mettre à jour
+ * @param {string} req.body.role Le role de l'utilisateur à mettre à jour
+ * @param {string} req.body.state L'état de l'utilisateur à mettre à jour
+ * @param {string} req.body.commune La commune de l'utilisateur à mettre à jour
+ * @param {string} req.body.river Le bassin-versant de l'utilisateur à mettre à jour
+ * @param {response} res Réponse renvoyée au client
+ *                       400 : Donnée erronnée
+ *                       404 : Utilisateur inexistant
+ *                       500 : Erreur serveur
+ * @return {station}     201 : l'utilisateur mis à jour
+ */
 exports.update = function(req, res) {
-  checkParam(req, res, ["_id", "first_name", "last_name", "mail", "role", "state"], () => {
-    let id = req.body._id;
-    UsersModel.userModel.findById({ _id: id }, function(err, user) {
+  UsersModel.userModel.findById(req.params.user_id,
+    '_id first_name last_name mail role river commune created_at last_seen state',
+    (err, user) => {
       if (err) {
         logger.error(err);
-        return res.status(500).send("Erreur lors de la récupération de l'user.");
+        return res.status(500).send("Erreur lors de la récupération de l'utilisateur.");
+      } else if (!user) {
+        return res.status(404).send("L'utilisateur n'existe pas");
       } else {
-        user.first_name = req.body.first_name;
-        user.mail = req.body.mail;
-        user.last_name = req.body.last_name;
-        user.role = req.body.role;
-        user.state = req.body.state;
-        // Je crois pas que ces checks soient utiles la tu peux direct req.body.item non ?
+        user.first_name = req.body.first_name || user.first_name;
+        user.mail = req.body.mail || user.mail;
+        user.last_name = req.body.last_name || user.last_name;
+        user.role = req.body.role || user.role;
+        user.state = req.body.state || user.state;
         if (!req.body.commune) {
           user.commune = undefined;
         } else {
@@ -137,66 +227,99 @@ exports.update = function(req, res) {
             let tmp = errors(err);
             return res.status(tmp.error).send(tmp.message);
           } else {
-            return res.status(200).send();
+            return res.status(201).send(user);
           }
         });
       }
     });
-  });
 }
 
+
+/**
+ * delete - Permet de passer l'état de l'utilisateur à delete.
+ *          Etant donné le besoin de garder les données liées à l'utilisateur, nous ne pouvons pas supprimer celui-ci de la base de données
+ *
+ * @param {request} req Requête du client
+ * @param {string} req.params.user_id L'id de l'utilisateur à mettre à jour
+ * @param {response} res Réponse renvoyée au client
+ *                       404 : Utilisateur inexistant
+ *                       500 : Erreur serveur
+ * @return {station}     201 : l'utilisateur mis à jour dont l'état est passé à deleted
+ */
 exports.delete = function(req, res) {
-  let id = req.params.id || '';
-  if (!id) {
-    return res.status(400).send("Information manquante(s)");
-  }
-  // console.log(id);
-  let user = UsersModel.userModel.deleteOne({ _id: id }).then(() => {
-    return res.status(204).send("ok") //TODO remove body
-  }).catch(function(err) {
-    logger.error(err);
-    return res.status(500).send("Erreur lors de la suppression de l'utilisateur");
-  });
+  let user = UsersModel.userModel.findById(req.params.user_id,
+    'state',
+    (err, user) => {
+      if (err) {
+        logger.error("[userCtrl] delete1 :", err);
+        let tmp = errors(err);
+        return res.status(tmp.error).send(tmp.message);
+      } else if (!user) {
+        return res.status(404).send("L'utilisateur n'existe pas");
+      }
+      user.state = userState.DELETED;
+      user.save(function(err) {
+        if (err) {
+          logger.error("[userCtrl] delete2 :", err);
+          let tmp = errors(err);
+          return res.status(tmp.error).send(tmp.message);
+        }
+        return res.status(201).send(user);
+      });
+    });
 };
 
+// TODO ?????
 exports.logout = function(req, res) {
   //TODO connect to mongodb
   return res.status(200).send("Method to implements");
 };
 
+/**
+ * getAllAwaiting - Permet de récupérer tous les utilisateurs en attente
+ *                  Va récupérer les champs suivants : _id first_name last_name mail role river commune created_at last_seen state
+ *
+ * @param {request} req Requête du client
+ * @param {response} res Réponse renvoyée au client
+ *                       500 : Erreur serveur
+ * @return {string[]}    200 : Les stations dont l'état est en attente
+ */
+
 exports.getAllAwaiting = function(req, res) {
-  UsersModel.userModel.find({ state: userState.AWAITING }, function(err, result) {
+  UsersModel.userModel.find({ state: userState.AWAITING },
+    '_id first_name last_name mail role river commune created_at last_seen state',
+    (err, users) => {
+      if (err) {
+        logger.error("[userCtrl] getAllAwaiting :", err);
+        return res.status(500).send("Erreur lors de la récupération des utilisateurs en attente.");
+      }
+      return res.status(200).send(users);
+    });
+}
+/**
+ * acceptUser - Permet de passer un utilisateur de l'état awaiting à l'état ok, va envoyer à l'utilisateur un mail
+ *
+ * @param {request}   req Requête du client
+ * @param {string}    req.body.user_id L'id de l'utilisateur à accepter
+ * @param {response}  res Réponse renvoyée au client
+ *                        500 : Erreur serveur
+ * @return                200
+ */
+exports.acceptUser = function(req, res) {
+  if (!req.body.user_id) {
+    return res.status(400).send("Veuillez fournir l'id de l'utilisateur à accepter.")
+  }
+  UsersModel.userModel.findOne({ _id: req.body.user_id, state: userState.AWAITING }, function(err, result) {
     if (err) {
-      logger.error(err);
-      return res.status(500).send("Erreur lors de la récupération des utilisateurs en attente.");
+      logger.error("[userCtrl] acceptUser :", err);
+      return res.status(500).send("Erreur lors de la récupération de l'utilisateur concerné.");
     }
     if (!result) {
-      return res.status(204);
+      return res.status(404).send("Utilisateur introuvable (peut-être a-t-il déjà été accepté).");
     } else {
-      let tabS = [];
-      result.forEach(user => tabS.push(user.toDto()));
-      return res.status(200).send(tabS);
+      let currUser = result;
+      sendEmailReset(req, res, currUser, false);
     }
-  });
-}
-
-exports.acceptUser = function(req, res) {
-  checkParam(req, res, ["id"], () => {
-    let id = req.body.id;
-    UsersModel.userModel.find({ _id: id, state: userState.AWAITING }, function(err, result) {
-      if (err) {
-        logger.error(err);
-        return res.status(500).send("Erreur lors de la récupération de l'utilisateur concerné.");
-      }
-      if (result.length > 1) {
-        return res.status(500).send("Ceci n'aurait jamais dû arriver.");
-      } else if (result.length == 0) {
-        return res.status(404).send("Aucun utilisateur correspondant.");
-      } else {
-        let currUser = result[0];
-        sendEmailReset(req, res, currUser, false);
-      }
-    });
   });
 }
 
@@ -208,7 +331,7 @@ exports.refuseUser = function(req, res) {
     }
     let id = req.body.id;
     let reason = req.body.reason;
-    UsersModel.userModel.find({ _id: id, state: userState.AWAITING }, function(err, result) {
+    UsersModel.userModel.findOne({ _id: id, state: userState.AWAITING }, function(err, result) {
       if (err) {
         logger.error(err);
         return res.status(500).send("Erreur lors de la récupération de l'utilisateur concerné.");
@@ -357,10 +480,6 @@ exports.setDeleted = function(req, res) {
   });
 }
 
-
-
-
-
 // Private function
 function getRandomString() {
   crypto.randomBytes(64, function(ex, buf) {
@@ -414,14 +533,6 @@ function sendEmailReset(req, res, user, isUserRequest) {
     });
 
   });
-}
-
-// Source : https://www.w3resource.com/javascript/form/email-validation.php
-function ValidateEmail(mail) {
-  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
-    return (true);
-  }
-  return (false);
 }
 // used to tetst some routes
 exports.useless = function(req, res) {
