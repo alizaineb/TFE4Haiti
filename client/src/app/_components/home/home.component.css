@@ -3,7 +3,6 @@
  * Copyright 2013-2018 Start Bootstrap
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-landing-page/blob/master/LICENSE)
  */
-
 body {
   font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
@@ -18,13 +17,20 @@ h6 {
   font-weight: 700;
 }
 
+header {
+  width: 100vw;
+  position: relative;
+  margin-left: -50vw;
+  margin-top: -40px;
+  height: 55%;
+  left: 50%;
+}
+
 header.masthead {
   position: relative;
   background-color: #343a40;
   background: url("../../../assets/img/bg-masthead.jpg") no-repeat center center;
   background-size: cover;
-  padding-top: 8rem;
-  padding-bottom: 8rem;
 }
 
 header.masthead .overlay {
@@ -39,6 +45,7 @@ header.masthead .overlay {
 
 header.masthead h1 {
   font-size: 2rem;
+  margin-top: -60px;
   color: white;
 }
 
@@ -47,6 +54,7 @@ header.masthead h1 {
     padding-top: 12rem;
     padding-bottom: 12rem;
   }
+
   header.masthead h1 {
     font-size: 3rem;
   }
@@ -88,6 +96,6 @@ header.masthead h1 {
   font-size: 5rem;
 }
 
-.container{
+.container {
   min-width: 80%
 }
