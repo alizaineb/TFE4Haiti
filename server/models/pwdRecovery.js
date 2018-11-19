@@ -1,5 +1,5 @@
 'use strict';
-// Libraire node 
+// Libraire node
 const mongoose = require('mongoose');
 
 // schema pour récupérer un mot de passe
@@ -11,7 +11,8 @@ const PwdRecovery = new Schema({
   },
   url: {
     type: String,
-    required: [true, 'Url lié manquant, veuillez contactez un amdinistrateur']
+    required: [true, 'Url lié manquant, veuillez contactez un amdinistrateur'],
+    unique: [true, 'Veuillez réessayer'],
   },
   date: {
     type: Date,

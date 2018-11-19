@@ -395,75 +395,93 @@ exports.askResetPwd = function(req, res) {
 }
 
 
+/**
+ * resetPwd - Permet de changer de mot de passe, va comprarer les deux mots de passe envoyé et vérifier que l'url envoyé existe.
+ *            Si tout est conforme et que le temps n'est pas expiré, va changer le mot de passe de l'utilisateur.
+ *
+ * @param {request} req Requête du client
+ * @param {request} req.body.pwd1 Le premier champ du mot de passe
+ * @param {request} req.body.pwd2 Le deuxième champ du mot de passe
+ * @param {request} req.body.urlReset L'url par laquelle l'utilisateur est tombé sur le mot de passe
+ * @param {response} res Réponse renvoyée au client
+ *                       400 : Si il manque un champ ou que pwd1 est différent de pwd2
+ *                       404 : Url inexistante
+ *                       500 : Erreur serveur
+ * @return               200
+ */
 exports.resetPwd = function(req, res) {
-  checkParam(req, res, ["pwd1", "pwd2", "urlReset"], () => {
-    let pwd1 = req.body.pwd1;
-    let pwd2 = req.body.pwd2;
-    let url = req.body.urlReset;
-
-    // check mdp1 == mdp2
-    if (pwd1 != pwd2) {
-      return res.status(400).send("Mot de passe différents");
-    }
-    PwdRecoveryModel.pwdRecoveryModel.find({ url: url }, (err, result) => {
-      if (err) {
-        logger.error(err);
-        return res.status(500).send("Erreur lors de la récupération du lien de reset concerné.");
-      }
-      if (result.length > 1) {
-        return res.status(500).send("Ceci n'aurait jamais dû arriver.");
-      } else if (result.length == 0) {
-        return res.status(400).send("Lien inexistant ou déjà utilisé.");
-      } else {
-        let urlObj = result[0];
-        UsersModel.userModel.find({ _id: urlObj.user }, function(err, result) {
-          if (err) {
-            logger.error(err);
-            return res.status(500).send("Erreur lors de la récupération de l'utilisateur concerné.");
-          }
-          if (result.length > 1) {
-            return res.status(500).send("Ceci n'aurait jamais dû arriver.");
-          } else if (result.length == 0) {
-            // /!\ Est bien un retour 200 pour des raisons de sécurité on ne peut pas renvoyer une 404, sinon il devient possible de brute forcer la liste des liesn de reset /!\
-            return res.status(500).send("Utilisateur supprimé entre temps");
-          } else {
-            // check user en mode pwd_creation
-            let usr = result[0];
-            if (usr.state != userState.PASSWORD_CREATION) {
-              return res.status(500).send("L'utilisateur n'est pas dans l'état requis");
-            } else {
-              // Check pas expiré
-              var date = new Date();
-              if (date.getTime() < (urlObj.date.getTime() + (urlObj.duration * 1000))) {
-                usr.pwd = pwd1;
-                usr.state = userState.OK;
-                usr.save((err) => {
-                  if (err) {
-                    logger.error(err);
-                    return res.status(500).send("Une erreur est survenue lors de la mise à jour du mot de passe");
-                  } else {
-                    urlObj.remove(function(err, userUpdt) {
-                      if (err) {
-                        logger.error(err);
-                        return res.status(500).send("Erreur lors de la suppression du lien d'utlisation");
-                      }
-                      return res.status(200).send();
-                    });
-                  }
-                });
+  if (!req.body.pwd1 || !req.body.pwd2 || !req.body.urlReset) {
+    return res.status(400).send("Il manque un ou plusieurs champ(s).");
+  }
+  let pwd1 = req.body.pwd1;
+  let pwd2 = req.body.pwd2;
+  let url = req.body.urlReset;
+  // check mdp1 == mdp2
+  if (pwd1 != pwd2) {
+    return res.status(400).send("Mot de passe différents");
+  }
+  PwdRecoveryModel.pwdRecoveryModel.findOne({ url: url }, (err, result) => {
+    if (err) {
+      logger.error("[userCtrl] resetPwd1 :", err);
+      return res.status(500).send("Erreur lors de la récupération du lien de reset concerné.");
+    } else if (!result) {
+      // Ne rien dire si pas lien inexistant (Sécurité);
+      return res.status(200).send();
+    } else {
+      let urlObj = result;
+      UsersModel.userModel.findOne({ _id: urlObj.user, state: userState.PASSWORD_CREATION }, function(err, user) {
+        if (err) {
+          logger.error("[userCtrl] resetPwd2:", err);
+          return res.status(500).send("Erreur lors de la récupération de l'utilisateur concerné.");
+        } else if (!user) {
+          // Ne rien dire si pas d'utilsateur (Sécurité);
+          return res.status(200).send();
+        } else {
+          // Check pas expiré
+          var date = new Date();
+          if (date.getTime() < (urlObj.date.getTime() + (urlObj.duration * 1000))) {
+            user.pwd = pwd1;
+            user.state = userState.OK;
+            user.save((err) => {
+              if (err) {
+                logger.error("[userCtrl] resetPwd3:", err);
+                return res.status(500).send("Une erreur est survenue lors de la mise à jour du mot de passe");
               } else {
-                return res.status(400).send("Malheureusement vous avez mis trop de temps pour changer votre mot de passe, le lien utilisé est écoulé.");
+                urlObj.remove(function(err, userUpdt) {
+                  if (err) {
+                    logger.error("[userCtrl] resetPwd4:", err);
+                    return res.status(500).send("Erreur lors de la suppression du lien d'utlisation");
+                  }
+                  return res.status(200).send();
+                });
               }
-            }
+            });
           }
-
-        });
-      }
-    });
+          // Expiré : retirer l'objet de la DB
+          else {
+            urlObj.remove(function(err, userUpdt) {
+              if (err) {
+                logger.error("[userCtrl] resetPwd4:", err);
+                return res.status(500).send("Erreur lors de la suppression du lien d'utlisation");
+              }
+              return res.status(400).send("Malheureusement vous avez mis trop de temps pour changer votre mot de passe, le lien utilisé est écoulé.");
+            });
+          }
+        }
+      });
+    }
   });
 }
 
-
+/**
+ * sendEmailReset - Va envoyer un mail lutilisateur permettant de changer/initialiser son mot de passe
+ *
+ * @param {request} req Requête du client
+ * @param {response} res Réponse renvoyée au client
+ * @param  {user} user L'utilisateur à qui il faut envoyer un mot de passe
+ * @param  {boolean} isUserRequest Signifie s'il s'agit d'une demande effectuée par l'utilisateur ou bien s'il s'agit d'une demande effectuée suite à l'acceptation du l'utilisateur par un administrateur
+ * @return              200
+ */
 function sendEmailReset(req, res, user, isUserRequest) {
   // Création de l'objet permettant de reset le mdp
   let pwdTmp = new PwdRecoveryModel.pwdRecoveryModel();
@@ -479,29 +497,32 @@ function sendEmailReset(req, res, user, isUserRequest) {
   let urlTotal = origin + '/login/reset/' + (isUserRequest ? 'u' : 'a') + '/' + url;
   pwdTmp.save((err) => {
     if (err) {
-      logger.error(err);
-      return res.status(500).send("Une erreur est survenue lors de la création de l'url de reset");
+      logger.error("[userCtrl] sendEmailReset1 :", err);
+      // L'erreur peut peut-être provenir de l'url qui existe déjà (unique dans le modèles)
+      return res.status(500).send("Une erreur est survenue lors de la création de l'url de reset, veuillez réessayer. Si l'erreur persiste, veuillez ocntacter un administrateur");
     }
-    // On envoie le mail
+    // Texte du mail
     let text = 'Bonjour ' + user.first_name + ' ' + user.last_name +
       ',\n\nVoici le lien avec lequel vous avez la possibilité de ' + (isUserRequest ? 'changer' : 'créer') +
       ' votre mot de passe : \n' +
       urlTotal +
       (isUserRequest ? '\n\nSi vous n\'avez pas effectué cette requête, veuillez contacter l\'administrateur' : '') +
       '\n\n Bien à vous';
-    let title = "";
 
+    // Titre du mail
+    let title = "";
     if (isUserRequest) {
       title = nconf.get('mail').changePwd;
     } else {
       title = nconf.get('mail').subjectCreationAccOk;
     }
+    // Envoi de l'email
     mailTransporter.sendMail(req, res, title, user.mail, text, () => {
       user.state = userState.PASSWORD_CREATION;
       // On met à jour l'utilisateur
-      user.save(function(err, userUpdt) {
+      user.save((err, userUpdt) => {
         if (err) {
-          logger.error(err);
+          logger.error("[userCtrl] sendEmailReset2 :", err);
           return res.status(500).send("Erreur lors de la mise à jour de l'utilisateur concerné.");
         }
         return res.status(200).send();
@@ -510,7 +531,7 @@ function sendEmailReset(req, res, user, isUserRequest) {
 
   });
 }
-// used to tetst some routes
+// used to test some routes
 exports.useless = function(req, res) {
   return res.status(200).send({ message: 'ok' });
 };
