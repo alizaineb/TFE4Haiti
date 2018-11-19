@@ -478,6 +478,7 @@ exports.resetPwd = function(req, res) {
  *
  * @param {request} req Requête du client
  * @param {response} res Réponse renvoyée au client
+ *                       500 : Erreur serveur
  * @param  {user} user L'utilisateur à qui il faut envoyer un mot de passe
  * @param  {boolean} isUserRequest Signifie s'il s'agit d'une demande effectuée par l'utilisateur ou bien s'il s'agit d'une demande effectuée suite à l'acceptation du l'utilisateur par un administrateur
  * @return              200
