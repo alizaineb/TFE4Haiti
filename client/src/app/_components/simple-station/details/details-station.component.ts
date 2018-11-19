@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {StationsService} from '../../../_services/stations.service';
-import {AlertService} from '../../../_services/';
+import {AlertService, AuthenticationService} from '../../../_services/';
 import * as L from 'leaflet';
 import {Station} from '../../../_models';
 import {LocalstorageService} from "../../../_services/localstorage.service";
@@ -23,7 +23,8 @@ export class DetailsStationComponent implements OnInit {
   constructor(
     private stationService: StationsService,
     private localStorageService: LocalstorageService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private authenticationService: AuthenticationService
   ) {
   }
 
@@ -90,6 +91,10 @@ export class DetailsStationComponent implements OnInit {
 
   hasAccessToStation(station){
     return this.stationService.hasAccessToStation(station)
+  }
+
+  hasViewerAcces(){
+    return this.authenticationService.hasViewerAccess();
   }
 
 

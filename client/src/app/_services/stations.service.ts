@@ -64,10 +64,11 @@ export class StationsService {
   }
 
   hasAccessToStation(station: Station){
-    const user = this.localStorageService.getItem('currentUser').current;
-    if(!user){
+    let user = this.localStorageService.getItem('currentUser');
+    if(!user || !user.current){
       return false;
     }
+    user = user.current
     // Si l'utilisateur est un admin il peut passer
     if (user.role == Constantes.roles.ADMIN) {
       return true;
