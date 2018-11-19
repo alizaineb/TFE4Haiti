@@ -4,12 +4,14 @@ import { environment } from '../../environments/environment';
 import { Note, Station } from '../_models';
 import { Observable } from 'rxjs';
 import { RainData } from "../_models/rainData";
+import {LocalstorageService} from "./localstorage.service";
+import {Constantes} from "../_helpers/constantes";
 
 @Injectable({
   providedIn: 'root'
 })
 export class StationsService {
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private localStorageService: LocalstorageService) {
   }
 
   getIntervals() {
@@ -61,6 +63,32 @@ export class StationsService {
     return this.http.get<RainData[]>(environment.apiUrl + '/data/' + id_station + '/' + date);
   }
 
+  hasAccessToStation(station: Station){
+    const user = this.localStorageService.getItem('currentUser').current;
+    if(!user){
+      return false;
+    }
+    // Si l'utilisateur est un admin il peut passer
+    if (user.role == Constantes.roles.ADMIN) {
+      return true;
+    }
+    // On a la station et l'utilisateur
+    // Il y a 3 checks à faire
+    // Commune :
+    if (user.commune === station.commune) {
+      return true;
+    }
+    // Rivière :
+    if (user.river === station.river) {
+      return true;
+    }
+    // assignée
+    if (station.users && station.users.indexOf(user._id) > -1) {
+      return true;
+    }
+
+    return false;
+  }
 
 
 
