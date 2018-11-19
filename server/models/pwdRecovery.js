@@ -1,3 +1,5 @@
+'use strict';
+// Libraire node 
 const mongoose = require('mongoose');
 
 // schema pour récupérer un mot de passe

@@ -1,4 +1,7 @@
+'use strict';
+// Libraire node
 const mongoose = require('mongoose');
+// Etats
 const states = require('../config/constants').stationState;
 
 let statesEnum = [states.AWAITING, states.BROKEN, states.WORKING, states.DELETED];
@@ -45,7 +48,6 @@ let communes = [
 
 let rivers = ['river1', 'river2', 'Grande Rivière du Nord', 'Haut-du-Cap', 'Limbé', 'Marion'];
 let intervals = ['1min', '5min', '10min', '15min', '30min', '1h', '2h', '6h', '12h', '24h'];
-// schema pour récupérer un mot de passe
 const Schema = mongoose.Schema;
 const Station = new Schema({
   name: {
@@ -115,6 +117,8 @@ const Station = new Schema({
   }
 });
 
+
+// Avant qu'une station ne soit mise à jour, changer sa date de dernière mise à jour
 Station.pre('save', function() {
   const d = new Date();
   this.updatedAt = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes()));
@@ -139,13 +143,13 @@ Station.methods.toDto = function() {
 };
 
 
+//Definition du modèle
 const stationModel = mongoose.model("station", Station);
+// Export du modèle
 exports.stationModel = stationModel;
+
+// Exports des contantes
 // TODO Mettre dans le fichier de constantes ?
-
-
 exports.rivers = rivers;
 exports.intervals = intervals;
-
-// TODO En attente de confirmation
 exports.communes = communes;

@@ -1,4 +1,7 @@
+'use strict';
+// Libraire node
 const mongoose = require('mongoose');
+// Etats
 const state = require('../config/constants').DataType;
 
 let statesEnum = [state.FILE, state.INDIVIDUAL, state.UPDATE];

@@ -1,10 +1,19 @@
+'use strict';
+// Libraire node
 const mongoose = require('mongoose');
 const nconf = require('nconf');
-const isInDev = nconf.get('development');
 var bcrypt = require('bcryptjs');
+// Est-on en dévelopemment
+const isInDev = nconf.get('development');
+// Roles
 const roles = require('../config/constants').roles;
+// Etats
 const state = require('../config/constants').userState;
+
+// Modele des stations utilisé pour récupérer les communes et les bassins versants
 const StationModel = require('./../models/station');
+
+// Complexité du hachage
 var SALT_WORK_FACTOR = 4;
 
 let statesEnum = [state.AWAITING, state.PASSWORD_CREATION, state.OK, state.DELETED];
@@ -80,7 +89,7 @@ User.methods.toDto = function() {
   };
 };
 
-// Bcrypt middleware on UserSchema
+// Avant qu'un utilisateur ne soit mis à jour, hacher son mot de passe si néccessaire
 User.pre('save', function(next) {
   if (!isInDev) {
     var user = this;
@@ -103,6 +112,15 @@ User.pre('save', function(next) {
   }
 });
 
+
+/**
+ * hashPassword - Va permettre de hasher un mot de passe (basé sur la libraire bcrypt)
+ *
+ * @param  {string} password le mot de passe à hasher
+ * @param  {user} this L'utilisateur courrant
+ * @param  {callback} callback la méthode à appeller après
+ * @return {calback(boolean)}  Va faire appel au callback avec un erreur ,si une erreur s'est produite
+ */
 User.methods.hashPassword = function(password, callback) {
   //    var user = this;
   //    console.log(user);
@@ -120,8 +138,16 @@ User.methods.hashPassword = function(password, callback) {
   });
 }
 
-//Password verification
+/**
+ * comparePassword - Va permettre de comparer deux mot de passe
+ *
+ * @param  {string} password le mot de passe à comparer
+ * @param  {user} this L'utilisateur courrant
+ * @param  {callback} callback la méthode à appeller après
+ * @return {calback(boolean)}  Va faire appel au callback avec un erreur ,si une erreur s'est produite
+ */
 User.methods.comparePassword = function(password, cb) {
+  /// Si pas de mot de passe
   if (!password) {
     return cb(false);
   }

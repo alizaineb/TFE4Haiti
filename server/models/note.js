@@ -1,3 +1,5 @@
+'use strict';
+// Libraire node
 const mongoose = require('mongoose');
 var timestamps = require('mongoose-timestamp');
 
