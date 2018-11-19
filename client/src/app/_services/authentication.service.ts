@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 import { LocalstorageService } from "./localstorage.service";
+import {Constantes} from "../_helpers/constantes";
 
 @Injectable()
 export class AuthenticationService {
@@ -65,5 +66,20 @@ export class AuthenticationService {
 
         return user;
       }));
+  }
+
+  hasAdminAccess(){
+    const user = this.localStorageService.getItem('currentUser').current;
+    return user.role == Constantes.roles.ADMIN;
+  }
+
+  hasWorkerAccess(){
+    const user = this.localStorageService.getItem('currentUser').current;
+    return user.role == Constantes.roles.WORKER || this.hasAdminAccess();
+  }
+
+  hasViewerAccess(){
+    const user = this.localStorageService.getItem('currentUser').current;
+    return user.role == Constantes.roles.VIEWER || this.hasWorkerAccess();
   }
 }
