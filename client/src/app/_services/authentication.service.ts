@@ -1,4 +1,4 @@
-﻿import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
@@ -69,8 +69,11 @@ export class AuthenticationService {
   }
 
   hasAdminAccess(){
-    const user = this.localStorageService.getItem('currentUser').current;
-    return user.role == Constantes.roles.ADMIN;
+    const user = this.localStorageService.getItem('currentUser');
+    if(user && user.current){
+      return user.current.role == Constantes.roles.ADMIN;
+
+    }
   }
 
   hasWorkerAccess(){
