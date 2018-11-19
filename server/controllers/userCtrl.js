@@ -474,7 +474,7 @@ exports.resetPwd = function(req, res) {
 }
 
 /**
- * sendEmailReset - Va envoyer un mail lutilisateur permettant de changer/initialiser son mot de passe
+ * sendEmailReset - Va envoyer un mail à l'utilisateur permettant de changer/initialiser son mot de passe
  *
  * @param {request} req Requête du client
  * @param {response} res Réponse renvoyée au client
