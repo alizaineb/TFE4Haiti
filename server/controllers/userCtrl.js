@@ -364,31 +364,36 @@ exports.refuseUser = function(req, res) {
 }
 
 
+/**
+ * askResetPwd - Utilisée lorsqu'un utilisateur a oublié son mot de passe et fait la demande pour changer de mot de passe
+ *               Cette méthode va envoyer un mail à l'utilisateur avec le lien permettant de changer de mot de passe
+ *
+ * @param {request} req Requête du client
+ * @param {request} req.body.reason Le mail de la personne
+ * @param {response} res Réponse renvoyée au client
+ *                       400 : Si il manque le mail
+ *                       500 : Erreur serveur
+ * @return               Fait appel à la fonction sendEmailReset
+ */
 exports.askResetPwd = function(req, res) {
-  checkParam(req, res, ["mail"], () => {
-    // Trouver l'utilisateur concerné
-    UsersModel.userModel.find({ mail: req.body.mail }, function(err, result) {
-      if (err) {
-        logger.error(err);
-        return res.status(500).send("Erreur lors de la récupération de l'utilisateur concerné.");
-      }
-
-      if (result.length > 1) {
-        return res.status(500).send("Ceci n'aurait jamais dû arriver.");
-      } else if (result.length == 0) {
-        // /!\ Est bien un retour 200 pour des raisons de sécurité on ne peut pas renvoyer une 404, sinon il devient possible de brute forcer la liste des utilisateurs /!\
-        return res.status(200).send();
-      } else {
-        let currUser = result[0];
-        // /!\ Pas signifier à l'utilisateur si son compte a été validé
-        if (currUser.state == userState.AWAITING || currUser.state == userState.DELETED) {
-          return res.status(200).send();
-        }
-        sendEmailReset(req, res, currUser, true);
-      }
-    });
+  let mail = req.body.mail;
+  if (!mail) {
+    return res.status(400).send("Veuillez fournir votre mail.");
+  }
+  // ne vérifier que pour les utilisateurs dont l'état est à OK
+  UsersModel.userModel.findOne({ mail: req.body.mail, state: userState.OK }, function(err, user) {
+    if (err) {
+      logger.error("[userCtrl] askResetPwd1 :", err);
+      return res.status(500).send("Erreur lors de la récupération de l'utilisateur concerné.");
+    } else if (!user) {
+      // Pour pas dire que l'utilsateur existe pas
+      return res.status(200).send();
+    } else {
+      sendEmailReset(req, res, user, true);
+    }
   });
 }
+
 
 exports.resetPwd = function(req, res) {
   checkParam(req, res, ["pwd1", "pwd2", "urlReset"], () => {
