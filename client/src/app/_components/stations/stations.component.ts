@@ -1,6 +1,7 @@
-import { Component, OnInit, Output } from '@angular/core';
-import { Station } from '../../_models';
-import { StationsService } from '../../_services/stations.service';
+import {Component, OnInit, Output} from '@angular/core';
+import {Station} from '../../_models';
+import {StationsService} from '../../_services/stations.service';
+import {AuthenticationService} from "../../_services";
 
 @Component({
   selector: 'app-stations',
@@ -21,7 +22,8 @@ export class StationsComponent implements OnInit {
 
   searchKeyWord = '';
 
-  constructor(private stationService: StationsService) {
+  constructor(private stationService: StationsService,
+              private autheticationService: AuthenticationService) {
     this.headers = ['Nom', 'Commune', 'Rivière', 'Date de création', 'Dernière modification', 'Etat'];
   }
 
@@ -39,6 +41,22 @@ export class StationsComponent implements OnInit {
       });
   }
 
+  hasAdminAccess() {
+    return this.autheticationService.hasAdminAccess();
+  }
+
+  hasAccessToStation(station) {
+    return this.stationService.hasAccessToStation(station);
+  }
+
+  hasWorkerAccess(station) {
+    return this.autheticationService.hasWorkerAccess();
+  }
+
+  hasViewerAccess() {
+    return this.autheticationService.hasViewerAccess();
+  }
+
   initMap() {
     this.map = new Map();
     this.map.set('Nom', 'name');
@@ -51,14 +69,14 @@ export class StationsComponent implements OnInit {
 
   filterStation() {
     this.stationsFiltered = this.stations.filter((value) => {
-      return value.name.toLowerCase().includes(this.searchKeyWord.toLowerCase()) ||
+      return (value.name.toLowerCase().includes(this.searchKeyWord.toLowerCase()) ||
         value.river.toLowerCase().includes(this.searchKeyWord.toLowerCase()) ||
-        value.commune.toLowerCase().includes(this.searchKeyWord.toLowerCase());
+        value.commune.toLowerCase().includes(this.searchKeyWord.toLowerCase())) && this.hasAccessToStation(value) ;
     });
   }
 
 
-  setStationSelected(station: Station){
+  setStationSelected(station: Station) {
     this.stationSelected = station;
   }
 
