@@ -94,6 +94,9 @@ export class DetailsStationComponent implements OnInit {
   hasViewerAcces() {
     return this.authenticationService.hasViewerAccess();
   }
+  hasAdminAccess() {
+    return this.authenticationService.hasAdminAccess();
+  }
 
 
   generateMap() {
