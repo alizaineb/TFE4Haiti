@@ -43,7 +43,7 @@ export class AssignUsersComponent implements OnInit {
           this.userService.getAll()
             .pipe(
               map(users => {
-                users = users.filter(u => !station.users.includes(u._id));
+                users = users.filter(u => !station.users.includes(u._id) && u.role === 'Worker');
                 return users;
               })
             )
@@ -51,7 +51,6 @@ export class AssignUsersComponent implements OnInit {
               this.listAllUsers = users;
               this.listAllUsersFiltered = this.listAllUsers;
             });
-
           const listUser = [];
           for (const id of station.users) {
             this.userService.getById(id).subscribe(user => {
