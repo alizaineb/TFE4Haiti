@@ -37,7 +37,7 @@
         <div>
           <i *ngIf="getSelectedClass(station)" class="fas fa-check-circle "></i>
           <i *ngIf="!getSelectedClass(station)" class="far fa-circle "></i>
-          <a class="details" [routerLink]="['/stations', station._id]"> <i class="fas fa-info-circle"></i> </a>
+          <a class="details" [routerLink]="['/stations', station._id, 'Details']"> <i class="fas fa-info-circle"></i> </a>
         </div>
 
       </li>
