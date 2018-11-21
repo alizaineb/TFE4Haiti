@@ -1,7 +1,7 @@
-import {Component, OnInit, Output} from '@angular/core';
-import {Station} from '../../_models';
-import {StationsService} from '../../_services/stations.service';
-import {AuthenticationService} from "../../_services";
+import { Component, OnInit, Output } from '@angular/core';
+import { Station } from '../../_models';
+import { StationsService } from '../../_services/stations.service';
+import { AuthenticationService } from "../../_services";
 
 @Component({
   selector: 'app-stations',
@@ -23,7 +23,7 @@ export class StationsComponent implements OnInit {
   searchKeyWord = '';
 
   constructor(private stationService: StationsService,
-              private authenticationService: AuthenticationService) {
+    private authenticationService: AuthenticationService) {
     this.headers = ['Nom', 'Commune', 'Rivière', 'Date de création', 'Dernière modification', 'Etat'];
   }
 
@@ -71,7 +71,7 @@ export class StationsComponent implements OnInit {
     this.stationsFiltered = this.stations.filter((value) => {
       return (value.name.toLowerCase().includes(this.searchKeyWord.toLowerCase()) ||
         value.river.toLowerCase().includes(this.searchKeyWord.toLowerCase()) ||
-        value.commune.toLowerCase().includes(this.searchKeyWord.toLowerCase())) && this.hasAccessToStation(value) ;
+        value.commune.toLowerCase().includes(this.searchKeyWord.toLowerCase())) && this.hasAccessToStation(value);
     });
   }
 
@@ -99,7 +99,7 @@ export class StationsComponent implements OnInit {
       i++;
     }
     // Tous les champs sont égaux, pas besoin de trier
-    if (i > this.stationsFiltered.length) {
+    if (i > this.stationsFiltered.length || !this.stationsFiltered[i]) {
       return;
     }
     if (this.stationsFiltered[0][key] <= this.stationsFiltered[i][key]) {
