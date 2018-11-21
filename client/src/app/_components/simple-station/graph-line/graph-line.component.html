@@ -10,8 +10,8 @@
       <div class="col-md-3">
         Rivière: {{station.river}}
       </div>
-      <div class="col-md-3">
-        Upload de données: <a [routerLink]="['/','stations',  station._id, 'import']"><i class="fas fa-file-download fa-fw fa-1x" *ngIf="hasAccessToStation(station)"></i></a>
+      <div class="col-md-3" *ngIf="hasAccessToStation(station)">
+        Upload de données: <a [routerLink]="['/','stations',  station._id, 'import']"><i class="fas fa-file-download fa-fw fa-1x" ></i></a>
       </div>
 
     </div>

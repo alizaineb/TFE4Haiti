@@ -141,7 +141,6 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   hasAccessToStation(){
-
     return this.stationService.hasAccessToStation(this.currentStation);
   }
 
