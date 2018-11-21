@@ -1,12 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {first, map} from 'rxjs/operators';
-import {UserService} from '../../_services/user.service';
-import {Station} from '../../_models';
-import {User} from '../../_models';
-import {RainDataAwaiting, RainData} from '../../_models/rainData';
-import {StationsService} from '../../_services/stations.service';
-import {AlertService} from '../../_services/index';
-import {DataService} from '../../_services/data.service';
+import { Component, OnInit } from '@angular/core';
+import { first, map } from 'rxjs/operators';
+import { UserService } from '../../_services/user.service';
+import { Station } from '../../_models';
+import { User } from '../../_models';
+import { RainDataAwaiting, RainData } from '../../_models/rainData';
+import { StationsService } from '../../_services/stations.service';
+import { AlertService } from '../../_services/index';
+import { DataService } from '../../_services/data.service';
 import { environment } from '../../../environments/environment';
 import { Constantes } from '../../_helpers/constantes'
 
@@ -84,13 +84,13 @@ export class AdminPanelComponent implements OnInit {
     const self = this;
     this.stationsService.getAllAwaiting()
       .pipe(map(stations => {
-          for (const n of stations) {
-            this.userService.getById(n.user_creator_id).pipe(first()).subscribe(user => {
-              n.user_creator = user.mail;
-            });
-          }
-          return stations;
-        })
+        for (const n of stations) {
+          this.userService.getById(n.user_creator_id).pipe(first()).subscribe(user => {
+            n.user_creator = user.mail;
+          });
+        }
+        return stations;
+      })
       )
       .subscribe(res => {
         self.stations = res;
@@ -106,30 +106,29 @@ export class AdminPanelComponent implements OnInit {
     const self = this;
     self.rainDataService.getAllAwaiting()
       .pipe(map(datas => {
-          for (const n of datas) {
-            this.stationsService.getById(n.id_station).pipe(first()).subscribe(station => {
-              n.station = station.name;
-            });
-          }
-          return datas;
-        })
+        for (const n of datas) {
+          this.stationsService.getById(n.id_station).pipe(first()).subscribe(station => {
+            n.station = station.name;
+          });
+        }
+        return datas;
+      })
       )
       .pipe(map(datas => {
-          for (const n of datas) {
-            this.userService.getById(n.id_user).pipe(first()).subscribe(user => {
-              n.user = user.first_name + ' ' + user.last_name;
-            });
-          }
-          return datas;
-        })
+        for (const n of datas) {
+          this.userService.getById(n.id_user).pipe(first()).subscribe(user => {
+            n.user = user.first_name + ' ' + user.last_name;
+          });
+        }
+        return datas;
+      })
       ).subscribe(datas => {
         self.rainDatas = datas;
-        console.table(datas);
         self.showDatas = this.rainDatas.length > 0;
       },
-      err => {
-        this.alertService.error(err);
-      });
+        err => {
+          this.alertService.error(err);
+        });
 
   }
 
@@ -147,23 +146,25 @@ export class AdminPanelComponent implements OnInit {
   acceptData(data: RainDataAwaiting) {
     const self = this;
     self.rainDataService.accepteAwaiting(data._id).subscribe(res => {
-        self.alertService.success('La donnée a été acceptée avec succès.');
-        self.loadAwaitingData();
+      self.alertService.success('La donnée a été acceptée avec succès.');
+      self.loadAwaitingData();
 
-      },
+    },
       err => {
         self.alertService.error(err);
+        self.loadAwaitingData();
       });
   }
 
   refuseData(data: RainDataAwaiting) {
     const self = this;
     self.rainDataService.refuseAwaiting(data._id).subscribe(res => {
-        self.alertService.success('La donnée a été refusée avec succès.');
-        self.loadAwaitingData();
-      },
+      self.alertService.success('La donnée a été refusée avec succès.');
+      self.loadAwaitingData();
+    },
       err => {
         self.alertService.error(err);
+        self.loadAwaitingData();
       });
   }
 
@@ -176,10 +177,11 @@ export class AdminPanelComponent implements OnInit {
     this.userService.acceptUser(id)
       .pipe(first())
       .subscribe(result => {
-          self.loadAwaitingUsers();
-          self.alertService.success('L\'utilisateur a été accepté avec succès');
-        },
+        self.loadAwaitingUsers();
+        self.alertService.success('L\'utilisateur a été accepté avec succès');
+      },
         error => {
+          self.loadAwaitingUsers();
           self.alertService.error(error);
         });
   }
@@ -189,10 +191,11 @@ export class AdminPanelComponent implements OnInit {
     this.stationsService.acceptStation(station._id)
       .pipe(first())
       .subscribe(result => {
-          self.loadAwaitingStation();
-          self.alertService.success('La station a été accepté avec succès');
-        },
+        self.loadAwaitingStation();
+        self.alertService.success('La station a été accepté avec succès');
+      },
         error => {
+          self.loadAwaitingStation();
           self.alertService.error(error);
         });
   }
@@ -202,11 +205,12 @@ export class AdminPanelComponent implements OnInit {
     this.stationsService.delete(station._id)
       .pipe(first())
       .subscribe(result => {
-          self.loadAwaitingStation();
-          self.alertService.success('La station a été refusée avec succès');
-        },
+        self.loadAwaitingStation();
+        self.alertService.success('La station a été refusée avec succès');
+      },
         error => {
           self.alertService.error(error);
+          self.loadAwaitingStation();
         });
   }
 
