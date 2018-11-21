@@ -162,8 +162,12 @@ exports.create = function(req, res) {
   uTmp.role = user.role;
   uTmp.state = userState.AWAITING;
   if (user.role == roles.WORKER) {
-    uTmp.commune = user.commune;
-    uTmp.river = user.bassin_versant;
+    if (user.commune) {
+      uTmp.commune = user.commune;
+    }
+    if (user.bassin_versant) {
+      uTmp.river = user.bassin_versant;
+    }
   }
   uTmp.save((err) => {
     if (err) {
