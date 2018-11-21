@@ -1,4 +1,4 @@
-<a [routerLink]="['/','stations']"><i class="fas fa-chevron-left"></i> Revenir à mes stations</a>
+<a (click)="previousRoute()" class="blue"><i class="fas fa-chevron-left"></i> Retour en arrière</a>
 <div *ngIf="!loading">
   <div class="row">
     <div class="col-md-11"><p>Import des données pour la station : {{currentStation.name}}</p></div>

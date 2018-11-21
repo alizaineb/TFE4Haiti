@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { Station } from '../../../_models';
-import { StationsService } from '../../../_services/stations.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { RainData } from '../../../_models/rainData';
-import { AlertService } from '../../../_services';
-import { NgbTimepickerConfig } from '@ng-bootstrap/ng-bootstrap';
-import { LocalstorageService } from '../../../_services/localstorage.service';
+import {Component, OnInit} from '@angular/core';
+import {Station} from '../../../_models';
+import {StationsService} from '../../../_services/stations.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {RainData} from '../../../_models/rainData';
+import {AlertService} from '../../../_services';
+import {NgbTimepickerConfig} from '@ng-bootstrap/ng-bootstrap';
+import {LocalstorageService} from '../../../_services/localstorage.service';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-import-data',
@@ -27,10 +28,11 @@ export class StationImportDataComponent implements OnInit {
 
 
   constructor(private stationService: StationsService,
-    private localStorageService: LocalstorageService,
-    private alertService: AlertService,
-    private route: ActivatedRoute,
-    private configTimePicker: NgbTimepickerConfig
+              private localStorageService: LocalstorageService,
+              private alertService: AlertService,
+              private route: ActivatedRoute,
+              private configTimePicker: NgbTimepickerConfig,
+              private _location: Location
   ) {
     this.configTimePicker.spinners = false;
   }
@@ -61,14 +63,18 @@ export class StationImportDataComponent implements OnInit {
     });
   }
 
-  private addData(date = '', time = { hour: 0, minute: 0 }, value = 0) {
-    this.data.push({ date: date, time: time, value: value });
+  previousRoute() {
+    this._location.back();
+  }
+
+  private addData(date = '', time = {hour: 0, minute: 0}, value = 0) {
+    this.data.push({date: date, time: time, value: value});
   }
 
 
   isSelectetd(item: string) {
     const res = this.selectedZone === item;
-    return { 'col-md-10': res, 'col-md-2': !res, 'notselected': !res };
+    return {'col-md-10': res, 'col-md-2': !res, 'notselected': !res};
   }
 
   changeZone(item: string) {
