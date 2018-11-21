@@ -5,6 +5,7 @@ import {Station} from '../../../_models';
 import {StationsService} from '../../../_services/stations.service';
 import flatpickr from 'flatpickr';
 import {French} from 'flatpickr/dist/l10n/fr';
+import {AuthenticationService} from "../../../_services";
 
 @Component({
   selector: 'app-graph-line',
@@ -38,7 +39,7 @@ export class GraphLineComponent implements OnInit {
   groupPixelWidth = 50;
   valueDecimal = 2;
 
-  constructor(private dataService: DataService, private stationService: StationsService) { }
+  constructor(private dataService: DataService, private stationService: StationsService, private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
     const self = this;
@@ -76,6 +77,10 @@ export class GraphLineComponent implements OnInit {
       const dateMax: Date = selectedDates[1];
       this.loadRangeDate(dateMin.getDate(), dateMin.getMonth(), dateMin.getFullYear(), dateMax.getDate(), dateMax.getMonth(), dateMax.getFullYear());
     }
+  }
+
+  hasWorkerAccess() {
+    return this.authenticationService.hasWorkerAccess();
   }
 
   changeYear(newYear) {
