@@ -85,7 +85,7 @@ function startWebServer() {
     require('./routes/server')(app);
 
     // Lancement du serveur
-    app.listen(nconf.get('server').port)
+    app.listen(nconf.get('server').port);
   });
 
 }
