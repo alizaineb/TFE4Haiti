@@ -107,7 +107,9 @@ function startWebServer() {
     require('./routes/server')(app);
 
     // Lancement du serveur
-    app.listen(nconf.get('server').port);
+      const port = process.env.PORT || nconf.get('server').port;
+      console.log("[Server] start on port : ", port);
+    app.listen(port);
   });
 
 }
