@@ -88,6 +88,7 @@ function createDefaultCfgFile(callback) {
   nconf.set('token:privateKey', 'somethingsomethingjsontoken'); // 1h
   nconf.set('token:expiration', 1440); // 1h
   nconf.set('server:host', '0.0.0.0');
+  nconf.set('server:url', '');
   nconf.set('server:port', '3000');
   nconf.set('database:host', 'localhost');
   nconf.set('database:port', '27017');
@@ -117,7 +118,7 @@ function createDefaultCfgFile(callback) {
 }
 
 /**
- * checkCfg - Méthode qui va vérifier que le fichier de configuration soit correct et qu'il ne manque pas de champs.   
+ * checkCfg - Méthode qui va vérifier que le fichier de configuration soit correct et qu'il ne manque pas de champs.
  * A modifier si une nouvelle configuration doit être ajoutée.
  *
  * @param  {method} callback la méthode suivante devant être appellée
@@ -141,6 +142,10 @@ function checkCfg(callback) {
   }
   if (typeof nconf.get('server:host') === "undefined") {
     nconf.set('server:host', '0.0.0.0');
+    cfgModified = true;
+  }
+  if (typeof nconf.get('server:url') === "undefined") {
+    nconf.set('server:url', '');
     cfgModified = true;
   }
   if (typeof nconf.get('server:port') === "undefined") {
