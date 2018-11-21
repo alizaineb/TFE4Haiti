@@ -234,6 +234,9 @@ exports.acceptStation = function(req, res) {
       if (!station) {
         return res.status(404).send("Station introuvable (peut-être a-t-elle déjà été acceptée).");
       } else {
+        if (station.state !== states.AWAITING) {
+          return res.status(400).send("La station a déjà été acceptée.");
+        }
         station.state = states.WORKING;
         station.save((err) => {
           if (err) {
