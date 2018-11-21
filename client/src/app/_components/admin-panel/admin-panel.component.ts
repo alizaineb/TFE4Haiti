@@ -17,6 +17,7 @@ import { Constantes } from '../../_helpers/constantes'
 })
 export class AdminPanelComponent implements OnInit {
 
+  dataLoading: boolean;
   currUser: string;
   showUsers: boolean;
   showStations: boolean;
@@ -48,6 +49,8 @@ export class AdminPanelComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.dataLoading = false;
     this.loadAwaitingUsers();
     this.loadAwaitingStation();
     this.loadAwaitingData();
@@ -145,6 +148,7 @@ export class AdminPanelComponent implements OnInit {
 
   acceptData(data: RainDataAwaiting) {
     const self = this;
+    this.dataLoading = true;
     self.rainDataService.accepteAwaiting(data._id).subscribe(res => {
       self.alertService.success('La donnée a été acceptée avec succès.');
       self.loadAwaitingData();
@@ -153,11 +157,15 @@ export class AdminPanelComponent implements OnInit {
       err => {
         self.alertService.error(err);
         self.loadAwaitingData();
-      });
+      },
+    () => {
+      this.dataLoading = false;
+    });
   }
 
   refuseData(data: RainDataAwaiting) {
     const self = this;
+    this.dataLoading = true;
     self.rainDataService.refuseAwaiting(data._id).subscribe(res => {
       self.alertService.success('La donnée a été refusée avec succès.');
       self.loadAwaitingData();
@@ -165,6 +173,9 @@ export class AdminPanelComponent implements OnInit {
       err => {
         self.alertService.error(err);
         self.loadAwaitingData();
+      },
+      () => {
+        this.dataLoading = false;
       });
   }
 
@@ -174,6 +185,7 @@ export class AdminPanelComponent implements OnInit {
 
   acceptUser(id: string) {
     const self = this;
+    this.dataLoading = true;
     this.userService.acceptUser(id)
       .pipe(first())
       .subscribe(result => {
@@ -183,11 +195,15 @@ export class AdminPanelComponent implements OnInit {
         error => {
           self.loadAwaitingUsers();
           self.alertService.error(error);
+        },
+        () => {
+          this.dataLoading = false;
         });
   }
 
   acceptStation(station: Station) {
     const self = this;
+    this.dataLoading = true;
     this.stationsService.acceptStation(station._id)
       .pipe(first())
       .subscribe(result => {
@@ -197,11 +213,15 @@ export class AdminPanelComponent implements OnInit {
         error => {
           self.loadAwaitingStation();
           self.alertService.error(error);
+        },
+        () => {
+          this.dataLoading = false;
         });
   }
 
   refuseStation(station: Station) {
     const self = this;
+    this.dataLoading = true;
     this.stationsService.delete(station._id)
       .pipe(first())
       .subscribe(result => {
@@ -211,6 +231,9 @@ export class AdminPanelComponent implements OnInit {
         error => {
           self.alertService.error(error);
           self.loadAwaitingStation();
+        },
+        () => {
+          this.dataLoading = false;
         });
   }
 
