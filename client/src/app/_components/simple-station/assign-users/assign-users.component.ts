@@ -40,10 +40,11 @@ export class AssignUsersComponent implements OnInit {
     this.stationService.getById(this.stationId)
       .pipe(
         map(station => {
-          this.userService.getAll()
+          this.userService.getWorkers()
             .pipe(
               map(users => {
-                users = users.filter(u => !station.users.includes(u._id) && u.role === 'Worker');
+                console.log(users);
+                users = users.filter(u => !station.users.includes(u._id) && u.role === 'employé');
                 return users;
               })
             )

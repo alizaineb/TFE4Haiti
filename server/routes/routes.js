@@ -53,6 +53,11 @@ exports.routes = [
     middleWare: [controllers.users.get]
   },
   {
+    path: "/api/workers/",
+    httpMethod: "GET",
+    middleWare: [controllers.users.getWorkers]
+  },
+  {
     path: "/api/users/getAllAwaiting",
     httpMethod: "GET",
     middleWare: [controllers.users.getAllAwaiting],
