@@ -92,6 +92,10 @@ export class DetailsStationComponent implements OnInit {
     return this.authenticationService.hasViewerAccess();
   }
 
+  hasWorkerAccess() {
+    return this.authenticationService.hasWorkerAccess();
+  }
+
 
   generateMap() {
     const self = this;

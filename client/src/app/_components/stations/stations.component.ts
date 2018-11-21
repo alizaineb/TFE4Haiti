@@ -23,7 +23,7 @@ export class StationsComponent implements OnInit {
   searchKeyWord = '';
 
   constructor(private stationService: StationsService,
-              private autheticationService: AuthenticationService) {
+              private authenticationService: AuthenticationService) {
     this.headers = ['Nom', 'Commune', 'Rivière', 'Date de création', 'Dernière modification', 'Etat'];
   }
 
@@ -42,7 +42,7 @@ export class StationsComponent implements OnInit {
   }
 
   hasAdminAccess() {
-    return this.autheticationService.hasAdminAccess();
+    return this.authenticationService.hasAdminAccess();
   }
 
   hasAccessToStation(station) {
@@ -50,11 +50,11 @@ export class StationsComponent implements OnInit {
   }
 
   hasWorkerAccess() {
-    return this.autheticationService.hasWorkerAccess();
+    return this.authenticationService.hasWorkerAccess();
   }
 
   hasViewerAccess() {
-    return this.autheticationService.hasViewerAccess();
+    return this.authenticationService.hasViewerAccess();
   }
 
   initMap() {
