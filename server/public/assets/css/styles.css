@@ -465,6 +465,7 @@ i:hover {
 }
 
 .fa-plus-circle {
+  padding-left: 10px;
   color: blue;
 }
 
@@ -502,6 +503,18 @@ i:hover {
 
 .fa-arrow-right, .fa-arrow-left {
   color: #4286f4;
+}
+
+.fa-external-link-alt {
+  color: #3366BB;
+}
+
+.fa-external-link-alt:hover {
+  color: #42D9C8;
+}
+
+.fa-external-link-alt:active {
+  color: #140F2D;
 }
 
 tbody>tr:hover {
@@ -542,4 +555,8 @@ h5 {
 /* supprime l'effet de bootstrap sur des input de type "search" */
 input[type=search]::-webkit-search-cancel-button {
   -webkit-appearance: searchfield-cancel-button;
+}
+
+.input-group-text {
+  height: 38px;
 }
