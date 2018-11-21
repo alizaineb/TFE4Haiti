@@ -505,6 +505,18 @@ i:hover {
   color: #4286f4;
 }
 
+.fa-external-link-alt {
+  color: #3366BB;
+}
+
+.fa-external-link-alt:hover {
+  color: #42D9C8;
+}
+
+.fa-external-link-alt:active {
+  color: #140F2D;
+}
+
 tbody>tr:hover {
   background: LightSkyBlue !important;
 }
