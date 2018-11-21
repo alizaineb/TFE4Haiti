@@ -1,6 +1,6 @@
 import {AfterViewChecked, Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import { StationsService } from '../../../_services/stations.service';
-import { AlertService, UserService } from '../../../_services/';
+import {AlertService, AuthenticationService, UserService} from '../../../_services/';
 import { NoteService } from '../../../_services/note.service';
 import {Note, Station} from '../../../_models/';
 import {first, mergeMap, retry} from 'rxjs/operators';
@@ -33,6 +33,7 @@ export class NoteComponent implements OnInit, OnChanges{
     private alertService: AlertService,
     private noteService: NoteService,
     private userService: UserService,
+    private authenticationService: AuthenticationService
   ) {
 
   }
@@ -45,6 +46,10 @@ export class NoteComponent implements OnInit, OnChanges{
         Validators.maxLength(200)
       ])
     });
+  }
+
+  hasWorkerAccess(){
+    return this.authenticationService.hasWorkerAccess();
   }
 
   get note() { return this.addNoteForm.get('note'); }
