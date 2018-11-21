@@ -48,20 +48,18 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <select class="form-control" id="commune" formControlName="commune">
-                  <option value="" disabled selected>Commune</option>
-                  <option value=""></option>
+                <input type="search" class="form-control" id="commune" formControlName="commune" placeholder="Commune" list="communes">
+                <datalist id="communes">
                   <option *ngFor="let i of communes" [value]="i">{{i}}</option>
-                </select>
+                </datalist>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <select class="form-control" id="river" formControlName="river">
-                  <option value="" disabled selected>Rivière</option>
-                  <option value=""></option>
+                <input type="search" class="form-control" id="river" formControlName="river" placeholder="Bassin versant" list="rivers">
+                <datalist id="rivers">
                   <option *ngFor="let i of rivers" [value]="i">{{i}}</option>
-                </select>
+                </datalist>
               </div>
             </div>
           </div>

@@ -61,7 +61,7 @@
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
-              <input class="form-control" [formGroup]="registerForm" formControlName="commune" placeholder="Commune" list="communes">
+              <input type="search" class="form-control" [formGroup]="registerForm" formControlName="commune" placeholder="Commune" list="communes">
               <datalist id="communes">
                 <option *ngFor="let i of communes" [value]="i">{{i}}</option>
               </datalist>
@@ -69,7 +69,7 @@
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <input class="form-control" [formGroup]="registerForm" formControlName="bassin_versant" placeholder="Bassin-versant" list="rivers">
+              <input type="search" class="form-control" [formGroup]="registerForm" formControlName="bassin_versant" placeholder="Bassin-versant" list="rivers">
               <datalist id="rivers">
                 <option *ngFor="let i of rivers" [value]="i">{{i}}</option>
               </datalist>
