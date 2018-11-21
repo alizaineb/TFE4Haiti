@@ -112,14 +112,11 @@ exports.acceptAwaiting = function(req, res) {
               });
             } else {
               dataModel.rainDataModel.findById(rainDataAwaiting.id_old_data, (err, rainData) => {
+                console.log("RAIN", rainData);
                 rainData.value = rainDataAwaiting.value;
                 rainData.save().then(() => {
                   dataModel.RainDataAwaitingModel.deleteOne({ _id: rainDataAwaiting._id }).then(() => {
-                    dataModel.rainDataModel.deleteOne({ _id: rainDataAwaiting.id_old_data }).then(() => {
                       return res.status(200).send();
-                    }).catch((err) => {
-                      return res.status(500).send(err);
-                    });
                   }).catch((err) => {
                     return res.status(500).send(err);
                   });
