@@ -116,7 +116,7 @@ exports.acceptAwaiting = function(req, res) {
                 rainData.value = rainDataAwaiting.value;
                 rainData.save().then(() => {
                   dataModel.RainDataAwaitingModel.deleteOne({ _id: rainDataAwaiting._id }).then(() => {
-                      return res.status(200).send();
+                    return res.status(200).send();
                   }).catch((err) => {
                     return res.status(500).send(err);
                   });
@@ -1059,7 +1059,7 @@ exports.updateData = function(req, res) {
         return res.status(404).send("Donnée inexistante.");
       } else {
         let dataToSend = new dataModel.RainDataAwaitingModel();
-        dataToSend.id_station = req.params.id_station;
+        dataToSend.id_station = req.params.station_id;
         dataToSend.id_user = req.token_decoded.id;
         dataToSend.date = rainData.date;
         dataToSend.id_old_data = id_data;
