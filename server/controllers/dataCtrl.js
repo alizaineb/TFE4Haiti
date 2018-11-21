@@ -901,7 +901,7 @@ exports.downloadData = function(req, res) {
   Station.stationModel.findById(id_station, (err, station) => {
     dataModel.rainDataModel.find({
       id_station: id_station,
-      date: { "$gte": from, "$lte": to }
+      date: { "$gte": from, "$lt": to }
     }, 'date value', (err, rainDatas) => {
       if (err) {
         logger.error(err);
@@ -968,7 +968,7 @@ exports.downloadData = function(req, res) {
  * @return {string} String représentant les données dans le format d'un fichier CSV
  */
 function rainDataToCSV(rainDatas) {
-  // console.log("coucou", rainDatas);
+  console.log("coucou", rainDatas);
   let fileContent = "";
   for (let i in rainDatas) { //= 0; i < rainDatas.length; i++){
     const rainData = rainDatas[i];
