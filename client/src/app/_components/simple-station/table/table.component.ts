@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { Station } from '../../../_models/';
 import { RainData } from '../../../_models/rainData';
-import { AlertService, UserService, DataService } from '../../../_services/';
+import {AlertService, UserService, DataService, AuthenticationService} from '../../../_services/';
 import { StationsService } from '../../../_services/stations.service';
 import flatpickr from 'flatpickr';
 import { French } from 'flatpickr/dist/l10n/fr';
@@ -140,13 +140,17 @@ export class TableComponent implements OnInit, OnChanges {
     });
   }
 
+  hasAccessToStation(){
+
+    return this.stationService.hasAccessToStation(this.currentStation);
+  }
 
   intervalleChanged(val) {
     this.sameIntervalAsStation = false;
     let intervalIdx = this.intervalsFiltered.indexOf(val);
     if (intervalIdx < 0) {
       return;
-    } else if (intervalIdx == 0) {
+    } else if (intervalIdx == 0 && this.hasAccessToStation()) {
       this.sameIntervalAsStation = true;
     }
     //
