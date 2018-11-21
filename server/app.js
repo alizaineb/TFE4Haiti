@@ -20,7 +20,18 @@ const logger = require('./config/logger')
  */
 function configureServer() {
   // Parser
-  app.use(bodyParser.json());
+  app.use((req, res, next) => {
+    bodyParser.json({
+      verify: addRawBody,
+    })(req, res, (err) => {
+      if (err) {
+        console.log(err);
+        res.status(400).send("Wrong json format.");
+        return;
+      }
+      next();
+    });
+  });
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json({ limit: '50mb', strict: true }));
 
@@ -44,6 +55,9 @@ function configureServer() {
   });
 }
 
+function addRawBody(req, res, buf, encoding) {
+  req.rawBody = buf.toString();
+}
 /**
  * Methode de configuration de la Base de données
  * @param cb callback appelé si la connection à la DB est ok.
