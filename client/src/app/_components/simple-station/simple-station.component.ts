@@ -41,14 +41,14 @@ export class SimpleStationComponent implements OnInit, OnDestroy {
         self.activeTab = tab;
         self.router.navigate(['/stations', self.stationId, self.activeTab]);
       }
-      if(!this.currentStation){
+      if (!this.currentStation) {
         this.stationService.getById(this.stationId).subscribe(
           station => {
             this.currentStation = station;
-            if(this.hasViewerAccess()){
-              this.tabList.push('notes');
+            if (this.hasViewerAccess()) {
+              this.tabList.push('Notes');
             }
-            if(this.hasAccessToStation(this.currentStation)){
+            if (this.hasAccessToStation(this.currentStation)) {
               this.tabList.push('Utilisateurs');
             }
           },
@@ -63,7 +63,7 @@ export class SimpleStationComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.sub.unsubscribe();
-    this.tabList=[];
+    this.tabList = [];
   }
 
   getSelectedClass(tab) {
@@ -76,11 +76,11 @@ export class SimpleStationComponent implements OnInit, OnDestroy {
     }
   }
 
-  hasAccessToStation(station){
+  hasAccessToStation(station) {
     return this.stationService.hasAccessToStation(station);
   }
 
-  hasViewerAccess(){
+  hasViewerAccess() {
     return this.authenticationService.hasViewerAccess();
   }
 }
