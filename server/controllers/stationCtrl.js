@@ -9,6 +9,7 @@ const Station = require('./../models/station');
 const UsersModel = require('../models/user');
 // états
 const states = require('../config/constants').stationState;
+const userRole = require('../config/constants').roles;
 const checkParam = require('./utils').checkParam;
 const errors = require('./utils').errors;
 
@@ -270,6 +271,9 @@ exports.addUser = function(req, res) {
     }
     if (!user) {
       return res.status(404).send("L'utilisateur n'existe pas");
+    }
+    if (user.role != userRole.WORKER) {
+      return res.status(400).send("Seul un employé peut être assigné à une station.");
     }
     Station.stationModel.findById(req.params.station_id,
       'users',
