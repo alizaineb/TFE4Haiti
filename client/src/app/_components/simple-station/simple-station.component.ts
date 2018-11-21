@@ -48,7 +48,7 @@ export class SimpleStationComponent implements OnInit, OnDestroy {
             if (this.hasViewerAccess()) {
               this.tabList.push('Notes');
             }
-            if (this.hasAccessToStation(this.currentStation)) {
+            if (this.hasAdminAccess()) {
               this.tabList.push('Utilisateurs');
             }
           },
@@ -61,6 +61,9 @@ export class SimpleStationComponent implements OnInit, OnDestroy {
     });
   }
 
+  hasAdminAccess(){
+    return this.authenticationService.hasAdminAccess();
+  }
   ngOnDestroy() {
     this.sub.unsubscribe();
     this.tabList = [];
