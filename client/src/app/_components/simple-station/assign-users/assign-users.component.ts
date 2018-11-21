@@ -3,6 +3,7 @@ import { StationsService } from '../../../_services/stations.service';
 import { AlertService, UserService } from '../../../_services';
 import { Station, User } from '../../../_models';
 import { map } from 'rxjs/operators';
+import {Constantes} from "../../../_helpers/constantes";
 
 @Component({
   selector: 'app-assign-users',
@@ -43,8 +44,7 @@ export class AssignUsersComponent implements OnInit {
           this.userService.getWorkers()
             .pipe(
               map(users => {
-                console.log(users);
-                users = users.filter(u => !station.users.includes(u._id) && u.role === 'employé');
+                users = users.filter(u => !station.users.includes(u._id) && u.role === Constantes.roles.WORKER);
                 return users;
               })
             )
