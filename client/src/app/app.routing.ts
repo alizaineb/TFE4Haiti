@@ -20,7 +20,6 @@ const appRoutes: Routes = [
   {path: 'map', component: MapComponent},
   {path: 'admin', component: AdminPanelComponent, canActivate: [AuthGuard]},
   {path: 'stations', component: StationsComponent, canActivate: [AuthGuard]},
-  {path: 'stations/:id', component: SimpleStationComponent},
   {path: 'stations/:id/import', component: StationImportDataComponent},
   {path: 'stations/:id/:tab', component: SimpleStationComponent},
   {path: 'users', component: UsersComponent, canActivate: [AuthGuard]},

@@ -48,7 +48,7 @@
     <tr *ngFor="let station of stationsFiltered | paginate: { itemsPerPage: 10, currentPage: currentPage }; index as i;">
       <td>{{i+1}}</td>
       <td>{{station.name}}
-        <a class="details float-right" [routerLink]="['/stations', station._id]">
+        <a class="details float-right" [routerLink]="['/stations', station._id, 'Details']">
           <i class="fas fa-info-circle"></i>
         </a>
       </td>
