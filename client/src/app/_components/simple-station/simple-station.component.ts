@@ -1,7 +1,7 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import {AuthenticationService, StationsService} from "../../_services";
-import {Station} from "../../_models";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from "@angular/router";
+import { AuthenticationService, StationsService } from "../../_services";
+import { Station } from "../../_models";
 
 @Component({
   selector: 'app-simple-station',
@@ -46,10 +46,10 @@ export class SimpleStationComponent implements OnInit, OnDestroy {
           station => {
             this.currentStation = station;
             if (this.hasViewerAccess()) {
-              this.tabList.push('Notes');
+              this.tabList = ['Details', 'Tableaux', 'Graphiques', 'Notes'];
             }
             if (this.hasAdminAccess()) {
-              this.tabList.push('Utilisateurs');
+              this.tabList = ['Details', 'Tableaux', 'Graphiques', 'Notes', 'Administrateurs'];
             }
           },
           err => {
@@ -61,7 +61,7 @@ export class SimpleStationComponent implements OnInit, OnDestroy {
     });
   }
 
-  hasAdminAccess(){
+  hasAdminAccess() {
     return this.authenticationService.hasAdminAccess();
   }
   ngOnDestroy() {
