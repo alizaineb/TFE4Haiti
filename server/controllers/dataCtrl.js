@@ -14,6 +14,7 @@ const Station = require("../models/station");
 const UsersModel = require("../models/user");
 const roles = require('../config/constants').roles;
 const DownloadInterval = require('../config/constants').DownloadIntervals;
+const URL = nconf.get("server:url");
 
 
 /**
@@ -939,7 +940,7 @@ exports.downloadData = function(req, res) {
             if (err) throw err;
             // console.log('The file has been saved!', req.token_decoded.id);
             UsersModel.userModel.findById(req.token_decoded.id, (err, user) => {
-              const url = `http://localhost:${nconf.get("server:port")}/download/${fileName}`; //TODO CHANGE AND GET HOST URL NOT LOCALHOST
+              const url = `${URL}/download/${fileName}`; //TODO CHANGE AND GET HOST URL NOT LOCALHOST
               mailer.sendMailAndIgnoreIfMailInvalid(undefined, undefined, "Download File", user.mail, url, (err) => {
                 if (err) {
                   logger.error("[DATACTRL] downloadData : ", err);
