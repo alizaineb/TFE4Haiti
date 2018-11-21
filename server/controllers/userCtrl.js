@@ -103,6 +103,27 @@ exports.get = function(req, res) {
     });
 };
 
+/**
+ * get - Récupère tous les employés (workers)
+ *
+ * @param {request} req Requête du client
+ * @param {response} res Réponse renvoyée au client
+ *                   500 : Erreur serveur
+ * @return {user[]}  200 : Tous les utilisateurs
+ */
+exports.getWorkers = function(req, res) {
+  UsersModel.userModel.find({role:roles.WORKER},
+    '_id first_name last_name mail role river commune created_at last_seen state',
+    (err, users) => {
+      if (err) {
+        logger.error("[get] get : ", err);
+        return res.status(500).send("Erreur lors de la récupération des employés.");
+      }
+      return res.status(200).send(users);
+    });
+};
+
+
 
 /**
  * getById - Récupère un itlisateur spécifique

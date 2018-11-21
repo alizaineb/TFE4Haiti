@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { environment } from '../../environments/environment';
 import { User } from '../_models';
-import { Observable } from "rxjs";
+import { Observable } from 'rxjs';
 
 
 @Injectable()
@@ -13,6 +13,10 @@ export class UserService {
 
   getAll() {
     return this.http.get<User[]>(environment.apiUrl + '/users');
+  }
+
+  getWorkers() {
+    return this.http.get<User[]>(environment.apiUrl + '/workers');
   }
 
   getAllAwaiting() {
