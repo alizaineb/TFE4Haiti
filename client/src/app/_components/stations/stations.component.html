@@ -13,16 +13,19 @@
   </div>
 
 
-  <div class="offset-md-6 col-md-3 float-right">
+  <div class="offset-md-4 col-md-5 float-right">
     <div class="card bg-light mb-3 pull-right">
       <div class="card-body">
-        <p class="card-text">
-          <span *ngIf="hasAdminAccess()"><i class="fas fa-edit fa-fw fa-1x"></i> Editer la station</span>
-          <span *ngIf="hasWorkerAccess()"><i class="fas fa-file-download fa-fw fa-1x"></i> Envoyer des données</span>
-          <br *ngIf="hasAdminAccess()"/>
-          <span *ngIf="hasWorkerAccess()"><i class="fas fa-sticky-note fa-fw fa-lx"></i> Ajouter une note</span>
-          <span *ngIf="hasAdminAccess()"><i class="fas fa-trash fa-fw fa-1x"></i> Supprimer la station</span>
-        </p>
+        <div class="card-text">
+          <div class="row">
+            <div class="col-md-6" *ngIf="hasAdminAccess()"><i class="fas fa-edit fa-fw fa-1x"></i> Editer la station</div>
+            <div class="col-md-6" *ngIf="hasWorkerAccess()"><i class="fas fa-file-download fa-fw fa-1x"></i> Envoyer des données</div>
+          </div>
+          <div class="row">
+            <div class="col-md-6" *ngIf="hasWorkerAccess()"><i class="fas fa-sticky-note fa-fw fa-lx"></i> Ajouter une note</div>
+            <div class="col-md-6" *ngIf="hasAdminAccess()"><i class="fas fa-trash fa-fw fa-1x"></i> Supprimer la station</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
