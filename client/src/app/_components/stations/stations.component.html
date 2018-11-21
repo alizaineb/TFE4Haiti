@@ -44,9 +44,9 @@
       <td>{{station.updatedAt | date: 'd/MM/yyyy à HH:mm':'UTC'}}</td>
       <td>{{station.state}}</td>
       <td>
-        <i class="fas fa-edit fa-fw fa-1x" (click)="setStationSelected(station)" data-toggle="modal" data-target="#updateStationModal" *ngIf="hasWorkerAccess(station)"></i>
-        <a [routerLink]="['/','stations',  station._id, 'import']"><i class="fas fa-file-download fa-fw fa-1x" *ngIf="hasWorkerAccess(station)"></i></a>
-        <i class="fas fa-sticky-note fa-fw fa-lx" (click)="setStationSelected(station)" data-toggle="modal" data-target="#noteStationModal" *ngIf="hasWorkerAccess(station)"></i>
+        <i class="fas fa-edit fa-fw fa-1x" (click)="setStationSelected(station)" data-toggle="modal" data-target="#updateStationModal" *ngIf="hasAdminAccess()"></i>
+        <a [routerLink]="['/','stations',  station._id, 'import']"><i class="fas fa-file-download fa-fw fa-1x" *ngIf="hasWorkerAccess()"></i></a>
+        <i class="fas fa-sticky-note fa-fw fa-lx" (click)="setStationSelected(station)" data-toggle="modal" data-target="#noteStationModal" *ngIf="hasWorkerAccess()"></i>
         <i class="fas fa-trash fa-fw fa-1x" (click)="setStationSelected(station)" data-toggle="modal" data-target="#deleteStationModal" *ngIf="hasAdminAccess()"></i>
       </td>
     </tr>

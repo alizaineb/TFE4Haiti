@@ -49,7 +49,7 @@ export class StationsComponent implements OnInit {
     return this.stationService.hasAccessToStation(station);
   }
 
-  hasWorkerAccess(station) {
+  hasWorkerAccess() {
     return this.autheticationService.hasWorkerAccess();
   }
 

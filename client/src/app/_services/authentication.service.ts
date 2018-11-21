@@ -90,7 +90,7 @@ export class AuthenticationService {
   hasViewerAccess(){
     const user = this.localStorageService.getItem('currentUser');
     if(user && user.current){
-      return user.role == Constantes.roles.VIEWER || this.hasWorkerAccess();
+      return user.current.role == Constantes.roles.VIEWER || this.hasWorkerAccess();
     }else{
       return false;
     }
