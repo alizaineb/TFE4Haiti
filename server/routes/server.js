@@ -7,6 +7,7 @@ const routesJs = require('./routes');
 const routes = routesJs.routes;
 const tokenManager = require('./../config/tokenManager');
 const db = require("../models/user");
+const userState = require('../config/constants').userState;
 
 /** Applique les middleWare de vérification de sécurité,  redirige selon le role de méthode et vérifie que la méthode existe (GET,POST, ...) */
 module.exports = function(app) {
@@ -46,7 +47,7 @@ function ensureAuthorized(req, res, next) {
   let token = req.token_decoded;
   if (token && token.id) {
     // Check le droit de l'utiliasteur en le gettant dans la db (son id est dans le token)
-    db.userModel.findOne({ _id: token.id }, function(err, user) {
+    db.userModel.findOne({ _id: token.id, state: userState.OK }, function(err, user) {
       // Compare sa la personne a accès à la route, si non res.sendStatus(403);
       if (user) {
         let access = _.findWhere(routes, {
@@ -56,11 +57,11 @@ function ensureAuthorized(req, res, next) {
         if (access.indexOf(user.role) > -1) {
           return next();
         } else {
-          return res.sendStatus(403, "Non autorisé");
+          return res.status(403).send("Non autorisé");
         }
       } else {
         // Pas de d'utilisateur dans la DB
-        return res.sendStatus(401, "Utilisateur inconnu");
+        return res.status(401).send("Utilisateur inconnu");
       }
     });
   }
@@ -73,7 +74,7 @@ function ensureAuthorized(req, res, next) {
     if (!access) {
       return next();
     } else {
-      return res.sendStatus(401, "Token manquant");
+      return res.status(401).send("Token manquant");
     }
   }
 }
