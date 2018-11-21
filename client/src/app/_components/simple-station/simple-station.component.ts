@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {StationsService} from "../../_services";
+import {AuthenticationService, StationsService} from "../../_services";
 import {Station} from "../../_models";
 
 @Component({
@@ -22,7 +22,8 @@ export class SimpleStationComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private stationService: StationsService
+    private stationService: StationsService,
+    private authenticationService: AuthenticationService
   ) {
   }
 
@@ -30,7 +31,7 @@ export class SimpleStationComponent implements OnInit, OnDestroy {
     const self = this;
 
     self.stationId = '';
-    self.tabList = ['Details', 'Tableaux', 'Graphiques', 'notes'];
+    self.tabList = ['Details', 'Tableaux', 'Graphiques'];
     self.activeTab = self.tabList[0];
 
     self.sub = self.route.params.subscribe((params) => {
@@ -44,6 +45,9 @@ export class SimpleStationComponent implements OnInit, OnDestroy {
         this.stationService.getById(this.stationId).subscribe(
           station => {
             this.currentStation = station;
+            if(this.hasViewerAccess()){
+              this.tabList.push('notes');
+            }
             if(this.hasAccessToStation(this.currentStation)){
               this.tabList.push('Utilisateurs');
             }
@@ -73,6 +77,10 @@ export class SimpleStationComponent implements OnInit, OnDestroy {
   }
 
   hasAccessToStation(station){
-    return this.stationService.hasAccessToStation(station)
+    return this.stationService.hasAccessToStation(station);
+  }
+
+  hasViewerAccess(){
+    return this.authenticationService.hasViewerAccess();
   }
 }
