@@ -55,6 +55,14 @@ function configureServer() {
   });
 }
 
+/**
+ * addRawBody - M2thode utilisée pour vérifier si la requete est correctement formatée (au format json)
+ *
+ * @param {request}     req Requête du client
+ * @param {response}    res Réponse renvoyée au client
+ * @param  {string[]}   buf      Le raw body de la requête
+ * @param               encoding /
+ */
 function addRawBody(req, res, buf, encoding) {
   req.rawBody = buf.toString();
 }
