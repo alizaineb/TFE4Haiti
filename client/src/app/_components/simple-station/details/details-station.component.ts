@@ -85,15 +85,11 @@ export class DetailsStationComponent implements OnInit {
   }
 
   hasAccessToStation(station) {
-    return this.stationService.hasAccessToStation(station)
+    return this.stationService.hasAccessToStation(station);
   }
 
   hasViewerAcces() {
     return this.authenticationService.hasViewerAccess();
-  }
-
-  hasWorkerAccess() {
-    return this.authenticationService.hasWorkerAccess();
   }
 
 
