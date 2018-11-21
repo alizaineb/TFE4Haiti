@@ -39,7 +39,7 @@ export class GraphLineComponent implements OnInit {
   groupPixelWidth = 50;
   valueDecimal = 2;
 
-  constructor(private dataService: DataService, private stationService: StationsService, private authenticationService: AuthenticationService) { }
+  constructor(private dataService: DataService, private stationService: StationsService) { }
 
   ngOnInit() {
     const self = this;
@@ -79,8 +79,8 @@ export class GraphLineComponent implements OnInit {
     }
   }
 
-  hasWorkerAccess() {
-    return this.authenticationService.hasWorkerAccess();
+  hasAccessToStation(station) {
+    return this.stationService.hasAccessToStation(station);
   }
 
   changeYear(newYear) {
