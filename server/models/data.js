@@ -88,6 +88,11 @@ const RainDataAwaitingModel = mongoose.model("rainDataAwaiting", RainDataAwaitin
 // Export du modèle
 exports.RainDataAwaitingModel = RainDataAwaitingModel;
 
+/**
+ * Méthode qui transforme un objet RainDataAwaiting vers un objet RainDatas
+ * @param dataAwaiting Objet a Transformer
+ * @returns {Model} RainData renvoyé.
+ */
 exports.RainDataAwaitinToAccepted = function(dataAwaiting) {
   let rainData = new rainDataModel();
   rainData.date = dataAwaiting.date;
