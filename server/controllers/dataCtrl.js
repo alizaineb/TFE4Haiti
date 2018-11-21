@@ -909,7 +909,6 @@ exports.downloadData = function(req, res) {
       } else {
         let dataGrouped = rainDatas;
 
-        console.log(interval)
         switch (interval) {
           case DownloadInterval.DAYS:
             dataGrouped = groupByDay(rainDatas);
