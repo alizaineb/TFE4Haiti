@@ -12,14 +12,23 @@ export class JwtInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // add authorization header with jwt token if available
     const currentUser = this.localStorageService.getItem('currentUser');
-    if (currentUser && currentUser.token) {
+    if(request.url.toLowerCase().includes('importFile'.toLowerCase())){
       request = request.clone({
         setHeaders: {
-          'x-access-token': currentUser.token,
-          'Content-Type': 'application/json'
+          'x-access-token': currentUser.token
         }
       });
+    }else{
+      if (currentUser && currentUser.token) {
+        request = request.clone({
+          setHeaders: {
+            'x-access-token': currentUser.token,
+            'Content-Type': 'application/json'
+          }
+        });
+      }
     }
+
 
     return next.handle(request);
   }

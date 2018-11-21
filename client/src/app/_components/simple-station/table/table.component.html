@@ -1,0 +1,129 @@
+<h1>Tableaux</h1>
+<div *ngIf="currentStation">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+        Station: {{currentStation.name}}
+      </div>
+      <div class="col-md-3">
+        Commune: {{currentStation.commune}}
+      </div>
+      <div class="col-md-3">
+        Rivière: {{currentStation.river}}
+      </div>
+      <div class="col-md-3" *ngIf="hasAccessToStation()">
+        Upload de données: <a [routerLink]="['/','stations',  currentStation._id, 'import']"><i class="fas fa-file-download fa-fw fa-1x"></i></a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row someSpace">
+  <div class="col-md-2">
+    <div class="form-group">
+      <select class="form-control" (change)="intervalleChanged($event.target.value)">
+        <option *ngFor="let i of intervalsFiltered; let first= first;" [value]="i" [selected]="first">{{i}}</option>
+      </select>
+    </div>
+  </div>
+  <div [hidden]="!intervalDay" class="col-md-2">
+    <input id="datePicker" placeholder="Date" type="text" class="flatpickr flatpickr-input form-control" required>
+  </div>
+  <div [hidden]="intervalDay" class="col-md-4">
+    <input type="month" id="monthSelector" min="1990-01" (change)="monthPicked($event)">
+  </div>
+
+</div>
+<div *ngIf="noDateSelected" class="container">
+  <h1>Veuillez sélectionner une date</h1>
+</div>
+
+<div *ngIf="dataLoading" class="text-center container">
+  <i class="fas fa-spinner fa-spin fa-7x"></i>
+</div>
+<div *ngIf="noData" class="text-center container">
+  <h1>Pas de donnée(s) pour la date sélectionnée</h1>
+</div>
+
+<div *ngIf="dataToShow" class="someSpace">
+  <h5>Les colonnes représentent les heures/jours et les lignes les minutes/heures en fonction de l'intervalle choisi</h5>
+  <h5>Le tableau se lit donc de haut en bas</h5>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col" class="topLeftCell"></th>
+        <th scope="col" class="solidBorderBot" *ngFor="let colName of cols">{{colName}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let rowName of rows; let i = index">
+        <th scope="row" class="solidBorderRight">{{rowName}}</th>
+        <th *ngFor="let tmp of getRange(aggregatedDatas.length); let idx = index">
+          <div *ngIf="aggregatedDatas[idx][i].value || aggregatedDatas[idx][i].value == 0 ; else has_no_data">
+            <div *ngIf="sameIntervalAsStation; else no_interval_with_data" (click)="editData(aggregatedDatas[idx][i])" data-toggle="modal" data-target="#updateDataModal">{{aggregatedDatas[idx][i].value}}</div>
+            <ng-template #no_interval_with_data> {{aggregatedDatas[idx][i].value}}</ng-template>
+          </div>
+          <ng-template #has_no_data>
+            <div *ngIf="sameIntervalAsStation; else no_interval_noData" (click)="editData(aggregatedDatas[idx][i])" data-toggle="modal" data-target="#updateDataModal"> - </div>
+            <ng-template #no_interval_noData> - </ng-template>
+          </ng-template>
+        </th>
+      </tr>
+    </tbody>
+  </table>
+  <hr>
+  <h2 class="align-content-center">Récapitulatif</h2>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col" class="topLeftCell"></th>
+        <th scope="col" class="solidBorderBot" *ngFor="let colName of cols">{{colName}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row" class="solidBorderRight">Moyenne</th>
+        <th *ngFor="let tmp of sums">
+          <div *ngIf="tmp; else has_data">{{tmp | number:'1.1-2'}}</div>
+          <ng-template #has_data> - </ng-template>
+        </th>
+      </tr>
+      <tr>
+        <th scope="row" class="solidBorderRight">Min (heure)</th>
+        <th *ngFor="let tmp of mins">
+          <div *ngIf="tmp && tmp.value != 9007199254740991; else has_data">{{tmp.value}} <br /> {{tmp.date}}</div>
+          <ng-template #has_data> - </ng-template>
+        </th>
+      </tr>
+      <tr>
+        <th scope="row" class="solidBorderRight">Max (heure)</th>
+        <th *ngFor="let tmp of maxs">
+          <div *ngIf="tmp && tmp.value !=-1; else has_data">{{tmp.value}} <br /> {{tmp.date}}</div>
+          <ng-template #has_data> - </ng-template>
+        </th>
+      </tr>
+    </tbody>
+  </table>
+  <div class="someSpace">
+    <div class="row">
+      <div class="col-md-3">
+        Minimum aboslu : {{totMin}}
+      </div>
+      <div class="col-md-3">
+        Maximum aboslu : {{totMax}}
+      </div>
+      <div class="col-md-3">
+        Somme : {{totSum | number:'1.1-2'}}
+      </div>
+      <div class="col-md-3">
+        Nombre de valeurs : {{totVals}}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="updateDataModal" tabindex="-1" role="dialog" aria-labelledby="updateDataModalLabel" aria-hidden="true">
+  <div *ngIf="dataToEdit">
+    <app-update-data-modal [dataToUpdate]="dataToEdit" [id_station]="stationId"></app-update-data-modal>
+  </div>
+</div>

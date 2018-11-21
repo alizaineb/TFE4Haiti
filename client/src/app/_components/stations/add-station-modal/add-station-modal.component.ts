@@ -1,13 +1,13 @@
 import {AfterViewChecked, Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {first} from "rxjs/operators";
-import {AlertService} from "../../../_services";
-import {StationsService} from "../../../_services/stations.service";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {Station} from "../../../_models";
-import flatpickr from "flatpickr";
-import { French} from "flatpickr/dist/l10n/fr";
-import * as L from "leaflet";
-import {LatLng} from "leaflet";
+import {AlertService} from '../../../_services';
+import {StationsService} from '../../../_services/stations.service';
+import {NoteService} from '../../../_services/note.service';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Note, Station} from '../../../_models';
+import flatpickr from 'flatpickr';
+import { French} from 'flatpickr/dist/l10n/fr';
+import * as L from 'leaflet';
+import {LatLng} from 'leaflet';
 
 
 @Component({
@@ -15,62 +15,145 @@ import {LatLng} from "leaflet";
   templateUrl: './add-station-modal.component.html',
   styleUrls: ['./add-station-modal.component.css']
 })
-export class AddStationModalComponent implements OnInit, AfterViewChecked{
+export class AddStationModalComponent implements OnInit, AfterViewChecked {
 
 
   @Output()
   sent = new EventEmitter<boolean>();
-
-  intervals = ['1min','5min','10min','15min','30min','1h','2h','6h','12h','24h'];
-  station:Station;
   submitted = false;
-
-  addStationForm:FormGroup;
+  addStationForm: FormGroup;
   datePicker;
-
   map;
   mark;
+  intervals: string[];
+  communes: string[];
+  rivers: string[];
 
-  constructor(private alertService:AlertService,
-              private stationService:StationsService){
+  constructor(private alertService: AlertService,
+              private stationService: StationsService,
+              private noteService: NoteService) {
   }
 
   ngOnInit(): void {
-    this.station = new Station('','',undefined,undefined,'',null, new Date(),'',[]);
-
+    this.stationService.getIntervals().subscribe(intervals => {this.intervals = intervals; });
+    this.stationService.getCommunes().subscribe(communes => {this.communes = communes; });
+    this.stationService.getRivers().subscribe(rivers => {this.rivers = rivers; });
     this.addStationForm = new FormGroup({
-      'name': new FormControl(this.station.name, [
+
+      'name': new FormControl('', [
         Validators.required,
         Validators.maxLength(20)
       ]),
-      'latitude': new FormControl(this.station.latitude, [
+
+      'latitude': new FormControl(undefined, [
         Validators.required,
         Validators.max(90),
         Validators.min(-90)
       ]),
-      'longitude': new FormControl(this.station.longitude, [
+      'longitude': new FormControl(undefined, [
         Validators.required,
         Validators.max(180),
         Validators.min(-180)
       ]),
-      'interval': new FormControl(this.station.interval, [
+      'altitude': new FormControl(undefined, [
+        Validators.max(10000),
+        Validators.min(0)
+      ]),
+      'interval': new FormControl('', [
         Validators.required
       ]),
-      'createdAt': new FormControl(this.station.createdAt, [
+      'commune': new FormControl('', [
         Validators.required
+      ]),
+      'river': new FormControl('', [
+        Validators.required
+      ]),
+      'createdAt': new FormControl(null, [
+        Validators.required
+      ]),
+      'note': new FormControl('', [
+        Validators.maxLength(200)
       ])
+      // Ajouter la méthode get è
     });
+    this.initDatePickerAndMap();
+  }
 
+  get name() { return this.addStationForm.get('name'); }
+  get latitude() { return this.addStationForm.get('latitude'); }
+  get longitude() { return this.addStationForm.get('longitude'); }
+  get interval() { return this.addStationForm.get('interval'); }
+  get createdAt() {return this.addStationForm.get('createdAt'); }
+  get altitude() {return this.addStationForm.get('altitude'); }
+  get note() {return this.addStationForm.get('note'); }
+  get river() {return this.addStationForm.get('river'); }
+  get commune() {return this.addStationForm.get('commune'); }
 
-    this.datePicker = flatpickr("#createdAt", {
-      defaultDate: this.station.createdAt,
-      locale:French,
-      altInput: true,
-      altFormat: "d-m-Y",
-      dateFormat: "d-m-Y"
-    });
+  ngAfterViewChecked(): void {
+    this.map.invalidateSize();
+  }
 
+  onSubmit() { this.submitted = true; }
+
+  resetStation() {
+    this.addStationForm.reset();
+    this.datePicker.setDate(null);
+    this.map.removeLayer(this.mark);
+  }
+
+  sendStation() {
+    this.submitted = true;
+    // stop here if form is invalid
+    if (this.addStationForm.invalid) {
+      return;
+    }
+
+    const s = new Station();
+    s.name = this.addStationForm.controls['name'].value;
+    s.latitude = this.addStationForm.controls['latitude'].value;
+    s.longitude = this.addStationForm.controls['longitude'].value;
+    s.altitude = this.addStationForm.controls['altitude'].value;
+    s.interval = this.addStationForm.controls['interval'].value;
+    s.river = this.addStationForm.controls['river'].value;
+    s.commune = this.addStationForm.controls['commune'].value;
+    s.createdAt = this.addStationForm.controls['createdAt'].value;
+
+    this.stationService.register(s)
+      .subscribe(
+        newStation => {
+          if (this.addStationForm.controls['note'].value !== '') {
+            const n = new Note();
+            n.station_id = newStation._id;
+            n.note = this.addStationForm.controls['note'].value;
+            this.noteService.register(n)
+              .subscribe(
+                newNote => {
+              },
+              error => {
+                this.alertService.error('La note n\'a pas été ajoutér\n' + error);
+              });
+          }
+          this.resetStation();
+          // trigger sent
+          this.sent.emit(true);
+          this.alertService.success('La station a été ajoutée');
+        },
+        error => {
+          this.alertService.error(error);
+        });
+  }
+
+  initDatePickerAndMap() {
     const self = this;
+    this.datePicker = flatpickr('#createdAtAdd', {
+      locale: French,
+      altInput: true,
+      altFormat: 'd-m-Y',
+      dateFormat: 'd-m-Y',
+      onChange: function(selectedDates, dateStr, instance) {
+        self.addStationForm.controls['createdAt'].setValue(new Date(selectedDates[0]));
+      }
+    });
 
     const icon1 = L.icon({
       iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/images/marker-icon.png',
@@ -86,18 +169,15 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked{
 
     // Maps usage : OpenStreetMap, OpenSurferMaps
 
-    const mapLayer2 = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-        id: 'mapbox.light',
+    const mapLayer2 = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
         attribution: mbAttr
       }),
-      mapLayer1 = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-        id: 'mapbox.streets',
+      mapLayer1 =  L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
         attribution: mbAttr
       }),
-      mapLayer3 = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-        id: 'mapbox.streets',
+      mapLayer3 =  L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
         attribution: mbAttr
-      }) ;
+      });
 
     const baseLayers = {
       'Grayscale': mapLayer1,
@@ -105,10 +185,11 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked{
       'OpenStreetMap': mapLayer3
     };
 
+
     this.map = L.map('mapid', {
       center: [19.099041, -72.658473],
-      zoom: 8,
-      minZoom: 8,
+      zoom: 7,
+      minZoom: 7,
       maxZoom: 18,
       layers: [mapLayer1]
     });
@@ -116,64 +197,23 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked{
     L.control.scale().addTo(this.map);
     L.control.layers(baseLayers).addTo(this.map);
 
+/*    if (self.station.latitude != undefined && self.station.latitude != undefined) {
+      self.mark = L.marker([self.station.latitude, self.station.longitude], {icon: icon1}).addTo(self.map);
+    }else {
+      this.mark = L.marker([0, 0], {icon: icon1});
+    }*/
+
+    this.mark = L.marker([0, 0], {icon: icon1});
     this.map.on('click', function(e) {
       // @ts-ignore
-      let latln: LatLng = e.latlng;
-      if (self.station.latitude == undefined || self.station.latitude == undefined) {
-        self.station.latitude = latln.lat;
-        self.station.longitude = latln.lng;
-        self.mark = L.marker([self.station.latitude, self.station.longitude], {icon: icon1}).addTo(self.map);
-      }else {
-        self.station.latitude = latln.lat;
-        self.station.longitude = latln.lng;
-        self.mark.setLatLng(latln);
-      }
+      const latln: LatLng = e.latlng;
+      self.addStationForm.controls['latitude'].setValue(latln.lat);
+      self.addStationForm.controls['longitude'].setValue(latln.lng);
+      self.mark.setLatLng(latln);
+      self.mark.addTo(self.map);
     });
   }
-
-  ngAfterViewChecked(): void {
-    this.map.invalidateSize()
-  }
-
-  updateCreatedDate(){
-    this.station.createdAt = new Date(this.datePicker.selectedDates[0]);
-  }
-
-  get name() { return this.addStationForm.get('name'); }
-  get latitude() { return this.addStationForm.get('latitude'); }
-  get longitude() { return this.addStationForm.get('longitude'); }
-  get interval() { return this.addStationForm.get('interval'); }
-  get createdAt() {return this.addStationForm.get('createdAt');}
-
-
-  onSubmit() { this.submitted = true; }
-
-  resetStation() {
-    this.station = new Station('','',undefined,undefined,'',null, new Date(),'',[]);
-    this.datePicker.setDate(new Date())
-  }
-
-  sendStation(){
-    this.submitted = true;
-    // stop here if form is invalid
-    if (this.addStationForm.invalid) {
-      return;
-    }
-    this.stationService.register(this.station)
-      .pipe(first())
-      .subscribe(
-        result => {
-          //trigger sent
-          this.sent.emit(true);
-          //Fermer la page
-          this.resetStation();
-          let element: HTMLElement = document.getElementsByClassName('btn')[1] as HTMLElement;
-          element.click();
-        },
-        error => {
-          this.alertService.error(error);
-        });
-  }
 }
+
 
 

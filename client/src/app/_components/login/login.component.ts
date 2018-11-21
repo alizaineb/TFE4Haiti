@@ -1,10 +1,11 @@
-﻿import {Component, OnInit} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {first} from 'rxjs/operators';
+﻿import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { first } from 'rxjs/operators';
+import { Constantes } from "../../_helpers/constantes";
 
-import {AlertService, AuthenticationService} from '../../_services/index';
-import {LocalstorageService} from "../../_services/localstorage.service";
+import { AlertService, AuthenticationService, UserService, StationsService } from '../../_services/index';
+import { LocalstorageService } from "../../_services/localstorage.service";
 
 @Component({
   templateUrl: 'login.component.html',
@@ -17,6 +18,10 @@ export class LoginComponent implements OnInit {
   loginSubmitted = false;
   registerSubmitted = false;
   returnUrl: string;
+  roles: string[];
+  roleWorker: string;
+  private communes: string[];
+  private rivers: string[];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -24,21 +29,35 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private authenticationService: AuthenticationService,
     private alertService: AlertService,
-    private localStorageService: LocalstorageService) {
+    private localStorageService: LocalstorageService,
+    private userService: UserService,
+    private stationsService: StationsService
+  ) {
   }
 
   ngOnInit() {
+    this.stationsService.getCommunes().subscribe(communes => {
+      this.communes = communes;
+    });
+    this.stationsService.getRivers().subscribe(rivers => {
+      this.rivers = rivers;
+    });
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
+
     this.registerForm = this.formBuilder.group({
       username: ['', Validators.required],
-      password: ['', Validators.required],
       first_name: ['', Validators.required],
-      last_name: ['', Validators.required]
+      last_name: ['', Validators.required],
+      role: ['', Validators.required],
+      commune: [''],
+      bassin_versant: ['']
     });
-    
+    this.roles = Object.values(Constantes.roles);
+    this.roleWorker = Constantes.roles.WORKER;
+
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
@@ -85,12 +104,12 @@ export class LoginComponent implements OnInit {
 
     this.loading = true;
     const self = this;
-    this.authenticationService.register(this.r.first_name.value, this.r.last_name.value, this.r.username.value, this.r.password.value)
+    this.authenticationService.register(this.r.first_name.value, this.r.last_name.value, this.r.username.value, this.r.role.value, this.r.commune.value, this.r.bassin_versant.value)
       .pipe(first())
       .subscribe(
         data => {
           this.router.navigate(["/login"]);
-          this.alertService.success("Votre compte a été créé! Vous pouvez vous connectez.");
+          this.alertService.success("Votre compte a été créé !Veuillez attendre la validation par l'administrateur.");
           this.loading = false;
         },
         error => {

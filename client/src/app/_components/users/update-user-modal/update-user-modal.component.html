@@ -1,0 +1,108 @@
+<div class="modal-dialog modal-dialog-centered modal-md" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h1 class="modal-title" id="updateUserModal">Modifier un utilisateur</h1>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="container">
+
+        <form [formGroup]="updateUserForm" #updateUserFormNg="ngForm">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <input id="first_name" class="form-control" placeholder="Prénom" formControlName="first_name" required>
+                <div *ngIf="first_name.invalid && (first_name.dirty || first_name.touched)">
+                  <div *ngIf="first_name.errors.required">
+                    Le prénom est requis.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <input id="last_name" class="form-control" placeholder="Nom" formControlName="last_name" required>
+                <div *ngIf="last_name.invalid && (last_name.dirty || last_name.touched)">
+                  <div *ngIf="last_name.errors.required">
+                    Le nom est requis.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <input id="mail" class="form-control" placeholder="Adresse mail" formControlName="mail" required>
+                <div *ngIf="mail.invalid && (mail.dirty || mail.touched)">
+                  <div *ngIf="mail.errors.required">
+                    L'adresse mail est requise.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <input type="search" class="form-control" id="commune" formControlName="commune" placeholder="Commune" list="communes">
+                <datalist id="communes">
+                  <option *ngFor="let i of communes" [value]="i">{{i}}</option>
+                </datalist>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <input type="search" class="form-control" id="river" formControlName="river" placeholder="Bassin versant" list="rivers">
+                <datalist id="rivers">
+                  <option *ngFor="let i of rivers" [value]="i">{{i}}</option>
+                </datalist>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <select class="form-control" formControlName="role" required>
+                  <option value="" disabled selected>role</option>
+                  <option *ngFor="let i of roles" [value]="i">{{i}}</option>
+                </select>
+                <div *ngIf="role.invalid && (role.dirty || role.touched)" class="alert alert-danger">
+                  <div *ngIf="role.errors.required">
+                    Une role est requis
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <select class="form-control" formControlName="state" required>
+                  <option value="" disabled selected>etat</option>
+                  <option *ngFor="let i of states" [value]="i">{{i}}</option>
+                </select>
+                <div *ngIf="state.invalid && (state.dirty || state.touched)" class="alert alert-danger">
+                  <div *ngIf="state.errors.required">
+                    Un etat est requis
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <p> Attention une modification de l'état peut entrainer une inconsistance dans la base des données, veuillez vous référer à la documentation.</p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="resetUser()">Réinitialiser
+      </button>
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler
+      </button>
+      <button type="submit" class="btn btn-success" data-dismiss="modal" (click)=updateUser()> Envoyer
+      </button>
+    </div>
+  </div>
+</div>

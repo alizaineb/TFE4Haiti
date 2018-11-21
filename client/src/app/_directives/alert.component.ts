@@ -28,6 +28,7 @@ export class AlertComponent implements OnInit, OnDestroy {
         this.taostr[message.type](message.text, message.type, {
           progressBar: true,
           closeButton: true,
+          enableHtml : true,
           timeOut: 10000 //temps en millisecondes
         });
 

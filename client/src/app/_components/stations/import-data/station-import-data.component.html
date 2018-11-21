@@ -1,0 +1,73 @@
+<a (click)="previousRoute()" class="blue"><i class="fas fa-chevron-left"></i> Retour en arrière</a>
+<div *ngIf="!loading">
+  <div class="row">
+    <div class="col-md-11"><p>Import des données pour la station : {{currentStation.name}}</p></div>
+    <div class="col-md-1"><i class="fas fa-check-circle"
+                                                                                    (click)="sendData()"></i></div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="alert alert-warning" *ngIf="currentStation.state == 'broken'">
+        La station est en état broken, verifiez bien les dates des données pour qu'elles correspondent à la période où la station fonctionnait.
+      </div>
+      <div class="alert alert-danger" *ngIf="currentStation.state == 'deleted'">
+        La station n'est plus en état de marche, verifiez bien les dates des données pour qu'elles correspondent à la période où la station fonctionnait.
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-10" [ngClass]="isSelectetd('manual')" (click)="changeZone('manual')">
+      <table class="table table-responsive table-striped">
+        <thead>
+        <tr>
+          <td>Date</td>
+          <td>Heure</td>
+          <td>Valeur</td>
+          <td>Actions <i class="fas fa-plus-circle" (click)="moreData()"></i></td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let d of data;">
+          <td class="align-middle">
+            <input placeholder="Date" type="date" [(ngModel)]="d.date"/>
+          </td>
+          <td>
+            <ngb-timepicker [(ngModel)]="d.time"></ngb-timepicker>
+          </td>
+          <td>
+            <input placeholder="value" type="number" [(ngModel)]="d.value"/>
+          </td>
+          <td>
+            <i class="fas fa-minus-circle" (click)="removeData(d)"></i>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div [ngClass]="isSelectetd('file')" (click)="changeZone('file')">
+      <div class="input-group mb3">
+        <div class="custom-file">
+          <input type="file" class="custom-file-input" id="uploadfileData"
+                 aria-describedby="uploadfileData"
+                 accept="text/csv"
+                 (change)="onFileSelected($event)">
+          <label class="custom-file-label" for="uploadfileData"></label>
+        </div>
+      </div>
+      <p *ngIf="selectedFile">File selected : {{selectedFile.name}}</p>
+    </div>
+  </div>
+
+  <!--<div class="row" *ngFor="let d of data;">-->
+    <!--<div class="col-md-3">-->
+      <!--<pre>{{d | json}}</pre>-->
+
+    <!--</div>-->
+
+  <!--</div>-->
+</div>
+
+<div *ngIf="loading" class="text-center container">
+  <i class="fas fa-spinner fa-spin fa-7x"></i>
+</div>
+

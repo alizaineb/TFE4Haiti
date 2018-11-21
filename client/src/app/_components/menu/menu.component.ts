@@ -3,6 +3,7 @@ import {MenuService} from '../../_services/menu.service';
 import {Router} from '@angular/router';
 import {LocalstorageService} from '../../_services/localstorage.service';
 import {AuthenticationService} from '../../_services';
+import {Constantes} from "../../_helpers/constantes";
 
 @Component({
   selector: 'app-menu',
@@ -29,13 +30,13 @@ export class MenuComponent implements OnInit {
       self.updateMenu(storage);
     });
     this.updateMenu(this.localStorageService.getStorage());
-    /*this.authenticationService.isLogged().subscribe(
+    this.authenticationService.isLogged().subscribe(
       value => {
         console.log('val : ', value);
       },
       err => {
         console.log('err', err);
-      });*/
+      });
   }
 
   private updateMenu(storage) {
@@ -45,15 +46,16 @@ export class MenuComponent implements OnInit {
       const role = User.current.role;
       // console.log('role : ', role);
       switch (role) {
-        case 'admin':
+        case Constantes.roles.ADMIN:
           this.menu.left = this.menuService.getLeftAdminMenu();
           this.menu.right = this.menuService.getRightAdminMenu();
           break;
-        case 'worker':
+        case Constantes.roles.WORKER:
+          console.log('Ime a workder');
           this.menu.left = this.menuService.getleftWorkerMenu();
           this.menu.right = this.menuService.getRightWorkerMenu();
           break;
-        case 'viewer':
+        case Constantes.roles.VIEWER:
           this.menu.left = this.menuService.getLeftViewerMenu();
           this.menu.right = this.menuService.getRightViewerMenu();
           break;

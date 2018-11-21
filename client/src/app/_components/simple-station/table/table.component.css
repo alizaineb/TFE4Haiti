@@ -1,0 +1,36 @@
+.someSpace {
+  padding: 10px;
+}
+
+.topLeftCell {
+  border-top: 1px solid Transparent !important;
+  border-left: 1px solid Transparent !important;
+  border-bottom: 1px solid !important;
+  border-right: 1px solid !important;
+}
+
+.solidBorderBot {
+  border-bottom: 1px solid !important;
+}
+
+.solidBorderRight {
+  border-right: 1px solid !important;
+  width: 80px !important;
+  min-width: 80px !important;
+  max-width: 80px !important;
+}
+
+table {
+  width: 100% !important;
+}
+
+th {
+  padding: 6px 1px 6px 1px;
+  max-width: 55px;
+  min-width: 55px;
+  text-align: center;
+}
+
+tbody>tr:hover {
+  background: none !important;
+}
