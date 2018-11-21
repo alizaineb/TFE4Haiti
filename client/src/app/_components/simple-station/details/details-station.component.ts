@@ -1,9 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {StationsService} from '../../../_services/stations.service';
-import {AlertService, AuthenticationService} from '../../../_services/';
+import { Component, Input, OnInit } from '@angular/core';
+import { StationsService } from '../../../_services/stations.service';
+import { AlertService, AuthenticationService } from '../../../_services/';
 import * as L from 'leaflet';
-import {Station} from '../../../_models';
-import {LocalstorageService} from "../../../_services/localstorage.service";
+import { Station } from '../../../_models';
+import { LocalstorageService } from "../../../_services/localstorage.service";
 
 @Component({
   selector: 'app-simple-station-details',
@@ -72,7 +72,7 @@ export class DetailsStationComponent implements OnInit {
     return `${date.getUTCFullYear()}-${this.minTwoDigits(date.getUTCMonth())}-${this.minTwoDigits(date.getUTCDate())}`
   }
 
-   minTwoDigits(n) {
+  minTwoDigits(n) {
     return (n < 10 ? '0' : '') + n;
   }
 
@@ -80,20 +80,15 @@ export class DetailsStationComponent implements OnInit {
     this.loadData();
   }
 
-  toNiceDate(date) {
-    date = new Date(date);
-    return date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear() + ' à ' + date.getHours() + ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
-  }
-
   getState(station: Station) {
     return this.stationService.getFrenchState(station);
   }
 
-  hasAccessToStation(station){
+  hasAccessToStation(station) {
     return this.stationService.hasAccessToStation(station)
   }
 
-  hasViewerAcces(){
+  hasViewerAcces() {
     return this.authenticationService.hasViewerAccess();
   }
 
@@ -137,7 +132,7 @@ export class DetailsStationComponent implements OnInit {
     const stationGroup = L.layerGroup();
 
 
-    L.marker([self.currentStation.latitude, self.currentStation.longitude], {icon: icon[self.currentStation.state]}).bindPopup(`<b>${self.currentStation.name} </b><br/>`).addTo(stationGroup);
+    L.marker([self.currentStation.latitude, self.currentStation.longitude], { icon: icon[self.currentStation.state] }).bindPopup(`<b>${self.currentStation.name} </b><br/>`).addTo(stationGroup);
 
 
     const mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
@@ -146,8 +141,8 @@ export class DetailsStationComponent implements OnInit {
 
 
     const mapLayerOSMGrayScale = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
-        attribution: mbAttr
-      }),
+      attribution: mbAttr
+    }),
       mapLayerOpenStreetMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
         attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
       }),
@@ -175,9 +170,9 @@ export class DetailsStationComponent implements OnInit {
 
     L.control.scale().addTo(self.mapContainer);
 
-    const legend = L.control.attribution({position: 'bottomright'});
+    const legend = L.control.attribution({ position: 'bottomright' });
 
-    legend.onAdd = function (map) {
+    legend.onAdd = function(map) {
 
       const div = L.DomUtil.create('div', 'info legend'),
         grades = ['En activité', 'En panne', 'Pas en activitée'],
