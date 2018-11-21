@@ -1,15 +1,19 @@
 <div *ngIf="station">
   <div class="container">
     <div class="row">
-      <div class="col-md-4">
-        Station : {{station.name}}
+      <div class="col-md-3">
+        Station: {{station.name}}
       </div>
-      <div class="col-md-4">
-        Commune : {{station.commune}}
+      <div class="col-md-3">
+        Commune: {{station.commune}}
       </div>
-      <div class="col-md-4">
-        Rivière : {{station.river}}
+      <div class="col-md-3">
+        Rivière: {{station.river}}
       </div>
+      <div class="col-md-3">
+        Upload de données: <a [routerLink]="['/','stations',  station._id, 'import']"><i class="fas fa-file-download fa-fw fa-1x" *ngIf="hasWorkerAccess()"></i></a>
+      </div>
+
     </div>
   </div>
 </div>
