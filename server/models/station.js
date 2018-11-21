@@ -86,7 +86,7 @@ const Station = new Schema({
     validate: {
       validator: function(v) {
         const d = new Date();
-        return v.getTime() < d.getTime();
+        return v.getFullYear() <= d.getFullYear() && v.getMonth() <= d.getMonth() && v.getDate() <= d.getDate();
       },
       message: props => `Vous ne pouvez pas créer une station dans le futur`
     }

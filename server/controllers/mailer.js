@@ -21,6 +21,7 @@ transporter.sendMail(mailOptions, function(error, info) {
   }
 });
 */
+const logger = require('../config/logger');
 const nodemailer = require('nodemailer');
 const nconf = require('nconf');
 
@@ -63,8 +64,9 @@ exports.sendMail = function(req, res, subject, to, text, callback) {
     text: text
   };
   // Envoi du mail
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
+  transporter.sendMail(mailOptions, (err, info) => {
+    if (err) {
+      logger.error("[mailer] sendMail : ", err);
       return res.status(500).send("Erreur lors de l'envoi du mail à l'utilisateur.");
     } else {
       return callback();
@@ -94,8 +96,8 @@ exports.sendMailAndIgnoreIfMailInvalid = function(req, res, subject, to, text, c
     text: text
   };
   // Envoi du mail
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
+  transporter.sendMail(mailOptions, (err, info) => {
+    if (err) {
       return callback(); // On ignore si une erreur se produit
     } else {
       return callback();

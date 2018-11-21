@@ -63,7 +63,7 @@ exports.getAwaiting = function(req, res) {
   dataModel.RainDataAwaitingModel.find({}, (err, datas) => {
     if (err) {
       logger.error("[DATACTRL] getAwaiting : ", err);
-      return res.status(500).send("Erreur lors de la récupérations des données.")
+      return res.status(500).send("Erreur lors de la récupérations des données.");
     } else {
       return res.status(200).send(datas);
     }
@@ -305,21 +305,22 @@ exports.rainDataGraphLineRangeDate = function(req, res) {
     let dateMin = new Date(Date.UTC(minYear, minMonth, minDate, 0, 0, 0, 0));
     let dateMax = new Date(Date.UTC(maxYear, maxMonth, maxDate, 23, 59, 59, 0));
 
-    dataModel.rainDataModel.find({id_station: req.params.stationId, date: { "$gte": dateMin, "$lt": dateMax }},
-      'date value', { sort: { date: 1 } }, function(err, data) {
-      if (err) {
-        logger.error("[DATACTRL] rainDataGraphLineRangeDate : ", err);
-        return res.status(500).send("Erreur lors de la récupération des données.");
-      }
-      if (data.length === 0) {
-        return res.status(201).send([]);
-      } else {
-        data = preprocessData(data, req.params.stationId, station.interval, dateMin, dateMax);
-        let tabD = [];
-        data.forEach(data => tabD.push(dataModel.rainDataModel.toDtoGraphLine(data)));
-        return res.status(201).send(tabD);
-      }
-    });
+    dataModel.rainDataModel.find({ id_station: req.params.stationId, date: { "$gte": dateMin, "$lt": dateMax } },
+      'date value', { sort: { date: 1 } },
+      function(err, data) {
+        if (err) {
+          logger.error("[DATACTRL] rainDataGraphLineRangeDate : ", err);
+          return res.status(500).send("Erreur lors de la récupération des données.");
+        }
+        if (data.length === 0) {
+          return res.status(201).send([]);
+        } else {
+          data = preprocessData(data, req.params.stationId, station.interval, dateMin, dateMax);
+          let tabD = [];
+          data.forEach(data => tabD.push(dataModel.rainDataModel.toDtoGraphLine(data)));
+          return res.status(201).send(tabD);
+        }
+      });
   });
 };
 
@@ -357,21 +358,22 @@ exports.getRainDataGraphLineOneMonth = function(req, res) {
     let dateMax = new Date(Date.UTC(year, dateMin.getMonth() + 1, 0, 23, 23, 59, 0));
 
 
-    dataModel.rainDataModel.find({id_station: req.params.stationId, date: { "$gte": dateMin, "$lt": dateMax }},
-      'date value', { sort: { date: 1 } }, function(err, data) {
-      if (err) {
-        logger.error("[DATACTRL] getRainDataGraphLineOneMonth : ", err);
-        return res.status(500).send("Erreur lors de la récupération des données.");
-      }
-      if (data.length === 0) {
-        return res.status(201).send([]);
-      } else {
-        data = preprocessData(data, req.params.stationId, station.interval, dateMin, dateMax);
-        let tabD = [];
-        data.forEach(data => tabD.push(dataModel.rainDataModel.toDtoGraphLine(data)));
-        return res.status(201).send(tabD);
-      }
-    });
+    dataModel.rainDataModel.find({ id_station: req.params.stationId, date: { "$gte": dateMin, "$lt": dateMax } },
+      'date value', { sort: { date: 1 } },
+      function(err, data) {
+        if (err) {
+          logger.error("[DATACTRL] getRainDataGraphLineOneMonth : ", err);
+          return res.status(500).send("Erreur lors de la récupération des données.");
+        }
+        if (data.length === 0) {
+          return res.status(201).send([]);
+        } else {
+          data = preprocessData(data, req.params.stationId, station.interval, dateMin, dateMax);
+          let tabD = [];
+          data.forEach(data => tabD.push(dataModel.rainDataModel.toDtoGraphLine(data)));
+          return res.status(201).send(tabD);
+        }
+      });
   });
 };
 
@@ -401,7 +403,9 @@ exports.getRainDataGraphLineOneYear = function(req, res) {
     let dateMin = new Date(Date.UTC(year, 0, 1, 0, 0, 0, 0));
     let dateMax = new Date(Date.UTC(year, 11, 31, 23, 59, 59, 0));
 
-    dataModel.rainDataModel.find({id_station: req.params.stationId, date: { "$gte": dateMin, "$lt": dateMax }
+    dataModel.rainDataModel.find({
+      id_station: req.params.stationId,
+      date: { "$gte": dateMin, "$lt": dateMax }
     }, 'date value', { sort: { date: 1 } }, function(err, data) {
       if (err) {
         logger.error("[DATACTRL] getRainDataGraphLineOneYear : ", err);
