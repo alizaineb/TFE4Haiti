@@ -1,11 +1,13 @@
-<div class="row details" >
+<div class="row details">
   <div class="col-md-7" *ngIf="currentStation">
     <div class="row">
       <div class="col-md-12">
         <h5>Nom :
           <div class="float-right">
-          <i class="fas fa-edit fa-fw fa-1x" data-toggle="modal" data-target="#updateStationModal" *ngIf="hasAccessToStation(currentStation)"></i> <!---->
-        </div></h5>
+            <i class="fas fa-edit fa-fw fa-1x" data-toggle="modal" data-target="#updateStationModal" *ngIf="hasAccessToStation(currentStation)"></i>
+            <!---->
+          </div>
+        </h5>
       </div>
       <div class="col-md-11 offset-md-1">
         <h2>{{currentStation.name}}</h2>
@@ -49,7 +51,7 @@
         <h5>Date d'installation : </h5>
       </div>
       <div class="col-md-11 offset-md-1">
-        <h5>{{toNiceDate(currentStation.createdAt)}}</h5>
+        <h5>{{currentStation.createdAt | date: 'd/MM/yyyy':'UTC'}}</h5>
       </div>
       <div class="col-md-12">
         <h5>Statut : </h5>
