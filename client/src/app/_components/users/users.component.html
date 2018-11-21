@@ -8,6 +8,16 @@
     </div>
     <input type="search" class="form-control" placeholder="Mail d'un utilisateur" aria-label="Recherche" aria-describedby="basic-addon1" (keyup)="filterUser()" (search)="filterUser()" [(ngModel)]="searchKeyWord">
   </div>
+  <div class="offset-md-5 col-md-4 float-right">
+    <div class="card bg-light mb-3 pull-right">
+      <div class="card-body">
+        <p class="card-text">
+          <i class="fas fa-edit fa-fw fa-1x"></i> Editer l'utilisateur
+          <i class="fas fa-trash fa-fw fa-1x"></i> Supprimer l'utilisateur
+        </p>
+      </div>
+    </div>
+  </div>
 </div>
 <table class="table table-striped table-bordered">
   <thead>
