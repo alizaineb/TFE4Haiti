@@ -39,7 +39,6 @@ export class SimpleStationComponent implements OnInit, OnDestroy {
       const tab = params['tab'];
       if (self.tabList.indexOf(tab) > 0) {
         self.activeTab = tab;
-        self.router.navigate(['/stations', self.stationId, self.activeTab]);
       }
       if (!this.currentStation) {
         this.stationService.getById(this.stationId).subscribe(
@@ -49,7 +48,7 @@ export class SimpleStationComponent implements OnInit, OnDestroy {
               this.tabList = ['Details', 'Tableaux', 'Graphiques', 'Notes'];
             }
             if (this.hasAdminAccess()) {
-              this.tabList = ['Details', 'Tableaux', 'Graphiques', 'Notes', 'Administrateurs'];
+              this.tabList = ['Details', 'Tableaux', 'Graphiques', 'Notes', 'Utilisateurs'];
             }
           },
           err => {
