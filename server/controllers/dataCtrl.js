@@ -983,7 +983,7 @@ function rainDataToCSV(rainDatas) {
  * @return {string} String de la date formatée.
  */
 function preFormatDate(date) {
-  return `${date.getFullYear()}-${minTwoDigits(date.getMonth())}-${minTwoDigits(date.getDay())} ${minTwoDigits(date.getHours())}:${minTwoDigits(date.getMinutes())}`
+  return `${date.getFullYear()}-${minTwoDigits(date.getMonth())}-${minTwoDigits(date.getDay())}-${minTwoDigits(date.getHours())}:${minTwoDigits(date.getMinutes())}`
 }
 
 /**
