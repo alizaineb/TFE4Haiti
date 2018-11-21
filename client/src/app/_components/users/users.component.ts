@@ -85,7 +85,7 @@ export class UsersComponent implements OnInit {
       i++;
     }
     // Tous les champs sont égaux, pas besoin de trier
-    if (i > this.usersFiltered.length) {
+    if (i > this.usersFiltered.length || !this.usersFiltered[i]) {
       return;
     }
 
