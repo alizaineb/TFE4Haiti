@@ -4,6 +4,7 @@
  */
 // Modules node
 const nconf = require('nconf');
+const urlApp = nconf.get('server:url');
 var crypto = require('crypto');
 
 // Nos modules
@@ -512,7 +513,6 @@ function sendEmailReset(req, res, user, isUserRequest) {
   // Création de l'objet permettant de reset le mdp
   let pwdTmp = new PwdRecoveryModel.pwdRecoveryModel();
   let url = crypto.randomBytes(32).toString('hex');
-  let origin = req.get('origin');
   pwdTmp.user = user._id;
   pwdTmp.url = url
   if (isUserRequest) {
@@ -520,7 +520,7 @@ function sendEmailReset(req, res, user, isUserRequest) {
   } else {
     pwdTmp.duration = nconf.get("user").accountAcceptedTime;
   }
-  let urlTotal = origin + '/login/reset/' + (isUserRequest ? 'u' : 'a') + '/' + url;
+  let urlTotal = urlApp + '/login/reset/' + (isUserRequest ? 'u' : 'a') + '/' + url;
   pwdTmp.save((err) => {
     if (err) {
       logger.error("[userCtrl] sendEmailReset1 :", err);
