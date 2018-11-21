@@ -204,7 +204,7 @@ exports.routes = [
     path: "/api/notes/:station_id",
     httpMethod: "GET",
     middleWare: [controllers.note.get],
-    access: [roles.ADMIN, roles.WORKER]
+    access: [roles.ADMIN, roles.WORKER, roles.VIEWER]
   },
 
   // Méthodes liées aux data
