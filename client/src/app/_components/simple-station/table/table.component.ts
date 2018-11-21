@@ -49,7 +49,7 @@ export class TableComponent implements OnInit, OnChanges {
   private totMax: number;
 
 
-  constructor(private stationService: StationsService, private dataService: DataService, private alertService: AlertService) { }
+  constructor(private stationService: StationsService, private dataService: DataService, private alertService: AlertService, private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
     let date = new Date(Date.now());
@@ -143,6 +143,11 @@ export class TableComponent implements OnInit, OnChanges {
   hasAccessToStation(){
 
     return this.stationService.hasAccessToStation(this.currentStation);
+  }
+
+
+  hasWorkerAccess() {
+    return this.authenticationService.hasWorkerAccess();
   }
 
   intervalleChanged(val) {
