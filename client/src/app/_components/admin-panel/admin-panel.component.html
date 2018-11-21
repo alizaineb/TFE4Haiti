@@ -1,12 +1,14 @@
-<div *ngIf="!showUsers && !showStations && !showDatas">
-  <h1>Rien à afficher</h1>
-</div>
-<div *ngIf="showUsers">
-  <h1>
-    Utilisateur(s) en attente de validation
-  </h1>
-  <table class="table table-striped table-bordered">
-    <thead>
+<div *ngIf="!dataLoading">
+  <div *ngIf="!showUsers && !showStations && !showDatas">
+    <h1>Rien à afficher</h1>
+  </div>
+
+  <div *ngIf="showUsers">
+    <h1>
+      Utilisateur(s) en attente de validation
+    </h1>
+    <table class="table table-striped table-bordered">
+      <thead>
       <tr>
         <th>#</th>
         <th *ngFor="let head of headersUsers">
@@ -16,8 +18,8 @@
         </th>
         <th>Action</th>
       </tr>
-    </thead>
-    <tbody>
+      </thead>
+      <tbody>
       <tr *ngFor="let user of users | paginate: { itemsPerPage: 10, currentPage: pageUser, id:'userpages' } ; index as i;">
         <td>{{i+1}}</td>
         <td>{{user.first_name}}</td>
@@ -33,16 +35,16 @@
           <i class="fas fa-trash fa-fw fa-1x" data-toggle="modal" (click)="setCurrUser(user._id)" data-target=" #refuseUserModal"></i>
         </td>
       </tr>
-    </tbody>
-  </table>
-  <pagination-controls (pageChange)="pageUser = $event" id="userpages" autoHide="true"></pagination-controls>
-</div>
-<div *ngIf="showStations">
-  <h1>
-    Station(s) en attente de validation
-  </h1>
-  <table class="table table-striped table-bordered">
-    <thead>
+      </tbody>
+    </table>
+    <pagination-controls (pageChange)="pageUser = $event" id="userpages" autoHide="true"></pagination-controls>
+  </div>
+  <div *ngIf="showStations">
+    <h1>
+      Station(s) en attente de validation
+    </h1>
+    <table class="table table-striped table-bordered">
+      <thead>
       <tr>
         <th>#</th>
         <th *ngFor="let head of headersStation">
@@ -52,8 +54,8 @@
         </th>
         <th>Action</th>
       </tr>
-    </thead>
-    <tbody>
+      </thead>
+      <tbody>
       <tr *ngFor="let station of stations | paginate: { itemsPerPage: 10, currentPage: pageStations, id:'stationspage' } ; index as i;">
         <td>{{i+1}}</td>
         <td>{{station.name}}</td>
@@ -67,18 +69,18 @@
           <i class="fas fa-trash fa-fw fa-1x" (click)="refuseStation(station)"></i>
         </td>
       </tr>
-    </tbody>
-  </table>
-  <pagination-controls (pageChange)="pageStations = $event" id="stationspage" autoHide="true"></pagination-controls>
+      </tbody>
+    </table>
+    <pagination-controls (pageChange)="pageStations = $event" id="stationspage" autoHide="true"></pagination-controls>
 
 
-</div>
-<div *ngIf="showDatas">
-  <h1>
-    Donnée(s) en attente de validation
-  </h1>
-  <table class="table table-striped table-bordered">
-    <thead>
+  </div>
+  <div *ngIf="showDatas">
+    <h1>
+      Donnée(s) en attente de validation
+    </h1>
+    <table class="table table-striped table-bordered">
+      <thead>
       <tr>
         <th>#</th>
         <th *ngFor="let head of headersData">
@@ -88,8 +90,8 @@
         </th>
         <th>Action</th>
       </tr>
-    </thead>
-    <tbody>
+      </thead>
+      <tbody>
       <tr *ngFor="let data of rainDatas | paginate: { itemsPerPage: 10, currentPage: pageStations, id:'datasPagination' } ; index as i;">
         <td>{{i+1}}</td>
         <td>{{data.station}}</td>
@@ -106,12 +108,18 @@
           <i class="fas fa-trash fa-fw fa-1x" (click)="refuseData(data)"></i>
         </td>
       </tr>
-    </tbody>
-  </table>
-  <pagination-controls (pageChange)="pageStations = $event" id="datasPagination" autoHide="true"></pagination-controls>
+      </tbody>
+    </table>
+    <pagination-controls (pageChange)="pageStations = $event" id="datasPagination" autoHide="true"></pagination-controls>
+  </div>
+
 </div>
 
 <!-- Modal refuse user -->
 <div class="modal fade" id="refuseUserModal" tabindex="-1" role="dialog" aria-labelledby="refuseUserModalLabel" aria-hidden="true">
   <app-refuse-user-modal [currUser]=currUser (sent)="loadAwaitingUsers($event)"></app-refuse-user-modal>
+</div>
+
+<div *ngIf="dataLoading" class="text-center container">
+  <i class="fas fa-spinner fa-spin fa-7x"></i>
 </div>
