@@ -121,12 +121,12 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   dateChanged(selectedDates, dateStr, instance) {
-    if (!dateStr) {
-      return;
-    }
     let self = this;
     for (let i = 0; i < 24; i++) {
       this.cols[i] = this.minTwoDigits(i);
+    }
+    if (!dateStr) {
+      return;
     }
     this.noDateSelected = false;
     // Va falloir récup pour la date choisie ==> Lancer le loader
@@ -189,11 +189,6 @@ export class TableComponent implements OnInit, OnChanges {
       }
     }
 
-    // Si y'a des données, compute les
-    if (this.dataToShow) {
-      this.computeDataToShow();
-    }
-
     this.intervalSelected = val;
     let jump = this.getHopSize(val);
     this.ratio = base / jump;
@@ -204,6 +199,11 @@ export class TableComponent implements OnInit, OnChanges {
         this.rows[i] = this.rows[i] + " à " + this.minTwoDigits(((i + 1) * jump) - 1);
       }
     }
+    // Si y'a des données, compute les
+    if (this.dataToShow) {
+      this.computeDataToShow();
+    }
+
 
     // On est passé d'un affichage mensuel à un affichage journalier (ou l'inverse)
     // Minutes vers heures
