@@ -59,8 +59,7 @@
         <tr *ngFor="let station of stations | paginate: { itemsPerPage: 10, currentPage: pageStations, id:'stationspage' } ; index as i;">
           <td>{{i+1}}</td>
           <td>{{station.name}}</td>
-          <td>{{station.latitude}}</td>
-          <td>{{station.longitude}}</td>
+          <td>{{station.latitude}} <br /> {{station.longitude}} </td>
           <td>{{station.commune}}</td>
           <td>{{station.river}}</td>
           <td>{{station.interval}}</td>
