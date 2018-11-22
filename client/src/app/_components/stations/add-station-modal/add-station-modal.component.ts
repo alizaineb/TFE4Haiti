@@ -169,22 +169,21 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked {
 
     // Maps usage : OpenStreetMap, OpenSurferMaps
 
-    const mapLayer2 = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+    const mapLayer2 =  L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
         attribution: mbAttr
       }),
-      mapLayer1 =  L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+      mapLayer1 = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
         attribution: mbAttr
       }),
-      mapLayer3 =  L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+      mapLayer3 = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: mbAttr
-      });
+      }) ;
 
     const baseLayers = {
       'Grayscale': mapLayer1,
       'Opentopomap': mapLayer2,
       'OpenStreetMap': mapLayer3
     };
-
 
     this.map = L.map('mapid', {
       center: [19.099041, -72.658473],

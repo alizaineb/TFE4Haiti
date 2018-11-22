@@ -139,7 +139,7 @@ export class MapComponent implements OnInit {
       zoom: self.zoom,
       minZoom: 8,
       maxZoom: 18,
-      layers: [mapLayerOSMGrayScale, stationGroup.working, stationGroup.deleted, stationGroup.awaiting, stationGroup.broken]
+      layers: [mapLayerOpenStreetMap, stationGroup.working, stationGroup.deleted, stationGroup.awaiting, stationGroup.broken]
     });
 
 
@@ -188,11 +188,6 @@ export class MapComponent implements OnInit {
       'Supprimee': stationGroup.deleted
     };
 
-
-
-
-
-    //console.log(currentU);
     if (!currentU) {
       self.mapContainer.removeLayer(stationGroup.awaiting);
       self.mapContainer.removeLayer(overlays);
