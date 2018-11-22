@@ -45,9 +45,10 @@
 </div>
 
 <div *ngIf="dataToShow" class="someSpace">
-  <h5>Les colonnes représentent les heures/jours et les lignes les minutes/heures en fonction de l'intervalle choisi</h5>
-  <h5>Le tableau se lit donc de haut en bas</h5>
-
+  <h5><i class="far fa-question-circle"></i> Les colonnes représentent les heures/jours et les lignes les minutes/heures en fonction de l'intervalle choisi</h5>
+  <h5><i class="far fa-question-circle"></i> Le tableau se lit donc de haut en bas</h5>
+  <h5 *ngIf="hasWorkerAccess() && !sameIntervalAsStation"><i class="far fa-question-circle"></i> Pour éditer une donnée, mettez-vous dans l'intervalle disponible la plus petite et cliquer sur la case que vous souhaitez éditer</h5>
+  <h5 *ngIf="hasWorkerAccess() && sameIntervalAsStation"><i class="far fa-question-circle"></i> En cliquant sur une case vous pourrez en éditer le contenu</h5>
   <table class="table table-bordered">
     <thead>
       <tr>
@@ -60,7 +61,7 @@
         <th scope="row" class="solidBorderRight">{{rowName}}</th>
         <th *ngFor="let tmp of getRange(aggregatedDatas.length); let idx = index">
           <div *ngIf="aggregatedDatas[idx][i].value || aggregatedDatas[idx][i].value == 0 ; else has_no_data">
-            <div *ngIf="sameIntervalAsStation; else no_interval_with_data" (click)="editData(aggregatedDatas[idx][i])" data-toggle="modal" data-target="#updateDataModal">{{aggregatedDatas[idx][i].value}}</div>
+            <div *ngIf="sameIntervalAsStation; else no_interval_with_data" (click)="editData(aggregatedDatas[idx][i])" data-toggle="modal" data-target="#updateDataModal" title="{{aggregatedDatas[idx][i].date | date: 'HH:mm':'UTC'}}">{{aggregatedDatas[idx][i].value}}</div>
             <ng-template #no_interval_with_data> {{aggregatedDatas[idx][i].value}}</ng-template>
           </div>
           <ng-template #has_no_data>
@@ -72,8 +73,8 @@
     </tbody>
   </table>
   <hr>
-  <h2 class="align-content-center">Récapitulatif</h2>
-  <table class="table table-bordered">
+  <h2>Récapitulatif</h2>
+  <table class="table table-bordered" id="tableRecap">
     <thead>
       <tr>
         <th scope="col" class="topLeftCell"></th>
@@ -83,22 +84,22 @@
     <tbody>
       <tr>
         <th scope="row" class="solidBorderRight">Moyenne</th>
-        <th *ngFor="let tmp of sums">
+        <th class="widthMe" *ngFor="let tmp of sums">
           <div *ngIf="tmp; else has_data">{{tmp | number:'1.1-2'}}</div>
           <ng-template #has_data> - </ng-template>
         </th>
       </tr>
       <tr>
-        <th scope="row" class="solidBorderRight">Min (heure)</th>
-        <th *ngFor="let tmp of mins">
-          <div *ngIf="tmp && tmp.value != 9007199254740991; else has_data">{{tmp.value}} <br /> {{tmp.date}}</div>
+        <th scope="row" class="solidBorderRight">Min ({{hourOfDate}})</th>
+        <th *ngFor="let tmp of mins; index as i">
+          <div *ngIf="tmp && tmp.value != 9007199254740991; else has_data">{{tmp.value}} <br /> {{cols[i]}}{{splitHourOfDate}}{{tmp.date}}</div>
           <ng-template #has_data> - </ng-template>
         </th>
       </tr>
       <tr>
-        <th scope="row" class="solidBorderRight">Max (heure)</th>
-        <th *ngFor="let tmp of maxs">
-          <div *ngIf="tmp && tmp.value !=-1; else has_data">{{tmp.value}} <br /> {{tmp.date}}</div>
+        <th scope="row" class="solidBorderRight">Max ({{hourOfDate}})</th>
+        <th *ngFor="let tmp of maxs; index as i">
+          <div *ngIf="tmp && tmp.value !=-1; else has_data">{{tmp.value}} <br /> {{cols[i]}}{{splitHourOfDate}}{{tmp.date}}</div>
           <ng-template #has_data> - </ng-template>
         </th>
       </tr>

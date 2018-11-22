@@ -11,13 +11,19 @@
 
 .solidBorderBot {
   border-bottom: 1px solid !important;
+  font-weight: bold;
+  font-size: 100%;
+  text-align: center;
 }
 
 .solidBorderRight {
   border-right: 1px solid !important;
-  width: 80px !important;
-  min-width: 80px !important;
-  max-width: 80px !important;
+  width: 85px !important;
+  min-width: 85px !important;
+  max-width: 85px !important;
+  font-weight: bold;
+  font-size: 100%;
+  text-align: center;
 }
 
 table {
@@ -25,12 +31,25 @@ table {
 }
 
 th {
-  padding: 6px 1px 6px 1px;
-  max-width: 55px;
-  min-width: 55px;
-  text-align: center;
+  padding: 2px;
+  max-width: 60px;
+  min-width: 60px;
+  text-align: right;
+  font-weight: normal;
+  vertical-align: middle;
+  font-size: 80%;
+  font-family: Verdana, Sans-Serif;
 }
 
 tbody>tr:hover {
   background: none !important;
+}
+
+h2 {
+  text-align: center;
+}
+
+.fa-question-circle {
+  color: #569ff7;
+  cursor: default;
 }
