@@ -37,6 +37,11 @@ RainData.methods.toDto = function() {
   };
 };
 
+/**
+ * Méthode qui transforme un objet data en un tableau [date, value] compatible pour les graphs Highstocks
+ * @param this
+ * @returns [date, value]
+ */
 RainData.statics.toDtoGraphLine = function toDtoGraphLine(data) {
   return [
     data.date.valueOf(),
@@ -54,7 +59,6 @@ exports.rainDataModel = rainDataModel;
 
 
 // awaiting
-
 const RainDataAwaiting = new Schema({
   id_station: {
     type: String,
