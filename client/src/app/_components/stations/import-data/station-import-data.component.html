@@ -1,14 +1,8 @@
-<a (click)="previousRoute()" class="blue"><i class="fas fa-chevron-left"></i> Retour en arrière</a>
+<a (click)="previousRoute()" class="blue pointer"><i class="fas fa-chevron-left blue"></i> Retour en arrière</a>
 <div *ngIf="!loading">
   <div class="row">
     <div class="col-md-11"><p>Import des données pour la station : {{currentStation.name}}</p></div>
-    <div class="col-md-1">
-      <button class="btn btn-success" (click)="sendData()">
-        Importer
-        <i class="fas fa-check-circle" ></i>
-      </button>
 
-    </div>
   </div>
   <hr>
   <div class="row">
@@ -41,8 +35,8 @@
         </thead>
         <tbody>
         <tr *ngFor="let d of data;">
-          <td class="align-middle">
-            <input placeholder="Date" type="date" [(ngModel)]="d.date"/>
+          <td class="align-middle pointer">
+            <input class="pointer" placeholder="Date" type="date" [(ngModel)]="d.date"/>
           </td>
           <td>
             <ngb-timepicker [(ngModel)]="d.time"></ngb-timepicker>
@@ -65,8 +59,8 @@
     </div>
     <div class="col-md-5" (click)="changeZone('file')">
       <div class="input-group mb3">
-        <div class="custom-file">
-          <input type="file" class="custom-file-input" id="uploadfileData"
+        <div class="custom-file pointer">
+          <input type="file" class="custom-file-input pointer" id="uploadfileData"
                  aria-describedby="uploadfileData"
                  accept="text/csv"
                  (change)="onFileSelected($event)">
@@ -74,6 +68,20 @@
         </div>
       </div>
       <p *ngIf="selectedFile">File selected : {{selectedFile.name}}</p>
+    </div>
+    <div class="offset-4 col-md-1">
+      <button class="btn btn-success" (click)="sendData()">
+        Importer les données
+        <i class="fas fa-check-circle" ></i>
+      </button>
+
+    </div>
+    <div class="offset-5 col-md-1">
+      <button class="btn btn-success" (click)="sendData()">
+        Importer un fichier
+        <i class="fas fa-check-circle" ></i>
+      </button>
+
     </div>
   </div>
 
