@@ -22,6 +22,7 @@ export class TableComponent implements OnInit, OnChanges {
   private cols: string[];
   private rows: string[];
 
+  private oldInterval: string;
 
   private allIntervals: string[];
   intervalsFiltered: string[];
@@ -56,6 +57,7 @@ export class TableComponent implements OnInit, OnChanges {
   constructor(private stationService: StationsService, private dataService: DataService, private alertService: AlertService, private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
+    this.oldInterval = "";
     this.hourOfDate = "heure";
     this.splitHourOfDate = ":";
     let date = new Date(Date.now());
@@ -119,6 +121,9 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   dateChanged(selectedDates, dateStr, instance) {
+    if (!dateStr) {
+      return;
+    }
     let self = this;
     for (let i = 0; i < 24; i++) {
       this.cols[i] = this.minTwoDigits(i);
@@ -163,7 +168,7 @@ export class TableComponent implements OnInit, OnChanges {
     } else if (intervalIdx == 0 && this.hasAccessToStation()) {
       this.sameIntervalAsStation = true;
     }
-    //
+
     let base = 0;
     // Minutes
     if (val.indexOf("m") >= 0) {
@@ -184,6 +189,11 @@ export class TableComponent implements OnInit, OnChanges {
       }
     }
 
+    // Si y'a des données, compute les
+    if (this.dataToShow) {
+      this.computeDataToShow();
+    }
+
     this.intervalSelected = val;
     let jump = this.getHopSize(val);
     this.ratio = base / jump;
@@ -194,10 +204,26 @@ export class TableComponent implements OnInit, OnChanges {
         this.rows[i] = this.rows[i] + " à " + this.minTwoDigits(((i + 1) * jump) - 1);
       }
     }
-    // Si y'a des données, compute les
-    if (this.dataToShow) {
-      this.computeDataToShow();
+
+    // On est passé d'un affichage mensuel à un affichage journalier (ou l'inverse)
+    // Minutes vers heures
+    if (this.oldInterval.indexOf('m') >= 0 && val.indexOf('h') >= 0) {
+      // Reset datePicker
+      let el = (<HTMLInputElement>document.getElementById('datePicker'));
+      // @ts-ignore : _flatpickr existe
+      el._flatpickr.clear();
+      this.noData = false;
+      this.noDateSelected = true;
     }
+    // Heures vers minutes
+    else if (this.oldInterval.indexOf('h') >= 0 && val.indexOf('m') >= 0) {
+      // Reset monthPickr
+      let el = (<HTMLInputElement>document.getElementById('monthSelector'));
+      el.value = "";
+      this.noData = false;
+      this.noDateSelected = true;
+    }
+    this.oldInterval = val;
   }
 
   monthPicked(val) {
