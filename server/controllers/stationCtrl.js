@@ -115,7 +115,7 @@ exports.create = function(req, res) {
  * @param {number} req.body.longitude La longitude de la station à mettre à jour
  * @param {number} req.body.altitude L'altitude de la station à mettre à jour
  * @param {date} req.body.createdAt Le date de création de la station à mettre à jour // TODO RETIRER
- * @param {string} req.body.interval L' intervalle de la station à mettre à jour (ENUM) // TODO RETIRER
+ * @param {string} req.body.state Le state de la station à mettre à jour (ENUM) // TODO RETIRER
  * @param {string} req.body.river Le bassin versant de la station à mettre à jour (ENUM) // TODO RETIRER
  * @param {string} req.body.commune La commune de la station à mettre à jour (ENUM) // TODO RETIRER
  * @param {response} res Réponse renvoyée au client
@@ -139,7 +139,7 @@ exports.update = function(req, res) {
     station.longitude = req.body.longitude || station.longitude;
     station.altitude = req.body.altitude || station.altitude;
     station.createdAt = req.body.createdAt || station.createdAt; // TODO RETIRER
-    station.interval = req.body.interval || station.interval; // TODO RETIRER
+    station.state = req.body.state || station.state; // TODO RETIRER
     station.river = req.body.river || station.river; // TODO RETIRER
     station.commune = req.body.commune || station.commune; // TODO RETIRER
 

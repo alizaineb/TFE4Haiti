@@ -45,7 +45,6 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
   }
 
   ngOnInit(): void {
-    // this.stationService.getIntervals().subscribe(intervals => {this.intervals = intervals; });
     this.stationService.getCommunes().subscribe(communes => {this.communes = communes; });
     this.stationService.getRivers().subscribe(rivers => {this.rivers = rivers; });
     this.initForm();
