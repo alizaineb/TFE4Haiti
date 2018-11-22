@@ -464,17 +464,8 @@ i:hover {
   color: darkGreen;
 }
 
-.fa-plus-circle {
-  padding-left: 10px;
-  color: blue;
-}
-
 .fa-plus-circle:hover {
   color: LightSkyBlue;
-}
-
-.fa-plus-circle:active {
-  color: darkBlue;
 }
 
 .fa-sticky-note {
