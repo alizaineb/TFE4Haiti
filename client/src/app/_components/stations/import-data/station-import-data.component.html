@@ -2,28 +2,41 @@
 <div *ngIf="!loading">
   <div class="row">
     <div class="col-md-11"><p>Import des données pour la station : {{currentStation.name}}</p></div>
-    <div class="col-md-1"><i class="fas fa-check-circle"
-                                                                                    (click)="sendData()"></i></div>
+    <div class="col-md-1">
+      <button class="btn btn-success" (click)="sendData()">
+        Envoyer
+        <i class="fas fa-check-circle" ></i>
+      </button>
+
+    </div>
   </div>
+  <hr>
   <div class="row">
     <div class="col-md-12">
       <div class="alert alert-warning" *ngIf="currentStation.state == 'broken'">
-        La station est en état broken, verifiez bien les dates des données pour qu'elles correspondent à la période où la station fonctionnait.
+        La station est en état broken, verifiez bien les dates des données pour qu'elles correspondent à la période où
+        la station fonctionnait.
       </div>
       <div class="alert alert-danger" *ngIf="currentStation.state == 'deleted'">
-        La station n'est plus en état de marche, verifiez bien les dates des données pour qu'elles correspondent à la période où la station fonctionnait.
+        La station n'est plus en état de marche, verifiez bien les dates des données pour qu'elles correspondent à la
+        période où la station fonctionnait.
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="col-md-10" [ngClass]="isSelectetd('manual')" (click)="changeZone('manual')">
+    <div class="col-md-6" (click)="changeZone('manual')">
       <table class="table table-responsive table-striped">
         <thead>
         <tr>
           <td>Date</td>
           <td>Heure</td>
           <td>Valeur</td>
-          <td>Actions <i class="fas fa-plus-circle" (click)="moreData()"></i></td>
+          <td>
+            <button class="btn btn-primary" (click)="moreData()">
+              Ajouter une donnée <i class="fas fa-plus-circle"></i>
+            </button>
+
+          </td>
         </tr>
         </thead>
         <tbody>
@@ -38,13 +51,19 @@
             <input placeholder="value" type="number" [(ngModel)]="d.value"/>
           </td>
           <td>
-            <i class="fas fa-minus-circle" (click)="removeData(d)"></i>
+            <button class="btn btn-danger" (click)="removeData(d)">
+              <i class="fas fa-trash" ></i>
+            </button>
+
           </td>
         </tr>
         </tbody>
       </table>
     </div>
-    <div [ngClass]="isSelectetd('file')" (click)="changeZone('file')">
+    <div class="col-md">
+      <h3>OU</h3>
+    </div>
+    <div class="col-md-5" (click)="changeZone('file')">
       <div class="input-group mb3">
         <div class="custom-file">
           <input type="file" class="custom-file-input" id="uploadfileData"
@@ -59,10 +78,10 @@
   </div>
 
   <!--<div class="row" *ngFor="let d of data;">-->
-    <!--<div class="col-md-3">-->
-      <!--<pre>{{d | json}}</pre>-->
+  <!--<div class="col-md-3">-->
+  <!--<pre>{{d | json}}</pre>-->
 
-    <!--</div>-->
+  <!--</div>-->
 
   <!--</div>-->
 </div>
