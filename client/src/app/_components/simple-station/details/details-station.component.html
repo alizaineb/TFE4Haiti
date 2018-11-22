@@ -63,42 +63,48 @@
     </div>
   </div>
 
-    <div class="col-md-7">
-      <div class="row detail-actions">
-        <div class="col-md-4">
-          <button class="btn btn-primary btn-sm">
-            Modifier la station
-            <i class="fas fa-edit white"></i>
-          </button>
-        </div>
-        <div class="col-md-4">
-          <button class="btn btn-success btn-sm">
-            Importer des données
-            <i class="fas fa-file-download white"  ></i>
-          </button>
-        </div>
-        <div class="col-md-4" *ngIf="hasViewerAcces()">
-          <button class="btn btn-secondary btn-sm"  (click)="setDownloadClick()" data-toggle="modal" data-target="#DownloadStationModalLabel">
-            Télécharger des données
-            <i class="fas fa-download white"></i>
-          </button>
-        </div>
+  <div class="col-md-7">
+    <div class="row detail-actions" *ngIf="currentStation">
+      <div class="col-md-4">
+        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateStationModal"
+                *ngIf="hasAdminAccess()">
+          Modifier la station
+          <i class="fas fa-edit white"></i>
+        </button>
       </div>
-      <div class="col-md" id="mapId">
+      <div class="col-md-4">
+        <a [routerLink]="['/','stations',  currentStation._id, 'import']" class="btn btn-success btn-sm"
+           *ngIf="hasAccessToStation(currentStation)">
+          Importer des données
+          <i class="fas fa-file-download white"></i>
+        </a>
+      </div>
+      <div class="col-md-4" *ngIf="hasViewerAcces()">
+        <button class="btn btn-secondary btn-sm" (click)="setDownloadClick()" data-toggle="modal"
+                data-target="#DownloadStationModalLabel">
+          Télécharger des données
+          <i class="fas fa-download white"></i>
+        </button>
       </div>
     </div>
+    <div class="col-md" id="mapId">
+    </div>
+  </div>
 </div>
 
 
 <!-- Modal -->
-<div class="modal fade" id="updateStationModal" tabindex="-1" role="dialog" aria-labelledby="updateStationModalLabel" aria-hidden="true">
+<div class="modal fade" id="updateStationModal" tabindex="-1" role="dialog" aria-labelledby="updateStationModalLabel"
+     aria-hidden="true">
   <div *ngIf="currentStation">
-    <app-update-sation-modal [stationToUpdate]=currentStation (updated)="reloadStation($event)"></app-update-sation-modal>
+    <app-update-sation-modal [stationToUpdate]=currentStation
+                             (updated)="reloadStation($event)"></app-update-sation-modal>
   </div>
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="DownloadStationModalLabel" role="dialog" aria-labelledby="DownloadStationModalLabel" aria-hidden="true">
+<div class="modal fade" id="DownloadStationModalLabel" role="dialog" aria-labelledby="DownloadStationModalLabel"
+     aria-hidden="true">
   <div *ngIf="currentStation">
     <app-download-data-modal (downlaod)="downloadData($event)"></app-download-data-modal>
   </div>

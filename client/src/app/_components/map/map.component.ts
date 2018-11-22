@@ -106,7 +106,8 @@ export class MapComponent implements OnInit {
     let station;
     for (let i = 0; i < self.selectedStation.length; i++) {
       station = self.selectedStation[i];
-      L.marker([station.latitude, station.longitude], { icon: icon[station.state] }).bindPopup(`<b>${station.name} </b><br/>`).addTo(stationGroup[station.state]);
+      ['/stations', station._id, 'Details']
+      L.marker([station.latitude, station.longitude], { icon: icon[station.state] }).bindPopup(`<b><a href="/stations/${station._id}/Details">${station.name}</a> </b><br/>`).addTo(stationGroup[station.state]);
     }
 
     // console.table(self.selectedStation);
