@@ -68,19 +68,19 @@
         <div class="col-md-4">
           <button class="btn btn-primary btn-sm">
             Modifier la station
-            <i class="fas fa-edit" style="color: white"></i>
+            <i class="fas fa-edit white"></i>
           </button>
         </div>
         <div class="col-md-4">
           <button class="btn btn-success btn-sm">
             Importer des données
-            <i class="fas fa-file-download" style="color: white" ></i>
+            <i class="fas fa-file-download white"  ></i>
           </button>
         </div>
         <div class="col-md-4" *ngIf="hasViewerAcces()">
           <button class="btn btn-secondary btn-sm"  (click)="setDownloadClick()" data-toggle="modal" data-target="#DownloadStationModalLabel">
             Télécharger des données
-            <i class="fas fa-file-download" style="color: white"></i>
+            <i class="fas fa-download white"></i>
           </button>
         </div>
       </div>
