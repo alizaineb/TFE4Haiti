@@ -28,14 +28,14 @@
                 <div class="col-md-6">
                   <div class="form-group">
 
-                    <select class="form-control" id="interval" formControlName="interval" required>
-                      <option value="" disabled selected>Intervalle</option>
-                      <option *ngFor="let i of intervals" [value]="i">{{i}}</option>
+                    <select class="form-control" id="state" formControlName="state" required>
+                      <option value="" disabled selected>Etat</option>
+                      <option *ngFor="let i of states" [value]="i">{{i}}</option>
                     </select>
 
-                    <div *ngIf="interval.invalid && (interval.dirty || interval.touched)" class="alert alert-danger">
-                      <div *ngIf="interval.errors.required">
-                        Une intervalle est requise
+                    <div *ngIf="state.invalid && (state.dirty || state.touched)" class="alert alert-danger">
+                      <div *ngIf="state.errorsrequired">
+                        Un état est requis
                       </div>
                     </div>
                   </div>

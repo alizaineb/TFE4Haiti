@@ -73,7 +73,7 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
         Validators.max(10000),
         Validators.min(0)
       ]),
-      'interval': new FormControl(this.stationToUpdate.interval, [
+      'state': new FormControl(this.stationToUpdate.interval, [
         Validators.required
       ]),
       'commune': new FormControl(this.stationToUpdate.commune, [
@@ -92,7 +92,7 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
   get name() { return this.updateStationForm.get('name'); }
   get latitude() { return this.updateStationForm.get('latitude'); }
   get longitude() { return this.updateStationForm.get('longitude'); }
-  get interval() { return this.updateStationForm.get('interval'); }
+  get state() { return this.updateStationForm.get('state'); }
   get createdAt() {return this.updateStationForm.get('createdAt'); }
   get altitude() {return this.updateStationForm.get('altitude'); }
   get river() {return this.updateStationForm.get('river'); }
@@ -131,7 +131,7 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
     s.latitude = this.updateStationForm.controls['latitude'].value;
     s.longitude = this.updateStationForm.controls['longitude'].value;
     s.altitude = this.updateStationForm.controls['altitude'].value;
-    s.interval = this.updateStationForm.controls['interval'].value;
+    s.state = this.updateStationForm.controls['state'].value;
     s.createdAt = this.updateStationForm.controls['createdAt'].value;
     s.river = this.updateStationForm.controls['river'].value;
     s.commune = this.updateStationForm.controls['commune'].value;
