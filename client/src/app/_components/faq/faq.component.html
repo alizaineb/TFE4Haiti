@@ -1,30 +1,56 @@
 <div id="accordion">
   <div class="card">
-    <div class="card-header" id="Inscription/Connexion">
+    <div class="card-header" id="inscription/Connexion" data-toggle="collapse" data-target="#child_inscription/Connexion" aria-expanded="true" aria-controls="collapseOne">
       <h5 class="mb-0">
-        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-          Q : Question 1
+        <button class="btn btn-link" >
+          Inscription/Connexion
         </button>
       </h5>
     </div>
-    <div class="card-header" id="Carte">
-      <h5 class="mb-0">
-        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-          Q : Question 1
-        </button>
-      </h5>
-    </div>
-    <div class="card-header" id="Mes Stations">
-      <h5 class="mb-0">
-        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-          Q : Question 1
-        </button>
-      </h5>
-    </div>
-
-    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+    <div id="child_inscription/Connexion" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
       <div class="card-body">
         R : Response to Q1.
+      </div>
+    </div>
+
+
+    <div class="card-header" id="carte" data-toggle="collapse" data-target="#child_carte" aria-expanded="true" aria-controls="collapseOne">
+      <h5 class="mb-0">
+        <button class="btn btn-link" >
+          Carte
+        </button>
+      </h5>
+    </div>
+    <div id="child_carte" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+      <div class="card-body">
+        R : Response to Q1.
+      </div>
+    </div>
+
+
+    <div class="card-header" id="mesStations" data-toggle="collapse" data-target="#child_mesStations" aria-expanded="true" aria-controls="collapseOne">
+      <h5 class="mb-0">
+        <button class="btn btn-link">
+          Mes stations
+        </button>
+      </h5>
+    </div>
+    <div id="child_mesStations" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+      <div class="card-body">
+        <div class="card bg-light mb-3 pull-right">
+          <div class="card-body">
+            <div class="card-text">
+              <div class="row">
+                <div class="col-md-6"><i class="fas fa-edit fa-fw fa-1x"></i> Editer la station</div>
+                <div class="col-md-6"><i class="fas fa-file-download fa-fw fa-1x"></i> Importer des données</div>
+              </div>
+              <div class="row">
+                <div class="col-md-6"><i class="fas fa-sticky-note fa-fw fa-lx"></i> Ajouter une note</div>
+                <div class="col-md-6"><i class="fas fa-trash fa-fw fa-1x"></i> Supprimer la station</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
