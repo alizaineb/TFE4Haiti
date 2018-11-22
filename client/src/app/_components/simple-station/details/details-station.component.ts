@@ -166,13 +166,11 @@ export class DetailsStationComponent implements OnInit {
     const currentU = this.localStorageService.getStorage()['currentUser'];
     self.mapContainer = L.map('mapId', {
       center: [self.currentStation.latitude, self.currentStation.longitude],
-      zoom: 12,
+      zoom: 10,
       minZoom: 8,
       maxZoom: 18,
-      layers: [mapLayerOSMGrayScale, stationGroup]
+      layers: [mapLayerOpenStreetMap, stationGroup]
     });
-    console.log('coucou2');
-
 
     L.control.scale().addTo(self.mapContainer);
 
