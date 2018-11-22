@@ -1,56 +1,45 @@
-<h3 >Theme</h3>
+<h3 >Station</h3>
 <div id="accordion">
   <div class="card">
     <div class="card-header" id="inscription/Connexion" data-toggle="collapse" data-target="#child_inscription/Connexion" aria-expanded="true" aria-controls="collapseOne">
       <h5 class="mb-0">
         <button class="btn btn-link" >
-          Q1
+          Comment afficher une station ?
         </button>
       </h5>
     </div>
     <div id="child_inscription/Connexion" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
       <div class="card-body">
-        R : Response to Q1.
+        Il faut appuyer sur le BOUTON
       </div>
     </div>
-
-
     <div class="card-header" id="carte" data-toggle="collapse" data-target="#child_carte" aria-expanded="true" aria-controls="collapseOne">
       <h5 class="mb-0">
         <button class="btn btn-link" >
-          Carte
+          Comment ajouter une station ?
         </button>
       </h5>
     </div>
     <div id="child_carte" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
       <div class="card-body">
-        R : Response to Q1.
+        Rendez-vous à la page <a href="/stations">Mes stations</a> et cliquez sur le bouton
+        <div class="offset-1 col-md-1" data-toggle="modal" data-target="#addStationModal">
+          <button class="btn btn-primary"> Ajouter une station <i class="fas fa-plus-circle" ></i> </button>
+        </div>
       </div>
     </div>
-
-
     <div class="card-header" id="mesStations" data-toggle="collapse" data-target="#child_mesStations" aria-expanded="true" aria-controls="collapseOne">
       <h5 class="mb-0">
         <button class="btn btn-link">
-          Mes stations
+          Comment modifier une station ?
         </button>
       </h5>
     </div>
     <div id="child_mesStations" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
       <div class="card-body">
-        <div class="card bg-light mb-3 pull-right">
-          <div class="card-body">
-            <div class="card-text">
-              <div class="row">
-                <div class="col-md-6"><i class="fas fa-edit fa-fw fa-1x"></i> Editer la station</div>
-                <div class="col-md-6"><i class="fas fa-file-download fa-fw fa-1x"></i> Importer des données</div>
-              </div>
-              <div class="row">
-                <div class="col-md-6"><i class="fas fa-sticky-note fa-fw fa-lx"></i> Ajouter une note</div>
-                <div class="col-md-6"><i class="fas fa-trash fa-fw fa-1x"></i> Supprimer la station</div>
-              </div>
-            </div>
-          </div>
+        <div class="card-body">
+          Rendez-vous à la page <a href="/stations">Mes stations</a> et cliquez sur le bouton
+          <div class="col-md-6"><i class="fas fa-edit fa-fw fa-1x"></i></div>
         </div>
       </div>
     </div>
