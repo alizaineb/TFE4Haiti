@@ -1,48 +1,73 @@
 <h3 >Station</h3>
 <div id="accordion">
   <div class="card">
-    <div class="card-header" id="inscription/Connexion" data-toggle="collapse" data-target="#child_inscription/Connexion" aria-expanded="true" aria-controls="collapseOne">
+    <div class="card-header" id="detailStation" data-toggle="collapse" data-target="#child_detailStation" aria-expanded="true" aria-controls="collapseOne">
       <h5 class="mb-0">
         <button class="btn btn-link" >
-          Comment afficher une station ?
+          Comment afficher le détail d'une station ?
         </button>
       </h5>
     </div>
-    <div id="child_inscription/Connexion" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+    <div id="child_detailStation" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
       <div class="card-body">
-        Il faut appuyer sur le BOUTON
+        Rendez-vous à la page <a href="map">Carte</a> ou <a href="/stations">Mes stations</a> et recherchez votre station.
+        Pour afficher son détail, appuyer sur le bouton: <i class="fas fa-external-link-alt"></i>
       </div>
     </div>
-    <div class="card-header" id="carte" data-toggle="collapse" data-target="#child_carte" aria-expanded="true" aria-controls="collapseOne">
+
+
+
+    <div class="card-header" id="addStation" data-toggle="collapse" data-target="#child_addStation" aria-expanded="true" aria-controls="collapseOne">
       <h5 class="mb-0">
         <button class="btn btn-link" >
           Comment ajouter une station ?
         </button>
       </h5>
     </div>
-    <div id="child_carte" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+    <div id="child_addStation" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
       <div class="card-body">
         Rendez-vous à la page <a href="/stations">Mes stations</a> et cliquez sur le bouton
         <div class="offset-1 col-md-1" data-toggle="modal" data-target="#addStationModal">
           <button class="btn btn-primary"> Ajouter une station <i class="fas fa-plus-circle" ></i> </button>
         </div>
+        Pour ajouter une station il faut obligatoirement:
+        <ul>
+          <li>Un nom</li>
+          <li>Une intervalle</li>
+          <li>Une commune</li>
+          <li>Un bassin versant</li>
+          <li>Une latitude</li>
+          <li>Une longitude</li>
+          <li>Une date de création</li>
+        </ul>
+        <p><i>Pour la latitude/longitude, vous pouvez directement cliquer sur la map afin de placer votre station.</i></p>
+
+        Vous pouvez ajouter optionnellment:
+        <ul>
+          <li>Une altitude</li>
+          <li>Une première note</li>
+        </ul>
+
+        <p class="text_warning">Une fois que vous avez validé votre station, un administrateur doit valider celle-ci.</p>
       </div>
     </div>
-    <div class="card-header" id="mesStations" data-toggle="collapse" data-target="#child_mesStations" aria-expanded="true" aria-controls="collapseOne">
+
+
+    <div class="card-header" id="updateStation" data-toggle="collapse" data-target="#child_updateStation" aria-expanded="true" aria-controls="collapseOne">
       <h5 class="mb-0">
         <button class="btn btn-link">
           Comment modifier une station ?
         </button>
       </h5>
     </div>
-    <div id="child_mesStations" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+    <div id="child_updateStation" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
       <div class="card-body">
-        <div class="card-body">
-          Rendez-vous à la page <a href="/stations">Mes stations</a> et cliquez sur le bouton
+        Rendez-vous à la page <a href="/stations">Mes stations</a> et cliquez sur le bouton
           <div class="col-md-6"><i class="fas fa-edit fa-fw fa-1x"></i></div>
+          <p class="text_warning">Vous n'avez pas le droit de modifier l'intervalle d'une station.</p>
         </div>
       </div>
-    </div>
+
   </div>
 </div>
 
