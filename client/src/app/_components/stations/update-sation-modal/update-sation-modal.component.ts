@@ -14,6 +14,7 @@ import flatpickr from 'flatpickr';
 import {French} from 'flatpickr/dist/l10n/fr';
 import * as L from 'leaflet';
 import {LatLng} from 'leaflet';
+import {Constantes} from "../../../_helpers/constantes";
 
 @Component({
   selector: 'app-update-sation-modal',
@@ -28,7 +29,7 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
   @Output()
   updated = new EventEmitter<boolean>();
 
-  intervals: string[];
+  states: string[];
   communes: string[];
   rivers: string[];
   submitted = false;
@@ -44,11 +45,12 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
   }
 
   ngOnInit(): void {
-    this.stationService.getIntervals().subscribe(intervals => {this.intervals = intervals; });
+    // this.stationService.getIntervals().subscribe(intervals => {this.intervals = intervals; });
     this.stationService.getCommunes().subscribe(communes => {this.communes = communes; });
     this.stationService.getRivers().subscribe(rivers => {this.rivers = rivers; });
     this.initForm();
     this.initDatePickerAndMap();
+    this.states = [Constantes.stationState.AWAITING, Constantes.stationState.BROKEN, Constantes.stationState.DELETED, Constantes.stationState.WORKING];
   }
 
 
@@ -73,7 +75,7 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
         Validators.max(10000),
         Validators.min(0)
       ]),
-      'state': new FormControl(this.stationToUpdate.interval, [
+      'state': new FormControl(this.stationToUpdate.state, [
         Validators.required
       ]),
       'commune': new FormControl(this.stationToUpdate.commune, [
