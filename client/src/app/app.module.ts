@@ -33,7 +33,6 @@ import {LogoutComponent} from './_components/logout/logout.component';
 import {NoteComponent} from './_components/simple-station/note/note.component';
 import {UpdateUserModalComponent} from './_components/users/update-user-modal/update-user-modal.component';
 import {NgxPaginationModule} from 'ngx-pagination';
-import {ImportStationModalComponent} from './_components/stations/import-station-modal/import-station-modal.component';
 import {HomeComponent} from './_components/home/home.component';
 import {AssignUsersComponent} from './_components/simple-station/assign-users/assign-users.component';
 import {StationImportDataComponent} from './_components/stations/import-data/station-import-data.component';
@@ -41,8 +40,6 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {GraphLineComponent} from './_components/simple-station/graph-line/graph-line.component';
 import {TableComponent} from './_components/simple-station/table/table.component';
 import {UpdateDataModalComponent} from './_components/simple-station/table/update-data-modal/update-data-modal.component';
-
-;
 import {DownloadDataModalComponent} from './_components/simple-station/download-data-modal/download-data-modal.component'
 ;
 import { NotFoundComponent } from './_components/not-found/not-found.component'
@@ -81,7 +78,6 @@ import { NotFoundComponent } from './_components/not-found/not-found.component'
     LogoutComponent,
     NoteComponent,
     UpdateUserModalComponent,
-    ImportStationModalComponent,
     HomeComponent,
     AssignUsersComponent,
     StationImportDataComponent,
