@@ -12,7 +12,7 @@
         Rivière: {{currentStation.river}}
       </div>
       <div class="col-md-3" *ngIf="hasAccessToStation()">
-        Upload de données: <a [routerLink]="['/','stations',  currentStation._id, 'import']"><i class="fas fa-file-download fa-fw fa-1x"></i></a>
+        <a [routerLink]="['/','stations',  currentStation._id, 'import']" class="btn btn-success btn-sm"> Upload de données: <i class="fas fa-file-download fa-fw fa-1x white"></i></a>
       </div>
     </div>
   </div>
