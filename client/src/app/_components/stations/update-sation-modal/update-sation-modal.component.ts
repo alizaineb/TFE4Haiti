@@ -176,20 +176,29 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
 
     // Maps usage : OpenStreetMap, OpenSurferMaps
 
-    const mapLayer2 =  L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+    const mapLayerOSMGrayScale = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
         attribution: mbAttr
       }),
-      mapLayer1 = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-        attribution: mbAttr
+      mapLayerOpenStreetMap =  L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
       }),
-      mapLayer3 = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: mbAttr
-      }) ;
+      mapLayerErsiWorlStreetMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
+      }),
+      mapLayerErsiSatelite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+      }),
+      mapLayerHyddaFull = L.tileLayer('https://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: 'Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      });
 
     const baseLayers = {
-      'Grayscale': mapLayer1,
-      'Opentopomap': mapLayer2,
-      'OpenStreetMap': mapLayer3
+      'OSM - Grayscale': mapLayerOSMGrayScale,
+      'OSM - TopoMap': mapLayerOpenStreetMap,
+      'Ersi - WorldStreetMap': mapLayerErsiWorlStreetMap,
+      'Ersi - Satelite': mapLayerErsiSatelite,
+      'Hydda - Full': mapLayerHyddaFull
     };
 
     this.map = L.map('mapid2', {
@@ -197,7 +206,7 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
       zoom: 7,
       minZoom: 7,
       maxZoom: 18,
-      layers: [mapLayer1]
+      layers: [mapLayerOpenStreetMap]
     });
 
     L.control.scale().addTo(this.map);
