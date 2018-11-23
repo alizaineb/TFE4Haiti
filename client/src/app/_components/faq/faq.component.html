@@ -1,6 +1,5 @@
 <h3>Inscription/Connexion</h3>
 <div id="accordion-register-login">
-
   <div class="card">
     <div class="card-header" id="register" data-toggle="collapse" data-target="#child_register" aria-expanded="true" aria-controls="collapseOne">
       <h5 class="mb-0">
@@ -50,7 +49,7 @@
         <div class="card-header" id="mdp" data-toggle="collapse" data-target="#child_mdp" aria-expanded="true" aria-controls="collapseOne">
           <h5 class="mb-0">
             <button class="btn btn-link" >
-              Comment changer mon mot de passe ?
+              Comment changer mon mot de passe ? J'ai oublié mon mot de passe, que faire ?
             </button>
           </h5>
         </div>
@@ -64,6 +63,44 @@
 </div>
 
 <h3>Carte</h3>
+<div id="accordion-map">
+  <div class="card">
+    <div class="card-header" id="use-map" data-toggle="collapse" data-target="#child_use-map" aria-expanded="true" aria-controls="collapseOne">
+      <h5 class="mb-0">
+        <button class="btn btn-link" >
+          Que puis-je faire sur l'interface Carte ?
+        </button>
+      </h5>
+    </div>
+    <div id="child_use-map" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-map">
+      <div class="card-body">
+        L'interface Carte permet d'avoir un rendu visuel sur la carte d'Haiti de toutes les stations disponibles ainsi que leur état.<br/>
+        Un système de recherche  est disponible sur le côté gauche de la page pour que vous puissiez afficher les stations qui vous intéresse. <img src="../../../assets/img/sytemrecherche.PNG"> <br/>
+        Vous pouvez les filtrer selon:
+        <ul>
+          <li>Le nom de la station</li>
+          <li>La commune de la station</li>
+          <li>Le bassin versant de la station</li>
+        </ul>
+        En dessous du système de recherche, une liste de stations vous est fournie. <br/>
+        En cliquant sur une des stations, la map n'affichera que celle-ci et se centrera aussi. <br/>
+        Le bouton <i class="fas fa-external-link-alt"></i> permet d'accéder au détail d'une station. <br/>
+        <br/>
+        La carte propose quelques fonctionnalités. Vous pouvez:
+        <ul>
+          <li>Cliquer sur un des marqueurs <img src="../../../assets/img/Marqueur.PNG"> et accéder au détail de la station</li>
+          <li>Sélectionner un thème pour la carte via le bouton en haut à droite: <img src="../../../assets/img/Theme.PNG"></li>
+          <li>Une légende est fournie pour comprendre l'état d'une station: <img src="../../../assets/img/Légende.PNG"></li>
+        </ul>
+      </div>
+    </div>
+
+
+
+  </div>
+</div>
+
+
 <h3 >Station</h3>
 <div id="accordion-station">
   <div class="card">
@@ -134,7 +171,7 @@
           </button></li>
         </ul>
         <p class="text-danger">Vous n'avez pas le droit de modifier l'intervalle d'une station. <br/>
-        Cette fonctionnalité est réservé à l'adminstrateur.</p>
+        Cette fonctionnalité est réservée à l'adminstrateur.</p>
         </div>
       </div>
 
@@ -160,4 +197,50 @@
 </div>
 
 <h3>Données</h3>
+
+<div id="accordion-data">
+  <div class="card">
+
+    <div class="card-header" id="view-data" data-toggle="collapse" data-target="#child_view-data" aria-expanded="true" aria-controls="collapseOne">
+      <h5 class="mb-0">
+        <button class="btn btn-link" >
+          Comment visualiser les données d'une station ?
+        </button>
+      </h5>
+    </div>
+    <div id="child_view-data" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-data">
+      <div class="card-body">
+        Trouvez votre station via l'interface <a href="/map"> carte</a> ou <a href="/stations"> mes stations</a> et accéder à son détail <i class="fas fa-external-link-alt"></i>.
+        Vous pouvez visualiser les données via:
+        <ul>
+          <li>Un tableau</li>
+          <li>Un graphique</li>
+        </ul>
+        Sélectionnez l'onglet tableau ou graphique selon votre envie.
+      </div>
+    </div>
+
+    <div class="card-header" id="add-data" data-toggle="collapse" data-target="#child_add-data" aria-expanded="true" aria-controls="collapseOne">
+      <h5 class="mb-0">
+        <button class="btn btn-link" >
+          Comment ajouter des données pour une station ?
+        </button>
+      </h5>
+    </div>
+    <div id="child_add-data" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-data">
+      <div class="card-body">
+
+      </div>
+    </div>
+
+
+
+  </div>
+</div>
+
+
+
+
+
+
 <h3>Gestion des utilisateurs</h3>
