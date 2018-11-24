@@ -12,7 +12,7 @@
         Bassin versant: {{station.river}}
       </div>
       <div class="col-md-3" *ngIf="hasAccessToStation(station)">
-        <a [routerLink]="['/','stations',  station._id, 'import']" class="btn btn-success btn-sm">Upload de données: <i class="fas fa-file-download fa-fw fa-1x white" ></i></a>
+        <a [routerLink]="['/','stations',  station._id, 'import']" class="btn btn-success btn-sm">Importer de données: <i class="fas fa-file-download fa-fw fa-1x white" ></i></a>
       </div>
 
     </div>
@@ -54,8 +54,8 @@
     </div>
   </div>
 
-  <div [hidden]="'Quotidiennes'!==rangeSelected">
-    <input id="datePicker" placeholder="Date" type="text" class="flatpickr flatpickr-input form-control">
+  <div class="col-md-4" [hidden]="'Quotidiennes'!==rangeSelected">
+    <input id="datePicker" placeholder="Sélectionner une range de date" type="text" class="flatpickr flatpickr-input form-control">
   </div>
 
   <div>

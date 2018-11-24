@@ -210,7 +210,7 @@
     </div>
     <div id="child_view-data" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-data">
       <div class="card-body">
-        Trouvez votre station via l'interface <a href="/map"> carte</a> ou <a href="/stations"> mes stations</a> et accéder à son détail <i class="fas fa-external-link-alt"></i>.
+        Trouvez votre station via l'interface <a href="/map"> carte</a> ou <a href="/stations"> mes stations</a> et accéder à son détail <i class="fas fa-external-link-alt"></i>. <br/>
         Vous pouvez visualiser les données via:
         <ul>
           <li>Un tableau</li>
@@ -233,11 +233,12 @@
         Vous devez commencer par sélectionner une intervalle et une date contenant des données. Si celle-ci ne contient pas de données, un message vous sera affiché pour vous en informer.<br/>
         <ul>
           <li>Les colonnes représentent les heures/jours et les lignes les minutes/heures en fonction de l'intervalle choisi/</li>
-          <li>Le tableau se lit donc de haut en /</li>
+          <li>Le tableau se lit donc de haut en bas</li>
           <li>Si vous êtes perdu dans le tableau, laissez votre souris sur une case et elle vous affichera l'heure.</li>
           <li>Pour éditer une donnée, mettez-vous dans l'intervalle disponible la plus petite et cliquer sur la case que vous souhaitez éditer.</li>
           <li>En cliquant sur une case vous pourrez en éditer le contenu.</li>
         </ul>
+        <p class="text-danger">Certaines fonctionnalités sont réservées à l'administrateur.</p>
       </div>
     </div>
 
@@ -250,7 +251,21 @@
     </div>
     <div id="child_graphic-data" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-data">
       <div class="card-body">
+        Sélection une option pour afficher les données via le select box. <br/>
+        Vous pouvez sélectionner les données en fonction de: <br/>
+        <ul>
+          <li>L'année </li>
+          <li>Un mois et une année</li>
+          <li>Une range de date: <img height="200" width="200" src="../../../assets/img/range_date.png"> </li>
+        </ul>
 
+        <img width="1000" src="../../../assets/img/graph.png">
+        <ol>
+          <li>Permet de sélectionner la précision du graphique</li>
+          <li>Affiche la range de date actuellement visible en fonction de la position de la barre "ligne du temps" (4)</li>
+          <li>Lorsqu'on pointe la souris sur les données, une information est fournie</li>
+          <li>Une barre "ligne du temps" qui peut bouger mettre à jour la de date visible en fonction de la précision choisie</li>
+        </ol>
       </div>
     </div>
 
@@ -263,7 +278,13 @@
     </div>
     <div id="child_add-data" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-data">
       <div class="card-body">
-        Rendez à l'interface import des données.
+        <ul>
+          <li>Rendez à l'interface import des données via <a href="/stations"> mes stations</a> et cliquez sur le bouton: <i class="fas fa-file-download fa-fw fa-1x"></i></li>
+          <li>Rendez vous sur l'interface détail, tableau ou graphique et cliquez sur le bouton:
+            <a class="btn btn-success btn-sm" style="color:white">Importer des données <i class="fas fa-file-download white"></i></a></li>
+
+        </ul>
+
       </div>
     </div>
 
