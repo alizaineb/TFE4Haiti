@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { Station } from '../../../_models/';
 import { RainData } from '../../../_models/rainData';
-import {AlertService, UserService, DataService, AuthenticationService} from '../../../_services/';
+import { AlertService, UserService, DataService, AuthenticationService } from '../../../_services/';
 import { StationsService } from '../../../_services/stations.service';
 import flatpickr from 'flatpickr';
 import { French } from 'flatpickr/dist/l10n/fr';
@@ -22,6 +22,8 @@ export class TableComponent implements OnInit, OnChanges {
   private cols: string[];
   private rows: string[];
 
+  private oldInterval: string;
+
   private allIntervals: string[];
   intervalsFiltered: string[];
   private allDatas: RainData[];
@@ -30,6 +32,9 @@ export class TableComponent implements OnInit, OnChanges {
   private sums: number[];
   private mins: RainData[];
   private maxs: RainData[];
+
+  private hourOfDate: string;
+  private splitHourOfDate: string;
 
   private intervalSelected: string;
   private ratio: number
@@ -52,6 +57,9 @@ export class TableComponent implements OnInit, OnChanges {
   constructor(private stationService: StationsService, private dataService: DataService, private alertService: AlertService, private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
+    this.oldInterval = "";
+    this.hourOfDate = "heure";
+    this.splitHourOfDate = ":";
     let date = new Date(Date.now());
     let elmnt = (<HTMLInputElement>document.getElementById('monthSelector'));
     //elmnt.value = date.getFullYear() + "-" + this.minTwoDigits(date.getMonth() + 1);
@@ -117,6 +125,9 @@ export class TableComponent implements OnInit, OnChanges {
     for (let i = 0; i < 24; i++) {
       this.cols[i] = this.minTwoDigits(i);
     }
+    if (!dateStr) {
+      return;
+    }
     this.noDateSelected = false;
     // Va falloir récup pour la date choisie ==> Lancer le loader
     this.dataLoading = true;
@@ -140,7 +151,7 @@ export class TableComponent implements OnInit, OnChanges {
     });
   }
 
-  hasAccessToStation(){
+  hasAccessToStation() {
     return this.stationService.hasAccessToStation(this.currentStation);
   }
 
@@ -157,14 +168,18 @@ export class TableComponent implements OnInit, OnChanges {
     } else if (intervalIdx == 0 && this.hasAccessToStation()) {
       this.sameIntervalAsStation = true;
     }
-    //
+
     let base = 0;
     // Minutes
     if (val.indexOf("m") >= 0) {
+      this.hourOfDate = "heure";
+      this.splitHourOfDate = ":";
       this.intervalDay = true;
       base = 60;
     }// Heures
     else {
+      this.hourOfDate = "date";
+      this.splitHourOfDate = "/";
       this.intervalDay = false;
       base = 24;
       let el = (<HTMLInputElement>document.getElementById('monthSelector'));
@@ -188,6 +203,27 @@ export class TableComponent implements OnInit, OnChanges {
     if (this.dataToShow) {
       this.computeDataToShow();
     }
+
+
+    // On est passé d'un affichage mensuel à un affichage journalier (ou l'inverse)
+    // Minutes vers heures
+    if (this.oldInterval.indexOf('m') >= 0 && val.indexOf('h') >= 0) {
+      // Reset datePicker
+      let el = (<HTMLInputElement>document.getElementById('datePicker'));
+      // @ts-ignore : _flatpickr existe
+      el._flatpickr.clear();
+      this.noData = false;
+      this.noDateSelected = true;
+    }
+    // Heures vers minutes
+    else if (this.oldInterval.indexOf('h') >= 0 && val.indexOf('m') >= 0) {
+      // Reset monthPickr
+      let el = (<HTMLInputElement>document.getElementById('monthSelector'));
+      el.value = "";
+      this.noData = false;
+      this.noDateSelected = true;
+    }
+    this.oldInterval = val;
   }
 
   monthPicked(val) {
@@ -270,7 +306,6 @@ export class TableComponent implements OnInit, OnChanges {
             max = sum;
             maxIdx = idx;
           }
-
         }
         tabToBePushed.push(cloneObj);
         idx++;
@@ -310,7 +345,7 @@ export class TableComponent implements OnInit, OnChanges {
 
   computeWidth() {
     if (this.aggregatedDatas) {
-      let width = this.aggregatedDatas.length * 55 + 80 + 20; // 80 == width of first column and 20 = 10 padding + 10 padding
+      let width = this.aggregatedDatas.length * 60 + 85 + 20; // 85 == width of first column and 20 = 10 padding + 10 padding
       let el = document.getElementById('switchDivs');
       if (el.offsetWidth < width) {
         let widthStr = width + "px";

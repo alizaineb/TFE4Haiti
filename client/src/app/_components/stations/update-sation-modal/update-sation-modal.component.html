@@ -27,24 +27,6 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
-
-                    <select class="form-control" id="interval" formControlName="interval" required>
-                      <option value="" disabled selected>Intervalle</option>
-                      <option *ngFor="let i of intervals" [value]="i">{{i}}</option>
-                    </select>
-
-                    <div *ngIf="interval.invalid && (interval.dirty || interval.touched)" class="alert alert-danger">
-                      <div *ngIf="interval.errors.required">
-                        Une intervalle est requise
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
                     <input type="search" class="form-control" id="commune" formControlName="commune" required list="communes">
                     <datalist id="communes">
                       <option *ngFor="let i of communes" [value]="i">{{i}}</option>
@@ -60,14 +42,14 @@
                 <div class="col-md-6">
                   <div class="form-group">
 
-                    <input type="search" class="form-control" id="river" formControlName="river" required list="rivers">
-                    <datalist id="rivers">
-                      <option *ngFor="let i of rivers" [value]="i">{{i}}</option>
+                    <input type="search" class="form-control" id="bassin_versant" formControlName="bassin_versant" required list="bassin_versants">
+                    <datalist id="bassin_versants">
+                      <option *ngFor="let i of bassin_versants" [value]="i">{{i}}</option>
                     </datalist>
 
-                    <div *ngIf="river.invalid && (river.dirty || river.touched)" class="alert alert-danger">
-                      <div *ngIf="river.errors.required">
-                        Une rivière est requise
+                    <div *ngIf="bassin_versant.invalid && (bassin_versant.dirty || bassin_versant.touched)" class="alert alert-danger">
+                      <div *ngIf="bassin_versant.errors.required">
+                        Un bassin versant est requis
                       </div>
                     </div>
                   </div>
@@ -137,9 +119,21 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-md">
+                  <div class="col-md-6">
+                    <div class="form-group">
 
-                </div>
+                      <select class="form-control" id="state" formControlName="state" required>
+                        <option value="" disabled selected>Etat</option>
+                        <option *ngFor="let i of states" [value]="i">{{i}}</option>
+                      </select>
+
+                      <div *ngIf="state.invalid && (state.dirty || state.touched)" class="alert alert-danger">
+                        <div *ngIf="state.errorsrequired">
+                          Un état est requis
+                        </div>
+                      </div>
+                    </div>
+                  </div>
               </div>
 
             </div>

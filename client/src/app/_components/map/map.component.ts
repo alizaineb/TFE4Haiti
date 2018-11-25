@@ -20,10 +20,10 @@ export class MapComponent implements OnInit {
   private zoom = 8;
   private centerMap = [19.099041, -72.658473];
   communes: string[];
-  rivers: string[];
+  bassin_versants: string[];
 
   private communeFilter: string;
-  private riverFilter: string;
+  private bassin_versantFilter: string;
   private term: string;
 
   constructor(
@@ -36,8 +36,8 @@ export class MapComponent implements OnInit {
     this.stationsService.getCommunes().subscribe(communes => {
       this.communes = communes;
     });
-    this.stationsService.getRivers().subscribe(rivers => {
-      this.rivers = rivers;
+    this.stationsService.getBassin_versants().subscribe(bassin_versants => {
+      this.bassin_versants = bassin_versants;
     });
     const self = this;
     this.stationsService.getAll().subscribe(result => {
@@ -106,7 +106,8 @@ export class MapComponent implements OnInit {
     let station;
     for (let i = 0; i < self.selectedStation.length; i++) {
       station = self.selectedStation[i];
-      L.marker([station.latitude, station.longitude], { icon: icon[station.state] }).bindPopup(`<b>${station.name} </b><br/>`).addTo(stationGroup[station.state]);
+      ['/stations', station._id, 'Details']
+      L.marker([station.latitude, station.longitude], { icon: icon[station.state] }).bindPopup(`<b><a href="/stations/${station._id}/Details">${station.name}</a> </b><br/>`).addTo(stationGroup[station.state]);
     }
 
     // console.table(self.selectedStation);
@@ -139,7 +140,7 @@ export class MapComponent implements OnInit {
       zoom: self.zoom,
       minZoom: 8,
       maxZoom: 18,
-      layers: [mapLayerOSMGrayScale, stationGroup.working, stationGroup.deleted, stationGroup.awaiting, stationGroup.broken]
+      layers: [mapLayerOpenStreetMap, stationGroup.working, stationGroup.deleted, stationGroup.awaiting, stationGroup.broken]
     });
 
 
@@ -173,8 +174,8 @@ export class MapComponent implements OnInit {
 
     const baseLayers = {
       'OSM - Grayscale': mapLayerOSMGrayScale,
-      'OpenStreetMap': mapLayerOpenStreetMap,
-      'Ersi WorldStreetMap': mapLayerErsiWorlStreetMap,
+      'OSM - TopoMap': mapLayerOpenStreetMap,
+      'Ersi - WorldStreetMap': mapLayerErsiWorlStreetMap,
       'Ersi - Satelite': mapLayerErsiSatelite,
       'Hydda - Full': mapLayerHyddaFull
     };
@@ -188,11 +189,6 @@ export class MapComponent implements OnInit {
       'Supprimee': stationGroup.deleted
     };
 
-
-
-
-
-    //console.log(currentU);
     if (!currentU) {
       self.mapContainer.removeLayer(stationGroup.awaiting);
       self.mapContainer.removeLayer(overlays);
@@ -262,14 +258,14 @@ export class MapComponent implements OnInit {
     }
   }
 
-  riverSelected(val) {
-    this.riverFilter = val;
+  bassin_versantSelected(val) {
+    this.bassin_versantFilter = val;
     this.applyFilter();
   }
 
-  riverEmpty(val) {
+  bassin_versantEmpty(val) {
     if (val.length == 0) {
-      this.riverFilter = val;
+      this.bassin_versantFilter = val;
       this.applyFilter();
     }
   }
@@ -288,9 +284,9 @@ export class MapComponent implements OnInit {
         return value.commune.toLowerCase().includes(this.communeFilter.toLowerCase());
       });
     }
-    if (this.riverFilter) {
+    if (this.bassin_versantFilter) {
       this.filteredStation = this.filteredStation.filter((value) => {
-        return value.river.toLowerCase().includes(this.riverFilter.toLowerCase());
+        return value.bassin_versant.toLowerCase().includes(this.bassin_versantFilter.toLowerCase());
       });
     }
     if (this.term) {

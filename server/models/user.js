@@ -53,9 +53,9 @@ const User = new Schema({
     type: String,
     enum: { values: StationModel.communes, message: 'Commune inconnue' }
   },
-  river: {
+  bassin_versant: {
     type: String,
-    enum: { values: StationModel.rivers, message: 'Bassin versant inconnu' }
+    enum: { values: StationModel.bassin_versants, message: 'Bassin versant inconnu' }
   },
   last_seen: {
     type: Date,
@@ -81,7 +81,7 @@ User.methods.toDto = function() {
     last_name: this.last_name,
     mail: this.mail,
     role: this.role,
-    river: this.river,
+    bassin_versant: this.bassin_versant,
     commune: this.commune,
     created_at: this.created_at,
     last_seen: this.last_seen,

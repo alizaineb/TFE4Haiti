@@ -148,9 +148,9 @@ exports.routes = [
     middleWare: [controllers.stations.getCommunes]
   },
   {
-    path: "/api/stations/getInfo/rivers",
+    path: "/api/stations/getInfo/bassin_versants",
     httpMethod: "GET",
-    middleWare: [controllers.stations.getRivers]
+    middleWare: [controllers.stations.getBassin_versants]
   },
   {
     path: "/api/stations",

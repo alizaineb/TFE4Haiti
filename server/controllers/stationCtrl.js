@@ -25,7 +25,7 @@ const errors = require('./utils').errors;
 exports.get = function(req, res) {
   // On récupère tous les champs
   Station.stationModel.find({},
-    '_id name latitude longitude altitude state createdAt updatedAt interval river commune user_creator_id users',
+    '_id name latitude longitude altitude state createdAt updatedAt interval bassin_versant commune user_creator_id users',
     function(err, stations) {
       if (err) {
         logger.error("[stationCtrl] get : ", err);
@@ -47,7 +47,7 @@ exports.get = function(req, res) {
  */
 exports.getById = function(req, res) {
   Station.stationModel.findById(req.params.station_id,
-    '_id name latitude longitude altitude state createdAt updatedAt interval river commune user_creator_id users',
+    '_id name latitude longitude altitude state createdAt updatedAt interval bassin_versant commune user_creator_id users',
     function(err, station) { // Changer met (= le Gaëtan du futur) une fonciton anonyme ^^
       if (err) {
         logger.error("[stationCtrl] getById : ", err);
@@ -71,7 +71,7 @@ exports.getById = function(req, res) {
  * @param {string} req.token_decoded.id L'id de l'utilisateur créant la station
  * @param {date} req.body.createdAt La date de création de la station
  * @param {string} req.body.interval L'intervalle de la station (ENUM)
- * @param {string} req.body.river La rivière liée à la station (ENUM)
+ * @param {string} req.body.bassin_versant La rivière liée à la station (ENUM)
  * @param {string} req.body.commune La commune dans laquelle la station se situe (ENUM)
  * @param {response} res Réponse renvoyée au client
  *                       400 : Paramètre manquant ou incorrect (voir le modèle)
@@ -93,7 +93,7 @@ exports.create = function(req, res) {
   sTmp.user_creator_id = req.token_decoded.id;
   sTmp.users = [req.token_decoded.id];
   sTmp.commune = station.commune;
-  sTmp.river = station.river;
+  sTmp.bassin_versant = station.bassin_versant;
   sTmp.save((err) => {
     if (err) {
       logger.error("[stationCtrl] create :", err);
@@ -115,8 +115,8 @@ exports.create = function(req, res) {
  * @param {number} req.body.longitude La longitude de la station à mettre à jour
  * @param {number} req.body.altitude L'altitude de la station à mettre à jour
  * @param {date} req.body.createdAt Le date de création de la station à mettre à jour // TODO RETIRER
- * @param {string} req.body.interval L' intervalle de la station à mettre à jour (ENUM) // TODO RETIRER
- * @param {string} req.body.river Le bassin versant de la station à mettre à jour (ENUM) // TODO RETIRER
+ * @param {string} req.body.state Le state de la station à mettre à jour (ENUM) // TODO RETIRER
+ * @param {string} req.body.bassin_versant Le bassin versant de la station à mettre à jour (ENUM) // TODO RETIRER
  * @param {string} req.body.commune La commune de la station à mettre à jour (ENUM) // TODO RETIRER
  * @param {response} res Réponse renvoyée au client
  *                       400 : Donnée erronnée
@@ -139,8 +139,8 @@ exports.update = function(req, res) {
     station.longitude = req.body.longitude || station.longitude;
     station.altitude = req.body.altitude || station.altitude;
     station.createdAt = req.body.createdAt || station.createdAt; // TODO RETIRER
-    station.interval = req.body.interval || station.interval; // TODO RETIRER
-    station.river = req.body.river || station.river; // TODO RETIRER
+    station.state = req.body.state || station.state; // TODO RETIRER
+    station.bassin_versant = req.body.bassin_versant || station.bassin_versant; // TODO RETIRER
     station.commune = req.body.commune || station.commune; // TODO RETIRER
 
     station.save((err) => {
@@ -195,7 +195,7 @@ exports.delete = function(req, res) {
 
 /**
  * getAllAwaiting - Permet de récupérer toutes les stations en attente
- *                  Va récupérer les champs suivants : _id name latitude longitude createdAt interval river commune user_creator_id
+ *                  Va récupérer les champs suivants : _id name latitude longitude createdAt interval bassin_versant commune user_creator_id
  *
  * @param {request} req Requête du client
  * @param {response} res Réponse renvoyée au client
@@ -204,7 +204,7 @@ exports.delete = function(req, res) {
  */
 exports.getAllAwaiting = function(req, res) {
   Station.stationModel.find({ state: states.AWAITING },
-    '_id name latitude longitude createdAt interval river commune user_creator_id',
+    '_id name latitude longitude createdAt interval bassin_versant commune user_creator_id',
     (err, stations) => {
       if (err) {
         logger.error("[stationCtrl] getAllAwaiting :", err);
@@ -369,12 +369,12 @@ exports.getCommunes = function(req, res) {
 
 
 /**
- * getRivers - Permet de récupérer les bassins versants des stations
+ * getbassin_versants - Permet de récupérer les bassins versants des stations
  *
  * @param {request} req Requête du client
  * @param {response} res Réponse renvoyée au client
  * @return {string[]}     200 : les bassins versants des stations
  */
-exports.getRivers = function(req, res) {
-  return res.status(200).send(Station.rivers.sort((val1, val2) => val1.toLowerCase() < val2.toLowerCase() ? -1 : 1));
+exports.getBassin_versants = function(req, res) {
+  return res.status(200).send(Station.bassin_versants.sort((val1, val2) => val1.toLowerCase() < val2.toLowerCase() ? -1 : 1));
 };

@@ -1,25 +1,29 @@
 <h1>Gestion de mes stations </h1>
 
-<div class="row inline">
-  <div class="col-md-3">
+<div class="row">
+  <div class="col-md-5">
     <div class="input-group mb-3">
       <div class="input-group-prepend">
         <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
       </div>
       <input type="search" (search)="filterStation()" class="form-control" placeholder="Nom d'une station" aria-label="Recherche" aria-describedby="basic-addon1" (keyup)="filterStation()" [(ngModel)]="searchKeyWord">
-      <i class="float-right fas fa-plus-circle fa-2x" data-toggle="modal" data-target="#addStationModal">
-      </i>
+
+      <div class="offset-1 col-md-1" data-toggle="modal" data-target="#addStationModal">
+        <button class="btn btn-primary">
+          Ajouter une station
+          <i class="fas fa-plus-circle" ></i>
+        </button>
+      </div>
     </div>
   </div>
 
-
-  <div class="offset-md-4 col-md-5 float-right">
+  <div class="offset-md-2 col-md-5 float-right">
     <div class="card bg-light mb-3 pull-right">
       <div class="card-body">
         <div class="card-text">
           <div class="row">
             <div class="col-md-6" *ngIf="hasAdminAccess()"><i class="fas fa-edit fa-fw fa-1x"></i> Editer la station</div>
-            <div class="col-md-6" *ngIf="hasWorkerAccess()"><i class="fas fa-file-download fa-fw fa-1x"></i> Envoyer des données</div>
+            <div class="col-md-6" *ngIf="hasWorkerAccess()"><i class="fas fa-file-download fa-fw fa-1x"></i> Importer des données</div>
           </div>
           <div class="row">
             <div class="col-md-6" *ngIf="hasWorkerAccess()"><i class="fas fa-sticky-note fa-fw fa-lx"></i> Ajouter une note</div>
@@ -37,7 +41,6 @@
     <tr>
       <th>#</th>
       <th *ngFor="let head of headers">
-
         {{head}}
         <i class="fa fa-sort float-right" aria-hidden="true" (click)="sortData(head)"></i>
       </th>
@@ -49,11 +52,11 @@
       <td>{{i+1}}</td>
       <td>{{station.name}}
         <a class="details float-right" [routerLink]="['/stations', station._id, 'Details']">
-          <i class="fas fa-info-circle"></i>
+          <i class="fas fa-external-link-alt"></i>
         </a>
       </td>
       <td>{{station.commune}}</td>
-      <td>{{station.river}}</td>
+      <td>{{station.bassin_versant}}</td>
       <td>{{station.createdAt | date: 'd/MM/yyyy':'UTC'}}</td>
       <td>{{station.updatedAt | date: 'd/MM/yyyy à HH:mm':'UTC'}}</td>
       <td>{{station.state}}</td>

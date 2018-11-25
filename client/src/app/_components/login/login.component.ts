@@ -2,10 +2,10 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
-import { Constantes } from "../../_helpers/constantes";
+import { Constantes } from '../../_helpers/constantes';
 
 import { AlertService, AuthenticationService, UserService, StationsService } from '../../_services/index';
-import { LocalstorageService } from "../../_services/localstorage.service";
+import { LocalstorageService } from '../../_services/localstorage.service';
 
 @Component({
   templateUrl: 'login.component.html',
@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
   roles: string[];
   roleWorker: string;
   private communes: string[];
-  private rivers: string[];
+  private bassin_versants: string[];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,8 +39,8 @@ export class LoginComponent implements OnInit {
     this.stationsService.getCommunes().subscribe(communes => {
       this.communes = communes;
     });
-    this.stationsService.getRivers().subscribe(rivers => {
-      this.rivers = rivers;
+    this.stationsService.getBassin_versants().subscribe(bassin_versants => {
+      this.bassin_versants = bassin_versants;
     });
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
@@ -108,8 +108,8 @@ export class LoginComponent implements OnInit {
       .pipe(first())
       .subscribe(
         data => {
-          this.router.navigate(["/login"]);
-          this.alertService.success("Votre compte a été créé !Veuillez attendre la validation par l'administrateur.");
+          this.router.navigate(['/login']);
+          this.alertService.success('Votre compte a été créé !Veuillez attendre la validation par l\'administrateur.');
           this.loading = false;
         },
         error => {

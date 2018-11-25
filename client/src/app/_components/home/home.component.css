@@ -15,14 +15,16 @@ h5,
 h6 {
   font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 700;
+  text-align: center;
 }
 
 header {
   width: 100vw;
   position: relative;
+
   margin-left: -50vw;
   margin-top: -40px;
-  height: 55%;
+  height: 40%;
   left: 50%;
 }
 
@@ -65,7 +67,7 @@ header.masthead h1 {
 }
 
 .showcase .showcase-img {
-  min-height: 30rem;
+  min-height: 20rem;
   background-size: cover;
 }
 
@@ -98,4 +100,8 @@ header.masthead h1 {
 
 .container {
   min-width: 80%
+}
+
+.card {
+  width: 100%
 }

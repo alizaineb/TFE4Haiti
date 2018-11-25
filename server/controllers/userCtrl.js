@@ -42,7 +42,7 @@ exports.login = function(req, res) {
 
   // Récupération d'un utilisateur dont l'état est OK
   UsersModel.userModel.findOne({ mail: mail, state: userState.OK },
-    '_id first_name last_name mail role river commune created_at last_seen state pwd',
+    '_id first_name last_name mail role bassin_versant commune created_at last_seen state pwd',
     (err, result) => {
       if (err) {
         logger.error("[userCtrl] get1 : ", err);
@@ -93,7 +93,7 @@ exports.login = function(req, res) {
  */
 exports.get = function(req, res) {
   UsersModel.userModel.find({},
-    '_id first_name last_name mail role river commune created_at last_seen state',
+    '_id first_name last_name mail role bassin_versant commune created_at last_seen state',
     (err, users) => {
       if (err) {
         logger.error("[get] get : ", err);
@@ -113,7 +113,7 @@ exports.get = function(req, res) {
  */
 exports.getWorkers = function(req, res) {
   UsersModel.userModel.find({role:roles.WORKER},
-    '_id first_name last_name mail role river commune created_at last_seen state',
+    '_id first_name last_name mail role bassin_versant commune created_at last_seen state',
     (err, users) => {
       if (err) {
         logger.error("[get] get : ", err);
@@ -138,7 +138,7 @@ exports.getWorkers = function(req, res) {
 exports.getById = function(req, res) {
   let id = req.params.user_id;
   UsersModel.userModel.findById(req.params.user_id,
-    '_id first_name last_name mail role river commune created_at last_seen state',
+    '_id first_name last_name mail role bassin_versant commune created_at last_seen state',
     function(err, user) {
       if (err) {
         return res.status(500).send("Erreur lors de la récupération de l'user.");
@@ -171,7 +171,7 @@ exports.roles = function(req, res) {
  * @param {string} req.body.mail Le mail de l'utilisateur
  * @param {string} req.body.role Le role de l'utilisateur (ENUM)
  * @param {string} req.body.commune Le role de l'utilisateur (ENUM) (optionnel)
- * @param {string} req.body.river Le role de l'utilisateur (ENUM) (optionnel)
+ * @param {string} req.body.bassin_versant Le role de l'utilisateur (ENUM) (optionnel)
  * @param {response} res Réponse renvoyée au client
  * @return {station}     201 : l'utilisateur ajouté en base de données
  */
@@ -188,7 +188,7 @@ exports.create = function(req, res) {
       uTmp.commune = user.commune;
     }
     if (user.bassin_versant) {
-      uTmp.river = user.bassin_versant;
+      uTmp.bassin_versant = user.bassin_versant;
     }
   }
   uTmp.save((err) => {
@@ -215,7 +215,7 @@ exports.create = function(req, res) {
  * @param {string} req.body.role Le role de l'utilisateur à mettre à jour
  * @param {string} req.body.state L'état de l'utilisateur à mettre à jour
  * @param {string} req.body.commune La commune de l'utilisateur à mettre à jour
- * @param {string} req.body.river Le bassin-versant de l'utilisateur à mettre à jour
+ * @param {string} req.body.bassin_versant Le bassin-versant de l'utilisateur à mettre à jour
  * @param {response} res Réponse renvoyée au client
  *                       400 : Donnée erronnée
  *                       404 : Utilisateur inexistant
@@ -224,7 +224,7 @@ exports.create = function(req, res) {
  */
 exports.update = function(req, res) {
   UsersModel.userModel.findById(req.params.user_id,
-    '_id first_name last_name mail role river commune created_at last_seen state',
+    '_id first_name last_name mail role bassin_versant commune created_at last_seen state',
     (err, user) => {
       if (err) {
         logger.error(err);
@@ -242,10 +242,10 @@ exports.update = function(req, res) {
         } else {
           user.commune = req.body.commune;
         }
-        if (!req.body.river) {
-          user.river = undefined;
+        if (!req.body.bassin_versant) {
+          user.bassin_versant = undefined;
         } else {
-          user.river = req.body.river;
+          user.bassin_versant = req.body.bassin_versant;
         }
         user.save((err) => {
           if (err) {
@@ -303,7 +303,7 @@ exports.logout = function(req, res) {
 
 /**
  * getAllAwaiting - Permet de récupérer tous les utilisateurs en attente
- *                  Va récupérer les champs suivants : _id first_name last_name mail role river commune created_at last_seen state
+ *                  Va récupérer les champs suivants : _id first_name last_name mail role bassin_versant commune created_at last_seen state
  *
  * @param {request} req Requête du client
  * @param {response} res Réponse renvoyée au client
@@ -313,7 +313,7 @@ exports.logout = function(req, res) {
 
 exports.getAllAwaiting = function(req, res) {
   UsersModel.userModel.find({ state: userState.AWAITING },
-    '_id first_name last_name mail role river commune created_at last_seen state',
+    '_id first_name last_name mail role bassin_versant commune created_at last_seen state',
     (err, users) => {
       if (err) {
         logger.error("[userCtrl] getAllAwaiting :", err);
