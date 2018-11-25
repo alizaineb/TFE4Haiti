@@ -908,55 +908,58 @@ exports.downloadData = function (req, res) {
                 logger.error(err);
                 return res.status(500).send(err);
             } else {
-                if (RainData.length == 0) {
+                if (rainDatas.length == 0) {
                     console.log("no data...");
                     // console.log(result);
                     return res.status(404).send("Pas de données trouvées pour la périodes souhaitée.");
-                }
-                let dataGrouped = rainDatas;
+                }else{
+                    res.status(200).send()
+                    let dataGrouped = rainDatas;
 
-                switch (interval) {
-                    case DownloadInterval.DAYS:
-                        dataGrouped = groupByDay(rainDatas);
-                        break;
-                    case DownloadInterval.MONTHS:
-                        dataGrouped = groupByMonth(rainDatas);
-                        break;
-                    case DownloadInterval.YEARS:
-                        dataGrouped = groupByYear(rainDatas);
-                        break;
-                    case DownloadInterval.STATION:
-                        dataGrouped = groupByInterval(rainDatas);
-                        break;
-                    default:
-                        dataGrouped = groupByInterval(rainDatas);
-                }
-                const result = rainDataToCSV(dataGrouped);
+                    switch (interval) {
+                        case DownloadInterval.DAYS:
+                            dataGrouped = groupByDay(rainDatas);
+                            break;
+                        case DownloadInterval.MONTHS:
+                            dataGrouped = groupByMonth(rainDatas);
+                            break;
+                        case DownloadInterval.YEARS:
+                            dataGrouped = groupByYear(rainDatas);
+                            break;
+                        case DownloadInterval.STATION:
+                            dataGrouped = groupByInterval(rainDatas);
+                            break;
+                        default:
+                            dataGrouped = groupByInterval(rainDatas);
+                    }
+                    const result = rainDataToCSV(dataGrouped);
 
-                // console.log("DATAAS8!!")
-                // Write File
-                const dirDownload = nconf.get("downloadFolder");
-                const fileName = `${station.name}_${preFormatDate(rainDatas[0].date)}-${preFormatDate(rainDatas[rainDatas.length - 1].date)}_${interval}.csv`;
-                const filePath = path.join(dirDownload, fileName);
-                if (!fs.existsSync(dirDownload)) {
-                    fs.mkdirSync(dirDownload);
-                }
-                fs.writeFile(filePath, result, 'utf-8', (err) => {
-                    if (err) throw err;
-                    // console.log('The file has been saved!', req.token_decoded.id);
-                    UsersModel.userModel.findById(req.token_decoded.id, (err, user) => {
-                        const url = `${URL}/download/${fileName}`; //TODO CHANGE AND GET HOST URL NOT LOCALHOST
-                        mailer.sendMailAndIgnoreIfMailInvalid(undefined, undefined, "Download File", user.mail, url, (err) => {
-                            if (err) {
-                                logger.error("[DATACTRL] downloadData : ", err);
-                            }
-                        })
+                    // console.log("DATAAS8!!")
+                    // Write File
+                    const dirDownload = nconf.get("downloadFolder");
+                    const fileName = `${station.name}_${preFormatDate(rainDatas[0].date)}-${preFormatDate(rainDatas[rainDatas.length - 1].date)}_${interval}.csv`;
+                    const filePath = path.join(dirDownload, fileName);
+                    if (!fs.existsSync(dirDownload)) {
+                        fs.mkdirSync(dirDownload);
+                    }
+                    fs.writeFile(filePath, result, 'utf-8', (err) => {
+                        if (err) throw err;
+                        // console.log('The file has been saved!', req.token_decoded.id);
+                        UsersModel.userModel.findById(req.token_decoded.id, (err, user) => {
+                            const url = `${URL}/download/${fileName}`; //TODO CHANGE AND GET HOST URL NOT LOCALHOST
+                            mailer.sendMailAndIgnoreIfMailInvalid(undefined, undefined, "Download File", user.mail, url, (err) => {
+                                if (err) {
+                                    logger.error("[DATACTRL] downloadData : ", err);
+                                }
+                            })
+                        });
+
                     });
 
-                });
-        
 
-                return res.status(200).send();
+                    return;
+                }
+
             }
         });
     });
