@@ -24,9 +24,9 @@
           <div class="input-group-prepend">
             <span class="input-group-text" id="basic-addon3"><i class="fas fa-search"></i></span>
           </div>
-          <input type="search" (search)="riverSelected($event.target.value)" class="form-control" (change)="riverSelected($event.target.value)" placeholder="Bassin versant" aria-label="Recherche" aria-describedby="basic-addon3" list="rivers">
-          <datalist id="rivers">
-            <option *ngFor="let i of rivers" [value]="i">{{i}}</option>
+          <input type="search" (search)="bassin_versantSelected($event.target.value)" class="form-control" (change)="bassin_versantSelected($event.target.value)" placeholder="Bassin versant" aria-label="Recherche" aria-describedby="basic-addon3" list="bassin_versants">
+          <datalist id="bassin_versants">
+            <option *ngFor="let i of bassin_versants" [value]="i">{{i}}</option>
           </datalist>
         </div>
       </div>

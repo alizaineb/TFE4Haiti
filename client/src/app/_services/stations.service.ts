@@ -22,8 +22,8 @@ export class StationsService {
     return this.http.get<any[]>(environment.apiUrl + '/stations/getInfo/communes');
   }
 
-  getRivers() {
-    return this.http.get<any[]>(environment.apiUrl + '/stations/getInfo/rivers');
+  getBassin_versants() {
+    return this.http.get<any[]>(environment.apiUrl + '/stations/getInfo/bassin_versants');
   }
 
   getAll() {
@@ -80,7 +80,7 @@ export class StationsService {
       return true;
     }
     // Rivière :
-    if (user.river === station.river) {
+    if (user.bassin_versant === station.bassin_versant) {
       return true;
     }
     // assignée

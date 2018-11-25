@@ -20,10 +20,10 @@ export class MapComponent implements OnInit {
   private zoom = 8;
   private centerMap = [19.099041, -72.658473];
   communes: string[];
-  rivers: string[];
+  bassin_versants: string[];
 
   private communeFilter: string;
-  private riverFilter: string;
+  private bassin_versantFilter: string;
   private term: string;
 
   constructor(
@@ -36,8 +36,8 @@ export class MapComponent implements OnInit {
     this.stationsService.getCommunes().subscribe(communes => {
       this.communes = communes;
     });
-    this.stationsService.getRivers().subscribe(rivers => {
-      this.rivers = rivers;
+    this.stationsService.getBassin_versants().subscribe(bassin_versants => {
+      this.bassin_versants = bassin_versants;
     });
     const self = this;
     this.stationsService.getAll().subscribe(result => {
@@ -258,14 +258,14 @@ export class MapComponent implements OnInit {
     }
   }
 
-  riverSelected(val) {
-    this.riverFilter = val;
+  bassin_versantSelected(val) {
+    this.bassin_versantFilter = val;
     this.applyFilter();
   }
 
-  riverEmpty(val) {
+  bassin_versantEmpty(val) {
     if (val.length == 0) {
-      this.riverFilter = val;
+      this.bassin_versantFilter = val;
       this.applyFilter();
     }
   }
@@ -284,9 +284,9 @@ export class MapComponent implements OnInit {
         return value.commune.toLowerCase().includes(this.communeFilter.toLowerCase());
       });
     }
-    if (this.riverFilter) {
+    if (this.bassin_versantFilter) {
       this.filteredStation = this.filteredStation.filter((value) => {
-        return value.river.toLowerCase().includes(this.riverFilter.toLowerCase());
+        return value.bassin_versant.toLowerCase().includes(this.bassin_versantFilter.toLowerCase());
       });
     }
     if (this.term) {

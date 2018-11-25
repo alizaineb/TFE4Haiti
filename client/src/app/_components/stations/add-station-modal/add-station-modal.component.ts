@@ -27,7 +27,7 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked {
   mark;
   intervals: string[];
   communes: string[];
-  rivers: string[];
+  bassin_versants: string[];
 
   constructor(private alertService: AlertService,
               private stationService: StationsService,
@@ -37,7 +37,7 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked {
   ngOnInit(): void {
     this.stationService.getIntervals().subscribe(intervals => {this.intervals = intervals; });
     this.stationService.getCommunes().subscribe(communes => {this.communes = communes; });
-    this.stationService.getRivers().subscribe(rivers => {this.rivers = rivers; });
+    this.stationService.getBassin_versants().subscribe(bassin_versants => {this.bassin_versants = bassin_versants; });
     this.addStationForm = new FormGroup({
 
       'name': new FormControl('', [
@@ -65,7 +65,7 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked {
       'commune': new FormControl('', [
         Validators.required
       ]),
-      'river': new FormControl('', [
+      'bassin_versant': new FormControl('', [
         Validators.required
       ]),
       'createdAt': new FormControl(null, [
@@ -86,7 +86,7 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked {
   get createdAt() {return this.addStationForm.get('createdAt'); }
   get altitude() {return this.addStationForm.get('altitude'); }
   get note() {return this.addStationForm.get('note'); }
-  get river() {return this.addStationForm.get('river'); }
+  get bassin_versant() {return this.addStationForm.get('bassin_versant'); }
   get commune() {return this.addStationForm.get('commune'); }
 
   ngAfterViewChecked(): void {
@@ -114,7 +114,7 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked {
     s.longitude = this.addStationForm.controls['longitude'].value;
     s.altitude = this.addStationForm.controls['altitude'].value;
     s.interval = this.addStationForm.controls['interval'].value;
-    s.river = this.addStationForm.controls['river'].value;
+    s.bassin_versant = this.addStationForm.controls['bassin_versant'].value;
     s.commune = this.addStationForm.controls['commune'].value;
     s.createdAt = this.addStationForm.controls['createdAt'].value;
 

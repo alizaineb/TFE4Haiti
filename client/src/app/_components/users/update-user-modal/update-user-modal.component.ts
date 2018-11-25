@@ -23,7 +23,7 @@ export class UpdateUserModalComponent implements OnInit {
 
   roles: string[];
   communes: string[];
-  rivers: string[];
+  bassin_versants: string[];
   // TODO Modifier et faire un call api pour ces valeurs
   states = ['awaiting', 'pwd_creation', 'ok', 'deleted'];
   constructor(private alertService: AlertService, private userService: UserService, private stationService: StationsService) { }
@@ -33,8 +33,8 @@ export class UpdateUserModalComponent implements OnInit {
     this.stationService.getCommunes().subscribe(communes => {
       this.communes = communes;
     });
-    this.stationService.getRivers().subscribe(rivers => {
-      this.rivers = rivers;
+    this.stationService.getBassin_versants().subscribe(bassin_versants => {
+      this.bassin_versants = bassin_versants;
     });
     this.userService.getRoles().subscribe(roles => { this.roles = roles; });
 
@@ -53,7 +53,7 @@ export class UpdateUserModalComponent implements OnInit {
         Validators.required
       ]),
       'commune': new FormControl(this.userToUpdate.commune),
-      'river': new FormControl(this.userToUpdate.river),
+      'bassin_versant': new FormControl(this.userToUpdate.bassin_versant),
       'role': new FormControl(this.userToUpdate.role, [
         Validators.required
       ]),
@@ -80,7 +80,7 @@ export class UpdateUserModalComponent implements OnInit {
     userToSend.role = this.updateUserForm.get('role').value;
     userToSend.state = this.updateUserForm.get('state').value;
     userToSend.commune = this.updateUserForm.get('commune').value;
-    userToSend.river = this.updateUserForm.get('river').value;
+    userToSend.bassin_versant = this.updateUserForm.get('bassin_versant').value;
     this.userService.update(userToSend).pipe(first()).subscribe(
       result => {
         //trigger sent

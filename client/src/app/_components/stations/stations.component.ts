@@ -24,7 +24,7 @@ export class StationsComponent implements OnInit {
 
   constructor(private stationService: StationsService,
     private authenticationService: AuthenticationService) {
-    this.headers = ['Nom', 'Commune', 'Rivière', 'Date de création', 'Dernière modification', 'Etat'];
+    this.headers = ['Nom', 'Commune', 'Bassin versant', 'Date de création', 'Dernière modification', 'Etat'];
   }
 
   ngOnInit() {
@@ -70,7 +70,7 @@ export class StationsComponent implements OnInit {
   filterStation() {
     this.stationsFiltered = this.stations.filter((value) => {
       return (value.name.toLowerCase().includes(this.searchKeyWord.toLowerCase()) ||
-        value.river.toLowerCase().includes(this.searchKeyWord.toLowerCase()) ||
+        value.bassin_versant.toLowerCase().includes(this.searchKeyWord.toLowerCase()) ||
         value.commune.toLowerCase().includes(this.searchKeyWord.toLowerCase())) && this.hasAccessToStation(value);
     });
   }

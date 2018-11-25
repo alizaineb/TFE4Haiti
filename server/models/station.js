@@ -46,7 +46,7 @@ let communes = [
   'Kenscoff'
 ];
 
-let rivers = ['river1', 'river2', 'Grande Rivière du Nord', 'Haut-du-Cap', 'Limbé', 'Marion'];
+let bassin_versants = ['bassin_versant1', 'bassin_versant2', 'Grande Rivière du Nord', 'Haut-du-Cap', 'Limbé', 'Marion'];
 let intervals = ['1min', '5min', '10min', '15min', '30min', '1h', '2h', '6h', '12h', '24h'];
 const Schema = mongoose.Schema;
 const Station = new Schema({
@@ -100,10 +100,10 @@ const Station = new Schema({
     required: [true, 'Veuillez spécifier la commune'],
     enum: { values: communes, message: 'Commune inconnue' }
   },
-  river: {
+  bassin_versant: {
     type: String,
     required: [true, 'Veuillez spécifier le bassin versant'],
-    enum: { values: rivers, message: 'Bassin versant inconnu' }
+    enum: { values: bassin_versants, message: 'Bassin versant inconnu' }
   },
   state: {
     type: String,
@@ -135,7 +135,7 @@ Station.methods.toDto = function() {
     createdAt: this.createdAt,
     updatedAt: this.updatedAt,
     interval: this.interval,
-    river: this.river,
+    bassin_versant: this.bassin_versant,
     commune: this.commune,
     user_creator_id: this.user_creator_id,
     users: this.users
@@ -150,6 +150,6 @@ exports.stationModel = stationModel;
 
 // Exports des contantes
 // TODO Mettre dans le fichier de constantes ?
-exports.rivers = rivers;
+exports.bassin_versants = bassin_versants;
 exports.intervals = intervals;
 exports.communes = communes;

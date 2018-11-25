@@ -2,7 +2,6 @@
   <div class="modal-content">
     <div class="modal-header">
       <h1 class="modal-title" id="addStationModalLabel">Ajouter une station</h1>
-      <i class="offset-md-7 fas fa-question-circle fa-2x" style="color: blue"></i>
       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
@@ -60,13 +59,13 @@
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
-                    <input class="form-control" id="river" placeholder="Bassin versant" formControlName="river" required list="rivers">
-                    <datalist id="rivers">
-                      <option *ngFor="let i of rivers" [value]="i">{{i}}</option>
+                    <input class="form-control" id="bassin_versant" placeholder="Bassin versant" formControlName="bassin_versant" required list="bassin_versants">
+                    <datalist id="bassin_versants">
+                      <option *ngFor="let i of bassin_versants" [value]="i">{{i}}</option>
                     </datalist>
-                    <div *ngIf="river.invalid && (river.dirty || river.touched)" class="alert alert-danger">
-                      <div *ngIf="river.errors.required">
-                        Une rivière est requise
+                    <div *ngIf="bassin_versant.invalid && (bassin_versant.dirty || bassin_versant.touched)" class="alert alert-danger">
+                      <div *ngIf="bassin_versant.errors.required">
+                        Un bassin verstant est requis est requise
                       </div>
                     </div>
                   </div>

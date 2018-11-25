@@ -31,7 +31,7 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
 
   states: string[];
   communes: string[];
-  rivers: string[];
+  bassin_versants: string[];
   submitted = false;
 
   updateStationForm: FormGroup;
@@ -46,7 +46,7 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
 
   ngOnInit(): void {
     this.stationService.getCommunes().subscribe(communes => {this.communes = communes; });
-    this.stationService.getRivers().subscribe(rivers => {this.rivers = rivers; });
+    this.stationService.getBassin_versants().subscribe(bassin_versants => {this.bassin_versants = bassin_versants; });
     this.initForm();
     this.initDatePickerAndMap();
     this.states = [Constantes.stationState.AWAITING, Constantes.stationState.BROKEN, Constantes.stationState.DELETED, Constantes.stationState.WORKING];
@@ -80,7 +80,7 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
       'commune': new FormControl(this.stationToUpdate.commune, [
         Validators.required
       ]),
-      'river': new FormControl(this.stationToUpdate.river, [
+      'bassin_versant': new FormControl(this.stationToUpdate.bassin_versant, [
         Validators.required
       ]),
       'createdAt': new FormControl(this.stationToUpdate.createdAt, [
@@ -96,7 +96,7 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
   get state() { return this.updateStationForm.get('state'); }
   get createdAt() {return this.updateStationForm.get('createdAt'); }
   get altitude() {return this.updateStationForm.get('altitude'); }
-  get river() {return this.updateStationForm.get('river'); }
+  get bassin_versant() {return this.updateStationForm.get('bassin_versant'); }
   get commune() {return this.updateStationForm.get('commune'); }
 
   ngAfterViewChecked(): void {
@@ -134,7 +134,7 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
     s.altitude = this.updateStationForm.controls['altitude'].value;
     s.state = this.updateStationForm.controls['state'].value;
     s.createdAt = this.updateStationForm.controls['createdAt'].value;
-    s.river = this.updateStationForm.controls['river'].value;
+    s.bassin_versant = this.updateStationForm.controls['bassin_versant'].value;
     s.commune = this.updateStationForm.controls['commune'].value;
 
     this.stationService.update(s)

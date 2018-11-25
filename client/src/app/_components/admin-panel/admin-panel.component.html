@@ -27,7 +27,7 @@
           <td>{{user.mail}}</td>
           <td>{{user.role}}
             <span *ngIf="user.commune">({{user.commune}})</span>
-            <span *ngIf="user.river"> ({{user.river}})</span>
+            <span *ngIf="user.bassin_versant"> ({{user.bassin_versant}})</span>
           </td>
           <td>{{user.created_at | date: 'd/MM/yyyy à HH:mm':'UTC'}}</td>
           <td>
@@ -61,7 +61,7 @@
           <td>{{station.name}}</td>
           <td>{{station.latitude}} <br /> {{station.longitude}} </td>
           <td>{{station.commune}}</td>
-          <td>{{station.river}}</td>
+          <td>{{station.bassin_versant}}</td>
           <td>{{station.interval}}</td>
           <td>{{station.user_creator}}</td>
           <td>{{station.createdAt | date: 'd/MM/yyyy':'UTC'}}</td>
