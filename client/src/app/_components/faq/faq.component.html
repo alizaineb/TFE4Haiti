@@ -10,7 +10,7 @@
     </div>
     <div id="child_register" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-register-login">
       <div class="card-body">
-        Rendez-vous sur la page <a href="/login"> se connecter</a>. <br/>
+        Rendez-vous sur la page <a [routerLink]="['/login']"> se connecter</a>. <br/>
         La section "Demande de compte" permet d'envoyer une demande d'accès à l'application.<br/>
         Pour la demande vous devez obligatoirement fournir:
         <ul>
@@ -41,7 +41,7 @@
       </div>
       <div id="child_login" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-register-login">
         <div class="card-body">
-          Rendez-vous sur la page <a href="/login"> se connecter</a>. <br/>
+          Rendez-vous sur la page <a [routerLink]="['/login']"> se connecter</a>. <br/>
           Dans la section "Se connecter", entrez votre e-mail et le mot de passe que vous choisi.
         </div>
       </div>
@@ -55,7 +55,7 @@
         </div>
         <div id="child_mdp" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-register-login">
           <div class="card-body">
-            Rendez-vous sur la page <a href="/login/askreset"> récupérer mon compte</a>. Un lien vous sera envoyé pour mettre à jour votre mot de passe.<br/>
+            Rendez-vous sur la page <a [routerLink]="['/login/askreset']"> récupérer mon compte</a>. Un lien vous sera envoyé pour mettre à jour votre mot de passe.<br/>
           </div>
         </div>
 
@@ -113,7 +113,7 @@
     </div>
     <div id="child_detailStation" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-station">
       <div class="card-body">
-        Rendez-vous à la page <a href="map">Carte</a> ou <a href="/stations">Mes stations</a> et recherchez votre station.
+        Rendez-vous à la page  <a [routerLink]="['/map']">Carte</a> ou <a [routerLink]="['/stations']">Mes stations</a> et recherchez votre station.
         Pour afficher son détail, appuyer sur le bouton: <i class="fas fa-external-link-alt"></i>
       </div>
     </div>
@@ -129,7 +129,7 @@
     </div>
     <div id="child_addStation" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-station">
       <div class="card-body">
-        <p>Rendez-vous à la page <a href="/stations">Mes stations</a> et cliquez sur le bouton <button class="btn btn-primary"> Ajouter une station <i class="fas fa-plus-circle" ></i> </button></p>
+        <p>Rendez-vous à la page <a [routerLink]="['/stations']">Mes stations</a> et cliquez sur le bouton <button class="btn btn-primary"> Ajouter une station <i class="fas fa-plus-circle" ></i> </button></p>
         Pour ajouter une station il faut obligatoirement:
         <ul>
           <li>Un nom</li>
@@ -163,7 +163,7 @@
     <div id="child_updateStation" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-station">
       <div class="card-body">
         <ul>
-          <li>Rendez-vous à la page <a href="/stations">Mes stations</a> et cliquez sur le bouton: <i class="fas fa-edit fa-fw fa-1x"></i> de la station à modifier.</li>
+          <li>Rendez-vous à la page <a [routerLink]="['/stations']">Mes stations</a> et cliquez sur le bouton: <i class="fas fa-edit fa-fw fa-1x"></i> de la station à modifier.</li>
           <li>Rendez-vous sur le détail de la station et cliquez sur le bouton
             <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateStationModal">
             Modifier la station
@@ -186,7 +186,7 @@
     <div id="child_noteStation" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-station">
       <div class="card-body">
         <ul>
-          <li>Rendez-vous à la page <a href="/stations">Mes stations</a> et cliquez sur le bouton: <i class="fas fa-sticky-note fa-fw fa-lx"></i></li>
+          <li>Rendez-vous à la page  <a [routerLink]="['/stations']">Mes stations</a> et cliquez sur le bouton: <i class="fas fa-sticky-note fa-fw fa-lx"></i></li>
           <li>Rendez-vous sur le détail de la station et cliquez sur l'onglet "notes".</li>
         </ul>
       </div>
@@ -210,7 +210,7 @@
     </div>
     <div id="child_view-data" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-data">
       <div class="card-body">
-        Trouvez votre station via l'interface <a href="/map"> carte</a> ou <a href="/stations"> mes stations</a> et accéder à son détail <i class="fas fa-external-link-alt"></i>. <br/>
+        Trouvez votre station via l'interface  <a [routerLink]="['/map']"> carte</a> ou  <a [routerLink]="['/stations']"> mes stations</a> et accéder à son détail <i class="fas fa-external-link-alt"></i>. <br/>
         Vous pouvez visualiser les données via:
         <ul>
           <li>Un tableau</li>
@@ -279,7 +279,7 @@
     <div id="child_add-data" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-data">
       <div class="card-body">
         <ul>
-          <li>Rendez à l'interface import des données via <a href="/stations"> mes stations</a> et cliquez sur le bouton: <i class="fas fa-file-download fa-fw fa-1x"></i></li>
+          <li>Rendez à l'interface import des données via  <a [routerLink]="['/stations']"> mes stations</a> et cliquez sur le bouton: <i class="fas fa-file-download fa-fw fa-1x"></i></li>
           <li>Rendez vous sur l'interface détail, tableau ou graphique et cliquez sur le bouton:
             <a class="btn btn-success btn-sm" style="color:white">Importer des données <i class="fas fa-file-download white"></i></a></li>
 
