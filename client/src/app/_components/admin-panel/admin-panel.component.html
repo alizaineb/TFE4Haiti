@@ -1,6 +1,8 @@
 <div *ngIf="!dataLoading">
   <div *ngIf="!showUsers && !showStations && !showDatas">
-    <h1>Pas de donnée/station/utilisateur à valider</h1>
+    <div class="container alert alert-info col-md-4">
+      Pas de donnée/station/utilisateur à valider
+    </div>
   </div>
 
   <div *ngIf="showUsers">

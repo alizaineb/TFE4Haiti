@@ -33,8 +33,8 @@
   </div>
 
 </div>
-<div *ngIf="noDateSelected" class="container">
-  <h1>Veuillez sélectionner une date</h1>
+<div *ngIf="noDateSelected" class="container col-md-3">
+  <div class="alert alert-info">Veuillez sélectionner une date</div>
 </div>
 
 <div *ngIf="dataLoading" class="text-center container">
@@ -45,12 +45,14 @@
 </div>
 
 <div *ngIf="dataToShow" class="someSpace">
-  <h5><i class="far fa-question-circle"></i> Les colonnes représentent les heures/jours et les lignes les minutes/heures en fonction de l'intervalle choisi</h5>
-  <h5><i class="far fa-question-circle"></i> Le tableau se lit donc de haut en bas</h5>
-  <h5><i class="far fa-question-circle"></i> Si vous êtes perdu dans le tableau, laissez votre souris sur une case et elle vous affichera l'heure.</h5>
-  <h5 *ngIf="hasWorkerAccess() && !sameIntervalAsStation"><i class="far fa-question-circle"></i> Pour éditer une donnée, mettez-vous dans l'intervalle disponible la plus petite et cliquer sur la case que vous souhaitez éditer</h5>
-  <h5 *ngIf="hasWorkerAccess() && sameIntervalAsStation"><i class="far fa-question-circle"></i> En cliquant sur une case vous pourrez en éditer le contenu</h5>
-  <table class="table table-bordered">
+  <div class="alert alert-info col-md-9">
+    <h5><i class="far fa-question-circle"></i> Les colonnes représentent les heures/jours et les lignes les minutes/heures en fonction de l'intervalle choisi</h5>
+    <h5><i class="far fa-question-circle"></i> Le tableau se lit donc de haut en bas</h5>
+    <h5><i class="far fa-question-circle"></i> Si vous êtes perdu dans le tableau, laissez votre souris sur une case et elle vous affichera l'heure.</h5>
+    <h5 *ngIf="hasWorkerAccess() && !sameIntervalAsStation"><i class="far fa-question-circle"></i> Pour éditer une donnée, mettez-vous dans l'intervalle disponible la plus petite et cliquer sur la case que vous souhaitez éditer</h5>
+    <h5 *ngIf="hasWorkerAccess() && sameIntervalAsStation"><i class="far fa-question-circle"></i> En cliquant sur une case vous pourrez en éditer le contenu</h5>
+  </div>
+    <table class="table table-bordered">
     <thead>
       <tr>
         <th scope="col" class="topLeftCell"></th>

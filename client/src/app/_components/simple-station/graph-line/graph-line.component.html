@@ -31,6 +31,9 @@
   </div>
 </div>
 
+<div *ngIf="rangeSelected===''" class="container col-md-5">
+  <div class="alert alert-info">Veuillez sélectionner une option pour l'affichage des données</div>
+</div>
 <div class="col-md-3" *ngIf="'Annuelles'===rangeSelected">
   <div class="form-row">
     <label class="col-form-label">
