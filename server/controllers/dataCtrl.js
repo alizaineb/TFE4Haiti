@@ -937,7 +937,8 @@ exports.downloadData = function (req, res) {
                     // console.log("DATAAS8!!")
                     // Write File
                     const dirDownload = nconf.get("downloadFolder");
-                    const fileName = `${station.name}_${preFormatDate(rainDatas[0].date)}-${preFormatDate(rainDatas[rainDatas.length - 1].date)}_${interval}.csv`;
+                    let fileName = `${station.name}_${preFormatDate(rainDatas[0].date)}-${preFormatDate(rainDatas[rainDatas.length - 1].date)}_${interval}.csv`;
+                    fileName = fileName.replace(/ /g,'');
                     const filePath = path.join(dirDownload, fileName);
                     if (!fs.existsSync(dirDownload)) {
                         fs.mkdirSync(dirDownload);
