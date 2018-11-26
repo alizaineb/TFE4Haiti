@@ -52,7 +52,7 @@
     <h5 *ngIf="hasWorkerAccess() && !sameIntervalAsStation"><i class="far fa-question-circle"></i> Pour éditer une donnée, mettez-vous dans l'intervalle disponible la plus petite et cliquer sur la case que vous souhaitez éditer</h5>
     <h5 *ngIf="hasWorkerAccess() && sameIntervalAsStation"><i class="far fa-question-circle"></i> En cliquant sur une case vous pourrez en éditer le contenu</h5>
   </div>
-    <table class="table table-bordered">
+  <table class="table table-bordered">
     <thead>
       <tr>
         <th scope="col" class="topLeftCell"></th>
@@ -76,6 +76,12 @@
         </th>
       </tr>
     </tbody>
+    <tfoot *ngIf="aggregatedDatas[0].length > 4">
+      <tr>
+        <th scope="col" class="bottomLeftCell"></th>
+        <th scope="col" class="solidBorderTop" *ngFor="let colName of cols">{{colName}}</th>
+      </tr>
+    </tfoot>
   </table>
   <hr>
   <h2>Récapitulatif</h2>
