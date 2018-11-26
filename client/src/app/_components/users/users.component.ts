@@ -27,7 +27,7 @@ export class UsersComponent implements OnInit {
 
   constructor(private userService: UserService, private localStorageService: LocalstorageService, private alertService: AlertService) {
     this.currentUser = this.localStorageService.getItem('currentUser').current;
-    this.headersUsers = ["Nom", "Prénom", "Adresse mail", "Commune", "Rivière", "Date de création", "Date de dernière connexion", "Role", "État"];
+    this.headersUsers = ["Nom", "Prénom", "Adresse mail", "Commune", "Bassin versant", "Date de création", "Date de dernière connexion", "Role", "État"];
   }
 
   ngOnInit() {
@@ -49,7 +49,7 @@ export class UsersComponent implements OnInit {
     let self = this;
     this.userService.delete(id).pipe(first()).subscribe(result => {
       self.alertService.success("L'utilisteur a été correctement passé dans l'état correspndant");
-      this.loadAllUsers()
+      this.loadAllUsers();
     },
       error => {
         self.alertService.error(error);

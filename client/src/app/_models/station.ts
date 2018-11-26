@@ -9,7 +9,7 @@ export class Station {
   public createdAt: Date;
   public interval: string;
   public commune: string;
-  public river: string;
+  public bassin_versant: string;
   public user_creator_id: string;
   public user_creator: any;
   public users: string[];

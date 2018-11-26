@@ -1,6 +1,8 @@
 <div *ngIf="!dataLoading">
   <div *ngIf="!showUsers && !showStations && !showDatas">
-    <h1>Rien à afficher</h1>
+    <div class="container alert alert-info col-md-4">
+      Pas de donnée/station/utilisateur à valider
+    </div>
   </div>
 
   <div *ngIf="showUsers">
@@ -27,7 +29,7 @@
           <td>{{user.mail}}</td>
           <td>{{user.role}}
             <span *ngIf="user.commune">({{user.commune}})</span>
-            <span *ngIf="user.river"> ({{user.river}})</span>
+            <span *ngIf="user.bassin_versant"> ({{user.bassin_versant}})</span>
           </td>
           <td>{{user.created_at | date: 'd/MM/yyyy à HH:mm':'UTC'}}</td>
           <td>
@@ -59,10 +61,9 @@
         <tr *ngFor="let station of stations | paginate: { itemsPerPage: 10, currentPage: pageStations, id:'stationspage' } ; index as i;">
           <td>{{i+1}}</td>
           <td>{{station.name}}</td>
-          <td>{{station.latitude}}</td>
-          <td>{{station.longitude}}</td>
+          <td>{{station.latitude}} <br /> {{station.longitude}} </td>
           <td>{{station.commune}}</td>
-          <td>{{station.river}}</td>
+          <td>{{station.bassin_versant}}</td>
           <td>{{station.interval}}</td>
           <td>{{station.user_creator}}</td>
           <td>{{station.createdAt | date: 'd/MM/yyyy':'UTC'}}</td>

@@ -41,7 +41,7 @@ export class AdminPanelComponent implements OnInit {
     private rainDataService: DataService
   ) {
     this.headersUsers = ['Nom', 'Prénom', 'Adresse mail', 'Role requis', ' Date de création'];
-    this.headersStation = ['Nom de la station', 'Latitude', 'Longitude', 'Commune', 'Bassin versant', 'Intervalle', 'Auteur', 'Date de mise en service'];
+    this.headersStation = ['Nom de la station', 'Coordonnées', 'Commune', 'Bassin versant', 'Intervalle', 'Auteur', 'Date de mise en service'];
     this.headersData = ['Nom de la Station', 'Ajouté par', 'Type', 'date', 'Valeur'];
     this.showUsers = false;
     this.showStations = false;

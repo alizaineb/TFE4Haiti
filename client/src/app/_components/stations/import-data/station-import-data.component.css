@@ -9,3 +9,11 @@
 .fas{
   color: white;
 }
+.blue{
+  color: blue !important;
+
+}
+
+.pointer:hover{
+  cursor: pointer;
+}

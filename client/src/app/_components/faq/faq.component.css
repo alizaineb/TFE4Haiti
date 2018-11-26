@@ -28,3 +28,12 @@
   transform: rotate(90deg);
   color: #454444;
 }
+
+.card-header{
+  cursor: pointer;
+}
+
+
+.white{
+  color: white;
+}

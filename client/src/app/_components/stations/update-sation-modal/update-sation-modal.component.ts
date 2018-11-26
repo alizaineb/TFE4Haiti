@@ -31,7 +31,7 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
 
   states: string[];
   communes: string[];
-  rivers: string[];
+  bassin_versants: string[];
   submitted = false;
 
   updateStationForm: FormGroup;
@@ -46,7 +46,7 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
 
   ngOnInit(): void {
     this.stationService.getCommunes().subscribe(communes => {this.communes = communes; });
-    this.stationService.getRivers().subscribe(rivers => {this.rivers = rivers; });
+    this.stationService.getBassin_versants().subscribe(bassin_versants => {this.bassin_versants = bassin_versants; });
     this.initForm();
     this.initDatePickerAndMap();
     this.states = [Constantes.stationState.AWAITING, Constantes.stationState.BROKEN, Constantes.stationState.DELETED, Constantes.stationState.WORKING];
@@ -80,7 +80,7 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
       'commune': new FormControl(this.stationToUpdate.commune, [
         Validators.required
       ]),
-      'river': new FormControl(this.stationToUpdate.river, [
+      'bassin_versant': new FormControl(this.stationToUpdate.bassin_versant, [
         Validators.required
       ]),
       'createdAt': new FormControl(this.stationToUpdate.createdAt, [
@@ -96,7 +96,7 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
   get state() { return this.updateStationForm.get('state'); }
   get createdAt() {return this.updateStationForm.get('createdAt'); }
   get altitude() {return this.updateStationForm.get('altitude'); }
-  get river() {return this.updateStationForm.get('river'); }
+  get bassin_versant() {return this.updateStationForm.get('bassin_versant'); }
   get commune() {return this.updateStationForm.get('commune'); }
 
   ngAfterViewChecked(): void {
@@ -134,7 +134,7 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
     s.altitude = this.updateStationForm.controls['altitude'].value;
     s.state = this.updateStationForm.controls['state'].value;
     s.createdAt = this.updateStationForm.controls['createdAt'].value;
-    s.river = this.updateStationForm.controls['river'].value;
+    s.bassin_versant = this.updateStationForm.controls['bassin_versant'].value;
     s.commune = this.updateStationForm.controls['commune'].value;
 
     this.stationService.update(s)
@@ -176,20 +176,29 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
 
     // Maps usage : OpenStreetMap, OpenSurferMaps
 
-    const mapLayer2 =  L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+    const mapLayerOSMGrayScale = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
         attribution: mbAttr
       }),
-      mapLayer1 = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-        attribution: mbAttr
+      mapLayerOpenStreetMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
       }),
-      mapLayer3 = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: mbAttr
-      }) ;
+      mapLayerErsiWorlStreetMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
+      }),
+      mapLayerErsiSatelite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+      }),
+      mapLayerHyddaFull = L.tileLayer('https://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: 'Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      });
 
     const baseLayers = {
-      'Grayscale': mapLayer1,
-      'Opentopomap': mapLayer2,
-      'OpenStreetMap': mapLayer3
+      'OSM - Grayscale': mapLayerOSMGrayScale,
+      'OSM - TopoMap': mapLayerOpenStreetMap,
+      'Ersi - WorldStreetMap': mapLayerErsiWorlStreetMap,
+      'Ersi - Satelite': mapLayerErsiSatelite,
+      'Hydda - Full': mapLayerHyddaFull
     };
 
     this.map = L.map('mapid2', {
@@ -197,7 +206,7 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
       zoom: 7,
       minZoom: 7,
       maxZoom: 18,
-      layers: [mapLayer1]
+      layers: [mapLayerOpenStreetMap]
     });
 
     L.control.scale().addTo(this.map);

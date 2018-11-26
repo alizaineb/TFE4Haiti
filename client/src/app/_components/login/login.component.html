@@ -1,6 +1,6 @@
 ﻿<div class="row">
   <div class="col-md-4 offset-md-1">
-    <h2>Login</h2>
+    <h2>Se connecter</h2>
     <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
       <div class="form-group">
         <input type="text" placeholder="Adresse mail" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': loginSubmitted && f.username.errors }" autocomplete="new-password" />
@@ -69,9 +69,9 @@
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <input type="search" class="form-control" [formGroup]="registerForm" formControlName="bassin_versant" placeholder="Bassin-versant" list="rivers">
-              <datalist id="rivers">
-                <option *ngFor="let i of rivers" [value]="i">{{i}}</option>
+              <input type="search" class="form-control" [formGroup]="registerForm" formControlName="bassin_versant" placeholder="Bassin-versant" list="bassin_versants">
+              <datalist id="bassin_versants">
+                <option *ngFor="let i of bassin_versants" [value]="i">{{i}}</option>
               </datalist>
             </div>
           </div>
