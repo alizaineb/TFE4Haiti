@@ -56,8 +56,8 @@ const Station = new Schema({
   },
   latitude: {
     type: Number,
-    required: [true, 'Veuillez fournir une latitue'],
-    min: [-90.0, 'La latitue doit être supérieure à -90'],
+    required: [true, 'Veuillez fournir une latitude'],
+    min: [-90.0, 'La latitude doit être supérieure à -90'],
     max: [90.0, 'La latitude doit être inférieure à 90']
   },
   longitude: {
