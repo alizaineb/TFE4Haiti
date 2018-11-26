@@ -93,8 +93,6 @@ User.methods.toDto = function() {
 User.pre('save', function(next) {
   if (!isInDev) {
     var user = this;
-    if (!user.isModified('pwd')) return next();
-
     bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
       if (err) {
         return next(err);
