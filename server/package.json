@@ -2,6 +2,9 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
+  "engines": {
+    "node": "10.x"
+  },
   "main": "server.js",
   "scripts": {
     "test": "node app.js",
@@ -13,6 +16,8 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
+    "formidable": "^1.2.1",
+    "jsdoc": "^3.5.5",
     "jsonwebtoken": "^8.3.0",
     "mongodb": "^3.1.6",
     "mongoose": "^5.2.17",

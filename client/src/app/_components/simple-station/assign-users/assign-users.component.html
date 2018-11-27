@@ -1,0 +1,64 @@
+<div *ngIf="station">
+  <h1>
+    Assigner un utilisateur pour la station {{station.name}}
+  </h1>
+  <br>
+
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <h3>Utilisateurs disponibles: </h3>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+          </div>
+        <input type="search" class="form-control" placeholder="Nom d'un utilisateur" aria-label="Recherche" aria-describedby="basic-addon1" (keyup)="filterAllUser()" (search)="filterAllUser()" [(ngModel)]="searchAllKeyWord">
+        </div>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Prenom</th>
+            <th>Email</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let user of listAllUsersFiltered index as i;">
+            <td> {{user.first_name}} </td>
+            <td> {{user.last_name}} </td>
+            <td> {{user.mail}} </td>
+            <td> <i (click)="addUser(user)" class="fas fa-arrow-right"></i></td>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col">
+        <h3>Utilisateurs assignés:</h3>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon0"><i class="fas fa-search"></i></span>
+          </div>
+          <input type="search" class="form-control" placeholder="Nom d'un utilisateur" aria-label="Recherche" aria-describedby="basic-addon0" (keyup)="filterUser()"  (search)="filterUser()" [(ngModel)]="searchKeyWord">
+        </div>
+        <table class="table table-striped table-bordered">
+          <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Prenom</th>
+            <th>Email</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let user of listUsersFiltered index as i">
+            <td> {{user.first_name}} </td>
+            <td> {{user.last_name}} </td>
+            <td> {{user.mail}} </td>
+            <td> <i (click)="removeUser(user)" class="fas fa-ban"></i></td>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

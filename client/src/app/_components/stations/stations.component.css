@@ -1,33 +1,24 @@
-.fa-edit{
-  color: blue;
+button:hover {
+  background-color: #cfd8dc;
+}
+button:disabled {
+  background-color: #eee;
+  color: #aaa;
+  cursor: auto;
+}
+.btn[disabled], fieldset[disabled] .btn {
+  cursor: not-allowed;
+  filter: alpha(opacity=65);
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  opacity: .65;
 }
 
-.fa-file-download{
-  color: green;
+.backdrop {
+  background-color: rgba(0, 0, 0, 0.6);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
 }
-
-.fa-trash{
-  color: red;
-}
-
-.fa-plus-circle{
-  color: blue;
-}
-
-.fas{
-  cursor: pointer;
-}
-
-.fa-sort{
-  cursor: pointer;
-}
-
-.backdrop{
-  background-color:rgba(0,0,0,0.6);
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100vh;
-}
-

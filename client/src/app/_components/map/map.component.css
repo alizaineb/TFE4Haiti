@@ -1,0 +1,40 @@
+#mapid {
+  height: 80vh;
+  width: 100%;
+}
+
+.list-group {
+  max-height: 60vh;
+  cursor: pointer;
+}
+
+li {
+  min-height: 50px;
+}
+
+.list-group {
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.list-group a {
+  color: #0b0b0b;
+  padding-left: 5px;
+}
+
+i {
+  cursor: pointer;
+}
+
+.fa-info-circle {
+  color: #039be4;
+}
+
+.spacetop {
+  margin-top: 5px;
+}
+
+.spaceRight {
+  margin-right: 15px;
+  margin-left: 10px;
+}

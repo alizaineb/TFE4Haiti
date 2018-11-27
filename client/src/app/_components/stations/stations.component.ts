@@ -1,7 +1,7 @@
-import {Component, OnInit, Output} from '@angular/core';
-import {first} from 'rxjs/operators';
-import {Station} from "../../_models";
-import {StationsService} from "../../_services/stations.service";
+import { Component, OnInit, Output } from '@angular/core';
+import { Station } from '../../_models';
+import { StationsService } from '../../_services/stations.service';
+import { AuthenticationService } from '../../_services';
 
 @Component({
   selector: 'app-stations',
@@ -13,100 +13,100 @@ import {StationsService} from "../../_services/stations.service";
 export class StationsComponent implements OnInit {
 
   headers: string[];
-  stations:Station[] = [];
-  stationToDelete: Station;
-  stationToUpdate: Station;
+  stations: Station[] = [];
+  stationsFiltered: Station[] = [];
+  stationSelected: Station = null;
 
-  constructor(private stationService: StationsService) {
-    this.headers = ["Nom", "Latitude", "Longitude", "Etat", "Créé le", "Dernière modification", "Intervalle"];
+  currentPage = 1; // page courante des stations affichées
+  map;
+
+  searchKeyWord = '';
+
+  constructor(private stationService: StationsService,
+    private authenticationService: AuthenticationService) {
+    this.headers = ['Nom', 'Commune', 'Bassin versant', 'Date de création', 'Dernière modification', 'Etat'];
   }
 
   ngOnInit() {
+    this.initMap();
     this.loadAllStations();
-    this.stationToDelete = new Station('','',undefined,undefined,'',null,null,'',[]);
-    this.stationToUpdate = null
   }
 
-  loadAllStations(){
+  loadAllStations($event = null) {
     this.stationService.getAll()
-      .pipe(first())
       .subscribe(result => {
-        this.stations = result;
+        this.stations = result.slice(0);
+        this.stationsFiltered = result.slice(0);
+        this.filterStation();
       });
   }
 
-  assignStationToDelete(station: Station){
-    this.stationToDelete = station;
+  hasAdminAccess() {
+    return this.authenticationService.hasAdminAccess();
   }
 
-  assignStationToUpdate(station: Station){
-    this.stationToUpdate = station;
-    // console.log(this.stationToUpdate)
+  hasAccessToStation(station) {
+    return this.stationService.hasAccessToStation(station);
   }
 
-  deleteStation(choice: boolean){
-    if(choice){
-      this.stationService.delete(this.stationToDelete._id)
-        .pipe(first())
+  hasWorkerAccess() {
+    return this.authenticationService.hasWorkerAccess();
+  }
+
+  hasViewerAccess() {
+    return this.authenticationService.hasViewerAccess();
+  }
+
+  initMap() {
+    this.map = new Map();
+    this.map.set('Nom', 'name');
+    this.map.set('Date de création', 'createdAt');
+    this.map.set('Dernière modification', 'updatedAt');
+    this.map.set('Etat', 'state');
+    this.map.set('Commune', 'commune');
+    this.map.set('Bassin versant', 'bassin_versant');
+  }
+
+  filterStation() {
+    this.stationsFiltered = this.stations.filter((value) => {
+      return (value.name.toLowerCase().includes(this.searchKeyWord.toLowerCase()) ||
+        value.bassin_versant.toLowerCase().includes(this.searchKeyWord.toLowerCase()) ||
+        value.commune.toLowerCase().includes(this.searchKeyWord.toLowerCase())) && this.hasAccessToStation(value);
+    });
+  }
+
+
+  setStationSelected(station: Station) {
+    this.stationSelected = station;
+  }
+
+  deleteStation(choice: boolean) {
+    if (choice) {
+      this.stationService.delete(this.stationSelected._id)
         .subscribe(result => {
           this.loadAllStations();
         });
-    } else {
-      this.stationToDelete = new Station('','',undefined,undefined,'',null,null,'',[]);
     }
   }
 
-  sortData(headName:string){
-      switch (headName) {
-        case "Nom":
-          if(this.stations[0].name < this.stations[1].name){
-            this.stations.sort((val1:Station, val2:Station)=> {return val1.name > val2.name ? -1 : 1});
-          } else {
-            this.stations.sort((val1:Station, val2:Station)=> {return val2.name > val1.name ? -1 : 1});
-          }
-          break;
-        case "Latitude":
-          if(this.stations[0].latitude < this.stations[1].latitude){
-            this.stations.sort((val1:Station, val2:Station)=> {return val1.latitude > val2.latitude ? -1 : 1});
-          } else {
-            this.stations.sort((val1:Station, val2:Station)=> {return val2.latitude > val1.latitude ? -1 : 1});
-          }
-          break;
-        case "Longitude":
-          if(this.stations[0].longitude < this.stations[1].longitude){
-            this.stations.sort((val1:Station, val2:Station)=> {return val1.longitude > val2.longitude ? -1 : 1});
-          } else {
-            this.stations.sort((val1:Station, val2:Station)=> {return val2.longitude > val1.longitude ? -1 : 1});
-          }
-          break;
-        case "Intervalle":
-          if(this.stations[0].interval < this.stations[1].interval){
-            this.stations.sort((val1:Station, val2:Station)=> {return val1.interval > val2.interval ? -1 : 1});
-          } else {
-            this.stations.sort((val1:Station, val2:Station)=> {return val2.interval > val1.interval ? -1 : 1});
-          }
-          break;
-        case "Etat":
-          if(this.stations[0].state < this.stations[1].state){
-            this.stations.sort((val1:Station, val2:Station)=> {return val1.state > val2.state ? -1 : 1});
-          } else {
-            this.stations.sort((val1:Station, val2:Station)=> {return val2.state > val1.state ? -1 : 1});
-          }
-          break;
-        case "Créé le":
-          if(this.stations[0].createdAt < this.stations[1].createdAt){
-            this.stations.sort((val1:Station, val2:Station)=> {return val1.createdAt > val2.createdAt ? -1 : 1});
-          } else {
-            this.stations.sort((val1:Station, val2:Station)=> {return val2.createdAt > val1.createdAt ? -1 : 1});
-          }
-          break;
-        case "Dernière modification":
-          if(this.stations[0].updatedAt < this.stations[1].updatedAt){
-            this.stations.sort((val1:Station, val2:Station)=> {return val1.updatedAt > val2.updatedAt ? -1 : 1});
-          } else {
-            this.stations.sort((val1:Station, val2:Station)=> {return val2.updatedAt > val1.updatedAt ? -1 : 1});
-          }
-          break;
-      }
+  sortData(head: string) {
+    if (this.stationsFiltered.length <= 1) {
+      return;
+    }
+    const key = this.map.get(head);
+    let i = 1;
+    while (i < this.stationsFiltered.length && this.stationsFiltered[0][key] === this.stationsFiltered[i][key]) {
+      i++;
+    }
+    // Tous les champs sont égaux, pas besoin de trier
+    if (i > this.stationsFiltered.length || !this.stationsFiltered[i]) {
+      return;
+    }
+    if (this.stationsFiltered[0][key] <= this.stationsFiltered[i][key]) {
+      this.stationsFiltered.sort((val1: Station, val2: Station) => val1[key].toLowerCase() > val2[key].toLowerCase() ? -1 : 1);
+    } else {
+      this.stationsFiltered.sort((val1: Station, val2: Station) => val2[key].toLowerCase() > val1[key].toLowerCase() ? -1 : 1);
+    }
   }
+
 }

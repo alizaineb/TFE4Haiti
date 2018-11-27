@@ -1,3 +1,4 @@
+'use strict';
 /**
  * =============================
  *
@@ -27,9 +28,8 @@
 // Built-in
 const winston = require('winston');
 
-
 /**
- * Initialize logger
+ * Initialisation du logger
  */
 const logger = winston.createLogger({
   level: 'info',
@@ -38,7 +38,7 @@ const logger = winston.createLogger({
     new winston.transports.Console({
       format: winston.format.combine(
         winston.format.colorize(),
-        winston.format.simple(),
+        winston.format.simple()
       )
     })
   ],
@@ -50,8 +50,6 @@ const logger = winston.createLogger({
 
 
 /**
- * Exports
+ * Export du logger
  */
-
-// Methods
 exports = module.exports = logger;

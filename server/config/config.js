@@ -24,7 +24,7 @@
 /**
  * Load modules
  */
-
+const path = require('path');
 const fs = require('fs');
 const nconf = require('nconf');
 const logger = require('./logger.js');
@@ -33,14 +33,14 @@ const logger = require('./logger.js');
  * Variables
  */
 
-// An array of files that will be used to find the bootstrap.properties file
 const configFileName = 'config.json';
 const fullConfigFileName = __dirname + '/../' + configFileName;
 
 /**
- * Load configuration found in the config file.
+ * exports - Charge la configuration trouvée dans le fichier de configuration
  *
- * @param callback return an error or null
+ * @param  {method} callback la méthode suivante devant être appellée
+ * @return {method}          Callback à la suite
  */
 exports.load = function(callback) {
   // Vérification que le fichier de config existe
@@ -70,13 +70,25 @@ exports.load = function(callback) {
   });
 };
 
+
+/**
+ * createDefaultCfgFile - Méthode qui va créer le fichier de configuration par défaut avec des valeurs par défauts
+ * A modifier si une nouvelle configuration doit être ajoutée.
+ *
+ * @param  {method} callback la méthode suivante devant être appellée
+ * @return {method}          Callback à la suite
+ */
 function createDefaultCfgFile(callback) {
   logger.warn('[Config]  Création d\'un nouveau fichier de configuration');
+  logger.error('/!\\ Un fichier de configuration par défaut a été créé.\nLe serveur va fonctionner avec des valeurs par défaut. Pour des raisons de sécurité et assurer une fonctionnement total de l\'application, veuillez le modifier.\nPour de plus amples informations référez-vous à la documentation.');
   nconf.argv().env().file({ file: fullConfigFileName });
   nconf.set('development', true);
+  nconf.set('uploadFolder', path.join(__dirname, '..', 'public', 'upload'));
+  nconf.set('downloadFolder', path.join(__dirname, '..', 'public', 'download'));
   nconf.set('token:privateKey', 'somethingsomethingjsontoken'); // 1h
   nconf.set('token:expiration', 1440); // 1h
   nconf.set('server:host', '0.0.0.0');
+  nconf.set('server:url', '');
   nconf.set('server:port', '3000');
   nconf.set('database:host', 'localhost');
   nconf.set('database:port', '27017');
@@ -87,8 +99,12 @@ function createDefaultCfgFile(callback) {
   nconf.set('mail:port', '');
   nconf.set('mail:user', '');
   nconf.set('mail:pwd', '');
-  nconf.set('mail:secure', '');
+  nconf.set('mail:secure', true);
   nconf.set('mail:subjectCreationAccOk', '');
+  nconf.set('mail:subjectCreationAccRefused', '');
+  nconf.set('mail:changePwd', '');
+  nconf.set('user:accountAcceptedTime', 60 * 60 * 24 * 7); // Une semaine
+  nconf.set('user:changePwdTime', 60 * 60 * 24); // Un jour
 
   nconf.save(function(err) {
     fs.readFile(fullConfigFileName, function(err, data) {
@@ -101,6 +117,13 @@ function createDefaultCfgFile(callback) {
   });
 }
 
+/**
+ * checkCfg - Méthode qui va vérifier que le fichier de configuration soit correct et qu'il ne manque pas de champs.
+ * A modifier si une nouvelle configuration doit être ajoutée.
+ *
+ * @param  {method} callback la méthode suivante devant être appellée
+ * @return {method}          Callback à la suite
+ */
 function checkCfg(callback) {
   logger.info('[Config] Vérification du fichier de configuration');
   var cfgModified = false;
@@ -109,8 +132,20 @@ function checkCfg(callback) {
     nconf.set('development', true)
     cfgModified = true;
   }
+  if (typeof nconf.get('uploadFolder') === "undefined") {
+    nconf.set('uploadFolder', path.join(__dirname, '..', 'public', 'upload'))
+    cfgModified = true;
+  }
+  if (typeof nconf.get('downloadFolder') === "undefined") {
+    nconf.set('downloadFolder', path.join(__dirname, '..', 'public', 'download'))
+    cfgModified = true;
+  }
   if (typeof nconf.get('server:host') === "undefined") {
     nconf.set('server:host', '0.0.0.0');
+    cfgModified = true;
+  }
+  if (typeof nconf.get('server:url') === "undefined") {
+    nconf.set('server:url', '');
     cfgModified = true;
   }
   if (typeof nconf.get('server:port') === "undefined") {
@@ -162,11 +197,27 @@ function checkCfg(callback) {
     cfgModified = true;
   }
   if (typeof nconf.get('mail:secure') === "undefined") {
-    nconf.set('mail:secure', '');
+    nconf.set('mail:secure', true);
     cfgModified = true;
   }
   if (typeof nconf.get('mail:subjectCreationAccOk') === "undefined") {
     nconf.set('mail:subjectCreationAccOk', '');
+    cfgModified = true;
+  }
+  if (typeof nconf.get('mail:subjectCreationAccRefused') === "undefined") {
+    nconf.set('mail:subjectCreationAccRefused', '');
+    cfgModified = true;
+  }
+  if (typeof nconf.get('mail:changePwd') === "undefined") {
+    nconf.set('mail:changePwd', '');
+    cfgModified = true;
+  }
+  if (typeof nconf.get('user:accountAcceptedTime') === "undefined") {
+    nconf.set('user:accountAcceptedTime', 60 * 60 * 24 * 7); // Une semaine
+    cfgModified = true;
+  }
+  if (typeof nconf.get('user:changePwdTime') === "undefined") {
+    nconf.set('user:changePwdTime', 60 * 60 * 24); // Un jour
     cfgModified = true;
   }
   // La configuration a été changée
@@ -177,6 +228,7 @@ function checkCfg(callback) {
         if (err) {
           logger.error("[Config] Erreur durant la vérification du fichier de configuration :  \n" + err);
         } else {
+          logger.error('/!\\ Le fichier de configuration a été modifié.\nLe serveur va fonctionner avec des valeurs par défaut. Pour des raisons de sécurité et assurer une fonctionnement total de l\'application, veuillez le modifier.\nPour de plus amples informations référez-vous à la documentation.');
           callback(null);
         }
       });

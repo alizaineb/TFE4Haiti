@@ -1,0 +1,16 @@
+.details{
+  padding-top: 25px;
+  padding-left: 35px;
+}
+
+.detail-actions{
+  margin-bottom: 10px;
+}
+
+#mapId{
+  height: 60vh;
+}
+
+.white{
+  color: white;
+}

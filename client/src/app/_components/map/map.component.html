@@ -1,0 +1,69 @@
+<h1>Carte</h1>
+<div class="row">
+  <div class="col-md-3">
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+      </div>
+      <input type="search" (search)="filterStation($event)" class="form-control" placeholder="Recherche" aria-label="Recherche" aria-describedby="basic-addon1" (keyup)="filterStation($event)">
+    </div>
+    <div class="row">
+      <div class="col-xl-6">
+        <div class=" form-group input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon2"><i class="fas fa-search"></i></span>
+          </div>
+          <input type="search" class="form-control" (search)="communeSelected($event.target.value)" (change)="communeSelected($event.target.value)" placeholder="Commune" aria-label="Recherche" aria-describedby="basic-addon2" list="communes">
+          <datalist id="communes">
+            <option *ngFor="let i of communes" [value]="i">{{i}}</option>
+          </datalist>
+        </div>
+      </div>
+      <div class="col-xl-6">
+        <div class="form-group input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon3"><i class="fas fa-search"></i></span>
+          </div>
+          <input type="search" (search)="bassin_versantSelected($event.target.value)" class="form-control" (change)="bassin_versantSelected($event.target.value)" placeholder="Bassin versant" aria-label="Recherche" aria-describedby="basic-addon3"
+            list="bassin_versants">
+          <datalist id="bassin_versants">
+            <option *ngFor="let i of bassin_versants" [value]="i">{{i}}</option>
+          </datalist>
+        </div>
+      </div>
+    </div>
+
+    <ul class="list-group">
+      <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let station of filteredStation" [ngClass]="{
+          'list-group-item':true,
+          'list-group-item-primary': getSelectedClass(station)
+          }"
+        (click)="toogleSelectionFor(station)">
+        {{station.name}}
+        <div>
+          <i *ngIf="getSelectedClass(station)" class="fas fa-check-circle "></i>
+          <i *ngIf="!getSelectedClass(station)" class="far fa-circle "></i>
+          <a class="details" [routerLink]="['/stations', station._id, 'Details']"> <i class="fas fa-external-link-alt"></i> </a>
+        </div>
+      </li>
+    </ul>
+
+    <div class="card bg-light spacetop">
+      <div class="card-body">
+        <div class="card-text">
+          <div class="row">
+            <i class="fas fa-external-link-alt spaceRight"></i> Ouvrir les détails d'une station
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+  </div>
+  <div class="col-md-9 ">
+    <div id="mapid">
+
+    </div>
+  </div>
+</div>

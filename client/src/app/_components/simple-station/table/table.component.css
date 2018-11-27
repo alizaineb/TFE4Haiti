@@ -1,0 +1,73 @@
+.white {
+  color: white;
+}
+
+.someSpace {
+  padding: 10px;
+}
+
+.topLeftCell {
+  border-top: 1px solid Transparent !important;
+  border-left: 1px solid Transparent !important;
+  border-bottom: 2px solid black;
+  border-right: 2px solid black;
+}
+
+.solidBorderBot {
+  border-bottom: 2px solid black;
+  font-weight: bold;
+  font-size: 100%;
+  text-align: center;
+}
+
+.bottomLeftCell {
+  border-bottom: 1px solid Transparent !important;
+  border-left: 1px solid Transparent !important;
+  border-top: 2px solid black;
+  border-right: 2px solid black;
+}
+
+.solidBorderTop {
+  border-top: 2px solid black;
+  font-weight: bold;
+  font-size: 100%;
+  text-align: center;
+}
+
+.solidBorderRight {
+  border-right: 2px solid black;
+  width: 85px !important;
+  min-width: 85px !important;
+  max-width: 85px !important;
+  font-weight: bold;
+  font-size: 100%;
+  text-align: center;
+}
+
+table {
+  width: 100% !important;
+}
+
+th {
+  padding: 2px;
+  max-width: 60px;
+  min-width: 60px;
+  text-align: right;
+  font-weight: normal;
+  vertical-align: middle;
+  font-size: 80%;
+  font-family: Verdana, Sans-Serif;
+}
+
+tbody>tr:hover {
+  background: none !important;
+}
+
+h2 {
+  text-align: center;
+}
+
+.fa-question-circle {
+  color: #569ff7;
+  cursor: default;
+}

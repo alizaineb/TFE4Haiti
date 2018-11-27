@@ -21,3 +21,11 @@ button:disabled {
   box-shadow: none;
   opacity: .65;
 }
+#mapid2{
+  height: 300px;
+  width: 100%;
+}
+
+.modal-lg{
+  max-width: 75%;
+}

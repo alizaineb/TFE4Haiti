@@ -1,0 +1,28 @@
+.border-right {
+  border-right: silver solid 1px;
+}
+
+.border-left {
+  border-left: silver solid 1px;
+}
+
+.fas {
+  color: white;
+}
+
+.blue {
+  color: blue !important;
+}
+
+.pointer:hover {
+  cursor: pointer;
+}
+
+table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+input {
+  width: 100%;
+}

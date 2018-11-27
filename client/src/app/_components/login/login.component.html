@@ -1,15 +1,15 @@
 ﻿<div class="row">
   <div class="col-md-4 offset-md-1">
-    <h2>Login</h2>
+    <h2>Se connecter</h2>
     <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
       <div class="form-group">
-        <input type="text" placeholder="Adresse mail" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': loginSubmitted && f.username.errors }" />
+        <input type="text" placeholder="Adresse mail" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': loginSubmitted && f.username.errors }" autocomplete="new-password" />
         <div *ngIf="loginSubmitted && f.username.errors" class="invalid-feedback">
           <div *ngIf="f.username.errors.required">Adresse mail requise</div>
         </div>
       </div>
       <div class="form-group">
-        <input type="password" placeholder="Mot de passe" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': loginSubmitted && f.password.errors }" />
+        <input type="password" placeholder="Mot de passe" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': loginSubmitted && f.password.errors }" autocomplete="new-password" />
         <div *ngIf="loginSubmitted && f.password.errors" class="invalid-feedback">
           <div *ngIf="f.password.errors.required">Mot de passe requis</div>
         </div>
@@ -24,33 +24,60 @@
     </form>
   </div>
 
-  <div class="col-md-4 offset-md-2">
+  <div class="col-md-4 offset-md-1">
     <h2>Demande de compte</h2>
     <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
       <div class="form-group">
-        <input type="text" placeholder="Adresse mail" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': registerSubmitted && r.username.errors }" />
+        <input type="text" placeholder="Adresse mail" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': registerSubmitted && r.username.errors }" autocomplete="new-password" />
         <div *ngIf="registerSubmitted && r.username.errors" class="invalid-feedback">
           <div *ngIf="r.username.errors.required">Adresse mail requise</div>
         </div>
       </div>
       <div class="form-group">
-        <input type="text" placeholder="Prénom" formControlName="first_name" class="form-control" [ngClass]="{ 'is-invalid': registerSubmitted && r.first_name.errors }" />
+        <input type="text" placeholder="Prénom" formControlName="first_name" class="form-control" [ngClass]="{ 'is-invalid': registerSubmitted && r.first_name.errors }" autocomplete="new-password" />
         <div *ngIf="registerSubmitted && r.first_name.errors" class="invalid-feedback">
           <div *ngIf="r.first_name.errors.required">Prénom requis</div>
         </div>
       </div>
       <div class="form-group">
-        <input type="text" placeholder="Nom" formControlName="last_name" class="form-control" [ngClass]="{ 'is-invalid': registerSubmitted && r.last_name.errors }" />
+        <input type="text" placeholder="Nom" formControlName="last_name" class="form-control" [ngClass]="{ 'is-invalid': registerSubmitted && r.last_name.errors }" autocomplete="new-password" />
         <div *ngIf="registerSubmitted && r.last_name.errors" class="invalid-feedback">
           <div *ngIf="r.last_name.errors.required">Nom requis</div>
         </div>
       </div>
       <div class="form-group">
-        <input type="password" placeholder="Mot de passe (JE DOIS DISPARAITRE A TERME)" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': registerSubmitted && r.password.errors }" />
-        <div *ngIf="registerSubmitted && r.password.errors" class="invalid-feedback">
-          <div *ngIf="r.password.errors.required">Mot de passe requis</div>
+        <select class="form-control" id="role" formControlName="role" required [ngClass]="{ 'is-invalid': registerSubmitted && r.role.errors }">
+          <option value="" disabled selected hidden>Role</option>
+          <option *ngFor="let i of roles" [value]="i">{{i}}</option>
+        </select>
+
+        <div *ngIf="registerSubmitted && r.role.errors" class="invalid-feedback">
+          <div *ngIf="r.role.errors.required">Un role doit être sélectionné
+          </div>
         </div>
       </div>
+
+      <div *ngIf="r.role.value===roleWorker">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <input type="search" class="form-control" [formGroup]="registerForm" formControlName="commune" placeholder="Commune" list="communes">
+              <datalist id="communes">
+                <option *ngFor="let i of communes" [value]="i">{{i}}</option>
+              </datalist>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <input type="search" class="form-control" [formGroup]="registerForm" formControlName="bassin_versant" placeholder="Bassin-versant" list="bassin_versants">
+              <datalist id="bassin_versants">
+                <option *ngFor="let i of bassin_versants" [value]="i">{{i}}</option>
+              </datalist>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="form-group">
         <button [disabled]="loading" class="btn btn-primary">Inscription</button>
         <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />

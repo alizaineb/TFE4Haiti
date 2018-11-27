@@ -384,15 +384,15 @@ a:active, a:focus, a:hover {
   border-color: #1a252f
 }
 
-
 .info {
   padding: 6px 8px;
   font: 14px/16px Arial, Helvetica, sans-serif;
   background: white;
-  background: rgba(255,255,255,0.8);
-  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
 }
+
 .info h4 {
   margin: 0 0 5px;
   color: #777;
@@ -409,4 +409,146 @@ a:active, a:focus, a:hover {
   float: left;
   margin-right: 8px;
   opacity: 0.7;
+}
+
+/* nos ajouts */
+i:hover {
+  cursor: pointer;
+}
+
+.fa-check {
+  color: green;
+}
+
+.fa-check:hover {
+  color: lightGreen;
+}
+
+.fa-check:active {
+  color: darkGreen;
+}
+
+.fa-trash {
+  color: red;
+}
+
+.fa-trash:hover {
+  color: Orange;
+}
+
+.fa-trash:active {
+  color: darkRed;
+}
+
+.fa-edit {
+  color: blue;
+}
+
+.fa-edit:hover {
+  color: DarkTurquoise;
+}
+
+.fa-edit:active {
+  color: darkBlue;
+}
+
+.fa-file-download {
+  color: green;
+}
+
+.fa-file-download:hover {
+  color: lightGreen;
+}
+
+.fa-file-download:active {
+  color: darkGreen;
+}
+
+.fa-plus-circle:hover {
+  color: LightSkyBlue;
+}
+
+.fa-sticky-note {
+  color: sandyBrown;
+}
+
+.fa-sticky-note:hover {
+  color: #F4EE60;
+}
+
+.fa-sticky-note:active {
+  color: #813B00;
+}
+
+.fas {
+  cursor: pointer;
+}
+
+.fa-sort {
+  cursor: pointer;
+}
+
+.fa-spinner {
+  color: #4286f4;
+}
+
+.fa-arrow-right, .fa-arrow-left {
+  color: #4286f4;
+}
+
+.fa-external-link-alt {
+  color: #3366BB;
+}
+
+.fa-external-link-alt:hover {
+  color: #42D9C8;
+}
+
+.fa-external-link-alt:active {
+  color: #140F2D;
+}
+
+tbody>tr:hover {
+  background: LightSkyBlue !important;
+}
+
+h1 {
+  color: #111;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 30px;
+  font-weight: 300;
+  line-height: 32px;
+  margin: 0 0 10px;
+  text-align: center;
+}
+
+h2 {
+  color: #111;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 24px;
+  font-weight: 300;
+  text-align: center;
+}
+
+h4 {
+  color: #111;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 300;
+}
+
+h5 {
+  color: #111;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 300;
+}
+
+/* supprime l'effet de bootstrap sur des input de type "search" */
+input[type=search]::-webkit-search-cancel-button {
+  -webkit-appearance: searchfield-cancel-button;
+}
+
+.input-group-text {
+  height: 38px;
 }
