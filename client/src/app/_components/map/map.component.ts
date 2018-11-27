@@ -68,26 +68,27 @@ export class MapComponent implements OnInit {
       self.mapContainer.remove();
     }
 
+    const iconWorking = Constantes.stationState.WORKING;
     const icon = {
-      working: L.icon({
+      'En activité': L.icon({
         iconUrl: 'assets/img/marker-working.png',
         iconSize: [20, 35], // size of the icon
         iconAnchor: [11, 34], // point of the icon which will correspond to marker's location
         popupAnchor: [-3, -38] // point from which the popup should open relative to the iconAnchor
       }),
-      awaiting: L.icon({
+      'En attente': L.icon({
         iconUrl: 'assets/img/marker-wait.png',
         iconSize: [20, 35], // size of the icon
         iconAnchor: [11, 34], // point of the icon which will correspond to marker's location
         popupAnchor: [-3, -38] // point from which the popup should open relative to the iconAnchor
       }),
-      broken: L.icon({
+      'En panne': L.icon({
         iconUrl: 'assets/img/marker-broken.png',
         iconSize: [20, 35], // size of the icon
         iconAnchor: [11, 34], // point of the icon which will correspond to marker's location
         popupAnchor: [-3, -38] // point from which the popup should open relative to the iconAnchor
       }),
-      deleted: L.icon({
+      'Pas en activité': L.icon({
         iconUrl: 'assets/img/marker-delete.png',
         iconSize: [20, 35], // size of the icon
         iconAnchor: [11, 34], // point of the icon which will correspond to marker's location
@@ -97,10 +98,10 @@ export class MapComponent implements OnInit {
 
 
     const stationGroup = {
-      working: L.layerGroup(),
-      awaiting: L.layerGroup(),
-      broken: L.layerGroup(),
-      deleted: L.layerGroup()
+      'En activité': L.layerGroup(),
+      'En attente': L.layerGroup(),
+      'En panne': L.layerGroup(),
+      'Pas en activité': L.layerGroup()
     };
 
 
