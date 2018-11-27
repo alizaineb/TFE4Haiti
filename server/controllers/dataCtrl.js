@@ -223,6 +223,31 @@ exports.acceptAwaiting = function(req, res) {
   });
 };
 
+function dateRegex1(dateStr){
+    console.log("reg1")
+  let tab = dateStr.split('/');
+  const day = tab[0], month = tab[1];
+  let tab1 = tab[2].split(' ');
+  const year = tab1[0];
+  let tab2 = tab1[1].split(':');
+  const hours = tab2[0], min = tab2[1];
+
+    console.log("Splited : ", year, month, day);
+  return new Date(Date.UTC(year, month-1, day, hours, min, 0));
+}
+
+function dateRegex2(dateStr){
+    console.log("reg2")
+    let tab = dateStr.split('-');
+    const year = tab[0], month = tab[1];
+    let tab1 = tab[2].split(' ');
+    const day = tab1[0];
+    let tab2 = tab1[1].split(':');
+    const hours = tab2[0], min = tab2[1];
+    console.log("Splited : ", year, month, day);
+    return new Date(Date.UTC(year, month-1, day, hours, min, 0));
+}
+
 /**
  * Méthode de refus et suppression d'une données pluviométrique en attente de validation.
  * @param req L'objet "Request" de la requête
@@ -1120,6 +1145,18 @@ exports.getStats = function(req, res) {
 
 }
 
+/**
+ *
+ * @param date
+ * @param interval
+ * @returns {boolean}
+ */
+function checkInterval(date, interval){
+  const i = getIntervalInMinute(interval);
+  const time = date.getTime() / 60000;
+  console.log(time, " % ", i, " ? ", time % i == 0);
+  return time % i == 0;
+}
 /**
  * Méthode qui check si l'interval entre 2 date est correcte.
  * @param date1 Date de départ
