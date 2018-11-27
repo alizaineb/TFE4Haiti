@@ -22,11 +22,11 @@
         </div>
 
         <div class="col-md-4">
-          <div class="alert alert-primary" role="alert">
+          <div class="alert alert-primary" role="alert" >
             <h4 class="alert-heading"><i class="fas fa-tint fa-3x"></i> Données Pluviométriques </h4>
-            <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+            <p *ngIf="data">OK : {{data.ok}}</p>
             <hr>
-            <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+            <p class="mb-0" *ngIf="data">En attente : {{data.awaiting}}</p>
           </div>
         </div>
 

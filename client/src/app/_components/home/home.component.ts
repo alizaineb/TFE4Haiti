@@ -10,6 +10,7 @@ import { AlertService, DataService, UserService, StationsService } from '../../_
 export class HomeComponent implements OnInit {
 
   stationStats;
+  data: {awaiting:number, ok: number}
 
   constructor(
     private alertService: AlertService,
@@ -35,6 +36,15 @@ export class HomeComponent implements OnInit {
     // Get stats users
 
     // Get stats datas
+    this.dataService.getStats().subscribe(
+      res => {
+        this.data.ok = res.data;
+        this.data.awaiting = res.awaiting;
+
+      }, err => {
+        this.alertService.error("Erreur lors de la recupération des statistiques des données existantes.");
+      }
+    )
   }
 
 }
