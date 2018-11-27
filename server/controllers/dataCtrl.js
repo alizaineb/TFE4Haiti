@@ -90,6 +90,7 @@ exports.acceptAwaiting = function(req, res) {
         let status = 200;
         switch (rainDataAwaiting.type) {
           case state.INDIVIDUAL:
+            //TODO check interval
             const rainData = dataModel.RainDataAwaitinToAccepted(rainDataAwaiting);
             rainData.save().then(() => {
               dataModel.RainDataAwaitingModel.deleteOne({ _id: rainDataAwaiting._id }).then(() => {
@@ -101,6 +102,7 @@ exports.acceptAwaiting = function(req, res) {
             });
             return;
           case state.UPDATE:
+            //Todo Check interval
             if (!rainDataAwaiting.value) {
               // donnée modifier vers rien, on supprime l'ancienne donnée et la donnée en attente
               dataModel.RainDataAwaitingModel.deleteOne({ _id: rainDataAwaiting._id }).then(() => {
