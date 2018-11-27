@@ -52,14 +52,14 @@ export class DetailsStationComponent implements OnInit {
   downloadData(event) {
     const self = this;
     self.DownloadData = false;
-    console.log("download", event.dates);
+    //console.log("download", event.dates);
     event.dates.to.setHours(event.dates.to.getHours() + 24);
     const params = {
       from: self.preFormatDate(event.dates.from),
       to: self.preFormatDate(event.dates.to),
       interval: event.interval
     }
-    console.log(params);
+    //console.log(params);
     self.stationService.downloadData(self.currentStation._id, params).subscribe(
       res => {
         self.alertService.success('Un email vous sera envoyé dès que le fichier sera prêt.');
@@ -71,7 +71,7 @@ export class DetailsStationComponent implements OnInit {
   }
 
   preFormatDate(date: Date) {
-    console.log(date);
+    // console.log(date);
     return `${date.getFullYear()}-${this.minTwoDigits(date.getMonth() + 1)}-${this.minTwoDigits(date.getDate())}`;
   }
 

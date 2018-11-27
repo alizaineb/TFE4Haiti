@@ -17,7 +17,7 @@ exports.errors = function(err) {
   let str = "";
   let error = 500;
   for (var key in err.errors) {
-    console.log(err.errors[key]);
+    // console.log(err.errors[key]);
     if (err.errors[key].name === "CastError") {
       error = 400;
       str += "Le type d'un champ est erroné <br />";
@@ -84,7 +84,7 @@ exports.hasAccesToStation = function(req, res, callback) {
     // Avant de vérifier si c'est un admin, il faut vérifier quue la station existe
     let station_id = req.body.station_id || req.params.station_id;
     StationModel.stationModel.findById(station_id, (err, station) => {
-      console.log(station);
+      // console.log(station);
       if (err) {
         // Se produira si l'utilisateur rentre un id trop court/trop long
         logger.error("[UTILS] hasAccesToStation : ", err)

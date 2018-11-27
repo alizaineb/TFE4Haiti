@@ -52,7 +52,7 @@ export class SimpleStationComponent implements OnInit, OnDestroy {
             }
           },
           err => {
-            console.log(err);
+            //console.log(err);
           }
         );
       }

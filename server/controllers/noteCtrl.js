@@ -33,7 +33,7 @@ exports.create = function(req, res) {
   nTmp.user_id = req.token_decoded.id;
   nTmp.note = req.body.note;
   if (!req.body.note || req.body.note.trim().length === 0) {
-    console.log(req.body.note);
+    // console.log(req.body.note);
     return res.status(400).send("La note ne peut pas être vide");
   }
   nTmp.save((err) => {

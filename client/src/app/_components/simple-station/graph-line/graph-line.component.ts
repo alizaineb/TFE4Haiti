@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DataService } from '../../../_services/data.service';
 import * as Highcharts from 'highcharts/highstock';
-import {Station} from '../../../_models';
-import {StationsService} from '../../../_services/stations.service';
+import { Station } from '../../../_models';
+import { StationsService } from '../../../_services/stations.service';
 import flatpickr from 'flatpickr';
-import {French} from 'flatpickr/dist/l10n/fr';
-import {AuthenticationService} from "../../../_services";
+import { French } from 'flatpickr/dist/l10n/fr';
+import { AuthenticationService } from "../../../_services";
 
 @Component({
   selector: 'app-graph-line',
@@ -91,7 +91,7 @@ export class GraphLineComponent implements OnInit {
   }
 
   getValue() {
-    console.log(this.typeGraph);
+    //console.log(this.typeGraph);
   }
 
   changeMonth(newMonth) {
@@ -100,7 +100,7 @@ export class GraphLineComponent implements OnInit {
   }
 
   loadStation() {
-    this.stationService.getById(this.stationId).subscribe(s => {this.station = s; });
+    this.stationService.getById(this.stationId).subscribe(s => { this.station = s; });
   }
 
   rangeDataChange(val) {
@@ -154,7 +154,7 @@ export class GraphLineComponent implements OnInit {
   loadRangeDate(minDate, minMonth, minYear, maxDate, maxMonth, maxYear) {
     this.dataLoading = true;
     this.dataService.getAllRainDataGraphLineRangeDate(this.stationId, minDate, minMonth, minYear, maxDate, maxMonth, maxYear).subscribe(data => {
-      console.log(data);
+      //console.log(data);
       const self = this;
       this.hide = false;
       // Create the chart
@@ -223,7 +223,7 @@ export class GraphLineComponent implements OnInit {
       });
       // Create the chart
       this.highChartBar = Highcharts.stockChart('containerBar', {
-      title: {
+        title: {
           text: this.station.name + ' - Données pluviométriques (mm)'
         },
         series: [{
@@ -306,7 +306,7 @@ export class GraphLineComponent implements OnInit {
     Highcharts.setOptions({
       chart: {
         events: {
-          load: function () {
+          load: function() {
             self.dataLoading = false;
           }
         }
