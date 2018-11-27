@@ -30,7 +30,7 @@
             <td class="maxWidthValeur">Valeur (mm)</td>
             <td>
               <button class="btn btn-primary" (click)="moreData()">
-                Ajouter une donnée
+                Ajouter une ligne
               </button>
 
             </td>
@@ -56,6 +56,9 @@
           </tr>
         </tbody>
       </table>
+      <button class="btn btn-success float-right" (click)="sendData()">
+        Envoyer les données pour confirmation
+      </button>
     </div>
     <div class="col-md">
       <h3>OU</h3>
@@ -69,16 +72,8 @@
         </div>
       </div>
       <p *ngIf="selectedFile">File selected : {{selectedFile.name}}</p>
-    </div>
-    <div class="offset-4 col-md-1">
-      <button class="btn btn-success" (click)="sendData()">
-        Importer les données
-        <i class="fas fa-check-circle"></i>
-      </button>
-
-    </div>
-    <div class="offset-5 col-md-1">
-      <button class="btn btn-success" (click)="sendData()">
+      <br />
+      <button class="float-right btn btn-success" (click)="sendData()">
         Importer un fichier
         <i class="fas fa-check-circle"></i>
       </button>

@@ -19,9 +19,11 @@
 }
 
 .maxWidthDate {
-  max-width: 140px;
+  max-width: none;
+  min-width: none;
 }
 
 .maxWidthValeur {
-  max-width: 40px;
+  max-width: none;
+  min-width: none;
 }
