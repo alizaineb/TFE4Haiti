@@ -95,7 +95,7 @@ exports.get = function(req, res) {
     '_id first_name last_name mail role bassin_versant commune created_at last_seen state',
     (err, users) => {
       if (err) {
-        logger.error("[get] get : ", err);
+        logger.error("[userCtrl] get : ", err);
         return res.status(500).send("Erreur lors de la récupération des utilisateurs.");
       }
       return res.status(200).send(users);
@@ -115,7 +115,7 @@ exports.getWorkers = function(req, res) {
     '_id first_name last_name mail role bassin_versant commune created_at last_seen state',
     (err, users) => {
       if (err) {
-        logger.error("[get] get : ", err);
+        logger.error("[userCtrl] getWorkers : ", err);
         return res.status(500).send("Erreur lors de la récupération des employés.");
       }
       return res.status(200).send(users);
@@ -135,11 +135,12 @@ exports.getWorkers = function(req, res) {
  * @return {user[]}  200 : Tous les utilisateurs
  */
 exports.getById = function(req, res) {
-  let id = req.params.user_id;
+  console.log(req.params.user_id);
   UsersModel.userModel.findById(req.params.user_id,
     '_id first_name last_name mail role bassin_versant commune created_at last_seen state',
     function(err, user) {
       if (err) {
+        logger.error("[userCtrl] getById : ", err);
         return res.status(500).send("Erreur lors de la récupération de l'user.");
       }
       if (!user) {
