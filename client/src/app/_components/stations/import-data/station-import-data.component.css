@@ -18,10 +18,11 @@
   cursor: pointer;
 }
 
-.maxWidthDate {
-  max-width: 140px;
+table {
+  table-layout: fixed;
+  width: 100%;
 }
 
-.maxWidthValeur {
-  max-width: 40px;
+input {
+  width: 100%;
 }
