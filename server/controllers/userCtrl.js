@@ -111,7 +111,7 @@ exports.get = function(req, res) {
  * @return {user[]}  200 : Tous les utilisateurs
  */
 exports.getWorkers = function(req, res) {
-  UsersModel.userModel.find({role:roles.WORKER},
+  UsersModel.userModel.find({ role: roles.WORKER },
     '_id first_name last_name mail role bassin_versant commune created_at last_seen state',
     (err, users) => {
       if (err) {
@@ -284,7 +284,7 @@ exports.delete = function(req, res) {
         return res.status(404).send("L'utilisateur n'existe pas");
       }
       user.state = userState.DELETED;
-      user.save(function(err) {
+      user.save((err) => {
         if (err) {
           logger.error("[userCtrl] delete2 :", err);
           let tmp = errors(err);
@@ -546,7 +546,7 @@ function sendEmailReset(req, res, user, isUserRequest) {
     mailTransporter.sendMail(req, res, title, user.mail, text, () => {
       user.state = userState.PASSWORD_CREATION;
       // On met à jour l'utilisateur
-      user.save((err, userUpdt) => {
+      user.save((err) => {
         if (err) {
           logger.error("[userCtrl] sendEmailReset2 :", err);
           return res.status(500).send("Erreur lors de la mise à jour de l'utilisateur concerné.");
@@ -567,26 +567,26 @@ exports.useless = function(req, res) {
  * @param req
  * @param res
  */
-exports.getUsers = function (req, res){
+exports.getUsers = function(req, res) {
   UsersModel.userModel.find({}, 'role', function(err, users) {
     if (err) {
       logger.error("[userCtrl] getUsers :", err);
       return res.status(500).send("Erreur lors de la récupération des statistiques des users.");
     }
-     let mapUsers = new Map();
-     mapUsers.set(roles.ADMIN,0);
-     mapUsers.set(roles.WORKER,0);
-     mapUsers.set(roles.VIEWER,0);
+    let mapUsers = new Map();
+    mapUsers.set(roles.ADMIN, 0);
+    mapUsers.set(roles.WORKER, 0);
+    mapUsers.set(roles.VIEWER, 0);
     for (let i = 0, len = users.length; i < len; i++) {
       let role = users[i].role;
-      if(role !== null || role !== ''){
-        mapUsers.set(role,mapUsers.get(role)+1);
+      if (role !== null || role !== '') {
+        mapUsers.set(role, mapUsers.get(role) + 1);
       }
     }
     return res.status(200).send({
-      "admin":mapUsers.get(roles.ADMIN),
-      "worker":mapUsers.get(roles.WORKER),
-      "viewer":mapUsers.get(roles.VIEWER)
+      "admin": mapUsers.get(roles.ADMIN),
+      "worker": mapUsers.get(roles.WORKER),
+      "viewer": mapUsers.get(roles.VIEWER)
     });
   })
 };
