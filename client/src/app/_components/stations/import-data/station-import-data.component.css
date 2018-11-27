@@ -1,19 +1,27 @@
-.border-right{
-  border-right: silver solid 1px ;
+.border-right {
+  border-right: silver solid 1px;
 }
 
-.border-left{
-  border-left: silver solid 1px ;
+.border-left {
+  border-left: silver solid 1px;
 }
 
-.fas{
+.fas {
   color: white;
 }
-.blue{
-  color: blue !important;
 
+.blue {
+  color: blue !important;
 }
 
-.pointer:hover{
+.pointer:hover {
   cursor: pointer;
+}
+
+.maxWidthDate {
+  max-width: 140px;
+}
+
+.maxWidthValeur {
+  max-width: 40px;
 }
