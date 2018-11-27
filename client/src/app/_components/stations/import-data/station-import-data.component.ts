@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { Station } from '../../../_models';
-import { StationsService } from '../../../_services/stations.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { RainData } from '../../../_models/rainData';
-import { AlertService } from '../../../_services';
-import { NgbTimepickerConfig } from '@ng-bootstrap/ng-bootstrap';
-import { LocalstorageService } from '../../../_services/localstorage.service';
-import { Location } from '@angular/common';
+import {Component, OnInit} from '@angular/core';
+import {Station} from '../../../_models';
+import {StationsService} from '../../../_services/stations.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {RainData} from '../../../_models/rainData';
+import {AlertService} from '../../../_services';
+import {NgbTimepickerConfig} from '@ng-bootstrap/ng-bootstrap';
+import {LocalstorageService} from '../../../_services/localstorage.service';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-import-data',
@@ -28,11 +28,11 @@ export class StationImportDataComponent implements OnInit {
 
 
   constructor(private stationService: StationsService,
-    private localStorageService: LocalstorageService,
-    private alertService: AlertService,
-    private route: ActivatedRoute,
-    private configTimePicker: NgbTimepickerConfig,
-    private _location: Location
+              private localStorageService: LocalstorageService,
+              private alertService: AlertService,
+              private route: ActivatedRoute,
+              private configTimePicker: NgbTimepickerConfig,
+              private _location: Location
   ) {
     this.configTimePicker.spinners = false;
   }
@@ -67,14 +67,14 @@ export class StationImportDataComponent implements OnInit {
     this._location.back();
   }
 
-  private addData(date = '', time = { hour: 0, minute: 0 }, value = 0) {
-    this.data.push({ date: date, time: time, value: value });
+  private addData(date = '', time = {hour: 0, minute: 0}, value = 0) {
+    this.data.push({date: date, time: time, value: value});
   }
 
 
   isSelectetd(item: string) {
     const res = this.selectedZone === item;
-    return { 'col-md-10': res, 'col-md-2': !res, 'notselected': !res };
+    return {'col-md-10': res, 'col-md-2': !res, 'notselected': !res};
   }
 
   changeZone(item: string) {
@@ -108,14 +108,14 @@ export class StationImportDataComponent implements OnInit {
         tmp.id_station = this.currentStation._id;
         tmp.id_user = currentUser.current._id;
         tmp.value = this.data[i].value;
-        //console.log(this.data[i].date);
-        //console.log(`${this.data[i].date}T${this.data[i].time.hour}:${this.data[i].time.time | this.data[i].time['minute']}:00`);
-        console.log(this.data[i].time);
         tmp.date = new Date(`${this.data[i].date}T${this.minTwoDigits(this.data[i].time.hour)}:${this.minTwoDigits(this.data[i].time['minute'])}:00Z`);
-        console.log(this.minTwoDigits(this.data[i].time['minute'] || '00'));
-        console.log(tmp.date);
-        // tmp.date = new Date(Date.UTC(tmp.date.getFullYear(), tmp.date.getMonth(), tmp.date.getDate(), tmp.date.getHours(), tmp.date.getMinutes(), tmp.date.getSeconds()));
-        dataToSend.push(tmp);
+        if (tmp.date.getFullYear() != 1970) {
+          dataToSend.push(tmp);
+        }else{
+          this.alertService.error("Veuillez selectionner une date.");
+          this.loading = false;
+          return;
+        }
       }
       // console.table(dataToSend);
       this.stationService.importData(this.currentStation._id, dataToSend).subscribe(
