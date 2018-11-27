@@ -102,6 +102,11 @@ exports.routes = [
     middleWare: [controllers.users.update],
     access: [roles.ADMIN]
   },
+  {
+    path: "/api/users/getUsers",
+    httpMethod: "PUT",
+    middleWare: [controllers.users.getUsers]
+  },
 
   // Méthodes liées aux stations
   {
