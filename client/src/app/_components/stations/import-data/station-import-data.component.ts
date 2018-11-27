@@ -65,8 +65,10 @@ export class StationImportDataComponent implements OnInit {
 
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any) {
-    if (true) {
-      $event.returnValue =true;
+    const i = 0;
+    const d = new Date(`${this.data[i].date}T${this.minTwoDigits(this.data[i].time.hour)}:${this.minTwoDigits(this.data[i].time['minute'])}:00Z`);
+    if (d.getFullYear() != 1970) {
+      $event.returnValue = true;
     }
   }
 
