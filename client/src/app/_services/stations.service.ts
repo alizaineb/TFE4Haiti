@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
-import { Note, Station } from '../_models';
-import { Observable } from 'rxjs';
-import { RainData } from "../_models/rainData";
-import { LocalstorageService } from "./localstorage.service";
-import { Constantes } from "../_helpers/constantes";
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {environment} from '../../environments/environment';
+import {Note, Station} from '../_models';
+import {Observable} from 'rxjs';
+import {RainData} from "../_models/rainData";
+import {LocalstorageService} from "./localstorage.service";
+import {Constantes} from "../_helpers/constantes";
 
 @Injectable({
   providedIn: 'root'
@@ -43,11 +43,11 @@ export class StationsService {
   }
 
   addUser(stationId: string, userId: string) {
-    return this.http.put(environment.apiUrl + '/stations/addUser/' + stationId, { user_id: userId });
+    return this.http.put(environment.apiUrl + '/stations/addUser/' + stationId, {user_id: userId});
   }
 
   removeUser(stationId: string, userId: string) {
-    return this.http.put(environment.apiUrl + '/stations/removeUser/' + stationId, { user_id: userId });
+    return this.http.put(environment.apiUrl + '/stations/removeUser/' + stationId, {user_id: userId});
   }
 
   delete(id: string) {
@@ -72,7 +72,10 @@ export class StationsService {
     if (!user || !user.current) {
       return false;
     }
-    user = user.current
+    user = user.current;
+    if (user.state != Constantes.userState.OK) {
+      return false;
+    }
     // Si l'utilisateur est un admin il peut passer
     if (user.role == Constantes.roles.ADMIN) {
       return true;
@@ -96,16 +99,13 @@ export class StationsService {
   }
 
 
-
-
-
   /*
   acceptUser(id: String) {
     return this.http.post(environment.apiUrl + '/users/acceptUser', { id: id });
   }
   */
   acceptStation(id: String) {
-    return this.http.post(environment.apiUrl + '/stations/acceptStation', { station_id: id });
+    return this.http.post(environment.apiUrl + '/stations/acceptStation', {station_id: id});
   }
 
   getFrenchState(station: Station) {
@@ -128,7 +128,7 @@ export class StationsService {
   }
 
   downloadData(id: string, param) {
-    return this.http.get(environment.apiUrl + '/stations/' + id + '/download', { params: param });
+    return this.http.get(environment.apiUrl + '/stations/' + id + '/download', {params: param});
   }
 
 }
