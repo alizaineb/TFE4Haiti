@@ -5,6 +5,7 @@ import { UserService } from "../../../_services/user.service";
 import { StationsService } from '../../../_services/stations.service';
 import { first } from "rxjs/operators";
 import { User } from "../../../_models";
+import { Constantes } from "../../../_helpers/constantes";
 
 @Component({
   selector: 'app-update-user-modal',
@@ -25,7 +26,7 @@ export class UpdateUserModalComponent implements OnInit {
   communes: string[];
   bassin_versants: string[];
   // TODO Modifier et faire un call api pour ces valeurs
-  states = ['awaiting', 'pwd_creation', 'ok', 'deleted'];
+  states = [Constantes.userState.AWAITING, Constantes.userState.PASSWORD_CREATION, Constantes.userState.OK, Constantes.userState.DELETED];
   constructor(private alertService: AlertService, private userService: UserService, private stationService: StationsService) { }
 
   ngOnInit() {
