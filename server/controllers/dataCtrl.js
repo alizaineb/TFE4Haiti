@@ -158,7 +158,7 @@ exports.acceptAwaiting = function(req, res) {
                       for (var i = 0; i < lines.length; i++) {
                         var l = lines[i];
                         if(!l.match(regex)){
-                            res.status(500).send("La ligne ", i+1, " n'as pas le format dd/mm/yyyy hh:mm[:ss]; XXX" ;
+                            res.status(500).send("La ligne ", i+1, " n'as pas le format dd/mm/yyyy hh:mm[:ss]; XXX") ;
                             return;
                         }
                         const d = l.split(';');
