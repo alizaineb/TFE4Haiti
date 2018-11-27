@@ -79,28 +79,44 @@ exports.getById = function(req, res) {
  * @return {station}     201 : la station ajoutée en base de données
  */
 exports.create = function(req, res) {
-  let station = req.body;
-  let sTmp = new Station.stationModel();
-  sTmp.name = station.name;
-  sTmp.latitude = station.latitude;
-  sTmp.longitude = station.longitude;
-  sTmp.altitude = station.altitude;
-  sTmp.createdAt = new Date(station.createdAt);
-  const d = new Date();
-  sTmp.updatedAt = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes()));
-  sTmp.state = states.AWAITING;
-  sTmp.interval = station.interval;
-  sTmp.user_creator_id = req.token_decoded.id;
-  sTmp.users = [req.token_decoded.id];
-  sTmp.commune = station.commune;
-  sTmp.bassin_versant = station.bassin_versant;
-  sTmp.save((err) => {
+
+  UsersModel.userModel.findById(req.token_decoded.id, function(err, user) {
     if (err) {
       logger.error("[stationCtrl] create :", err);
-      let tmp = errors(err);
-      return res.status(tmp.error).send(tmp.message);
+      return res.status(500).send("Erreur lors de la récupération de l'user.");
     }
-    return res.status(201).send(sTmp);
+    if (!user) {
+      return res.status(404).send("L'utilisateur n'existe pas");
+    }
+
+    let station = req.body;
+    let sTmp = new Station.stationModel();
+    sTmp.name = station.name;
+    sTmp.latitude = station.latitude;
+    sTmp.longitude = station.longitude;
+    sTmp.altitude = station.altitude;
+    sTmp.createdAt = new Date(station.createdAt);
+    const d = new Date();
+    sTmp.updatedAt = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes()));
+    sTmp.state = states.AWAITING;
+    sTmp.interval = station.interval;
+    sTmp.user_creator_id = req.token_decoded.id;
+    if(user.role === userRole.ADMIN) {
+      sTmp.users = [];
+    } else {
+      sTmp.users = [req.token_decoded.id];
+    }
+    sTmp.commune = station.commune;
+    sTmp.bassin_versant = station.bassin_versant;
+    sTmp.save((err) => {
+      if (err) {
+        logger.error("[stationCtrl] create :", err);
+        let tmp = errors(err);
+        return res.status(tmp.error).send(tmp.message);
+      }
+      return res.status(201).send(sTmp);
+    });
+
   });
 };
 
@@ -127,7 +143,7 @@ exports.create = function(req, res) {
 exports.update = function(req, res) {
   Station.stationModel.findById(req.params.station_id, function(err, station) {
     if (err) {
-      logger.error(err);
+      logger.error("[stationCtrl] update :", err);
       return res.status(500).send("Erreur lors de la récupération de la station.");
     }
     if (!station) {
