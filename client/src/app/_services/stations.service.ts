@@ -76,6 +76,9 @@ export class StationsService {
     if (user.state != Constantes.userState.OK) {
       return false;
     }
+    if(user.role == Constantes.roles.VIEWER){
+      return false;
+    }
     // Si l'utilisateur est un admin il peut passer
     if (user.role == Constantes.roles.ADMIN) {
       return true;
