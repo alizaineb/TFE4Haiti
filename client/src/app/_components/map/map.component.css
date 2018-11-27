@@ -4,8 +4,12 @@
 }
 
 .list-group {
-  max-height: 75vh;
+  max-height: 60vh;
   cursor: pointer;
+}
+
+li {
+  min-height: 40px;
 }
 
 .list-group {
