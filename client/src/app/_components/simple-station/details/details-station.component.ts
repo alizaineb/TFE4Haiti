@@ -108,25 +108,25 @@ export class DetailsStationComponent implements OnInit {
     }
 
     const icon = {
-      working: L.icon({
+      'En activité': L.icon({
         iconUrl: 'assets/img/marker-working.png',
         iconSize: [20, 35], // size of the icon
         iconAnchor: [11, 34], // point of the icon which will correspond to marker's location
         popupAnchor: [-3, -38] // point from which the popup should open relative to the iconAnchor
       }),
-      awaiting: L.icon({
+      'En attente': L.icon({
         iconUrl: 'assets/img/marker-wait.png',
         iconSize: [20, 35], // size of the icon
         iconAnchor: [11, 34], // point of the icon which will correspond to marker's location
         popupAnchor: [-3, -38] // point from which the popup should open relative to the iconAnchor
       }),
-      broken: L.icon({
+      'En panne': L.icon({
         iconUrl: 'assets/img/marker-broken.png',
         iconSize: [20, 35], // size of the icon
         iconAnchor: [11, 34], // point of the icon which will correspond to marker's location
         popupAnchor: [-3, -38] // point from which the popup should open relative to the iconAnchor
       }),
-      deleted: L.icon({
+      'Pas en activité': L.icon({
         iconUrl: 'assets/img/marker-delete.png',
         iconSize: [20, 35], // size of the icon
         iconAnchor: [11, 34], // point of the icon which will correspond to marker's location
