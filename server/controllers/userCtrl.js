@@ -1,4 +1,7 @@
 'use strict';
+import {User} from "../../client/src/app/_models";
+import {Constantes} from "../../client/src/app/_helpers/constantes";
+
 /**
  * Controlleur reprenant toutes les méthodes liées aux utilisateurs
  */
@@ -22,7 +25,6 @@ const checkParam = require('./utils').checkParam;
 const errors = require('./utils').errors;
 // gestion des mails
 const mailTransporter = require('./mailer');
-
 
 
 /**
@@ -387,7 +389,7 @@ exports.refuseUser = function(req, res) {
       });
     }
   });
-}
+};
 
 
 /**
@@ -560,4 +562,25 @@ function sendEmailReset(req, res, user, isUserRequest) {
 // used to test some routes
 exports.useless = function(req, res) {
   return res.status(200).send({ message: 'ok' });
+};
+
+/**
+ * Méthode qui renvoie le count de des différents types d'utilisateurs en base de données.
+ * @param req
+ * @param res
+ */
+exports.getUsers = function (req, res){
+  UsersModel.userModel.find({}, 'role', function(err, users) {
+     let mapUsers = new Map();
+     mapUsers.set(Constantes.roles.ADMIN,0);
+     mapUsers.set(Constantes.roles.WORKER,0);
+     mapUsers.set(Constantes.roles.VIEWER,0);
+    for (let i = 0, len = users.length; i < len; i++) {
+      let role = users[i].role;
+      if(role !== null || role !== ''){
+        mapUsers.set(role,mapUsers.get(role)+1);
+      }
+    }
+    return res.status(200).send(mapUsers);
+  })
 };
