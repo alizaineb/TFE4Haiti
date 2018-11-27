@@ -391,7 +391,7 @@ exports.getStats = function(req, res) {
         } else if (tmp.state === states.WORKING) {
           working++;
         } else {
-          console.log("ELSE");
+          // console.log("ELSE");
           deleted++;
         }
       }

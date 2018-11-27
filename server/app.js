@@ -27,7 +27,7 @@ function configureServer() {
       verify: addRawBody,
     })(req, res, (err) => {
       if (err) {
-        console.log(err);
+        logger.error("[APP.JS] configureServer : ", err);
         res.status(400).send("Wrong json format.");
         return;
       }
@@ -62,14 +62,10 @@ function configureServer() {
   const uploadPath = nconf.get('uploadFolder')
   if (!fs.existsSync(uploadPath)) {
     fs.mkdirSync(uploadPath);
-    console.log('Created upload.')
-    // Do something
   }
   const downloadPath = nconf.get('downloadFolder');
   if (!fs.existsSync(downloadPath)) {
     fs.mkdirSync(downloadPath);
-    console.log('Created Download.')
-    // Do something
   }
 }
 
@@ -131,7 +127,7 @@ function startWebServer() {
 
     // Lancement du serveur
     const port = process.env.PORT || nconf.get('server').port;
-    console.log("[Server] start on port : ", port);
+    logger.info("[Server] start on port : ", port);
     app.listen(port);
   });
 

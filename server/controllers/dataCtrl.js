@@ -116,7 +116,7 @@ exports.acceptAwaiting = function(req, res) {
               });
             } else {
               dataModel.rainDataModel.findById(rainDataAwaiting.id_old_data, (err, rainData) => {
-                console.log("RAIN", rainData);
+                // console.log("RAIN", rainData);
                 rainData.value = rainDataAwaiting.value;
                 rainData.save().then(() => {
                   dataModel.RainDataAwaitingModel.deleteOne({ _id: rainDataAwaiting._id }).then(() => {
@@ -166,7 +166,7 @@ exports.acceptAwaiting = function(req, res) {
 
                         var l = lines[i];
                         const d = l.split(';');
-                        console.log("Line : ", l);
+                        // console.log("Line : ", l);
                         if(l.trim() == ''){
                           continue;
                         }
@@ -193,7 +193,7 @@ exports.acceptAwaiting = function(req, res) {
                             return res.status(500).send("Les dates du fichier ne se suivent pas, ou ne corresponde pas à l'interval de la station. (Ligne " + (i+1) + ")")
                           }
 
-                          console.log("data : ", data.date);
+                          // console.log("data : ", data.date);
                         }
                       }
                       res.status(200).send();
@@ -231,7 +231,7 @@ exports.acceptAwaiting = function(req, res) {
 };
 
 function dateRegex1(dateStr){
-    console.log("reg1")
+   //  console.log("reg1")
   let tab = dateStr.split('/');
   const day = tab[0], month = tab[1];
   let tab1 = tab[2].split(' ');
@@ -239,19 +239,19 @@ function dateRegex1(dateStr){
   let tab2 = tab1[1].split(':');
   const hours = tab2[0], min = tab2[1];
 
-    console.log("Splited : ", year, month, day);
+   // console.log("Splited : ", year, month, day);
   return new Date(Date.UTC(year, month-1, day, hours, min, 0));
 }
 
 function dateRegex2(dateStr){
-    console.log("reg2")
+   // console.log("reg2")
     let tab = dateStr.split('-');
     const year = tab[0], month = tab[1];
     let tab1 = tab[2].split(' ');
     const day = tab1[0];
     let tab2 = tab1[1].split(':');
     const hours = tab2[0], min = tab2[1];
-    console.log("Splited : ", year, month, day);
+    // console.log("Splited : ", year, month, day);
     return new Date(Date.UTC(year, month-1, day, hours, min, 0));
 }
 
@@ -831,7 +831,7 @@ exports.importManualData = function(req, res) {
             let data = new dataModel.RainDataAwaitingModel();
             data.id_station = station._id;
             data.id_user = user._id;
-            console.log(d.date);
+            // console.log(d.date);
             data.date = new Date(d.date);
             //data.date = new Date(Date.UTC(data.date.getFullYear(), data.date.getMonth(), data.date.getDate(), data.date.getHours(), data.date.getMinutes(), data.date.getSeconds()));
             data.value = d.value;
@@ -875,7 +875,7 @@ exports.importFileData = function(req, res) {
         form.parse(req, function(err, fields, files) {
           // console.log(err);
           //       // console.log(fields);
-          console.log(files);
+          // console.log(files);
           const newName = `${station.name}-${files['CsvFile'].name}`
           const newPath = path.join(pathDir, newName);
           fs.rename(files['CsvFile'].path, newPath, (err) => {
@@ -1161,7 +1161,7 @@ exports.getStats = function(req, res) {
 function checkInterval(date, interval){
   const i = getIntervalInMinute(interval);
   const time = date.getTime() / 60000;
-  console.log(time, " % ", i, " ? ", time % i == 0);
+  // console.log(time, " % ", i, " ? ", time % i == 0);
   return time % i == 0;
 }
 /**
