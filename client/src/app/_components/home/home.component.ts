@@ -9,6 +9,8 @@ import { AlertService, DataService, UserService, StationsService } from '../../_
 })
 export class HomeComponent implements OnInit {
 
+  private stationStats;
+
   constructor(
     private alertService: AlertService,
     private dataService: DataService,
