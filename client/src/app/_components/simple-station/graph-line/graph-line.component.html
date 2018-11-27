@@ -9,7 +9,7 @@
         Commune: {{station.commune}}
       </div>
       <div class="col-md-3">
-        Bassin versant: {{station.river}}
+        Bassin versant: {{station.bassin_versant}}
       </div>
       <div class="col-md-3" *ngIf="hasAccessToStation(station)">
         <a [routerLink]="['/','stations',  station._id, 'import']" class="btn btn-success btn-sm">Importer de données: <i class="fas fa-file-download fa-fw fa-1x white" ></i></a>
@@ -43,19 +43,27 @@
     <input class="form-control col-sm-3" (change)="changeYear($event.target.value)" min="1900" max="{{currentYear}}" size="4" type="number" [ngModel]="yearSelected">
     <!--<i *ngIf="yearSelected !== currentYear" (click)="updateYearSelected('sub')" class="fas fa-arrow-circle-right"></i>-->
   </div>
+
 </div>
 
-  <div class="col-md-4" *ngIf="'Mensuelles'===rangeSelected">
-    <div class="form-row">
+  <div class="row col-md-12" *ngIf="'Mensuelles'===rangeSelected">
+    <div class="col-sm-4 form-row">
       <label class="col-form-label">
         Mois/Année
       </label>
       <!--<i (click)="updateMonthSelected('add')" class="fas fa-arrow-circle-left"></i>-->
       <input class="form-control col-sm-2" (change)="changeMonth($event.target.value)" size="2" type="number" min="1" max="12" [ngModel]="monthSelected"> &nbsp; / &nbsp;
-      <input class="form-control col-sm-3" (change)="changeYear($event.target.value)" size="4" type="number" min="1900" max="{{currentYear}}" [ngModel]="yearSelected">
+      <input class="form-control col-sm-2" (change)="changeYear($event.target.value)" size="4" type="number" min="1900" max="{{currentYear}}" [ngModel]="yearSelected">
       <!--<i *ngIf="!(monthSelected === currentMonth && yearSelected === currentYear)" (click)="updateMonthSelected('sub')" class="fas fa-arrow-circle-right"></i>-->
     </div>
+    <div class="col-sm-1">
+      <label class="switch">
+        <input [(ngModel)]="typeGraph" (change)="getValue()" type="checkbox">
+        <span class="slider round"></span>
+      </label>
+    </div>
   </div>
+
 
   <div class="col-md-4" [hidden]="'Quotidiennes'!==rangeSelected">
     <input id="datePicker" placeholder="Sélectionner une range de date" type="text" class="flatpickr flatpickr-input form-control">
@@ -65,6 +73,6 @@
     <div [hidden]="!dataLoading" class="text-center container">
       <i class="fas fa-spinner fa-spin fa-7x"></i>
     </div>
-    <div [hidden]="dataLoading || hide === true" id="containerBar" style="width:100%; height:400px;"></div>
-    <div [hidden]="dataLoading || hide === true" id="containerLine" style="width:100%; height:400px;"></div>
+    <div [hidden]="!typeGraph" id="containerBar" style="width:100%; height:400px;"></div>
+    <div [hidden]="typeGraph" id="containerLine" style="width:100%; height:400px;"></div>
   </div>

@@ -9,7 +9,7 @@
         Commune: {{currentStation.commune}}
       </div>
       <div class="col-md-3">
-        Bassin versant: {{currentStation.river}}
+        Bassin versant: {{currentStation.bassin_versant}}
       </div>
       <div class="col-md-3" *ngIf="hasAccessToStation()">
         <a [routerLink]="['/','stations',  currentStation._id, 'import']" class="btn btn-success btn-sm"> Importer des données: <i class="fas fa-file-download fa-fw fa-1x white"></i></a>

@@ -39,6 +39,8 @@ export class GraphLineComponent implements OnInit {
   groupPixelWidth = 50;
   valueDecimal = 2;
 
+  typeGraph;
+
   constructor(private dataService: DataService, private stationService: StationsService) { }
 
   ngOnInit() {
@@ -86,6 +88,10 @@ export class GraphLineComponent implements OnInit {
   changeYear(newYear) {
     this.yearSelected = parseInt(newYear, 10);
     this.rangeDataChange(this.rangeSelected);
+  }
+
+  getValue() {
+    console.log(this.typeGraph);
   }
 
   changeMonth(newMonth) {
