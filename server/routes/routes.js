@@ -58,6 +58,11 @@ exports.routes = [
     middleWare: [controllers.users.getWorkers]
   },
   {
+    path: "/api/users/getUsers",
+    httpMethod: "GET",
+    middleWare: [controllers.users.getUsers]
+  },
+  {
     path: "/api/users/getAllAwaiting",
     httpMethod: "GET",
     middleWare: [controllers.users.getAllAwaiting],
@@ -102,8 +107,13 @@ exports.routes = [
     middleWare: [controllers.users.update],
     access: [roles.ADMIN]
   },
-
   // Méthodes liées aux stations
+  {
+    path: "/api/stations/stats",
+    httpMethod: "GET",
+    middleWare: [controllers.stations.getStats]
+
+  },
   { //      /api/stations/5bbdb51dd7aec61a195afc9b/import
     path: "/api/stations/:id/import",
     httpMethod: "POST",
@@ -208,6 +218,11 @@ exports.routes = [
   },
 
   // Méthodes liées aux data
+    {
+        path: "/api/rainData/stats",
+        httpMethod: "GET",
+        middleWare: [controllers.data.getStats]
+    },
   {
     path: "/api/rainData/:station_id/updateData",
     httpMethod: "POST",

@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {MenuService} from '../../_services/menu.service';
-import {Router} from '@angular/router';
-import {LocalstorageService} from '../../_services/localstorage.service';
-import {AuthenticationService} from '../../_services';
-import {Constantes} from "../../_helpers/constantes";
+import { Component, OnInit } from '@angular/core';
+import { MenuService } from '../../_services/menu.service';
+import { Router } from '@angular/router';
+import { LocalstorageService } from '../../_services/localstorage.service';
+import { AuthenticationService } from '../../_services';
+import { Constantes } from "../../_helpers/constantes";
 
 @Component({
   selector: 'app-menu',
@@ -11,14 +11,14 @@ import {Constantes} from "../../_helpers/constantes";
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit {
-  public menu = {right: [], left: []};
+  public menu = { right: [], left: [] };
 
   constructor(
-    private  menuService: MenuService,
+    private menuService: MenuService,
     private router: Router,
     private localStorageService: LocalstorageService,
     private authenticationService: AuthenticationService
-    ) {
+  ) {
 
   }
 
@@ -32,10 +32,10 @@ export class MenuComponent implements OnInit {
     this.updateMenu(this.localStorageService.getStorage());
     this.authenticationService.isLogged().subscribe(
       value => {
-        console.log('val : ', value);
+        //console.log('val : ', value);
       },
       err => {
-        console.log('err', err);
+        //console.log('err', err);
       });
   }
 
@@ -51,7 +51,6 @@ export class MenuComponent implements OnInit {
           this.menu.right = this.menuService.getRightAdminMenu();
           break;
         case Constantes.roles.WORKER:
-          console.log('Ime a workder');
           this.menu.left = this.menuService.getleftWorkerMenu();
           this.menu.right = this.menuService.getRightWorkerMenu();
           break;
@@ -64,7 +63,7 @@ export class MenuComponent implements OnInit {
           this.menu.left = this.menuService.getMenuLeft();
           this.menu.right = this.menuService.getMenuRight();
       }
-      if(removelogin){
+      if (removelogin) {
         // Ne pas déplacer le login a une autre place que la premiere,
         // La recherche de l'objet contenant le login ne fonctionne pas pour une raison que j'ignore.
         this.menu.right.splice(0, 1);

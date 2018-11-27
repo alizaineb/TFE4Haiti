@@ -1,4 +1,5 @@
 'use strict';
+
 /**
  * Controlleur reprenant toutes les méthodes liées aux utilisateurs
  */
@@ -11,7 +12,6 @@ var crypto = require('crypto');
 const logger = require('../config/logger');
 // Modèles
 const UsersModel = require('../models/user');
-const StationModel = require('./../models/station');
 const PwdRecoveryModel = require('./../models/pwdRecovery');
 // Gestion du token
 const tokenManager = require('./../config/tokenManager');
@@ -22,7 +22,6 @@ const checkParam = require('./utils').checkParam;
 const errors = require('./utils').errors;
 // gestion des mails
 const mailTransporter = require('./mailer');
-
 
 
 /**
@@ -387,7 +386,7 @@ exports.refuseUser = function(req, res) {
       });
     }
   });
-}
+};
 
 
 /**
@@ -560,4 +559,33 @@ function sendEmailReset(req, res, user, isUserRequest) {
 // used to test some routes
 exports.useless = function(req, res) {
   return res.status(200).send({ message: 'ok' });
+};
+
+/**
+ * Méthode qui renvoie le count de des différents types d'utilisateurs en base de données.
+ * @param req
+ * @param res
+ */
+exports.getUsers = function (req, res){
+  UsersModel.userModel.find({}, 'role', function(err, users) {
+    if (err) {
+      logger.error("[userCtrl] getUsers :", err);
+      return res.status(500).send("Erreur lors de la récupération des statistiques des users.");
+    }
+     let mapUsers = new Map();
+     mapUsers.set(roles.ADMIN,0);
+     mapUsers.set(roles.WORKER,0);
+     mapUsers.set(roles.VIEWER,0);
+    for (let i = 0, len = users.length; i < len; i++) {
+      let role = users[i].role;
+      if(role !== null || role !== ''){
+        mapUsers.set(role,mapUsers.get(role)+1);
+      }
+    }
+    return res.status(200).send({
+      "admin":mapUsers.get(roles.ADMIN),
+      "worker":mapUsers.get(roles.WORKER),
+      "viewer":mapUsers.get(roles.VIEWER)
+    });
+  })
 };

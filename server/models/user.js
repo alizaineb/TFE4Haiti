@@ -74,21 +74,6 @@ const User = new Schema({
   }
 });
 
-User.methods.toDto = function() {
-  return {
-    _id: this._id,
-    first_name: this.first_name,
-    last_name: this.last_name,
-    mail: this.mail,
-    role: this.role,
-    bassin_versant: this.bassin_versant,
-    commune: this.commune,
-    created_at: this.created_at,
-    last_seen: this.last_seen,
-    state: this.state
-  };
-};
-
 // Avant qu'un utilisateur ne soit mis à jour, hacher son mot de passe si néccessaire
 User.pre('save', function(next) {
   if (!isInDev) {

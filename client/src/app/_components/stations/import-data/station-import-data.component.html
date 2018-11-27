@@ -1,12 +1,14 @@
 <a (click)="previousRoute()" class="blue pointer"><i class="fas fa-chevron-left blue"></i> Retour en arrière</a>
 <div *ngIf="!loading">
   <div class="row">
-    <div class="col-md-11"><p>Import des données pour la station : {{currentStation.name}}</p></div>
+    <div class="col-md-11">
+      <h1>Import des données pour la station : {{currentStation.name}} ({{currentStation.interval}})</h1>
+    </div>
 
   </div>
   <hr>
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-6">
       <div class="alert alert-warning" *ngIf="currentStation.state == 'broken'">
         La station est en état broken, verifiez bien les dates des données pour qu'elles correspondent à la période où
         la station fonctionnait.
@@ -19,67 +21,60 @@
   </div>
   <div class="row">
     <div class="col-md-6" (click)="changeZone('manual')">
-      <table class="table table-responsive table-striped">
+      <h2>Ajout manuel</h2>
+      <table class="table ">
         <thead>
-        <tr>
-          <td>Date</td>
-          <td>Heure</td>
-          <td>Valeur</td>
-          <td>
-            <button class="btn btn-primary" (click)="moreData()">
-              Ajouter une donnée <i class="fas fa-plus-circle"></i>
-            </button>
+          <tr>
+            <td>Date</td>
+            <td>Heure (24h)</td>
+            <td>Valeur (mm)</td>
+            <td>
+              <button class="btn btn-primary" (click)="moreData()">
+                Ajouter une ligne
+              </button>
 
-          </td>
-        </tr>
+            </td>
+          </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let d of data;">
-          <td class="align-middle pointer">
-            <input class="pointer" placeholder="Date" type="date" [(ngModel)]="d.date"/>
-          </td>
-          <td>
-            <ngb-timepicker [(ngModel)]="d.time"></ngb-timepicker>
-          </td>
-          <td>
-            <input placeholder="value" type="number" [(ngModel)]="d.value"/>
-          </td>
-          <td>
-            <button class="btn btn-danger" (click)="removeData(d)">
-              <i class="fas fa-trash" ></i>
-            </button>
+          <tr *ngFor="let d of data;">
+            <td class="align-middle pointer">
+              <input class="pointer" placeholder="Date" type="date" [(ngModel)]="d.date" />
+            </td>
+            <td>
+              <ngb-timepicker [(ngModel)]="d.time"></ngb-timepicker>
+            </td>
+            <td>
+              <input placeholder="value" type="number" [(ngModel)]="d.value" />
+            </td>
+            <td>
+              <button class="btn btn-danger" (click)="removeData(d)">
+                <i class="fas fa-trash"></i>
+              </button>
 
-          </td>
-        </tr>
+            </td>
+          </tr>
         </tbody>
       </table>
+      <button class="btn btn-success float-right" (click)="sendData()">
+        Envoyer les données pour confirmation
+      </button>
     </div>
-    <div class="col-md">
+    <div class="col-md-1">
       <h3>OU</h3>
     </div>
     <div class="col-md-5" (click)="changeZone('file')">
+      <h2>Ajout par fichier</h2>
       <div class="input-group mb3">
         <div class="custom-file pointer">
-          <input type="file" class="custom-file-input pointer" id="uploadfileData"
-                 aria-describedby="uploadfileData"
-                 accept="text/csv"
-                 (change)="onFileSelected($event)">
+          <input type="file" class="custom-file-input pointer" id="uploadfileData" aria-describedby="uploadfileData" accept="text/csv" (change)="onFileSelected($event)">
           <label class="custom-file-label" for="uploadfileData"></label>
         </div>
       </div>
       <p *ngIf="selectedFile">File selected : {{selectedFile.name}}</p>
-    </div>
-    <div class="offset-4 col-md-1">
-      <button class="btn btn-success" (click)="sendData()">
-        Importer les données
-        <i class="fas fa-check-circle" ></i>
-      </button>
-
-    </div>
-    <div class="offset-5 col-md-1">
-      <button class="btn btn-success" (click)="sendData()">
-        Importer un fichier
-        <i class="fas fa-check-circle" ></i>
+      <br />
+      <button class="float-right btn btn-success" (click)="sendData()">
+        Envoyer le fichier pour confirmation
       </button>
     </div>
   </div>
@@ -96,4 +91,3 @@
 <div *ngIf="loading" class="text-center container">
   <i class="fas fa-spinner fa-spin fa-7x"></i>
 </div>
-

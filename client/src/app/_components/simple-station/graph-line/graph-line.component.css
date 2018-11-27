@@ -68,3 +68,11 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+.spaceRight {
+  margin-right: 3px;
+}
+.spaceLeft {
+  margin-left: 3px;
+}
+

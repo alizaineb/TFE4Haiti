@@ -21,10 +21,8 @@ h6 {
 header {
   width: 100vw;
   position: relative;
-
   margin-left: -50vw;
   margin-top: -40px;
-  height: 40%;
   left: 50%;
 }
 

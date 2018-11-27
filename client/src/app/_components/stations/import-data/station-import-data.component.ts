@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Station } from '../../../_models';
 import { StationsService } from '../../../_services/stations.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -63,6 +63,24 @@ export class StationImportDataComponent implements OnInit {
     });
   }
 
+  @HostListener('window:beforeunload', ['$event'])
+  unloadNotification($event: any) {
+    if (this.hasUnsavedData()) {
+      $event.returnValue = true;
+    }
+  }
+
+
+  hasUnsavedData() {
+    const i = 0;
+    const d = new Date(`${this.data[i].date}T${this.minTwoDigits(this.data[i].time.hour)}:${this.minTwoDigits(this.data[i].time['minute'])}:00Z`);
+    if (d.getFullYear() != 1970) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   previousRoute() {
     this._location.back();
   }
@@ -108,14 +126,14 @@ export class StationImportDataComponent implements OnInit {
         tmp.id_station = this.currentStation._id;
         tmp.id_user = currentUser.current._id;
         tmp.value = this.data[i].value;
-        //console.log(this.data[i].date);
-        //console.log(`${this.data[i].date}T${this.data[i].time.hour}:${this.data[i].time.time | this.data[i].time['minute']}:00`);
-        console.log(this.data[i].time);
         tmp.date = new Date(`${this.data[i].date}T${this.minTwoDigits(this.data[i].time.hour)}:${this.minTwoDigits(this.data[i].time['minute'])}:00Z`);
-        console.log(this.minTwoDigits(this.data[i].time['minute'] || '00'));
-        console.log(tmp.date);
-        // tmp.date = new Date(Date.UTC(tmp.date.getFullYear(), tmp.date.getMonth(), tmp.date.getDate(), tmp.date.getHours(), tmp.date.getMinutes(), tmp.date.getSeconds()));
-        dataToSend.push(tmp);
+        if (tmp.date.getFullYear() != 1970) {
+          dataToSend.push(tmp);
+        } else {
+          this.alertService.error('Veuillez selectionner une date.');
+          this.loading = false;
+          return;
+        }
       }
       // console.table(dataToSend);
       this.stationService.importData(this.currentStation._id, dataToSend).subscribe(
@@ -133,7 +151,9 @@ export class StationImportDataComponent implements OnInit {
   }
 
   private minTwoDigits(n) {
-    if (!n) return '00';
+    if (!n) {
+      return '00';
+    }
     return (n < 10 ? '0' : '') + n;
   }
 
@@ -163,6 +183,6 @@ export class StationImportDataComponent implements OnInit {
       self.alertService.error('Seul les fichier CSV sont acceptés.');
     }
 
-    console.log(self.selectedFile);
+    //console.log(self.selectedFile);
   }
 }

@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import * as L from 'leaflet';
-import {StationsService} from '../../_services/stations.service';
-import {Station} from '../../_models';
-import {LocalstorageService} from '../../_services/localstorage.service';
-import {Constantes} from '../../_helpers/constantes';
+import { StationsService } from '../../_services/stations.service';
+import { Station } from '../../_models';
+import { LocalstorageService } from '../../_services/localstorage.service';
+import { Constantes } from '../../_helpers/constantes';
 
 @Component({
   selector: 'app-map',
@@ -68,26 +68,27 @@ export class MapComponent implements OnInit {
       self.mapContainer.remove();
     }
 
+    const iconWorking = Constantes.stationState.WORKING;
     const icon = {
-      working: L.icon({
+      'En activité': L.icon({
         iconUrl: 'assets/img/marker-working.png',
         iconSize: [20, 35], // size of the icon
         iconAnchor: [11, 34], // point of the icon which will correspond to marker's location
         popupAnchor: [-3, -38] // point from which the popup should open relative to the iconAnchor
       }),
-      awaiting: L.icon({
+      'En attente': L.icon({
         iconUrl: 'assets/img/marker-wait.png',
         iconSize: [20, 35], // size of the icon
         iconAnchor: [11, 34], // point of the icon which will correspond to marker's location
         popupAnchor: [-3, -38] // point from which the popup should open relative to the iconAnchor
       }),
-      broken: L.icon({
+      'En panne': L.icon({
         iconUrl: 'assets/img/marker-broken.png',
         iconSize: [20, 35], // size of the icon
         iconAnchor: [11, 34], // point of the icon which will correspond to marker's location
         popupAnchor: [-3, -38] // point from which the popup should open relative to the iconAnchor
       }),
-      deleted: L.icon({
+      'Pas en activité': L.icon({
         iconUrl: 'assets/img/marker-delete.png',
         iconSize: [20, 35], // size of the icon
         iconAnchor: [11, 34], // point of the icon which will correspond to marker's location
@@ -97,10 +98,10 @@ export class MapComponent implements OnInit {
 
 
     const stationGroup = {
-      working: L.layerGroup(),
-      awaiting: L.layerGroup(),
-      broken: L.layerGroup(),
-      deleted: L.layerGroup()
+      'En activité': L.layerGroup(),
+      'En attente': L.layerGroup(),
+      'En panne': L.layerGroup(),
+      'Pas en activité': L.layerGroup()
     };
 
 
@@ -108,7 +109,7 @@ export class MapComponent implements OnInit {
     for (let i = 0; i < self.selectedStation.length; i++) {
       station = self.selectedStation[i];
       // ['/stations', station._id, 'Details']
-      L.marker([station.latitude, station.longitude], {icon: icon[station.state]})
+      L.marker([station.latitude, station.longitude], { icon: icon[station.state] })
         .bindPopup(`<b><a href="/stations/${station._id}/Details">${station.name}</a> </b><br/>`).addTo(stationGroup[station.state]);
     }
 
@@ -118,23 +119,23 @@ export class MapComponent implements OnInit {
       'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>';
 
     const mapLayerOSMGrayScale = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
-        attribution: mbAttr
-      }),
+      attribution: mbAttr
+    }),
       mapLayerOpenStreetMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_' +
         'Street_Map/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, ' +
-          'iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
-      }),
+          attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, ' +
+            'iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
+        }),
       mapLayerErsiWorlStreetMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/' +
         'World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, ' +
-          'NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
-      }),
+          attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, ' +
+            'NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
+        }),
       mapLayerErsiSatelite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/' +
         'World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, ' +
-          'Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-      }),
+          attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, ' +
+            'Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+        }),
       mapLayerHyddaFull = L.tileLayer('https://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png',
         {
           maxZoom: 18,
@@ -150,15 +151,15 @@ export class MapComponent implements OnInit {
       zoom: self.zoom,
       minZoom: 8,
       maxZoom: 18,
-      layers: [mapLayerOpenStreetMap, stationGroup.working, stationGroup.deleted, stationGroup.awaiting, stationGroup.broken]
+      layers: [mapLayerOpenStreetMap, stationGroup['En activité'], stationGroup['Pas en activité'], stationGroup['En attente'], stationGroup['En panne']]
     });
 
 
     L.control.scale().addTo(self.mapContainer);
 
-    const legend = L.control.attribution({position: 'bottomright'});
+    const legend = L.control.attribution({ position: 'bottomright' });
 
-    legend.onAdd = function (map) {
+    legend.onAdd = function(map) {
 
       const div = L.DomUtil.create('div', 'info legend'),
         grades = ['En activité', 'En panne', 'Pas en activitée'],
@@ -191,14 +192,14 @@ export class MapComponent implements OnInit {
 
 
     const overlays = {
-      'Fonctionnelle': stationGroup.working,
-      'En panne': stationGroup.broken,
-      'A valider': stationGroup.awaiting,
-      'Supprimee': stationGroup.deleted
+      'Fonctionnelle': stationGroup['En activité'],
+      'En panne': stationGroup['En panne'],
+      'A valider': stationGroup['En attente'],
+      'Supprimee': stationGroup['Pas en activité']
     };
 
     if (!currentU) {
-      self.mapContainer.removeLayer(stationGroup.awaiting);
+      self.mapContainer.removeLayer(stationGroup['En attente']);
       self.mapContainer.removeLayer(overlays);
       L.control.layers(baseLayers).addTo(self.mapContainer);
       self.filteredStation = self.allStations.filter(StationRes => {
@@ -279,7 +280,6 @@ export class MapComponent implements OnInit {
   }
 
   filterStation(event) {
-    console.log('hello');
     this.term = event.target.value;
     // console.log(term)
     this.applyFilter();

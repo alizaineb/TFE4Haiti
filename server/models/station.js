@@ -124,24 +124,6 @@ Station.pre('save', function() {
   this.updatedAt = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes()));
 });
 
-Station.methods.toDto = function() {
-  return {
-    _id: this._id,
-    name: this.name,
-    latitude: this.latitude,
-    longitude: this.longitude,
-    altitude: this.altitude,
-    state: this.state,
-    createdAt: this.createdAt,
-    updatedAt: this.updatedAt,
-    interval: this.interval,
-    bassin_versant: this.bassin_versant,
-    commune: this.commune,
-    user_creator_id: this.user_creator_id,
-    users: this.users
-  };
-};
-
 
 //Definition du modèle
 const stationModel = mongoose.model("station", Station);

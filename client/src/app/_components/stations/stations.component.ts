@@ -1,7 +1,7 @@
 import { Component, OnInit, Output } from '@angular/core';
 import { Station } from '../../_models';
 import { StationsService } from '../../_services/stations.service';
-import { AuthenticationService } from "../../_services";
+import { AuthenticationService } from '../../_services';
 
 @Component({
   selector: 'app-stations',
@@ -64,7 +64,7 @@ export class StationsComponent implements OnInit {
     this.map.set('Dernière modification', 'updatedAt');
     this.map.set('Etat', 'state');
     this.map.set('Commune', 'commune');
-    this.map.set('Rivière', 'river');
+    this.map.set('Bassin versant', 'bassin_versant');
   }
 
   filterStation() {

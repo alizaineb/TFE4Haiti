@@ -6,8 +6,8 @@ import {
 } from '@angular/core';
 
 import flatpickr from 'flatpickr';
-import {French} from 'flatpickr/dist/l10n/fr';
-import {Constantes} from "../../../_helpers/constantes";
+import { French } from 'flatpickr/dist/l10n/fr';
+import { Constantes } from "../../../_helpers/constantes";
 
 @Component({
   selector: 'app-download-data-modal',
@@ -43,7 +43,7 @@ export class DownloadDataModalComponent implements OnInit {
       this.intervals.push(Constantes.DownloadIntervals[i]);
     }
 
-    if(!this.datePicker){
+    if (!this.datePicker) {
       this.datePicker = flatpickr('#datePickerDownload', {
         locale: French,
         mode: 'range',
@@ -62,10 +62,10 @@ export class DownloadDataModalComponent implements OnInit {
   sendStation() {
 
     let obj = {
-      dates : this.datesSelected,
-      interval : this.selectedInterval
+      dates: this.datesSelected,
+      interval: this.selectedInterval
     }
-    console.log(obj);
+    //console.log(obj);
     this.updated.emit(obj);
     // this.stationService.update(s)
     //   .subscribe(
@@ -102,5 +102,3 @@ export class DownloadDataModalComponent implements OnInit {
     }
   }
 }
-
-
