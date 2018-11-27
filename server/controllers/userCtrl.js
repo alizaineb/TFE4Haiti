@@ -568,6 +568,10 @@ exports.useless = function(req, res) {
  */
 exports.getUsers = function (req, res){
   UsersModel.userModel.find({}, 'role', function(err, users) {
+    if (err) {
+      logger.error("[userCtrl] getUsers :", err);
+      return res.status(500).send("Erreur lors de la récupération des statistiques des users.");
+    }
      let mapUsers = new Map();
      mapUsers.set(roles.ADMIN,0);
      mapUsers.set(roles.WORKER,0);
@@ -578,6 +582,7 @@ exports.getUsers = function (req, res){
         mapUsers.set(role,mapUsers.get(role)+1);
       }
     }
-    return res.status(200).send(mapUsers);
+    console.log(mapUsers);
+    return res.status(200).send([...mapUsers]);
   })
 };

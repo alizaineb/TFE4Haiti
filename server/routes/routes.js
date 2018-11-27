@@ -58,6 +58,11 @@ exports.routes = [
     middleWare: [controllers.users.getWorkers]
   },
   {
+    path: "/api/users/getUsers",
+    httpMethod: "GET",
+    middleWare: [controllers.users.getUsers]
+  },
+  {
     path: "/api/users/getAllAwaiting",
     httpMethod: "GET",
     middleWare: [controllers.users.getAllAwaiting],
@@ -102,12 +107,6 @@ exports.routes = [
     middleWare: [controllers.users.update],
     access: [roles.ADMIN]
   },
-  {
-    path: "/api/users/getUsers",
-    httpMethod: "GET",
-    middleWare: [controllers.users.getUsers]
-  },
-
   // Méthodes liées aux stations
   {
     path: "/api/stations/stats",

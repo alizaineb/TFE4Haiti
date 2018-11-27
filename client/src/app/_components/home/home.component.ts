@@ -35,6 +35,9 @@ export class HomeComponent implements OnInit {
     });
 
     // Get stats users
+    this.userService.getUsers().subscribe( result => {
+      console.log(result);
+    });
 
     // Get stats datas
     this.dataService.getStats().subscribe(
