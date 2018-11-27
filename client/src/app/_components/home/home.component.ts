@@ -29,7 +29,6 @@ export class HomeComponent implements OnInit {
     this.stationsService.getStats().subscribe(stationStats => {
       this.stationStats = stationStats;
     }, err => {
-      console.log(err);
       this.alertService.error('Erreur récupération lors de la récupération des statistiques des stations');
     });
 
