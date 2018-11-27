@@ -9,7 +9,7 @@ import { AlertService, DataService, UserService, StationsService } from '../../_
 })
 export class HomeComponent implements OnInit {
 
-  private stationStats;
+  stationStats;
 
   constructor(
     private alertService: AlertService,
@@ -20,9 +20,16 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     // Get stats stations
+    this.stationStats = {};
+    this.stationStats.total = 0;
+    this.stationStats.awaiting = 0;
+    this.stationStats.broken = 0;
+    this.stationStats.working = 0;
+    this.stationStats.deleted = 0;
     this.stationsService.getStats().subscribe(stationStats => {
       this.stationStats = stationStats;
     }, err => {
+      console.log(err);
       this.alertService.error('Erreur récupération lors de la récupération des statistiques des stations');
     });
 

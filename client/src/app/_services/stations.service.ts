@@ -64,7 +64,7 @@ export class StationsService {
   }
 
   getStats() {
-    return this.http.get<{ total: number, awaiting: number, broken: number, working: number, deleted: number }>(environment.apiUrl + '/station/stats');
+    return this.http.get<{ total: number, awaiting: number, broken: number, working: number, deleted: number }>(environment.apiUrl + '/stations/stats');
   }
 
   hasAccessToStation(station: Station) {
