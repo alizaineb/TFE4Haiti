@@ -156,43 +156,44 @@ exports.acceptAwaiting = function(req, res) {
                       // console.log(lines);
                       let prevDate = null;
                       let first = true;
-                      const regex = /[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{2,4}\s[0-9]{1,2}:[0-9]{1,2}(:[0-9]{1,2})?;\s*[0-9\.\,]+/gm;
+                      const regex1 = /[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{2,4}\s[0-9]{1,2}:[0-9]{1,2}(:[0-9]{1,2})?;\s*[0-9\.\,]+/gm;
+                      const regex2 = /[0-9]{2,4}\-[0-9]{1,2}\-[0-9]{2,4}\s[0-9]{1,2}:[0-9]{1,2}(:[0-9]{1,2})?;\s*[0-9\.\,]+/gm;
                       for (var i = 0; i < lines.length; i++) {
                         var l = lines[i];
-                        if(!l.match(regex)){
-                            res.status(500).send("La ligne ", i+1, " n'as pas le format dd/mm/yyyy hh:mm[:ss]; XXX") ;
-                            return;
-                        }
                         const d = l.split(';');
+                        console.log("Line : ", l);
+                        let datetmp = d[0];
+                        if(regex1.test(l)){
+                           /* res.status(500).send("La ligne ", i+1, " n'as pas le format dd/mm/yyyy hh:mm[:ss]; XXX") ;
+                            return;*/
+                            datetmp = dateRegex1(d[0]);
+                        }
+                        if(regex2.test(l)){
+                            /* res.status(500).send("La ligne ", i+1, " n'as pas le format dd/mm/yyyy hh:mm[:ss]; XXX") ;
+                             return;*/
+                            datetmp = dateRegex2(d[0]);
+                        }
+
                         // console.log(d);
                         if (d.length > 1) {
                           let data = new dataModel.rainDataModel();
                           data.id_station = station._id;
                           data.id_user = user._id;
-                          data.date = new Date(d[0]);
-                          data.date = new Date(Date.UTC(data.date.getFullYear(), data.date.getMonth(), data.date.getDate(), data.date.getHours(), data.date.getMinutes()))
-                          // console.log(data.date);
-                          if (first) {
-                            data.value = d[1].replace(',', '.');
+                          data.value = d[1].replace(',', '.');
+                          data.date = datetmp;
+                          if(checkInterval(data.date, station.interval)){
                             datas.push(data);
-                          } else {
-                            if (checkDateInterval(prevDate, data.date, station.interval)) { //todo remove || true
-                              data.value = d[1];
-                              datas.push(data);
-                            } else {
-                              res.status(500).send("Les dates du fichier ne se suivent pas, ou ne corresponde pas à l'interval de la station..")
-                              return;
-                            }
+                          }else{
+                            return res.status(500).send("Les dates du fichier ne se suivent pas, ou ne corresponde pas à l'interval de la station. (Ligne " + (i+1) + ")")
                           }
-                          prevDate = data.date;
+
+                          console.log("data : ", data.date);
                         }
                       }
+                      res.status(200).send();
                       // insertData(req, res, datas, station, user)
-                      dataModel.rainDataModel.insertMany(datas, (err, docs) => {
-                        // console.log(err);
-                        // console.log(docs);
+                    dataModel.rainDataModel.insertMany(datas, (err, docs) => {
                         if (err) {
-                          // console.log('erreur : ', err);
                           logger.error('[IMPORTFILE] InsertMany : ', err);
                           res.status(500).send(err); //'Les données n\'ont pas sur être insérer...');
                         } else {
