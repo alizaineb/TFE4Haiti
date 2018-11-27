@@ -208,6 +208,11 @@ exports.routes = [
   },
 
   // Méthodes liées aux data
+    {
+        path: "/api/rainData/stats",
+        httpMethod: "GET",
+        middleWare: [controllers.data.getStats]
+    },
   {
     path: "/api/rainData/:station_id/updateData",
     httpMethod: "POST",

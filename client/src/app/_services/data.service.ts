@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
-import { RainData, RainDataAwaiting } from '../_models/rainData';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {environment} from '../../environments/environment';
+import {RainData, RainDataAwaiting} from '../_models/rainData';
 
 @Injectable({
   providedIn: 'root'
@@ -45,7 +45,7 @@ export class DataService {
   }
 
   accepteAwaiting(id: string) {
-    return this.http.post<RainDataAwaiting[]>(environment.apiUrl + '/rainData/accept/', { id: id });
+    return this.http.post<RainDataAwaiting[]>(environment.apiUrl + '/rainData/accept/', {id: id});
   }
 
   refuseAwaiting(id: string) {
@@ -54,6 +54,11 @@ export class DataService {
 
   getDataForMonth(id_station: string, year: string, month: string) {
     return this.http.get<RainData[]>(environment.apiUrl + `/data/${id_station}/${year}/${month}`);
+  }
+
+  getStats() {
+    return this.http.get<{ awaiting: number, data: number }>(environment.apiUrl + `/rainData/stats`);
+
   }
 
 }

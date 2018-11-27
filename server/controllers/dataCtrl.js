@@ -1,4 +1,5 @@
 'use strict';
+
 const path = require('path');
 const fs = require('fs');
 const nconf = require('nconf');
@@ -1088,6 +1089,31 @@ exports.updateData = function (req, res) {
 }
 
 /**
+ * Méthode qui renvoie les statistiques sur le nombre de données existantes en DB.
+ * @param req
+ * @param res
+ * @returns {*}
+ */
+exports.getStats = function(req, res) {
+
+
+    dataModel.rainDataModel.countDocuments({}, function (err, countOK) {
+        if(err) {
+            return res.status(500).send();
+        }
+        dataModel.RainDataAwaitingModel.countDocuments({}, function (err, countAwait) {
+            if(err) {
+                return res.status(500).send();
+            }
+            return res.status(200).send({awaiting : countAwait, data: countOK});
+
+        });
+
+    });
+
+}
+
+/**
  * Méthode qui check si l'interval entre 2 date est correcte.
  * @param date1 Date de départ
  * @param date2 Date de fin
@@ -1163,6 +1189,8 @@ function push() {
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
 }
+
+
 
 
 /**
