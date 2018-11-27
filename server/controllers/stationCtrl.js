@@ -344,6 +344,44 @@ exports.removeUser = function(req, res) {
     });
 };
 
+
+
+/**
+ * getStats - Méthode utilisée pour récupérer les statistiques liées aux stations.
+ *
+ * @param {request}   req Requête du client
+ * @param {response}  res Réponse renvoyée au client
+ *                        500 : Erreur serveur
+ * @return {json}      200 un objet json reprenant différentes statistiques liées aux station
+ */
+exports.getStats = function(req, res) {
+  UsersModel.userModel.find({},
+    'state',
+    function(err, stations) {
+      if (err) {
+        logger.error("[stationCtrl] getStats :", err);
+        return res.status(500).send("Erreur lors de la récupération des stations.");
+      }
+      let awaiting = 0;
+      let broken = 0;
+      let working = 0
+      let deleted = 0;
+      for (let i = 0; i < stations.length; i++) {
+        let tmp = stations[i];
+        if (tmp.state = states.AWAITING) {
+          awaiting++;
+        } else if (tmp.state = states.BROKEN) {
+          broken++;
+        } else if (tmp.state = states.WORKING) {
+          working++;
+        } else {
+          deleted++;
+        }
+      }
+      return res.status(200).send({ total: stations.length, awaiting: awaiting, broken: broken, working: working, deleted: deleted });
+    });
+}
+
 /**
  * getIntervals - Permet de récupérer toutes les intervalles des stations
  *
