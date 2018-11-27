@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-import { AlertService, DataService, UserService, StationsService } from '../../_services/index';
+import {AlertService, DataService, UserService, StationsService} from '../../_services/index';
 
 @Component({
   selector: 'app-home',
@@ -10,14 +10,15 @@ import { AlertService, DataService, UserService, StationsService } from '../../_
 export class HomeComponent implements OnInit {
 
   stationStats;
-  data: {awaiting:number, ok: number}
+  data: { awaiting: number, ok: number } = {awaiting: 0, ok: 0};
 
   constructor(
     private alertService: AlertService,
     private dataService: DataService,
     private userService: UserService,
     private stationsService: StationsService,
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     // Get stats stations
