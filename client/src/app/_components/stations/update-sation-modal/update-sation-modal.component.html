@@ -11,7 +11,9 @@
         <form (ngSubmit)="onSubmit()" [formGroup]="updateStationForm" #updateStationFormNg="ngForm">
           <div class="row">
             <div class="col-md-6">
-
+              <div class="alert alert-info">
+                Certains champs sont obligatoires.
+              </div>
 
               <div class="form-group">
                 <input id="name" class="form-control" placeholder="Nom" formControlName="name" required>
@@ -138,6 +140,9 @@
 
             </div>
             <div class="col-md-6">
+              <div class="alert alert-info">
+                Vous pouvez cliquer sur la map pour placer votre station.
+              </div>
               <div id="mapid2">
               </div>
             </div>

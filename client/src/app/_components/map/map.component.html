@@ -24,7 +24,8 @@
           <div class="input-group-prepend">
             <span class="input-group-text" id="basic-addon3"><i class="fas fa-search"></i></span>
           </div>
-          <input type="search" (search)="bassin_versantSelected($event.target.value)" class="form-control" (change)="bassin_versantSelected($event.target.value)" placeholder="Bassin versant" aria-label="Recherche" aria-describedby="basic-addon3" list="bassin_versants">
+          <input type="search" (search)="bassin_versantSelected($event.target.value)" class="form-control" (change)="bassin_versantSelected($event.target.value)" placeholder="Bassin versant" aria-label="Recherche" aria-describedby="basic-addon3"
+            list="bassin_versants">
           <datalist id="bassin_versants">
             <option *ngFor="let i of bassin_versants" [value]="i">{{i}}</option>
           </datalist>
@@ -48,6 +49,19 @@
 
       </li>
     </ul>
+
+    <div class="card bg-light spacetop">
+      <div class="card-body">
+        <div class="card-text">
+          <div class="row">
+            <i class="fas fa-external-link-alt spaceRight"></i> Ouvrir les détails d'une station
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
   </div>
   <div class="col-md-9 ">
     <div id="mapid">

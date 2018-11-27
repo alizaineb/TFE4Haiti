@@ -20,29 +20,29 @@ exports.roles = {
  * Les différentes état d'un utilisateur
  */
 exports.userState = {
-  AWAITING: "awaiting", // En attente de confirmation par l'admin
-  PASSWORD_CREATION: "pwd_creation", // En attente que l'utilisateur mette/change son mot de passe
-  OK: "ok", // Etat "normal" de l'utilisateur
-  DELETED: "deleted" // L'utilisateur est supprimé
+  AWAITING:  "En attente", // En attente de confirmation par l'admin
+  PASSWORD_CREATION: "Création mdp", // En attente que l'utilisateur mette/change son mot de passe
+  OK: "Ok", // Etat "normal" de l'utilisateur
+  DELETED: "Supprimé" // L'utilisateur est supprimé
 };
 
 /**
  * Les différentes état d'un utilisateur
  */
 exports.stationState = {
-  AWAITING: "awaiting", // En attente de confirmation par l'admin
-  WORKING: "working", // en état de fonctionnement
-  DELETED: "deleted", // Supprimée
-  BROKEN: "broken" // Cassée
+  AWAITING: "En attente", // En attente de confirmation par l'admin
+  WORKING: "En activité", // en état de fonctionnement
+  DELETED: "Pas en activité", // Supprimée
+  BROKEN: "En panne" // Cassée
 }
 
 /**
  * Les differents format concernant les données
  */
 exports.DataType = {
-  FILE: "file", // L'ajout d'une donnée est de type fichier
-  INDIVIDUAL: "individual", // L'ajout d'une donnée est une donnée unique
-  UPDATE: "update" // L'ajout d'une donnée est une modification d'une donnée existante
+  FILE: "Fichier", // L'ajout d'une donnée est de type fichier
+  INDIVIDUAL: "Manuel", // L'ajout d'une donnée est une donnée unique
+  UPDATE: "MaJ" // L'ajout d'une donnée est une modification d'une donnée existante
 }
 
 
@@ -50,9 +50,9 @@ exports.DataType = {
  * Les différents formats concernant l'intervalle de download des données
  */
 exports.DownloadIntervals = {
-  STATION: "default",
-  DAYS: "days",
-  MONTHS: "month",
+  STATION: "Station",
+  DAYS: "Jours",
+  MONTHS: "Mois",
   YEARS: "years",
-  ALL: "all",
+  ALL: "Années",
 }
