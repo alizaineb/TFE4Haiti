@@ -69,7 +69,6 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
-
 .spaceRight {
   margin-right: 3px;
 }
