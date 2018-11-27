@@ -582,7 +582,10 @@ exports.getUsers = function (req, res){
         mapUsers.set(role,mapUsers.get(role)+1);
       }
     }
-    console.log(mapUsers);
-    return res.status(200).send([...mapUsers]);
+    return res.status(200).send({
+      "admin":mapUsers.get(roles.ADMIN),
+      "worker":mapUsers.get(roles.WORKER),
+      "viewer":mapUsers.get(roles.VIEWER)
+    });
   })
 };

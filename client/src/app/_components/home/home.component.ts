@@ -11,6 +11,7 @@ export class HomeComponent implements OnInit {
 
   stationStats;
   data: { awaiting: number, ok: number } = {awaiting: 0, ok: 0};
+  usersStats;
 
   constructor(
     private alertService: AlertService,
@@ -28,6 +29,7 @@ export class HomeComponent implements OnInit {
     this.stationStats.broken = 0;
     this.stationStats.working = 0;
     this.stationStats.deleted = 0;
+
     this.stationsService.getStats().subscribe(stationStats => {
       this.stationStats = stationStats;
     }, err => {
@@ -36,7 +38,7 @@ export class HomeComponent implements OnInit {
 
     // Get stats users
     this.userService.getUsers().subscribe( result => {
-      console.log(result);
+      this.usersStats = result;
     });
 
     // Get stats datas
@@ -46,9 +48,9 @@ export class HomeComponent implements OnInit {
         this.data.awaiting = res.awaiting;
 
       }, err => {
-        this.alertService.error("Erreur lors de la recupération des statistiques des données existantes.");
+        this.alertService.error('Erreur lors de la recupération des statistiques des données existantes.');
       }
-    )
+    );
   }
 
 }
