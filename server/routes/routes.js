@@ -104,6 +104,12 @@ exports.routes = [
   },
 
   // Méthodes liées aux stations
+  {
+    path: "/api/stations/stats",
+    httpMethod: "GET",
+    middleWare: [controllers.stations.getStats]
+
+  },
   { //      /api/stations/5bbdb51dd7aec61a195afc9b/import
     path: "/api/stations/:id/import",
     httpMethod: "POST",
