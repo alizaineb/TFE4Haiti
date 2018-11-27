@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {Station} from '../../../_models';
 import {StationsService} from '../../../_services/stations.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -63,6 +63,24 @@ export class StationImportDataComponent implements OnInit {
     });
   }
 
+  @HostListener('window:beforeunload', ['$event'])
+  unloadNotification($event: any) {
+    if (this.hasUnsavedData()) {
+      $event.returnValue = true;
+    }
+  }
+
+
+  hasUnsavedData() {
+    const i = 0;
+    const d = new Date(`${this.data[i].date}T${this.minTwoDigits(this.data[i].time.hour)}:${this.minTwoDigits(this.data[i].time['minute'])}:00Z`);
+    if (d.getFullYear() != 1970) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   previousRoute() {
     this._location.back();
   }
@@ -111,8 +129,8 @@ export class StationImportDataComponent implements OnInit {
         tmp.date = new Date(`${this.data[i].date}T${this.minTwoDigits(this.data[i].time.hour)}:${this.minTwoDigits(this.data[i].time['minute'])}:00Z`);
         if (tmp.date.getFullYear() != 1970) {
           dataToSend.push(tmp);
-        }else{
-          this.alertService.error("Veuillez selectionner une date.");
+        } else {
+          this.alertService.error('Veuillez selectionner une date.');
           this.loading = false;
           return;
         }
@@ -133,7 +151,9 @@ export class StationImportDataComponent implements OnInit {
   }
 
   private minTwoDigits(n) {
-    if (!n) return '00';
+    if (!n) {
+      return '00';
+    }
     return (n < 10 ? '0' : '') + n;
   }
 

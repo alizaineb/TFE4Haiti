@@ -14,13 +14,14 @@ import {LogoutComponent} from "./_components/logout/logout.component";
 import {HomeComponent} from "./_components/home/home.component";
 import {StationImportDataComponent} from "./_components/stations/import-data/station-import-data.component";
 import {NotFoundComponent} from "./_components/not-found/not-found.component";
+import {CanDeactivateGuard} from "./_guards/CanDeactivate";
 
 const appRoutes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'map', component: MapComponent},
   {path: 'admin', component: AdminPanelComponent, canActivate: [AuthGuard]},
   {path: 'stations', component: StationsComponent, canActivate: [AuthGuard]},
-  {path: 'stations/:id/import', component: StationImportDataComponent},
+  {path: 'stations/:id/import', component: StationImportDataComponent, canDeactivate: [CanDeactivateGuard]},
   {path: 'stations/:id/:tab', component: SimpleStationComponent},
   {path: 'users', component: UsersComponent, canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent},

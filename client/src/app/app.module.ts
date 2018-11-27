@@ -43,6 +43,7 @@ import {UpdateDataModalComponent} from './_components/simple-station/table/updat
 import {DownloadDataModalComponent} from './_components/simple-station/download-data-modal/download-data-modal.component'
 ;
 import { NotFoundComponent } from './_components/not-found/not-found.component'
+import {CanDeactivateGuard} from "./_guards/CanDeactivate";
 
 @NgModule({
   imports: [
@@ -90,6 +91,7 @@ import { NotFoundComponent } from './_components/not-found/not-found.component'
 
   providers: [
     AuthGuard,
+    CanDeactivateGuard,
     AlertService,
     AuthenticationService,
     UserService,
