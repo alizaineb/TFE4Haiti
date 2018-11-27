@@ -7,29 +7,29 @@ export class Constantes {
   };
 
   public static userState = {
-    AWAITING: "awaiting",
-    PASSWORD_CREATION: "pwd_creation",
-    OK: "ok",
-    DELETED: "deleted"
+    AWAITING: "En attente",
+    PASSWORD_CREATION: "Création mdp",
+    OK: "Ok",
+    DELETED: "Supprimé"
   };
 
   public static stationState = {
-    AWAITING: "awaiting",
-    WORKING: "working",
-    DELETED: "deleted",
-    BROKEN: "broken"
+    AWAITING: "En attente",
+    WORKING: "En activité",
+    DELETED: "Pas en activité",
+    BROKEN: "En panne"
   };
 
   public static DataType = {
-    FILE: "file",
-    INDIVIDUAL: "individual",
-    UPDATE: "update"
+    FILE: "Fichier",
+    INDIVIDUAL: "Manuel",
+    UPDATE: "MaJ"
   };
 
   public static DownloadIntervals = {
-    STATION :"default",
-    DAYS : "days",
-    MONTHS : "month",
-    YEARS: "years",
+    STATION :"Station",
+    DAYS : "Jours",
+    MONTHS : "Mois",
+    YEARS: "Années",
   };
 }
