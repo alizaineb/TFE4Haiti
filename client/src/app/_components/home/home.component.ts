@@ -20,6 +20,11 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     // Get stats stations
+    this.stationsService.getStats().subscribe(stationStats => {
+      this.stationStats = stationStats;
+    }, err => {
+      this.alertService.error('Erreur récupération lors de la récupération des statistiques des stations');
+    });
 
     // Get stats users
 
