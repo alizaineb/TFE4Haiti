@@ -156,23 +156,29 @@ exports.acceptAwaiting = function(req, res) {
                       // console.log(lines);
                       let prevDate = null;
                       let first = true;
-                      const regex1 = /[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{2,4}\s[0-9]{1,2}:[0-9]{1,2}(:[0-9]{1,2})?;\s*[0-9\.\,]+/gm;
-                      const regex2 = /[0-9]{2,4}\-[0-9]{1,2}\-[0-9]{2,4}\s[0-9]{1,2}:[0-9]{1,2}(:[0-9]{1,2})?;\s*[0-9\.\,]+/gm;
+
+
+
+
                       for (var i = 0; i < lines.length; i++) {
+                          const regex1 = /[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{2,4}\s[0-9]{1,2}:[0-9]{1,2}(:[0-9]{1,2})?;\s*[0-9\.\,]+/gm;
+                          const regex2 = /[0-9]{2,4}\-[0-9]{1,2}\-[0-9]{1,2}\s[0-9]{1,2}:[0-9]{1,2}(:[0-9]{1,2})?;\s*[0-9\.\,]+/gm;
+
                         var l = lines[i];
                         const d = l.split(';');
                         console.log("Line : ", l);
+                        if(l.trim() == ''){
+                          continue;
+                        }
                         let datetmp = d[0];
                         if(regex1.test(l)){
-                           /* res.status(500).send("La ligne ", i+1, " n'as pas le format dd/mm/yyyy hh:mm[:ss]; XXX") ;
-                            return;*/
                             datetmp = dateRegex1(d[0]);
-                        }
-                        if(regex2.test(l)){
-                            /* res.status(500).send("La ligne ", i+1, " n'as pas le format dd/mm/yyyy hh:mm[:ss]; XXX") ;
-                             return;*/
+                        }else if(regex2.test(l)){
                             datetmp = dateRegex2(d[0]);
+                        }else{
+                            return res.status(500).send("Les dates du fichier ne respecte pas le format à la Ligne " + (i+1));
                         }
+
 
                         // console.log(d);
                         if (d.length > 1) {
