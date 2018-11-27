@@ -1,6 +1,4 @@
 'use strict';
-import {User} from "../../client/src/app/_models";
-import {Constantes} from "../../client/src/app/_helpers/constantes";
 
 /**
  * Controlleur reprenant toutes les méthodes liées aux utilisateurs
@@ -14,7 +12,6 @@ var crypto = require('crypto');
 const logger = require('../config/logger');
 // Modèles
 const UsersModel = require('../models/user');
-const StationModel = require('./../models/station');
 const PwdRecoveryModel = require('./../models/pwdRecovery');
 // Gestion du token
 const tokenManager = require('./../config/tokenManager');
@@ -572,9 +569,9 @@ exports.useless = function(req, res) {
 exports.getUsers = function (req, res){
   UsersModel.userModel.find({}, 'role', function(err, users) {
      let mapUsers = new Map();
-     mapUsers.set(Constantes.roles.ADMIN,0);
-     mapUsers.set(Constantes.roles.WORKER,0);
-     mapUsers.set(Constantes.roles.VIEWER,0);
+     mapUsers.set(roles.ADMIN,0);
+     mapUsers.set(roles.WORKER,0);
+     mapUsers.set(roles.VIEWER,0);
     for (let i = 0, len = users.length; i < len; i++) {
       let role = users[i].role;
       if(role !== null || role !== ''){
