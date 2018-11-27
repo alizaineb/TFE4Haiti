@@ -65,10 +65,19 @@ export class StationImportDataComponent implements OnInit {
 
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any) {
+    if (this.hasUnsavedData()) {
+      $event.returnValue = true;
+    }
+  }
+
+
+  hasUnsavedData() {
     const i = 0;
     const d = new Date(`${this.data[i].date}T${this.minTwoDigits(this.data[i].time.hour)}:${this.minTwoDigits(this.data[i].time['minute'])}:00Z`);
     if (d.getFullYear() != 1970) {
-      $event.returnValue = true;
+      return true;
+    } else {
+      return false;
     }
   }
 
@@ -142,7 +151,9 @@ export class StationImportDataComponent implements OnInit {
   }
 
   private minTwoDigits(n) {
-    if (!n) { return '00'; }
+    if (!n) {
+      return '00';
+    }
     return (n < 10 ? '0' : '') + n;
   }
 
