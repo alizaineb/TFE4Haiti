@@ -355,7 +355,7 @@ exports.removeUser = function(req, res) {
  * @return {json}      200 un objet json reprenant différentes statistiques liées aux station
  */
 exports.getStats = function(req, res) {
-  UsersModel.userModel.find({},
+  Station.stationModel.find({},
     'state',
     function(err, stations) {
       if (err) {
@@ -368,13 +368,14 @@ exports.getStats = function(req, res) {
       let deleted = 0;
       for (let i = 0; i < stations.length; i++) {
         let tmp = stations[i];
-        if (tmp.state = states.AWAITING) {
+        if (tmp.state === states.AWAITING) {
           awaiting++;
-        } else if (tmp.state = states.BROKEN) {
+        } else if (tmp.state === states.BROKEN) {
           broken++;
-        } else if (tmp.state = states.WORKING) {
+        } else if (tmp.state === states.WORKING) {
           working++;
         } else {
+          console.log("ELSE");
           deleted++;
         }
       }
