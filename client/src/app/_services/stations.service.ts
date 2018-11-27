@@ -4,8 +4,8 @@ import { environment } from '../../environments/environment';
 import { Note, Station } from '../_models';
 import { Observable } from 'rxjs';
 import { RainData } from "../_models/rainData";
-import {LocalstorageService} from "./localstorage.service";
-import {Constantes} from "../_helpers/constantes";
+import { LocalstorageService } from "./localstorage.service";
+import { Constantes } from "../_helpers/constantes";
 
 @Injectable({
   providedIn: 'root'
@@ -63,9 +63,13 @@ export class StationsService {
     return this.http.get<RainData[]>(environment.apiUrl + '/data/' + id_station + '/' + date);
   }
 
-  hasAccessToStation(station: Station){
+  getStats() {
+    return this.http.get<{ total: number, awaiting: number, broken: number, working: number, deleted: number }>(environment.apiUrl + '/station/stats');
+  }
+
+  hasAccessToStation(station: Station) {
     let user = this.localStorageService.getItem('currentUser');
-    if(!user || !user.current){
+    if (!user || !user.current) {
       return false;
     }
     user = user.current
