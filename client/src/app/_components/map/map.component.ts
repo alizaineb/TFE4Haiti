@@ -151,7 +151,7 @@ export class MapComponent implements OnInit {
       zoom: self.zoom,
       minZoom: 8,
       maxZoom: 18,
-      layers: [mapLayerOpenStreetMap, stationGroup.working, stationGroup.deleted, stationGroup.awaiting, stationGroup.broken]
+      layers: [mapLayerOpenStreetMap, stationGroup['En activité'], stationGroup['Pas en activité'], stationGroup['En attente'], stationGroup['En panne']]
     });
 
 
@@ -192,14 +192,14 @@ export class MapComponent implements OnInit {
 
 
     const overlays = {
-      'Fonctionnelle': stationGroup.working,
-      'En panne': stationGroup.broken,
-      'A valider': stationGroup.awaiting,
-      'Supprimee': stationGroup.deleted
+      'Fonctionnelle': stationGroup['En activité'],
+      'En panne': stationGroup['En panne'],
+      'A valider': stationGroup['En attente'],
+      'Supprimee': stationGroup['Pas en activité']
     };
 
     if (!currentU) {
-      self.mapContainer.removeLayer(stationGroup.awaiting);
+      self.mapContainer.removeLayer(stationGroup['En attente']);
       self.mapContainer.removeLayer(overlays);
       L.control.layers(baseLayers).addTo(self.mapContainer);
       self.filteredStation = self.allStations.filter(StationRes => {
