@@ -27,6 +27,9 @@ export class UserService {
     return this.http.get<User>(environment.apiUrl + '/users/' + id);
   }
 
+  getUsers(){
+    return this.http.get<User>(environment.apiUrl + '/users/getUsers');
+  }
 
   getRoles() {
     return this.http.get<string[]>(environment.apiUrl + '/users/roles');

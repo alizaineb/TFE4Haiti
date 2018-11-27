@@ -104,7 +104,7 @@ exports.routes = [
   },
   {
     path: "/api/users/getUsers",
-    httpMethod: "PUT",
+    httpMethod: "GET",
     middleWare: [controllers.users.getUsers]
   },
 
