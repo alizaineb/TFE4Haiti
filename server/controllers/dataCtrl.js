@@ -154,8 +154,13 @@ exports.acceptAwaiting = function(req, res) {
                       // console.log(lines);
                       let prevDate = null;
                       let first = true;
+                      const regex = /[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{2,4}\s[0-9]{1,2}:[0-9]{1,2}(:[0-9]{1,2})?;\s*[0-9\.\,]+/gm;
                       for (var i = 0; i < lines.length; i++) {
                         var l = lines[i];
+                        if(!l.match(regex)){
+                            res.status(500).send("La ligne ", i+1, " n'as pas le format dd/mm/yyyy hh:mm[:ss]; XXX" ;
+                            return;
+                        }
                         const d = l.split(';');
                         // console.log(d);
                         if (d.length > 1) {
