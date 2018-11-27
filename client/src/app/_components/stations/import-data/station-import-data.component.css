@@ -18,12 +18,11 @@
   cursor: pointer;
 }
 
-.maxWidthDate {
-  max-width: none;
-  min-width: none;
+table {
+  table-layout: fixed;
+  width: 100%;
 }
 
-.maxWidthValeur {
-  max-width: none;
-  min-width: none;
+input {
+  width: 100%;
 }

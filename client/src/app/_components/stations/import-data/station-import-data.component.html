@@ -8,7 +8,7 @@
   </div>
   <hr>
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-6">
       <div class="alert alert-warning" *ngIf="currentStation.state == 'broken'">
         La station est en état broken, verifiez bien les dates des données pour qu'elles correspondent à la période où
         la station fonctionnait.
@@ -22,12 +22,12 @@
   <div class="row">
     <div class="col-md-6" (click)="changeZone('manual')">
       <h2>Import manuel</h2>
-      <table class="table table-responsive table-striped">
+      <table class="table ">
         <thead>
           <tr>
-            <td class="maxWidthDate">Date</td>
+            <td>Date</td>
             <td>Heure (24h)</td>
-            <td class="maxWidthValeur">Valeur (mm)</td>
+            <td>Valeur (mm)</td>
             <td>
               <button class="btn btn-primary" (click)="moreData()">
                 Ajouter une ligne
@@ -39,13 +39,13 @@
         <tbody>
           <tr *ngFor="let d of data;">
             <td class="align-middle pointer">
-              <input class="pointer maxWidthDate" placeholder="Date" type="date" [(ngModel)]="d.date" />
+              <input class="pointer" placeholder="Date" type="date" [(ngModel)]="d.date" />
             </td>
             <td>
               <ngb-timepicker [(ngModel)]="d.time"></ngb-timepicker>
             </td>
             <td>
-              <input class="maxWidthValeur" placeholder="value" type="number" [(ngModel)]="d.value" />
+              <input placeholder="value" type="number" [(ngModel)]="d.value" />
             </td>
             <td>
               <button class="btn btn-danger" (click)="removeData(d)">
@@ -60,7 +60,7 @@
         Envoyer les données pour confirmation
       </button>
     </div>
-    <div class="col-md">
+    <div class="col-md-1">
       <h3>OU</h3>
     </div>
     <div class="col-md-5" (click)="changeZone('file')">
@@ -74,7 +74,7 @@
       <p *ngIf="selectedFile">File selected : {{selectedFile.name}}</p>
       <br />
       <button class="float-right btn btn-success" (click)="sendData()">
-        Importer un fichier
+        Importer le fichier
         <i class="fas fa-check-circle"></i>
       </button>
     </div>
