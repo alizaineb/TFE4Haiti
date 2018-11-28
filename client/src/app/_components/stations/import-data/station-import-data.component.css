@@ -27,13 +27,13 @@ input {
 }
 
 .minWidthValue {
-  width: 100px;
+  min-width: 100px;
 }
 
 .minWidthHour {
-  width: 124px;
+  min-width: 124px;
 }
 
 .minWidthDate {
-  width: 204px;
+  min-width: 204px;
 }
