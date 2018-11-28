@@ -105,58 +105,66 @@ export class StationImportDataComponent implements OnInit {
     this.selectedZone = item;
   }
 
-  sendData() {
+  sendManual(){
     this.loading = true;
     const currentUser = this.localStorageService.getItem('currentUser');
 
-    if (this.selectedZone === 'file') {
-      const fd = new FormData();
-      fd.append('CsvFile', this.selectedFile, this.selectedFile.name);
-      this.stationService.importDataFile(this.currentStation._id, fd).subscribe(
-        res => {
-          this.alertService.success('Fichier importé.');
-          this.selectedFile = undefined;
-          this.loading = false;
-        },
-        err => {
-          this.alertService.error(`Erreur lors de l'importation du fichier.`);
-          this.loading = false;
-        }
-      );
-    } else {
-      const dataToSend = [];
+    const dataToSend = [];
 
-      // console.log(currentUser);
+    // console.log(currentUser);
 
-      for (let i = 0; i < this.data.length; i++) {// } d in this.data){
-        const tmp = new RainData();
-        tmp.id_station = this.currentStation._id;
-        tmp.id_user = currentUser.current._id;
-        tmp.value = this.data[i].value;
-        tmp.date = new Date(`${this.data[i].date}T${this.minTwoDigits(this.data[i].time.hour)}:${this.minTwoDigits(this.data[i].time['minute'])}:00Z`);
-        console.log(tmp.date.getFullYear());
-        if (tmp.date.getFullYear() != 1970 && !isNaN(tmp.date.getFullYear())) {
+    for (let i = 0; i < this.data.length; i++) {// } d in this.data){
+      const tmp = new RainData();
+      tmp.id_station = this.currentStation._id;
+      tmp.id_user = currentUser.current._id;
+      tmp.value = this.data[i].value;
+      tmp.date = new Date(`${this.data[i].date}T${this.minTwoDigits(this.data[i].time.hour)}:${this.minTwoDigits(this.data[i].time['minute'])}:00Z`);
+      console.log(tmp.date.getFullYear());
+      if (tmp.date.getFullYear() != 1970 && !isNaN(tmp.date.getFullYear())) {
 
-          dataToSend.push(tmp);
-        } else {
-          this.alertService.error('Veuillez selectionner une date.');
-          this.loading = false;
-          return;
-        }
+        dataToSend.push(tmp);
+      } else {
+        this.alertService.error('Veuillez selectionner une date.');
+        this.loading = false;
+        return;
       }
-      // console.table(dataToSend);
-      this.stationService.importData(this.currentStation._id, dataToSend).subscribe(
-        res => {
-          this.alertService.success('La donnée a été envoyée à un adminstrateur afin qu\'il puisse la valider.');
-          this.data = [];
-          this.addData();
-          this.loading = false;
-        },
-        err => {
-          this.alertService.error(err);
-          this.loading = false;
-        });
     }
+    // console.table(dataToSend);
+    this.stationService.importData(this.currentStation._id, dataToSend).subscribe(
+      res => {
+        this.alertService.success('La donnée a été envoyée à un adminstrateur afin qu\'il puisse la valider.');
+        this.data = [];
+        this.addData();
+        this.loading = false;
+      },
+      err => {
+        this.alertService.error(err);
+        this.loading = false;
+      });
+
+  }
+
+  sendFile(){
+    this.loading = true;
+    const currentUser = this.localStorageService.getItem('currentUser');
+    const fd = new FormData();
+    if(!this.selectedFile){
+      this.alertService.error("Veuillez sélectionner un fichier.");
+      this.loading = false;
+      return;
+    }
+    fd.append('CsvFile', this.selectedFile, this.selectedFile.name);
+    this.stationService.importDataFile(this.currentStation._id, fd).subscribe(
+      res => {
+        this.alertService.success('Fichier importé.');
+        this.selectedFile = undefined;
+        this.loading = false;
+      },
+      err => {
+        this.alertService.error(`Erreur lors de l'importation du fichier.`);
+        this.loading = false;
+      }
+    );
   }
 
   private minTwoDigits(n) {
