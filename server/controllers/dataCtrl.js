@@ -10,6 +10,8 @@ const logger = require('../config/logger');
 const dataModel = require('./../models/data');
 const checkParam = require('./utils').checkParam;
 const state = require('../config/constants').DataType;
+const errors = require('./utils').errors;
+
 
 const Station = require("../models/station");
 const UsersModel = require("../models/user");
@@ -87,6 +89,9 @@ exports.acceptAwaiting = function(req, res) {
         logger.error("[DATACTRL] acceptAwaiting : ", err)
         return res.status(500).send("Erreur lors de la recupération de la donnée.")
       } else {
+        if(!rainDataAwaiting){
+          return rs.status(404).send("Données non trouvées.");
+        }
         let status = 200;
         switch (rainDataAwaiting.type) {
           case state.INDIVIDUAL:
@@ -98,7 +103,9 @@ exports.acceptAwaiting = function(req, res) {
               });
 
             }).catch((err) => {
-              return res.status(500).send(err);
+                logger.error(err);
+                let tmp = errors(err);
+                return res.status(tmp.error).send("Certaines données existent déjà pour cette date.");
             });
             return;
           case state.UPDATE:
@@ -125,8 +132,9 @@ exports.acceptAwaiting = function(req, res) {
                     return res.status(500).send(err);
                   });
                 }).catch(function(err) {
-                  logger.error(err);
-                  return res.status(500).send("Une erreur est survenue lors de la mise à jours de la donnée.");
+                    logger.error(err);
+                    let tmp = errors(err);
+                    return res.status(tmp.error).send("Certaines données existent déjà pour cette date.");
                 });
               });
 
@@ -196,12 +204,13 @@ exports.acceptAwaiting = function(req, res) {
                           // console.log("data : ", data.date);
                         }
                       }
-                      res.status(200).send();
+                      //res.status(200).send();
                       // insertData(req, res, datas, station, user)
                     dataModel.rainDataModel.insertMany(datas, (err, docs) => {
                         if (err) {
                           logger.error('[IMPORTFILE] InsertMany : ', err);
-                          res.status(500).send(err); //'Les données n\'ont pas sur être insérer...');
+                          let tmp = errors(err);
+                          return res.status(tmp.error).send("Certaines données existent déjà pour une des dates du fichier.");
                         } else {
                           const filePath = path.join(nconf.get('uploadFolder'), rainDataAwaiting.value);
                           fs.unlink(filePath, (err) => {
