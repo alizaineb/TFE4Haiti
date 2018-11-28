@@ -106,6 +106,7 @@ export class AdminPanelComponent implements OnInit {
   }
 
   loadAwaitingData() {
+    this.dataLoading = false;
     const self = this;
     self.rainDataService.getAllAwaiting()
       .pipe(map(datas => {
