@@ -9,11 +9,11 @@
   <hr>
   <div class="row">
     <div class="col-md-6">
-      <div class="alert alert-warning" *ngIf="currentStation.state == 'broken'">
+      <div class="alert alert-warning" *ngIf="currentStation.state == 'En panne'">
         La station est en état broken, verifiez bien les dates des données pour qu'elles correspondent à la période où
         la station fonctionnait.
       </div>
-      <div class="alert alert-danger" *ngIf="currentStation.state == 'deleted'">
+      <div class="alert alert-danger" *ngIf="currentStation.state == 'Pas en activité'">
         La station n'est plus en état de marche, verifiez bien les dates des données pour qu'elles correspondent à la
         période où la station fonctionnait.
       </div>
