@@ -74,7 +74,7 @@ export class StationImportDataComponent implements OnInit {
   hasUnsavedData() {
     const i = 0;
     const d = new Date(`${this.data[i].date}T${this.minTwoDigits(this.data[i].time.hour)}:${this.minTwoDigits(this.data[i].time['minute'])}:00Z`);
-    if (d.getFullYear() != 1970) {
+    if (d.getFullYear() != 1970 && this.selectedZone == 'manual') {
       return true;
     } else {
       return false;
