@@ -72,13 +72,19 @@ export class StationImportDataComponent implements OnInit {
 
 
   hasUnsavedData() {
-    const i = 0;
-    const d = new Date(`${this.data[i].date}T${this.minTwoDigits(this.data[i].time.hour)}:${this.minTwoDigits(this.data[i].time['minute'])}:00Z`);
-    if (d.getFullYear() != 1970) {
-      return true;
-    } else {
-      return false;
+    if(this.selectedZone == 'manual'){
+      const i = 0;
+      const d = new Date(`${this.data[i].date}T${this.minTwoDigits(this.data[i].time.hour)}:${this.minTwoDigits(this.data[i].time['minute'])}:00Z`);
+      if (d.getFullYear() != 1970) {
+        return true;
+      }
+    }else{
+      if(this.selectedFile){
+        return true;
+      }
     }
+    return false;
+
   }
 
   previousRoute() {
@@ -109,6 +115,7 @@ export class StationImportDataComponent implements OnInit {
       this.stationService.importDataFile(this.currentStation._id, fd).subscribe(
         res => {
           this.alertService.success('Fichier importé.');
+          this.selectedFile = undefined;
           this.loading = false;
         },
         err => {
@@ -177,7 +184,7 @@ export class StationImportDataComponent implements OnInit {
         self.alertService.error('La taille max est de 2Mo');
       } else {
         self.selectedFile = f;
-        self.alertService.success('Fichier accepté');
+        //self.alertService.success('Fichier accepté');
       }
     } else {
       self.alertService.error('Seul les fichier CSV sont acceptés.');
