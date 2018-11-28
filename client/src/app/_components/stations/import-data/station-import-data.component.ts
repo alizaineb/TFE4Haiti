@@ -156,7 +156,7 @@ export class StationImportDataComponent implements OnInit {
     fd.append('CsvFile', this.selectedFile, this.selectedFile.name);
     this.stationService.importDataFile(this.currentStation._id, fd).subscribe(
       res => {
-        this.alertService.success('Fichier importé.');
+        this.alertService.success('Le fichier a été envoyé à un adminstrateur afin qu\'il puisse le valider.');
         this.selectedFile = undefined;
         this.loading = false;
       },
