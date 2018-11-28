@@ -134,7 +134,9 @@ export class StationImportDataComponent implements OnInit {
         tmp.id_user = currentUser.current._id;
         tmp.value = this.data[i].value;
         tmp.date = new Date(`${this.data[i].date}T${this.minTwoDigits(this.data[i].time.hour)}:${this.minTwoDigits(this.data[i].time['minute'])}:00Z`);
-        if (tmp.date.getFullYear() != 1970) {
+        console.log(tmp.date.getFullYear());
+        if (tmp.date.getFullYear() != 1970 && !isNaN(tmp.date.getFullYear())) {
+
           dataToSend.push(tmp);
         } else {
           this.alertService.error('Veuillez selectionner une date.');
