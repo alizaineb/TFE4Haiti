@@ -177,7 +177,7 @@ export class StationImportDataComponent implements OnInit {
         self.alertService.error('La taille max est de 2Mo');
       } else {
         self.selectedFile = f;
-        self.alertService.success('Fichier accepté');
+        //self.alertService.success('Fichier accepté');
       }
     } else {
       self.alertService.error('Seul les fichier CSV sont acceptés.');
