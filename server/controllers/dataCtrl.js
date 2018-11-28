@@ -103,7 +103,9 @@ exports.acceptAwaiting = function(req, res) {
               });
 
             }).catch((err) => {
-              return res.status(500).send(err);
+                logger.error(err);
+                let tmp = errors(err);
+                return res.status(tmp.error).send("Certaines données existent déjà pour cette date.");
             });
             return;
           case state.UPDATE:
@@ -130,8 +132,9 @@ exports.acceptAwaiting = function(req, res) {
                     return res.status(500).send(err);
                   });
                 }).catch(function(err) {
-                  logger.error(err);
-                  return res.status(500).send("Une erreur est survenue lors de la mise à jours de la donnée.");
+                    logger.error(err);
+                    let tmp = errors(err);
+                    return res.status(tmp.error).send("Certaines données existent déjà pour cette date.");
                 });
               });
 
