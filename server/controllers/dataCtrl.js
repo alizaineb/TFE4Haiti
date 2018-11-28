@@ -90,6 +90,7 @@ exports.acceptAwaiting = function(req, res) {
         let status = 200;
         switch (rainDataAwaiting.type) {
           case state.INDIVIDUAL:
+            //TODO check interval
             const rainData = dataModel.RainDataAwaitinToAccepted(rainDataAwaiting);
             rainData.save().then(() => {
               dataModel.RainDataAwaitingModel.deleteOne({ _id: rainDataAwaiting._id }).then(() => {
@@ -101,6 +102,7 @@ exports.acceptAwaiting = function(req, res) {
             });
             return;
           case state.UPDATE:
+            //Todo Check interval
             if (!rainDataAwaiting.value) {
               // donnée modifier vers rien, on supprime l'ancienne donnée et la donnée en attente
               dataModel.RainDataAwaitingModel.deleteOne({ _id: rainDataAwaiting._id }).then(() => {
@@ -114,7 +116,7 @@ exports.acceptAwaiting = function(req, res) {
               });
             } else {
               dataModel.rainDataModel.findById(rainDataAwaiting.id_old_data, (err, rainData) => {
-                console.log("RAIN", rainData);
+                // console.log("RAIN", rainData);
                 rainData.value = rainDataAwaiting.value;
                 rainData.save().then(() => {
                   dataModel.RainDataAwaitingModel.deleteOne({ _id: rainDataAwaiting._id }).then(() => {
@@ -154,43 +156,50 @@ exports.acceptAwaiting = function(req, res) {
                       // console.log(lines);
                       let prevDate = null;
                       let first = true;
-                      const regex = /[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{2,4}\s[0-9]{1,2}:[0-9]{1,2}(:[0-9]{1,2})?;\s*[0-9\.\,]+/gm;
+
+
+
+
                       for (var i = 0; i < lines.length; i++) {
+                          const regex1 = /[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{2,4}\s[0-9]{1,2}:[0-9]{1,2}(:[0-9]{1,2})?;\s*[0-9\.\,]+/gm;
+                          const regex2 = /[0-9]{2,4}\-[0-9]{1,2}\-[0-9]{1,2}\s[0-9]{1,2}:[0-9]{1,2}(:[0-9]{1,2})?;\s*[0-9\.\,]+/gm;
+
                         var l = lines[i];
-                        if(!l.match(regex)){
-                            res.status(500).send("La ligne ", i+1, " n'as pas le format dd/mm/yyyy hh:mm[:ss]; XXX") ;
-                            return;
-                        }
                         const d = l.split(';');
+                        // console.log("Line : ", l);
+                        if(l.trim() == ''){
+                          continue;
+                        }
+                        let datetmp = d[0];
+                        if(regex1.test(l)){
+                            datetmp = dateRegex1(d[0]);
+                        }else if(regex2.test(l)){
+                            datetmp = dateRegex2(d[0]);
+                        }else{
+                            return res.status(500).send("Les dates du fichier ne respecte pas le format à la Ligne " + (i+1));
+                        }
+
+
                         // console.log(d);
                         if (d.length > 1) {
                           let data = new dataModel.rainDataModel();
                           data.id_station = station._id;
                           data.id_user = user._id;
-                          data.date = new Date(d[0]);
-                          data.date = new Date(Date.UTC(data.date.getFullYear(), data.date.getMonth(), data.date.getDate(), data.date.getHours(), data.date.getMinutes()))
-                          // console.log(data.date);
-                          if (first) {
-                            data.value = d[1].replace(',', '.');
+                          data.value = d[1].replace(',', '.');
+                          data.date = datetmp;
+                          if(checkInterval(data.date, station.interval)){
                             datas.push(data);
-                          } else {
-                            if (checkDateInterval(prevDate, data.date, station.interval)) { //todo remove || true
-                              data.value = d[1];
-                              datas.push(data);
-                            } else {
-                              res.status(500).send("Les dates du fichier ne se suivent pas, ou ne corresponde pas à l'interval de la station..")
-                              return;
-                            }
+                          }else{
+                            return res.status(500).send("L'interval du fichier ne correspond pas celui de la station. (Ligne " + (i+1) + ")")
                           }
-                          prevDate = data.date;
+
+                          // console.log("data : ", data.date);
                         }
                       }
+                      res.status(200).send();
                       // insertData(req, res, datas, station, user)
-                      dataModel.rainDataModel.insertMany(datas, (err, docs) => {
-                        // console.log(err);
-                        // console.log(docs);
+                    dataModel.rainDataModel.insertMany(datas, (err, docs) => {
                         if (err) {
-                          // console.log('erreur : ', err);
                           logger.error('[IMPORTFILE] InsertMany : ', err);
                           res.status(500).send(err); //'Les données n\'ont pas sur être insérer...');
                         } else {
@@ -220,6 +229,31 @@ exports.acceptAwaiting = function(req, res) {
     });
   });
 };
+
+function dateRegex1(dateStr){
+   //  console.log("reg1")
+  let tab = dateStr.split('/');
+  const day = tab[0], month = tab[1];
+  let tab1 = tab[2].split(' ');
+  const year = tab1[0];
+  let tab2 = tab1[1].split(':');
+  const hours = tab2[0], min = tab2[1];
+
+   // console.log("Splited : ", year, month, day);
+  return new Date(Date.UTC(year, month-1, day, hours, min, 0));
+}
+
+function dateRegex2(dateStr){
+   // console.log("reg2")
+    let tab = dateStr.split('-');
+    const year = tab[0], month = tab[1];
+    let tab1 = tab[2].split(' ');
+    const day = tab1[0];
+    let tab2 = tab1[1].split(':');
+    const hours = tab2[0], min = tab2[1];
+    // console.log("Splited : ", year, month, day);
+    return new Date(Date.UTC(year, month-1, day, hours, min, 0));
+}
 
 /**
  * Méthode de refus et suppression d'une données pluviométrique en attente de validation.
@@ -797,7 +831,7 @@ exports.importManualData = function(req, res) {
             let data = new dataModel.RainDataAwaitingModel();
             data.id_station = station._id;
             data.id_user = user._id;
-            console.log(d.date);
+            // console.log(d.date);
             data.date = new Date(d.date);
             //data.date = new Date(Date.UTC(data.date.getFullYear(), data.date.getMonth(), data.date.getDate(), data.date.getHours(), data.date.getMinutes(), data.date.getSeconds()));
             data.value = d.value;
@@ -841,7 +875,7 @@ exports.importFileData = function(req, res) {
         form.parse(req, function(err, fields, files) {
           // console.log(err);
           //       // console.log(fields);
-          console.log(files);
+          // console.log(files);
           const newName = `${station.name}-${files['CsvFile'].name}`
           const newPath = path.join(pathDir, newName);
           fs.rename(files['CsvFile'].path, newPath, (err) => {
@@ -1118,6 +1152,18 @@ exports.getStats = function(req, res) {
 
 }
 
+/**
+ *
+ * @param date
+ * @param interval
+ * @returns {boolean}
+ */
+function checkInterval(date, interval){
+  const i = getIntervalInMinute(interval);
+  const time = date.getTime() / 60000;
+  // console.log(time, " % ", i, " ? ", time % i == 0);
+  return time % i == 0;
+}
 /**
  * Méthode qui check si l'interval entre 2 date est correcte.
  * @param date1 Date de départ

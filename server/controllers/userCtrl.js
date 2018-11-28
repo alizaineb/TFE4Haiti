@@ -135,7 +135,7 @@ exports.getWorkers = function(req, res) {
  * @return {user[]}  200 : Tous les utilisateurs
  */
 exports.getById = function(req, res) {
-  console.log(req.params.user_id);
+  // console.log(req.params.user_id);
   UsersModel.userModel.findById(req.params.user_id,
     '_id first_name last_name mail role bassin_versant commune created_at last_seen state',
     function(err, user) {
