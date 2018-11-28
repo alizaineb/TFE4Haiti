@@ -111,6 +111,11 @@ export class StationImportDataComponent implements OnInit {
 
     const dataToSend = [];
 
+    if(this.data.length < 1){
+      this.alertService.error("Veuillez ajouter une donnée.");
+      this.loading = false;
+      return;
+    }
     // console.log(currentUser);
 
     for (let i = 0; i < this.data.length; i++) {// } d in this.data){
