@@ -20,9 +20,20 @@
 
 table {
   table-layout: fixed;
-  width: 100%;
 }
 
 input {
   width: 100%;
+}
+
+.minWidthValue {
+  min-width: 100px;
+}
+
+.minWidthHour {
+  min-width: 124px;
+}
+
+.minWidthDate {
+  min-width: 204px;
 }
