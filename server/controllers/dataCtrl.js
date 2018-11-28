@@ -190,7 +190,7 @@ exports.acceptAwaiting = function(req, res) {
                           if(checkInterval(data.date, station.interval)){
                             datas.push(data);
                           }else{
-                            return res.status(500).send("Les dates du fichier ne se suivent pas, ou ne corresponde pas à l'interval de la station. (Ligne " + (i+1) + ")")
+                            return res.status(500).send("L'interval du fichier ne correspond pas celui de la station. (Ligne " + (i+1) + ")")
                           }
 
                           // console.log("data : ", data.date);
