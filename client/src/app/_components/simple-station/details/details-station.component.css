@@ -14,3 +14,7 @@
 .white{
   color: white;
 }
+
+h2{
+  text-align: left !important;
+}
