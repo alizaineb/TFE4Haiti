@@ -41,6 +41,7 @@ export class DetailsStationComponent implements OnInit {
     this.stationService.getById(this.stationId).subscribe(
       station => {
         this.currentStation = station;
+        console.log(this.currentStation);
         this.generateMap();
       },
       err => {
@@ -83,9 +84,6 @@ export class DetailsStationComponent implements OnInit {
     this.loadData();
   }
 
-  getState(station: Station) {
-    return this.stationService.getFrenchState(station);
-  }
 
   hasAccessToStation(station) {
     return this.stationService.hasAccessToStation(station);
