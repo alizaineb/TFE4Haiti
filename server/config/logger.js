@@ -31,6 +31,7 @@ const winston = require('winston');
 /**
  * Initialisation du logger
  */
+//TODO Find better way to log date
 const logger = winston.createLogger({
   level: 'info',
   format: winston.format.printf(info => info.message + '\n________________________________________________________\n' + JSON.stringify(info)),
@@ -38,7 +39,7 @@ const logger = winston.createLogger({
     new winston.transports.Console({
       format: winston.format.combine(
         winston.format.colorize(),
-        winston.format.simple()
+        winston.format.printf( info => `${new Date().toLocaleString('fr-BE')}\t${info.level}:  ${info.message}`)
       )
     })
   ],
