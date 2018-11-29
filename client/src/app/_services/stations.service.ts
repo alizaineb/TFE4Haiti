@@ -111,16 +111,6 @@ export class StationsService {
     return this.http.post(environment.apiUrl + '/stations/acceptStation', {station_id: id});
   }
 
-  getFrenchState(station: Station) {
-    const french = {
-      'working': 'Ok',
-      'awaiting': 'A valider',
-      'broken': 'En panne',
-      'deleted': 'Supprimée'
-    };
-    return french[station.state];
-
-  }
 
   importData(id: string, dataToSend: RainData[]) {
     return this.http.post(`${environment.apiUrl}/stations/${id}/import`, dataToSend);
