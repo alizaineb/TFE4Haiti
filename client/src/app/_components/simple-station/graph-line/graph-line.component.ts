@@ -22,7 +22,6 @@ export class GraphLineComponent implements OnInit {
 
   highChartLine;
   highChartBar;
-  datePicker;
   rangeData: string[];
   rangeSelected: string;
 
@@ -33,7 +32,6 @@ export class GraphLineComponent implements OnInit {
   monthSelected: number;
   currentMonth: number;
 
-  datepicker;
   hide;
 
   groupPixelWidth = 50;
@@ -58,17 +56,6 @@ export class GraphLineComponent implements OnInit {
 
     this.hide = false;
 
-    this.datePicker = flatpickr('#datePicker', {
-      locale: French,
-      mode: 'range',
-      altInput: true,
-      dateFormat: 'Y-m-d',
-      altFormat: 'd-m-Y',
-      onChange: function(selectedDates, dateStr, instance) {
-        self.dateChanged(selectedDates, dateStr, instance);
-      }
-    });
-
     this.loadStation();
     this.loadOptionsHighCharts();
   }
@@ -90,10 +77,6 @@ export class GraphLineComponent implements OnInit {
     this.rangeDataChange(this.rangeSelected);
   }
 
-  getValue() {
-    //console.log(this.typeGraph);
-  }
-
   changeMonth(newMonth) {
     this.monthSelected = parseInt(newMonth, 10);
     this.rangeDataChange(this.rangeSelected);
@@ -112,8 +95,6 @@ export class GraphLineComponent implements OnInit {
       this.loadOneYear();
     } else {
       this.hide = true;
-      this.datePicker.setDate(null);
-
     }
   }
 
@@ -154,7 +135,6 @@ export class GraphLineComponent implements OnInit {
   loadRangeDate(minDate, minMonth, minYear, maxDate, maxMonth, maxYear) {
     this.dataLoading = true;
     this.dataService.getAllRainDataGraphLineRangeDate(this.stationId, minDate, minMonth, minYear, maxDate, maxMonth, maxYear).subscribe(data => {
-      //console.log(data);
       const self = this;
       this.hide = false;
       // Create the chart

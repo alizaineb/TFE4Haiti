@@ -1,7 +1,5 @@
 <h1>Gestion de mes stations </h1>
 
-
-
 <div class="row">
   <div class="col-md-5">
     <div class="input-group mb-3">
@@ -53,7 +51,9 @@
     <tr *ngFor="let station of stationsFiltered | paginate: { itemsPerPage: 10, currentPage: currentPage }; index as i;">
       <td>{{i+1}}</td>
       <td>{{station.name}}
-        <a class="details float-right" [routerLink]="['/stations', station._id, 'Details']">
+        <a class="details float-right"
+           matTooltip="Détail de la station"
+           [routerLink]="['/stations', station._id, 'Details']">
           <i class="fas fa-external-link-alt"></i>
         </a>
       </td>

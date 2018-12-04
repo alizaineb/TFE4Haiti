@@ -43,7 +43,11 @@
         <div>
           <i *ngIf="getSelectedClass(station)" class="fas fa-check-circle "></i>
           <i *ngIf="!getSelectedClass(station)" class="far fa-circle "></i>
-          <a class="details" [routerLink]="['/stations', station._id, 'Details']"> <i class="fas fa-external-link-alt"></i> </a>
+          <a class="details"
+             matTooltip="Détail de la station"
+             [routerLink]="['/stations', station._id, 'Details']">
+            <i class="fas fa-external-link-alt"></i>
+          </a>
         </div>
       </li>
     </ul>
@@ -57,9 +61,7 @@
         </div>
       </div>
     </div>
-
-
-
+    
   </div>
   <div class="col-md-9 ">
     <div id="mapid">
