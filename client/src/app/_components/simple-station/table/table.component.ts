@@ -200,28 +200,34 @@ export class TableComponent implements OnInit, OnChanges {
       }
     }
     // Si y'a des données, compute les
-    if (this.dataToShow) {
-      this.computeDataToShow();
-    }
 
 
+
+    let dateEl = (<HTMLInputElement>document.getElementById('datePicker'));
+    let monthEl = (<HTMLInputElement>document.getElementById('datePicker'));
     // On est passé d'un affichage mensuel à un affichage journalier (ou l'inverse)
     // Minutes vers heures
     if (this.oldInterval.indexOf('m') >= 0 && val.indexOf('h') >= 0) {
       // Reset datePicker
-      let el = (<HTMLInputElement>document.getElementById('datePicker'));
       // @ts-ignore : _flatpickr existe
-      el._flatpickr.clear();
+      dateEl._flatpickr.clear();
       this.noData = false;
       this.noDateSelected = true;
     }
     // Heures vers minutes
     else if (this.oldInterval.indexOf('h') >= 0 && val.indexOf('m') >= 0) {
       // Reset monthPickr
-      let el = (<HTMLInputElement>document.getElementById('monthSelector'));
-      el.value = "";
+      monthEl.value = "";
       this.noData = false;
       this.noDateSelected = true;
+    }
+
+    if (!dateEl.value && !monthEl.value) {
+      this.noDateSelected = true;
+      this.dataToShow = false;
+    }
+    if (this.dataToShow) {
+      this.computeDataToShow();
     }
     this.oldInterval = val;
   }
