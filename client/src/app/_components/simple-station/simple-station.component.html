@@ -15,10 +15,10 @@
     <app-simple-station-details [stationId]="stationId"></app-simple-station-details>
   </div>
   <div *ngIf="getSelectedClass(tabList[1])">
-    <app-table [stationId]="stationId"></app-table>
+    <app-graph-line [stationId]="stationId"></app-graph-line>
   </div>
   <div *ngIf="getSelectedClass(tabList[2])">
-    <app-graph-line [stationId]="stationId"></app-graph-line>
+    <app-table [stationId]="stationId"></app-table>
   </div>
 
   <div *ngIf="getSelectedClass(tabList[3])">
