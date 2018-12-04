@@ -49,12 +49,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material';
 import {MatInputModule} from '@angular/material';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
-
-
-
-
-// @ts-ignore
 @NgModule({
   imports: [
     BrowserModule,
@@ -70,6 +66,7 @@ import {MatInputModule} from '@angular/material';
     MatFormFieldModule,
     MatNativeDateModule,
     MatInputModule,
+    MatTooltipModule
   ],
   declarations: [
     AppComponent,
