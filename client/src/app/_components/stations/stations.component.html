@@ -13,7 +13,7 @@
       <div class="offset-1 col-md-1" data-toggle="modal" data-target="#addStationModal">
         <button class="btn btn-primary">
           Ajouter une station
-          <i class="fas fa-plus-circle" ></i>
+          <i class="fas fa-plus-circle"></i>
         </button>
       </div>
     </div>
@@ -24,7 +24,7 @@
       <div class="card-body">
         <div class="card-text">
           <div class="row">
-            <div class="col-md-6" *ngIf="hasAdminAccess()"><i class="fas fa-edit fa-fw fa-1x"></i> Editer la station</div>
+            <div class="col-md-6" *ngIf="hasAdminAccess()"><i class="fas fa-pencil-alt fa-fw fa-1x"></i> Editer la station</div>
             <div class="col-md-6" *ngIf="hasWorkerAccess()"><i class="fas fa-file-download fa-fw fa-1x"></i> Importer des données</div>
           </div>
           <div class="row">
@@ -42,6 +42,7 @@
     <tr>
       <th>#</th>
       <th *ngFor="let head of headers">
+
         {{head}}
         <i class="fa fa-sort float-right" aria-hidden="true" (click)="sortData(head)"></i>
       </th>
@@ -62,7 +63,7 @@
       <td>{{station.updatedAt | date: 'd/MM/yyyy à HH:mm':'UTC'}}</td>
       <td>{{station.state}}</td>
       <td>
-        <i class="fas fa-edit fa-fw fa-1x" (click)="setStationSelected(station)" data-toggle="modal" data-target="#updateStationModal" *ngIf="hasAdminAccess()"></i>
+        <i class="fas fa-pencil-alt fa-fw fa-1x" (click)="setStationSelected(station)" data-toggle="modal" data-target="#updateStationModal" *ngIf="hasAdminAccess()"></i>
         <a [routerLink]="['/','stations',  station._id, 'import']"><i class="fas fa-file-download fa-fw fa-1x" *ngIf="hasWorkerAccess()"></i></a>
         <i class="fas fa-sticky-note fa-fw fa-lx" (click)="setStationSelected(station)" data-toggle="modal" data-target="#noteStationModal" *ngIf="hasWorkerAccess()"></i>
         <i class="fas fa-trash fa-fw fa-1x" (click)="setStationSelected(station)" data-toggle="modal" data-target="#deleteStationModal" *ngIf="hasAdminAccess()"></i>

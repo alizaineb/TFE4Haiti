@@ -12,7 +12,7 @@
     <div class="card bg-light mb-3 pull-right">
       <div class="card-body">
         <p class="card-text">
-          <i class="fas fa-edit fa-fw fa-1x"></i> Editer l'utilisateur
+          <i class="fas fa-pencil-alt fa-fw fa-1x"></i> Editer l'utilisateur
           <i class="fas fa-trash fa-fw fa-1x"></i> Supprimer l'utilisateur
         </p>
       </div>
@@ -44,7 +44,7 @@
       <td>{{user.role}}</td>
       <td>{{user.state}}</td>
       <td>
-        <i class="fas fa-edit fa-fw fa-1x" (click)="assignUserToUpdate(user)" data-toggle="modal" data-target="#updateUserModal"></i>
+        <i class="fas fa-pencil-alt fa-fw fa-1x" (click)="assignUserToUpdate(user)" data-toggle="modal" data-target="#updateUserModal"></i>
         <i class="fas fa-trash fa-fw fa-1x" (click)="deleteUser(user._id)"></i>
       </td>
     </tr>

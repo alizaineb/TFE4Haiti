@@ -440,15 +440,15 @@ i:hover {
   color: darkRed;
 }
 
-.fa-edit {
+.fa-pencil-alt {
   color: blue;
 }
 
-.fa-edit:hover {
+.fa-pencil-alt:hover {
   color: DarkTurquoise;
 }
 
-.fa-edit:active {
+.fa-pencil-alt:active {
   color: darkBlue;
 }
 
