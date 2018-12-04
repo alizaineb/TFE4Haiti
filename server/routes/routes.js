@@ -69,6 +69,12 @@ exports.routes = [
     access: [roles.ADMIN]
   },
   {
+    path: "/api/users/getCountAllAwaiting",
+    httpMethod: "GET",
+    middleWare: [controllers.users.getCountAllAwaiting],
+    access: [roles.ADMIN]
+  },
+  {
     path: "/api/users/acceptUser/:user_id",
     httpMethod: "POST",
     middleWare: [controllers.users.acceptUser],

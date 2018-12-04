@@ -50,6 +50,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material';
 import {MatInputModule} from '@angular/material';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatBadgeModule} from '@angular/material/badge';
+
 
 @NgModule({
   imports: [
@@ -66,7 +68,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatFormFieldModule,
     MatNativeDateModule,
     MatInputModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatBadgeModule
   ],
   declarations: [
     AppComponent,
