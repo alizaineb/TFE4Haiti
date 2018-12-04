@@ -12,7 +12,7 @@
       <div class="row">
         <div class="col-md-4">
           <div class="alert alert-success" role="alert" [hidden]="!stationStats">
-            <h4 class="alert-heading"><i class="fas fa-home fa-3x"></i> {{stationStats.total}} Stations au total </h4>
+            <h4 class="alert-heading"><a [routerLink]="['/', 'map']"><i class="fas fa-home fa-3x"></i> {{stationStats.total}} Stations au total </a> </h4>
             <hr>
             <p>{{stationStats.awaiting}} stations à valider</p>
             <p>{{stationStats.working}} stations en activité</p>
