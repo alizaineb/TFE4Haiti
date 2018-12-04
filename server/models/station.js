@@ -89,7 +89,7 @@ const Station = new Schema({
         return v.getFullYear() <= d.getFullYear() && v.getMonth() <= d.getMonth() && v.getDate() <= d.getDate();
       },
       message: props => `Vous ne pouvez pas créer une station dans le futur`
-    }*/
+    }*/ //TODO
   },
   updatedAt: {
     type: Date,
