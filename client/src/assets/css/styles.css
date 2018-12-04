@@ -7,6 +7,10 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 
+.cdk-overlay-container {
+  z-index: 1200;
+}
+
 body {
   font-family: Lato
 }

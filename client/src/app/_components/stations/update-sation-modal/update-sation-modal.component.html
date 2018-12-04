@@ -113,12 +113,20 @@
               <div class="row">
                 <div class="col-md">
                   <div class="form-group">
-                    <input id="createdAt2" placeholder="Date de création" type="text" class="flatpickr flatpickr-input form-control" formControlName="createdAt" required>
-                    <div *ngIf="createdAt.invalid && (createdAt.dirty || createdAt.touched)" class="alert alert-danger">
+
+                    <mat-form-field>
+                      <input matInput id="createdAt2" [matDatepicker]="pickercreatedAt2" [formControl]="createdAt" placeholder="Date de création"
+                             (dateChange)="getDate($event)">
+                      <mat-datepicker-toggle matSuffix [for]="pickercreatedAt2"></mat-datepicker-toggle>
+                      <mat-datepicker #pickercreatedAt2></mat-datepicker>
+                    </mat-form-field>
+                    <div *ngIf="createdAt.invalid && (createdAt.dirty || createdAt.touched)"
+                         class="alert alert-danger">
                       <div *ngIf="createdAt.errors.required">
-                        La longitude est requise
+                        La date de création est requise
                       </div>
                     </div>
+
                   </div>
                 </div>
                   <div class="col-md-6">

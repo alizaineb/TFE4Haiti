@@ -10,11 +10,10 @@ import {Station} from '../../../_models';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {AlertService} from '../../../_services';
 import {StationsService} from '../../../_services/stations.service';
-import flatpickr from 'flatpickr';
-import {French} from 'flatpickr/dist/l10n/fr';
 import * as L from 'leaflet';
 import {LatLng} from 'leaflet';
 import {Constantes} from "../../../_helpers/constantes";
+import {MatDatepickerInputEvent} from "@angular/material";
 
 @Component({
   selector: 'app-update-sation-modal',
@@ -35,7 +34,6 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
   submitted = false;
 
   updateStationForm: FormGroup;
-  datePicker;
 
   map;
   mark;
@@ -99,8 +97,13 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
   get bassin_versant() {return this.updateStationForm.get('bassin_versant'); }
   get commune() {return this.updateStationForm.get('commune'); }
 
+
   ngAfterViewChecked(): void {
     this.map.invalidateSize();
+  }
+
+  getDate(event: MatDatepickerInputEvent<Date>) {
+    console.log(event.value);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -111,9 +114,6 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
 
   resetStation() {
     this.initForm();
-    if (this.datePicker) {
-      this.datePicker.setDate(this.stationToUpdate.createdAt);
-    }
     if (this.mark) {
       this.mark.setLatLng([this.stationToUpdate.latitude, this.stationToUpdate.longitude]);
     }
@@ -151,16 +151,6 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
 
   initDatePickerAndMap() {
     const self = this;
-    this.datePicker = flatpickr('#createdAt2', {
-      defaultDate: self.stationToUpdate.createdAt,
-      locale: French,
-      altInput: true,
-      altFormat: 'd-m-Y',
-      dateFormat: 'd-m-Y',
-      onChange: function(selectedDates, dateStr, instance) {
-        self.updateStationForm.controls['createdAt'].setValue(new Date(selectedDates[0]));
-      }
-    });
 
     const icon1 = L.icon({
       iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/images/marker-icon.png',

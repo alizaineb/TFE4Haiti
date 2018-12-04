@@ -8,6 +8,7 @@ import flatpickr from 'flatpickr';
 import { French} from 'flatpickr/dist/l10n/fr';
 import * as L from 'leaflet';
 import {LatLng} from 'leaflet';
+import {MatDatepickerInputEvent} from "@angular/material";
 
 
 @Component({
@@ -22,7 +23,6 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked {
   sent = new EventEmitter<boolean>();
   submitted = false;
   addStationForm: FormGroup;
-  datePicker;
   map;
   mark;
   intervals: string[];
@@ -76,7 +76,7 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked {
       ])
       // Ajouter la méthode get è
     });
-    this.initDatePickerAndMap();
+    this.initMap();
   }
 
   get name() { return this.addStationForm.get('name'); }
@@ -97,7 +97,6 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked {
 
   resetStation() {
     this.addStationForm.reset();
-    this.datePicker.setDate(null);
     this.map.removeLayer(this.mark);
   }
 
@@ -143,18 +142,8 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked {
         });
   }
 
-  initDatePickerAndMap() {
+  initMap() {
     const self = this;
-    this.datePicker = flatpickr('#createdAtAdd', {
-      locale: French,
-      altInput: true,
-      altFormat: 'd-m-Y',
-      dateFormat: 'd-m-Y',
-      onChange: function(selectedDates, dateStr, instance) {
-        self.addStationForm.controls['createdAt'].setValue(new Date(selectedDates[0]));
-      }
-    });
-
     const icon1 = L.icon({
       iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/images/marker-icon.png',
       iconSize: [20, 35], // size of the icon
@@ -199,7 +188,7 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked {
       zoom: 7,
       minZoom: 7,
       maxZoom: 18,
-      layers: [mapLayerErsiSatelite]
+      layers: [mapLayerOpenStreetMap]
     });
 
     L.control.scale().addTo(this.map);

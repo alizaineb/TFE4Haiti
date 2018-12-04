@@ -47,7 +47,8 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
-                    <input class="form-control" id="commune" formControlName="commune" placeholder="Commune" required list="communes">
+                    <input class="form-control" id="commune" formControlName="commune" placeholder="Commune" required
+                           list="communes">
                     <datalist id="communes">
                       <option *ngFor="let i of communes" [value]="i">{{i}}</option>
                     </datalist>
@@ -61,11 +62,13 @@
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
-                    <input class="form-control" id="bassin_versant" placeholder="Bassin versant" formControlName="bassin_versant" required list="bassin_versants">
+                    <input class="form-control" id="bassin_versant" placeholder="Bassin versant"
+                           formControlName="bassin_versant" required list="bassin_versants">
                     <datalist id="bassin_versants">
                       <option *ngFor="let i of bassin_versants" [value]="i">{{i}}</option>
                     </datalist>
-                    <div *ngIf="bassin_versant.invalid && (bassin_versant.dirty || bassin_versant.touched)" class="alert alert-danger">
+                    <div *ngIf="bassin_versant.invalid && (bassin_versant.dirty || bassin_versant.touched)"
+                         class="alert alert-danger">
                       <div *ngIf="bassin_versant.errors.required">
                         Un bassin verstant est requis est requise
                       </div>
@@ -76,7 +79,8 @@
               <div class="row">
                 <div class="col-md">
                   <div class="form-group">
-                    <input type="number" class="form-control" id="latitude" placeholder="Latitude" formControlName="latitude" required>
+                    <input type="number" class="form-control" id="latitude" placeholder="Latitude"
+                           formControlName="latitude" required>
                     <div *ngIf="latitude.invalid && (latitude.dirty || latitude.touched)" class="alert alert-danger">
                       <div *ngIf="latitude.errors.required">
                         La latitude est requise
@@ -92,7 +96,8 @@
                 </div>
                 <div class="col-md">
                   <div class="form-group">
-                    <input type="number" class="form-control" id="longitude" placeholder="Longitude" formControlName="longitude" required>
+                    <input type="number" class="form-control" id="longitude" placeholder="Longitude"
+                           formControlName="longitude" required>
                     <div *ngIf="longitude.invalid && (longitude.dirty || longitude.touched)" class="alert alert-danger">
                       <div *ngIf="longitude.errors.required">
                         La longitude est requise
@@ -108,7 +113,8 @@
                 </div>
                 <div class="col-md">
                   <div class="form-group">
-                    <input type="number" class="form-control" id="altitude" placeholder="Altitude" formControlName="altitude">
+                    <input type="number" class="form-control" id="altitude" placeholder="Altitude"
+                           formControlName="altitude">
                     <div *ngIf="altitude.invalid && (altitude.dirty || altitude.touched)" class="alert alert-danger">
                       <div *ngIf="altitude.errors.required">
                         La longitude est requise
@@ -127,16 +133,20 @@
               <div class="row">
                 <div class="col-md">
                   <div class="form-group">
-                    <input id="createdAtAdd" placeholder="Date de création" type="text" class="flatpickr flatpickr-input form-control" formControlName="createdAt" required>
-                    <div *ngIf="createdAt.invalid && (createdAt.dirty || createdAt.touched)" class="alert alert-danger">
+
+                    <mat-form-field>
+                      <input matInput id="createdAt" [matDatepicker]="pickercreatedAt" [formControl]="createdAt" placeholder="Date de création">
+                      <mat-datepicker-toggle matSuffix [for]="pickercreatedAt"></mat-datepicker-toggle>
+                      <mat-datepicker #pickercreatedAt></mat-datepicker>
+                    </mat-form-field>
+                    <div *ngIf="createdAt.invalid && (createdAt.dirty || createdAt.touched)"
+                         class="alert alert-danger">
                       <div *ngIf="createdAt.errors.required">
-                        La date est requise
+                        La date de création est requise
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div class="col-md">
 
+                  </div>
                 </div>
               </div>
 
@@ -153,7 +163,8 @@
           <div class="row">
             <div class="col-sm">
               <div class="form-group">
-                <textarea rows="6" placeholder="Ajouter une note" type="text" class="form-control" id="note" formControlName="note"></textarea>
+                <textarea rows="6" placeholder="Ajouter une note" type="text" class="form-control" id="note"
+                          formControlName="note"></textarea>
                 <div *ngIf="note.invalid && (note.dirty || note.touched)" class="alert alert-danger">
                   <div *ngIf="note.errors.maxlength">
                     200 caractères maximum
@@ -170,7 +181,8 @@
             </button>
             <button (click)="resetStation()" type="button" class="btn btn-secondary" data-dismiss="modal">Fermer
             </button>
-            <button (click)="sendStation()" type="submit" class="btn btn-success" data-dismiss="modal" [disabled]="!addStationFormNg.form.valid">Ajouter
+            <button (click)="sendStation()" type="submit" class="btn btn-success" data-dismiss="modal"
+                    [disabled]="!addStationFormNg.form.valid">Ajouter
             </button>
           </div>
         </form>
