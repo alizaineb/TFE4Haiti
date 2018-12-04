@@ -177,7 +177,7 @@ export class DetailsStationComponent implements OnInit {
     legend.onAdd = function(map) {
 
       const div = L.DomUtil.create('div', 'info legend'),
-        grades = ['En activité', 'En panne', 'Pas en activitée'],
+        grades = ['En activité', 'En panne', 'Pas en activité'],
         color = ['#5cd65c', '#ffb84d', '#ff471a', '#1aa3ff'];
 
       if (currentU) {
