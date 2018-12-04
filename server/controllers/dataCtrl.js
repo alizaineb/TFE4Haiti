@@ -997,7 +997,7 @@ exports.downloadData = function(req, res) {
             // console.log('The file has been saved!', req.token_decoded.id);
             UsersModel.userModel.findById(req.token_decoded.id, (err, user) => {
               const url = `${URL}/download/${fileName}`; //TODO CHANGE AND GET HOST URL NOT LOCALHOST
-              mailer.sendMailAndIgnoreIfMailInvalid(undefined, undefined, "Download File", user.mail, url, (err) => {
+              mailer.sendMailAndIgnoreIfMailInvalid(undefined, undefined, "Données à télécharger", user.mail, url, (err) => {
                 if (err) {
                   logger.error("[DATACTRL] downloadData : ", err);
                 }
