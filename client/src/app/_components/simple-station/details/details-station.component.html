@@ -65,21 +65,27 @@
 
   <div class="col-md-7">
     <div class="row detail-actions" *ngIf="currentStation">
-      <div class="col-md-4">
+      <div class="col-md-3">
+        <button class="btn btn-primary btn-sm" [routerLink]="['/stations',currentStation._id, 'Graphiques' ]">
+          Visualiser les données
+          <i class="fas fa-chart-bar white"></i>
+        </button>
+      </div>
+      <div class="col-md-3">
         <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateStationModal"
                 *ngIf="hasAdminAccess()">
           Modifier la station
           <i class="fas fa-edit white"></i>
         </button>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
         <a [routerLink]="['/','stations',  currentStation._id, 'import']" class="btn btn-success btn-sm"
            *ngIf="hasAccessToStation(currentStation)">
           Importer des données
           <i class="fas fa-file-download white"></i>
         </a>
       </div>
-      <div class="col-md-4" *ngIf="hasViewerAcces()">
+      <div class="col-md-3" *ngIf="hasViewerAcces()">
         <button class="btn btn-secondary btn-sm" (click)="setDownloadClick()" data-toggle="modal"
                 data-target="#DownloadStationModalLabel">
           Télécharger des données
