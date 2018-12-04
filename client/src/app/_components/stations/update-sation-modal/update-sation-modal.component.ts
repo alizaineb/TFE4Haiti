@@ -102,10 +102,6 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
     this.map.invalidateSize();
   }
 
-  getDate(event: MatDatepickerInputEvent<Date>) {
-    console.log(event.value);
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
     this.resetStation();
   }
