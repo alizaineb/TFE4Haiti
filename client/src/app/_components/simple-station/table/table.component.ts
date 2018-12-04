@@ -266,7 +266,12 @@ export class TableComponent implements OnInit, OnChanges {
     this.sums = [];
     this.totVals = 0;
     this.totSum = 0;
-    let hopSize = this.computeStep(this.intervalSelected, this.currentStation.interval);
+    // Ici va falloir changer this.currentStation.interval
+    let currentIntervalTmp = this.currentStation.interval;
+    if (this.intervalSelected.indexOf('h') >= 0) {
+      currentIntervalTmp = "1h";
+    }
+    let hopSize = this.computeStep(this.intervalSelected, currentIntervalTmp);
     let idx = 0;
     for (let h = 0; h < this.allDatas.length; h = h + (hopSize * this.ratio)) {
       let tabToBePushed = [];
@@ -339,7 +344,6 @@ export class TableComponent implements OnInit, OnChanges {
     }
     this.totMin = min;
     this.totMax = max;
-
     this.computeWidth();
   }
 
@@ -368,7 +372,7 @@ export class TableComponent implements OnInit, OnChanges {
     }
     // ça devrait jamais arriver mais on vérifie quand même
     // ça arrivera si l'utilisateur modifie les éléments html
-    // ça arrive aps car si intervalle == 10 on retire le choix 15 du la liste des intervalles
+    // ça arrive pas car si intervalle == 10 on retire le choix 15 du la liste des intervalles
     if (biggest == 15 && small == 10) {
       return;
     }
