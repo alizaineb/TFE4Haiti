@@ -1,7 +1,8 @@
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Station } from '../../_models';
 import { StationsService } from '../../_services/stations.service';
 import { AuthenticationService } from '../../_services';
+
 
 @Component({
   selector: 'app-stations',
