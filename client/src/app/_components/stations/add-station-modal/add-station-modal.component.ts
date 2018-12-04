@@ -199,7 +199,7 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked {
       zoom: 7,
       minZoom: 7,
       maxZoom: 18,
-      layers: [mapLayerOpenStreetMap]
+      layers: [mapLayerErsiSatelite]
     });
 
     L.control.scale().addTo(this.map);
