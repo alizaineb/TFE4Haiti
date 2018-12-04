@@ -3,15 +3,13 @@ import { DataService } from '../../../_services/data.service';
 import * as Highcharts from 'highcharts/highstock';
 import { Station } from '../../../_models';
 import { StationsService } from '../../../_services/stations.service';
-import flatpickr from 'flatpickr';
-import { French } from 'flatpickr/dist/l10n/fr';
-import { AuthenticationService } from "../../../_services";
 
 @Component({
   selector: 'app-graph-line',
   templateUrl: './graph-line.component.html',
   styleUrls: ['./graph-line.component.css']
 })
+
 export class GraphLineComponent implements OnInit {
 
   @Input()

@@ -83,7 +83,18 @@
 
 <div class="row col-md-8" [hidden]="'Quotidiennes'!==rangeSelected">
 
-  <!--<input id="datePicker" placeholder="Sélectionner une range de date" type="text" class="flatpickr flatpickr-input col-sm-5 form-control">-->
+  <mat-form-field>
+    <input matInput id="fromDate" [matDatepicker]="pickerFromDate"  placeholder="Date de début">
+    <mat-datepicker-toggle matSuffix [for]="pickerFromDate"></mat-datepicker-toggle>
+    <mat-datepicker #pickerFromDate></mat-datepicker>
+  </mat-form-field>
+  <p>/</p>
+  <mat-form-field>
+    <input matInput id="toDate" [matDatepicker]="pickerToDate" placeholder="Date de fin">
+    <mat-datepicker-toggle matSuffix [for]="pickerToDate"></mat-datepicker-toggle>
+    <mat-datepicker #pickerToDate></mat-datepicker>
+  </mat-form-field>
+
 
   <div class="col-sm-6 form-row">
     <label class="col-form-label spaceRight">
