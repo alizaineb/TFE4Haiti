@@ -80,20 +80,20 @@
   </div>
 </div>
 
+<div class="row col-md-12" [hidden]="'Quotidiennes'!==rangeSelected">
+  <div class="col-sm-6 form-row">
+    <mat-form-field>
+      <input matInput (dateChange)="getData('from',$event)" id="fromDate" [matDatepicker]="pickerFromDate" placeholder="Date de début">
+      <mat-datepicker-toggle matSuffix [for]="pickerFromDate"></mat-datepicker-toggle>
+      <mat-datepicker #pickerFromDate></mat-datepicker>
+    </mat-form-field>
 
-<div class="row col-md-8" [hidden]="'Quotidiennes'!==rangeSelected">
-
-  <mat-form-field>
-    <input matInput id="fromDate" [matDatepicker]="pickerFromDate"  placeholder="Date de début">
-    <mat-datepicker-toggle matSuffix [for]="pickerFromDate"></mat-datepicker-toggle>
-    <mat-datepicker #pickerFromDate></mat-datepicker>
-  </mat-form-field>
-  <p>/</p>
-  <mat-form-field>
-    <input matInput id="toDate" [matDatepicker]="pickerToDate" placeholder="Date de fin">
-    <mat-datepicker-toggle matSuffix [for]="pickerToDate"></mat-datepicker-toggle>
-    <mat-datepicker #pickerToDate></mat-datepicker>
-  </mat-form-field>
+    <mat-form-field class="offset-sm-1">
+      <input matInput (dateChange)="getData('end',$event)" id="toDate" [matDatepicker]="pickerToDate" placeholder="Date de fin">
+      <mat-datepicker-toggle matSuffix [for]="pickerToDate"></mat-datepicker-toggle>
+      <mat-datepicker #pickerToDate></mat-datepicker>
+    </mat-form-field>
+  </div>
 
 
   <div class="col-sm-6 form-row">

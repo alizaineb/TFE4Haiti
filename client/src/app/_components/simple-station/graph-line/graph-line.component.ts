@@ -3,6 +3,8 @@ import { DataService } from '../../../_services/data.service';
 import * as Highcharts from 'highcharts/highstock';
 import { Station } from '../../../_models';
 import { StationsService } from '../../../_services/stations.service';
+import {MatDatepickerInputEvent} from '@angular/material';
+import {AlertService} from '../../../_services';
 
 @Component({
   selector: 'app-graph-line',
@@ -37,7 +39,10 @@ export class GraphLineComponent implements OnInit {
 
   typeGraph;
 
-  constructor(private dataService: DataService, private stationService: StationsService) { }
+  fromDate: Date;
+  endDate: Date;
+
+  constructor(private dataService: DataService, private stationService: StationsService, private alertService: AlertService) { }
 
   ngOnInit() {
     const self = this;
@@ -58,11 +63,25 @@ export class GraphLineComponent implements OnInit {
     this.loadOptionsHighCharts();
   }
 
-  dateChanged(selectedDates, dateStr, instance) {
-    if (selectedDates.length === 2) {
-      const dateMin: Date = selectedDates[0];
-      const dateMax: Date = selectedDates[1];
-      this.loadRangeDate(dateMin.getDate(), dateMin.getMonth(), dateMin.getFullYear(), dateMax.getDate(), dateMax.getMonth(), dateMax.getFullYear());
+  getData(type: string, event: MatDatepickerInputEvent<Date>) {
+    if (type === 'from') {
+      this.fromDate = event.value;
+    } else {
+      this.endDate = event.value;
+    }
+
+    if (this.fromDate !== undefined  && this.fromDate !== null && this.endDate !== undefined && this.endDate !== null) {
+      if (this.endDate < this.fromDate) {
+        this.alertService.error('La date de fin est plus petite que celle de début');
+      } else {
+        this.loadRangeDate(
+          this.fromDate.getDate(),
+          this.fromDate.getMonth(),
+          this.fromDate.getFullYear(),
+          this.endDate.getDate(),
+          this.endDate.getMonth(),
+          this.endDate.getFullYear());
+      }
     }
   }
 
