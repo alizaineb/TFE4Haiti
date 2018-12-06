@@ -39,7 +39,12 @@
         <tbody>
           <tr *ngFor="let d of data;">
             <td class="align-middle pointer">
-              <input class="pointer" placeholder="Date" type="date" [(ngModel)]="d.date" />
+              <!--<input class="pointer" placeholder="Date" type="date" [(ngModel)]="d.date" /> -->
+              <mat-form-field>
+                <input matInput id="createdAt" [matDatepicker]="pickercreatedAt" [(ngModel)]="d.date" placeholder="Date" disabled>
+                <mat-datepicker-toggle matSuffix [for]="pickercreatedAt"></mat-datepicker-toggle>
+                <mat-datepicker #pickercreatedAt disabled="false"></mat-datepicker>
+              </mat-form-field>
             </td>
             <td>
               <ngb-timepicker [(ngModel)]="d.time"></ngb-timepicker>
