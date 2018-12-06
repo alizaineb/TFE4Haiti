@@ -86,8 +86,6 @@ export class GraphLineComponent implements OnInit {
   constructor(private dataService: DataService, private stationService: StationsService, private alertService: AlertService) { }
 
   ngOnInit() {
-    const self = this;
-
     this.rangeData = ['Annuelles', 'Mensuelles', 'Quotidiennes'];
     this.rangeSelected = '';
 
@@ -232,7 +230,6 @@ export class GraphLineComponent implements OnInit {
   }
 
   loadOneMonth(month, year) {
-    console.log(month, year);
     this.dataLoading = true;
     this.dataService.getAllRainDataGraphLineOneMonth(this.stationId, month, year).subscribe(data => {
       const self = this;
