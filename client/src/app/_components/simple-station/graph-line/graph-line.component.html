@@ -59,13 +59,17 @@
 
 <div class="row col-md-8" *ngIf="'Mensuelles'===rangeSelected">
   <div class="col-sm-5 form-row">
-    <label class="col-form-label">
-      Mois/Année
-    </label>
-    <!--<i (click)="updateMonthSelected('add')" class="fas fa-arrow-circle-left"></i>-->
-    <input class="form-control col-sm-2" (change)="changeMonth($event.target.value)" size="2" type="number" min="1" max="12" [ngModel]="monthSelected"> &nbsp; / &nbsp;
-    <input class="form-control col-sm-3" (change)="changeYear($event.target.value)" size="4" type="number" min="1900" max="{{currentYear}}" [ngModel]="yearSelected">
-    <!--<i *ngIf="!(monthSelected === currentMonth && yearSelected === currentYear)" (click)="updateMonthSelected('sub')" class="fas fa-arrow-circle-right"></i>-->
+    <mat-form-field>
+      <input matInput [matDatepicker]="dp" placeholder="Mois/Année" [formControl]="date">
+      <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+      <mat-datepicker #dp
+                      startView="multi-year"
+                      (yearSelected)="chosenYearHandler($event)"
+                      (monthSelected)="chosenMonthHandler($event, dp)"
+                      panelClass="example-month-picker">
+      </mat-datepicker>
+    </mat-form-field>
+
   </div>
   <div class="col-sm-6 form-row">
     <label class="col-form-label spaceRight">

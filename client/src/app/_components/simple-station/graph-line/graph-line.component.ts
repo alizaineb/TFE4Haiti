@@ -6,10 +6,48 @@ import { StationsService } from '../../../_services/stations.service';
 import {MatDatepickerInputEvent} from '@angular/material';
 import {AlertService} from '../../../_services';
 
+import {FormControl} from '@angular/forms';
+import {MomentDateAdapter} from '@angular/material-moment-adapter';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import {MatDatepicker} from '@angular/material/datepicker';
+
+// Depending on whether rollup is used, moment needs to be imported differently.
+// Since Moment.js doesn't have a default export, we normally need to import using the `* as`
+// syntax. However, rollup creates a synthetic default module and we thus need to import it using
+// the `default as` syntax.
+import * as _moment from 'moment';
+// tslint:disable-next-line:no-duplicate-imports
+import {default as _rollupMoment, Moment} from 'moment';
+
+const moment = _rollupMoment || _moment;
+
+// See the Moment.js docs for the meaning of these formats:
+// https://momentjs.com/docs/#/displaying/format/
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'MM/YYYY',
+  },
+  display: {
+    dateInput: 'MM/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
+
+
 @Component({
   selector: 'app-graph-line',
   templateUrl: './graph-line.component.html',
-  styleUrls: ['./graph-line.component.css']
+  styleUrls: ['./graph-line.component.css'],
+  providers: [
+    // `MomentDateAdapter` can be automatically provided by importing `MomentDateModule` in your
+    // application's root module. We provide it at the component level here, due to limitations of
+    // our example generation script.
+    {provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE]},
+
+    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS},
+  ],
 })
 
 export class GraphLineComponent implements OnInit {
@@ -42,6 +80,9 @@ export class GraphLineComponent implements OnInit {
   fromDate: Date;
   endDate: Date;
 
+  date = new FormControl(moment());
+
+
   constructor(private dataService: DataService, private stationService: StationsService, private alertService: AlertService) { }
 
   ngOnInit() {
@@ -61,6 +102,7 @@ export class GraphLineComponent implements OnInit {
 
     this.loadStation();
     this.loadOptionsHighCharts();
+
   }
 
   getData(type: string, event: MatDatepickerInputEvent<Date>) {
@@ -85,17 +127,27 @@ export class GraphLineComponent implements OnInit {
     }
   }
 
+
+  chosenYearHandler(normalizedYear: Moment) {
+    const ctrlValue = this.date.value;
+    ctrlValue.year(normalizedYear.year());
+    this.date.setValue(ctrlValue);
+  }
+
+  chosenMonthHandler(normlizedMonth: Moment, datepicker: MatDatepicker<Moment>) {
+    const ctrlValue = this.date.value;
+    ctrlValue.month(normlizedMonth.month());
+    this.date.setValue(ctrlValue);
+    datepicker.close();
+    this.loadOneMonth(this.date.value.format('MM'), this.date.value.format('YYYY'))
+  }
+
   hasAccessToStation(station) {
     return this.stationService.hasAccessToStation(station);
   }
 
   changeYear(newYear) {
     this.yearSelected = parseInt(newYear, 10);
-    this.rangeDataChange(this.rangeSelected);
-  }
-
-  changeMonth(newMonth) {
-    this.monthSelected = parseInt(newMonth, 10);
     this.rangeDataChange(this.rangeSelected);
   }
 
@@ -107,30 +159,13 @@ export class GraphLineComponent implements OnInit {
     this.hide = false;
     this.rangeSelected = val;
     if (val === 'Mensuelles') {
-      this.loadOneMonth();
+      this.date = new FormControl(moment());
+      this.loadOneMonth(this.date.value.format('MM'), this.date.value.format('YYYY'));
     } else if (val === 'Annuelles') {
       this.loadOneYear();
     } else {
       this.hide = true;
     }
-  }
-
-  updateYearSelected(op) {
-    if (op === 'add') {
-      this.yearSelected = this.yearSelected - 1;
-    } else {
-      this.yearSelected = this.yearSelected + 1;
-    }
-    this.loadOneYear();
-  }
-
-  updateMonthSelected(op) {
-    if (op === 'add') {
-      this.monthSelected = this.monthSelected - 1;
-    } else {
-      this.monthSelected = this.monthSelected + 1;
-    }
-    this.loadOneMonth();
   }
 
   showNoData() {
@@ -196,9 +231,10 @@ export class GraphLineComponent implements OnInit {
     });
   }
 
-  loadOneMonth() {
+  loadOneMonth(month, year) {
+    console.log(month, year);
     this.dataLoading = true;
-    this.dataService.getAllRainDataGraphLineOneMonth(this.stationId, this.monthSelected, this.yearSelected).subscribe(data => {
+    this.dataService.getAllRainDataGraphLineOneMonth(this.stationId, month, year).subscribe(data => {
       const self = this;
       // Create the chart
       this.highChartLine = Highcharts.stockChart('containerLine', {
