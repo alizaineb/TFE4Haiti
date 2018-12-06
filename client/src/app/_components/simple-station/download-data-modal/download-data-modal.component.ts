@@ -8,6 +8,7 @@ import {
 import flatpickr from 'flatpickr';
 import { French } from 'flatpickr/dist/l10n/fr';
 import { Constantes } from "../../../_helpers/constantes";
+import {AlertService} from "../../../_services";
 
 @Component({
   selector: 'app-download-data-modal',
@@ -30,7 +31,7 @@ export class DownloadDataModalComponent implements OnInit {
 
   mark;
 
-  constructor() {
+  constructor(private alertService: AlertService) {
   }
 
   ngOnInit(): void {
@@ -48,6 +49,10 @@ export class DownloadDataModalComponent implements OnInit {
   }
 
   sendStation() {
+    if(!(this.dateStart && this.dateEnd)){
+      this.alertService.error('Veuillez sélectionner une date de début et de fin.');
+      return;
+    }
     const dStart = new Date(Date.UTC(this.dateStart.getFullYear(), this.dateStart.getMonth(), this.dateStart.getDate()));
     const dEnd = new Date(Date.UTC(this.dateEnd.getFullYear(), this.dateEnd.getMonth(), this.dateEnd.getDate()));
 
@@ -59,7 +64,8 @@ export class DownloadDataModalComponent implements OnInit {
     }
     //console.log(obj);
     this.updated.emit(obj);
-
+    this.dateStart = undefined;
+    this.dateEnd = undefined;
   }
 
 }
