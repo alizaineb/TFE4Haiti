@@ -10,5 +10,8 @@
 li {
   padding: 1px;
   background-color: #343a40;
-  ;
+}
+
+.someSpaceRight {
+  margin-right: 8px;
 }

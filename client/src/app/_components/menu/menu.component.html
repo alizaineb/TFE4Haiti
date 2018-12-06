@@ -13,7 +13,7 @@
 
     <ul class=" navbar-nav">
       <li class="nav-item" *ngFor="let menuItem of menu.right ">
-        <a *ngIf="menuItem.path === 'admin' && numberToValidate > 0" class="nav-link" matBadge="{{numberToValidate}}" [routerLink]="['/', menuItem.path]">{{menuItem.name}}</a>
+        <a *ngIf="menuItem.path === 'admin' && numberToValidate > 0" class="nav-link someSpaceRight" matBadge="{{numberToValidate}}" [routerLink]="['/', menuItem.path]">{{menuItem.name}}</a>
         <a *ngIf="menuItem.path === 'admin' && numberToValidate === 0" class="nav-link" [routerLink]="['/', menuItem.path]">{{menuItem.name}}</a>
         <a *ngIf="menuItem.path !== 'admin'" class="nav-link" [routerLink]="['/', menuItem.path]">{{menuItem.name}}</a>
       </li>
