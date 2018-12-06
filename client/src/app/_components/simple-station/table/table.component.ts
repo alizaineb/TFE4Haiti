@@ -5,6 +5,8 @@ import { AlertService, UserService, DataService, AuthenticationService } from '.
 import { StationsService } from '../../../_services/stations.service';
 import flatpickr from 'flatpickr';
 import { French } from 'flatpickr/dist/l10n/fr';
+import { MatDatepickerInputEvent } from "@angular/material";
+import { MatDatepicker } from "@angular/material";
 
 @Component({
   selector: 'app-table',
@@ -26,6 +28,8 @@ export class TableComponent implements OnInit, OnChanges {
 
   private allIntervals: string[];
   intervalsFiltered: string[];
+  intervalsFilteredMn: string[];
+  intervalsFilteredH: string[];
   private allDatas: RainData[];
   private aggregatedDatas: RainData[][];
 
@@ -60,10 +64,6 @@ export class TableComponent implements OnInit, OnChanges {
     this.oldInterval = "";
     this.hourOfDate = "heure";
     this.splitHourOfDate = ":";
-    let date = new Date(Date.now());
-    let elmnt = (<HTMLInputElement>document.getElementById('monthSelector'));
-    //elmnt.value = date.getFullYear() + "-" + this.minTwoDigits(date.getMonth() + 1);
-    elmnt.max = date.getFullYear() + "-" + this.minTwoDigits(date.getMonth() + 1);
 
     window.onresize = () => {
       this.computeWidth();
@@ -78,15 +78,6 @@ export class TableComponent implements OnInit, OnChanges {
     this.intervalDay = true;
 
     let self = this;
-    this.datePicker = flatpickr('#datePicker', {
-      locale: French,
-      altInput: true,
-      dateFormat: 'Y-m-d',
-      altFormat: 'd-m-Y',
-      onChange: function(selectedDates, dateStr, instance) {
-        self.dateChanged(selectedDates, dateStr, instance);
-      }
-    });
   }
 
   private minTwoDigits(n) {
@@ -118,14 +109,22 @@ export class TableComponent implements OnInit, OnChanges {
     if (this.currentStation.interval == '10min') {
       this.intervalsFiltered.splice(this.intervalsFiltered.indexOf("15min"), 1);
     }
+
+
+    const found = this.intervalsFiltered.findIndex(function(element) {
+      return element.indexOf("h") >= 0;
+    });
+    this.intervalsFilteredMn = this.intervalsFiltered.slice(0, found);
+    this.intervalsFilteredH = this.intervalsFiltered.slice(found, this.intervalsFiltered.length);
   }
 
-  dateChanged(selectedDates, dateStr, instance) {
+  dateChanged(value) {
+    console.log(value);
     let self = this;
     for (let i = 0; i < 24; i++) {
       this.cols[i] = this.minTwoDigits(i);
     }
-    if (!dateStr) {
+    if (!value) {
       return;
     }
     this.noDateSelected = false;
@@ -134,7 +133,7 @@ export class TableComponent implements OnInit, OnChanges {
     this.noData = false;
     this.dataToShow = false;
     // Lorsque la promesse est terminée ==> Stop le loader
-    this.stationService.getData(this.stationId, dateStr).subscribe(rainDatas => {
+    this.stationService.getData(this.stationId, value).subscribe(rainDatas => {
       self.dataLoading = false;
       if (!rainDatas || rainDatas.length == 0) {
         self.noData = true;
@@ -199,25 +198,21 @@ export class TableComponent implements OnInit, OnChanges {
         this.rows[i] = this.rows[i] + " à " + this.minTwoDigits(((i + 1) * jump) - 1);
       }
     }
-    // Si y'a des données, compute les
-
-
-
     let dateEl = (<HTMLInputElement>document.getElementById('datePicker'));
-    let monthEl = (<HTMLInputElement>document.getElementById('datePicker'));
+    let monthEl = (<HTMLInputElement>document.getElementById('monthSelector'));
     // On est passé d'un affichage mensuel à un affichage journalier (ou l'inverse)
     // Minutes vers heures
     if (this.oldInterval.indexOf('m') >= 0 && val.indexOf('h') >= 0) {
       // Reset datePicker
       // @ts-ignore : _flatpickr existe
-      dateEl._flatpickr.clear();
+      dateEl.value = '';
       this.noData = false;
       this.noDateSelected = true;
     }
     // Heures vers minutes
     else if (this.oldInterval.indexOf('h') >= 0 && val.indexOf('m') >= 0) {
       // Reset monthPickr
-      monthEl.value = "";
+      monthEl.value = '';
       this.noData = false;
       this.noDateSelected = true;
     }
@@ -226,17 +221,20 @@ export class TableComponent implements OnInit, OnChanges {
       this.noDateSelected = true;
       this.dataToShow = false;
     }
+
+    // Si y'a des données, compute les
     if (this.dataToShow) {
       this.computeDataToShow();
     }
     this.oldInterval = val;
   }
 
-  monthPicked(val) {
-    let date = val.target.value.split("-");
+  monthPicked(val, dp) {
     let self = this;
-
-    for (let i = 0; i < this.daysInMonth(date[1], date[0]); i++) {
+    let monthEl = (<HTMLInputElement>document.getElementById('monthSelector'));
+    monthEl.value = this.minTwoDigits(val.getMonth() + 1) + "/" + val.getFullYear();
+    dp.close();
+    for (let i = 0; i < this.daysInMonth(val.getMonth() + 1, val.getFullYear()); i++) {
       this.cols[i] = this.minTwoDigits(i + 1);
     }
     this.noDateSelected = false;
@@ -245,7 +243,7 @@ export class TableComponent implements OnInit, OnChanges {
     this.noData = false;
     this.dataToShow = false;
     // Lorsque la promesse est terminée ==> Stop le loader
-    this.dataService.getDataForMonth(this.stationId, date[0], date[1]).subscribe(rainDatas => {
+    this.dataService.getDataForMonth(this.stationId, val.getFullYear(), val.getMonth() + 1).subscribe(rainDatas => {
       self.dataLoading = false;
       if (!rainDatas || rainDatas.length == 0) {
         self.noData = true;
@@ -261,6 +259,7 @@ export class TableComponent implements OnInit, OnChanges {
       self.alertService.error(error);
     });
   }
+
   daysInMonth(month, year) {
     return new Date(year, month, 0).getDate();
   }
@@ -275,8 +274,9 @@ export class TableComponent implements OnInit, OnChanges {
     // Ici va falloir changer this.currentStation.interval
     let currentIntervalTmp = this.currentStation.interval;
     if (this.intervalSelected.indexOf('h') >= 0) {
-      currentIntervalTmp = "1h";
+      currentIntervalTmp = this.intervalsFilteredH[0];
     }
+
     let hopSize = this.computeStep(this.intervalSelected, currentIntervalTmp);
     let idx = 0;
     for (let h = 0; h < this.allDatas.length; h = h + (hopSize * this.ratio)) {
