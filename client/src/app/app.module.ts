@@ -50,7 +50,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material';
 import {MatInputModule} from '@angular/material';
 import {MatTooltipModule} from '@angular/material/tooltip';
-import {MatBadgeModule} from '@angular/material/badge';
+import {MatBadgeModule} from '@angular/material/badge';;
+import { DatePickerMonthComponent } from './_components/simple-station/graph-line/date-picker-month/date-picker-month.component'
 
 
 @NgModule({
@@ -101,7 +102,8 @@ import {MatBadgeModule} from '@angular/material/badge';
     UpdateDataModalComponent,
     DownloadDataModalComponent,
     NotFoundComponent
-  ],
+,
+    DatePickerMonthComponent  ],
   providers: [
     AuthGuard,
     CanDeactivateGuard,

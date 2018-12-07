@@ -59,17 +59,7 @@
 
 <div class="row col-md-8" *ngIf="'Mensuelles'===rangeSelected">
   <div class="col-sm-5 form-row">
-    <mat-form-field>
-      <input matInput [matDatepicker]="dp" placeholder="Mois/Année" [formControl]="date">
-      <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
-      <mat-datepicker #dp
-                      startView="multi-year"
-                      (yearSelected)="chosenYearHandler($event)"
-                      (monthSelected)="chosenMonthHandler($event, dp)"
-                      panelClass="example-month-picker">
-      </mat-datepicker>
-    </mat-form-field>
-
+    <app-date-picker-month (selectedDate)="getMonthValue($event)"></app-date-picker-month>
   </div>
   <div class="col-sm-6 form-row">
     <label class="col-form-label spaceRight">
