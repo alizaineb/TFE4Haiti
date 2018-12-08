@@ -18,7 +18,7 @@ const UsersModel = require("../models/user");
 const roles = require('../config/constants').roles;
 const DownloadInterval = require('../config/constants').DownloadIntervals;
 const URL = nconf.get("server:url");
-const hasAccesToStationBoolean = require('../controllers/utils').hasAccesToStationBoolean;
+const utils = require('../controllers/utils');
 
 /**
  * Méthode utilisée pour insérer des données en base de donnée
@@ -31,11 +31,8 @@ let insertData = function (req, res, datas, station, user) {
     // Vérifier que l'utilisateur peut insérer sur cette station
 
 
-    if (!hasAccesToStationBoolean(user._id, station._id)){
-        return res.status(403).send(`Vous n'avez pas accès à la modification de cette station`);
-    } else {
-
-        // Vérifier les données en fonction de l'intervalle de la Station (que l'intervalle soit respectée) si intervalle <1h
+    utils.hasAccesToStationBoolean(req, res, user._id, station._id, () => {
+// Vérifier les données en fonction de l'intervalle de la Station (que l'intervalle soit respectée) si intervalle <1h
 
         // inserer donnée une à une
         // Si intervalle >1h vérifier l'intégrité des données ?!
@@ -55,9 +52,8 @@ let insertData = function (req, res, datas, station, user) {
                 return res.status(200).send();
             }
         })
-
-    }
-};
+    });
+}
 
 /**
  * Méthode de récupération des données en attente de validation.
