@@ -113,4 +113,55 @@ exports.hasAccesToStation = function(req, res, callback) {
       return res.status(403).send("Vous n'avez pas accès à cette station.");
     });
   });
+
+  /**
+   * hasAccesToStationBoolean - Méthode de vérification si un utilisateur a accès à une station en particulier.
+   *
+   * @param user_id Id de l'utilisateur à vérifier
+   * @param station_id Id de la station à vérifier
+   *
+   * @return {boolean}
+   */
+  exports.hasAccesToStationBoolean = function(user_id, station_id) {
+    // Trouver l'utilisateur
+    UsersModel.userModel.findById(user_id, (err, user) => {
+      if (err) {
+        logger.error("[UTILS] hasAccesToStation user : ", err)
+        return res.status(500).send("Erreur lors de la vérification de votre accès à la station.");
+      } else if (!user) {
+        return res.status(404).send("Pas d'utilisateur correspondant.");
+      }
+
+      // Avant de vérifier si c'est un admin, il faut vérifier quue la station existe
+      StationModel.stationModel.findById(station_id, (err, station) => {
+        // console.log(station);
+        if (err) {
+          // Se produira si l'utilisateur rentre un id trop court/trop long
+          return false;
+        } else if (!station) {
+          return false;
+        }
+        // Si l'utilisateur est un admin il peut passer
+        if (user.role === roles.ADMIN) {
+          return true;
+        }
+        // On a la station et l'utilisateur
+        // Il y a 3 checks à faire
+        // Commune :
+        if (user.commune === station.commune) {
+          return true;
+        }
+        // Rivière :
+        if (user.river === station.river) {
+          return true;
+        }
+        // assignée
+        if (station.users && station.users.indexOf(user._id) > -1) {
+          return true;
+        }
+
+        return false;
+      });
+    });
+  }
 }
