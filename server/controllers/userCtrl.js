@@ -295,11 +295,6 @@ exports.delete = function(req, res) {
     });
 };
 
-// TODO ?????
-exports.logout = function(req, res) {
-  //TODO connect to mongodb
-  return res.status(200).send("Method to implements");
-};
 
 /**
  * getAllAwaiting - Permet de récupérer tous les utilisateurs en attente

@@ -33,11 +33,6 @@ exports.routes = [
     middleWare: [controllers.users.login]
   },
   {
-    path: "/api/users/logout",
-    httpMethod: "GET",
-    middleWare: [controllers.users.logout]
-  },
-  {
     path: "/api/users/roles",
     httpMethod: "GET",
     middleWare: [controllers.users.roles]
