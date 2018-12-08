@@ -875,7 +875,7 @@ exports.importManualData = function (req, res) {
                         if (checkInterval(data.date, station.interval)) {
                             tmp.push(data);
                         } else {
-                            return res.status(500).send("L'intervalle de la donnée ne correspond pas celui de la station.")
+                            return res.status(500).send(`L'intervalle de la donnée ${i+1} ne correspond pas celui de la station.`)
                         }
 
                         // console.log(data);
