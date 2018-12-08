@@ -18,7 +18,7 @@ const UsersModel = require("../models/user");
 const roles = require('../config/constants').roles;
 const DownloadInterval = require('../config/constants').DownloadIntervals;
 const URL = nconf.get("server:url");
-
+const hasAccesToStationBoolean = require('../controllers/utils').hasAccesToStationBoolean();
 
 /**
  * Méthode utilisée pour insérer des données en base de donnée
@@ -30,7 +30,8 @@ const URL = nconf.get("server:url");
 let insertData = function (req, res, datas, station, user) {
     // Vérifier que l'utilisateur peut insérer sur cette station
 
-    if (station.users.indexOf(user._id) < 0 && user.role !== roles.ADMIN) { //todo check user access riviere ou commune
+
+    if (!hasAccesToStationBoolean(user._id, station._id)){
         return res.status(403).send(`Vous n'avez pas accès à la modification de cette station`);
     } else {
 
