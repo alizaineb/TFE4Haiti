@@ -18,7 +18,7 @@ const UsersModel = require("../models/user");
 const roles = require('../config/constants').roles;
 const DownloadInterval = require('../config/constants').DownloadIntervals;
 const URL = nconf.get("server:url");
-const hasAccesToStationBoolean = require('../controllers/utils').hasAccesToStationBoolean();
+const hasAccesToStationBoolean = require('../controllers/utils').hasAccesToStationBoolean;
 
 /**
  * Méthode utilisée pour insérer des données en base de donnée
@@ -116,7 +116,6 @@ exports.acceptAwaiting = function (req, res) {
                         });
                         return;
                     case state.UPDATE:
-                        //Todo Check interval
                         //suppression de la valeur.
                         if (!rainDataAwaiting.value) {
                             // donnée modifier vers rien, on supprime l'ancienne donnée et la donnée en attente
@@ -316,7 +315,7 @@ exports.refuseAwaiting = function (req, res) {
                     });
                 }
 
-                return res.status(204).send("ok") //TODO remove body
+                return res.status(204).send();
             }).catch(function (err) {
                 logger.error("[DATACTRL] refuseAwaiting.deleteone : ", err);
                 return res.status(500).send("Erreur lors du refus de la donnée.");
