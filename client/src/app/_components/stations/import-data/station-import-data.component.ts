@@ -172,7 +172,7 @@ export class StationImportDataComponent implements OnInit {
         this.loading = false;
       },
       err => {
-        this.alertService.error(`Erreur lors de l'importation du fichier.`);
+        this.alertService.error(err);
         this.loading = false;
       }
     );
