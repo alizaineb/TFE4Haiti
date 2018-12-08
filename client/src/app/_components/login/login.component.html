@@ -86,11 +86,11 @@
     </form>
 
     <div class="alert alert-info" role="alert" *ngIf="r.role.value===roleViewer">
-      Le role de <b>{{roleViewer}}</b> correspond à une personne voulant accéder à l'ensemble des données et voulant télécharger les données pour travailler sur une copie hors ligne de celles-ci.
+      Un <b>{{roleViewer}}</b> pourra consulter l'ensemble des données et les télécharger.
     </div>
 
     <div class="alert alert-info" role="alert" *ngIf="r.role.value===roleWorker">
-      Le role d'<b>{{roleWorker}}</b> correspond à une personne devant accèder aux fonctionnalités avancées, tel que l'ajout d'une station, l'import de données, ...
+      Un <b>{{roleWorker}}</b> pourra accèder aux fonctionnalités avancées, tel que l'ajout d'une station, l'import de données pour une station, ...
     </div>
   </div>
 </div>
