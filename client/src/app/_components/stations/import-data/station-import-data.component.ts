@@ -72,14 +72,14 @@ export class StationImportDataComponent implements OnInit {
 
 
   hasUnsavedData() {
-    if(this.selectedZone == 'manual'){
+    if (this.selectedZone == 'manual') {
       const i = 0;
       const d = new Date(`${this.data[i].date}T${this.minTwoDigits(this.data[i].time.hour)}:${this.minTwoDigits(this.data[i].time['minute'])}:00Z`);
       if (d.getFullYear() != 1970) {
         return true;
       }
-    }else{
-      if(this.selectedFile){
+    } else {
+      if (this.selectedFile) {
         return true;
       }
     }
@@ -105,14 +105,14 @@ export class StationImportDataComponent implements OnInit {
     this.selectedZone = item;
   }
 
-  sendManual(){
+  sendManual() {
     this.loading = true;
     const currentUser = this.localStorageService.getItem('currentUser');
 
     const dataToSend = [];
 
-    if(this.data.length < 1){
-      this.alertService.error("Veuillez ajouter une donnée.");
+    if (this.data.length < 1) {
+      this.alertService.error('Veuillez ajouter une donnée.');
       this.loading = false;
       return;
     }
@@ -124,8 +124,13 @@ export class StationImportDataComponent implements OnInit {
       tmp.id_user = currentUser.current._id;
       tmp.value = this.data[i].value;
       const d = new Date(this.data[i].date);
-      tmp.date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())); //new Date(`${this.data[i].date}T${this.minTwoDigits(this.data[i].time.hour)}:${this.minTwoDigits(this.data[i].time['minute'])}:00Z`);
-      //console.log(tmp.date);
+
+      // console.log(this.data[i]);
+      // console.log(Number(this.data[i].time.hour));
+      // console.log(Number(this.data[i].time.minute));
+
+      tmp.date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), Number(this.data[i].time.hour), Number(this.data[i].time.minute))); // new Date(`${this.data[i].date}T${this.minTwoDigits(this.data[i].time.hour)}:${this.minTwoDigits(this.data[i].time['minute'])}:00Z`);
+      console.log(tmp.date);
       if (tmp.date.getFullYear() != 1970 && !isNaN(tmp.date.getFullYear())) {
 
         dataToSend.push(tmp);
@@ -150,12 +155,12 @@ export class StationImportDataComponent implements OnInit {
 
   }
 
-  sendFile(){
+  sendFile() {
     this.loading = true;
     const currentUser = this.localStorageService.getItem('currentUser');
     const fd = new FormData();
-    if(!this.selectedFile){
-      this.alertService.error("Veuillez sélectionner un fichier.");
+    if (!this.selectedFile) {
+      this.alertService.error('Veuillez sélectionner un fichier.');
       this.loading = false;
       return;
     }
@@ -167,7 +172,7 @@ export class StationImportDataComponent implements OnInit {
         this.loading = false;
       },
       err => {
-        this.alertService.error(`Erreur lors de l'importation du fichier.`);
+        this.alertService.error(err);
         this.loading = false;
       }
     );

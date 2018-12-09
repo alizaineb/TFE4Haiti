@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit {
   returnUrl: string;
   roles: string[];
   roleWorker: string;
+  roleViewer: string;
   private communes: string[];
   private bassin_versants: string[];
 
@@ -57,6 +58,7 @@ export class LoginComponent implements OnInit {
     });
     this.roles = Object.values(Constantes.roles);
     this.roleWorker = Constantes.roles.WORKER;
+    this.roleViewer = Constantes.roles.VIEWER
 
     // get return url from route parameters or default to '/'
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';

@@ -15,3 +15,7 @@ li {
 .someSpaceRight {
   margin-right: 8px;
 }
+
+a {
+  font-size: 1.1em;
+}
