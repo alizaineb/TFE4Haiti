@@ -4,7 +4,7 @@
 
 
     <div class="col-xl-12">
-      <h1>Application de gestion et de centralisation des données pluviométriques sur de l'ensemble du territoire haitien</h1>
+      <h1>Application de gestion et de centralisation des données pluviométriques sur l'ensemble du territoire haitien</h1>
     </div>
 
     <div class="container">
@@ -12,12 +12,12 @@
       <div class="row">
         <div class="col-md-4">
           <div class="alert alert-success" role="alert" [hidden]="!stationStats">
-            <h4 class="alert-heading"><i class="fas fa-home fa-3x"></i> {{stationStats.total}} Stations au total </h4>
+            <h4 class="alert-heading"><a [routerLink]="['/', 'map']"><i class="fas fa-home fa-3x"></i> {{stationStats.total}} Stations au total </a> </h4>
             <hr>
-            <p>{{stationStats.awaiting}} stations à valider</p>
-            <p>{{stationStats.working}} stations en activité</p>
-            <p>{{stationStats.broken}} stations en panne</p>
-            <p>{{stationStats.deleted}} stations pas en activité</p>
+            <p>{{stationStats.awaiting}} station(s) à valider</p>
+            <p>{{stationStats.working}} station(s) en activité</p>
+            <p>{{stationStats.broken}} station(s) en panne</p>
+            <p>{{stationStats.deleted}} station(s) pas en activité</p>
           </div>
         </div>
 
@@ -25,8 +25,8 @@
           <div class="alert alert-primary" role="alert">
             <h4 class="alert-heading"><i class="fas fa-tint fa-3x"></i> {{data.ok + data.awaiting}} Données Pluviométriques </h4>
             <hr>
-            <p>{{data.ok}} données valides</p>
-            <p class="mb-0">{{data.awaiting}} données à valider</p>
+            <p>{{data.ok}} donnée(s) valide(s)</p>
+            <p class="mb-0">{{data.awaiting}} donnée(s) à valider</p>
           </div>
         </div>
 

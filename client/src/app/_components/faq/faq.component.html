@@ -3,15 +3,15 @@
   <div class="card">
     <div class="card-header" id="register" data-toggle="collapse" data-target="#child_register" aria-expanded="true" aria-controls="collapseOne">
       <h5 class="mb-0">
-        <button class="btn btn-link" >
+        <button class="btn btn-link">
           Comment s'inscire à l'application ?
         </button>
       </h5>
     </div>
     <div id="child_register" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-register-login">
       <div class="card-body">
-        Rendez-vous sur la page <a [routerLink]="['/login']"> se connecter</a>. <br/>
-        La section "Demande de compte" permet d'envoyer une demande d'accès à l'application.<br/>
+        Rendez-vous sur la page <a [routerLink]="['/login']"> se connecter</a>. <br />
+        La section "Demande de compte" permet d'envoyer une demande d'accès à l'application.<br />
         Pour la demande vous devez obligatoirement fournir:
         <ul>
           <li>Une adresse e-mail valide</li>
@@ -25,39 +25,39 @@
           </ul>
         </ul>
 
-        <p class="text-danger">Une fois la demande envoyée, un administrateur devra valider votre inscription.<br/></p>
-        Une fois le demande validée, un lien vous sera envoyé sur votre e-mail pour que vous puissiez choisir un mot de passe. <br/>
+        <p class="text-danger">Une fois la demande envoyée, un administrateur devra valider votre inscription.<br /></p>
+        Une fois le demande validée, un lien vous sera envoyé sur votre e-mail pour que vous puissiez choisir un mot de passe. <br />
         Si votre demande est refusée, un e-mail vous sera envoyé avec une explication si l'administrateur en a précisée une.
 
       </div>
     </div>
 
-      <div class="card-header" id="login" data-toggle="collapse" data-target="#child_login" aria-expanded="true" aria-controls="collapseOne">
-        <h5 class="mb-0">
-          <button class="btn btn-link" >
-            Comment se connecter ?
-          </button>
-        </h5>
+    <div class="card-header" id="login" data-toggle="collapse" data-target="#child_login" aria-expanded="true" aria-controls="collapseOne">
+      <h5 class="mb-0">
+        <button class="btn btn-link">
+          Comment se connecter ?
+        </button>
+      </h5>
+    </div>
+    <div id="child_login" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-register-login">
+      <div class="card-body">
+        Rendez-vous sur la page <a [routerLink]="['/login']"> se connecter</a>. <br />
+        Dans la section "Se connecter", entrez votre e-mail et le mot de passe que vous choisi.
       </div>
-      <div id="child_login" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-register-login">
-        <div class="card-body">
-          Rendez-vous sur la page <a [routerLink]="['/login']"> se connecter</a>. <br/>
-          Dans la section "Se connecter", entrez votre e-mail et le mot de passe que vous choisi.
-        </div>
-      </div>
+    </div>
 
-        <div class="card-header" id="mdp" data-toggle="collapse" data-target="#child_mdp" aria-expanded="true" aria-controls="collapseOne">
-          <h5 class="mb-0">
-            <button class="btn btn-link" >
-              Comment changer mon mot de passe ? J'ai oublié mon mot de passe, que faire ?
-            </button>
-          </h5>
-        </div>
-        <div id="child_mdp" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-register-login">
-          <div class="card-body">
-            Rendez-vous sur la page <a [routerLink]="['/login/askreset']"> récupérer mon compte</a>. Un lien vous sera envoyé pour mettre à jour votre mot de passe.<br/>
-          </div>
-        </div>
+    <div class="card-header" id="mdp" data-toggle="collapse" data-target="#child_mdp" aria-expanded="true" aria-controls="collapseOne">
+      <h5 class="mb-0">
+        <button class="btn btn-link">
+          Comment changer mon mot de passe ? J'ai oublié mon mot de passe, que faire ?
+        </button>
+      </h5>
+    </div>
+    <div id="child_mdp" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-register-login">
+      <div class="card-body">
+        Rendez-vous sur la page <a [routerLink]="['/login/askreset']"> récupérer mon compte</a>. Un lien vous sera envoyé pour mettre à jour votre mot de passe.<br />
+      </div>
+    </div>
 
   </div>
 </div>
@@ -67,25 +67,25 @@
   <div class="card">
     <div class="card-header" id="use-map" data-toggle="collapse" data-target="#child_use-map" aria-expanded="true" aria-controls="collapseOne">
       <h5 class="mb-0">
-        <button class="btn btn-link" >
+        <button class="btn btn-link">
           Que puis-je faire sur l'interface Carte ?
         </button>
       </h5>
     </div>
     <div id="child_use-map" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-map">
       <div class="card-body">
-        L'interface Carte permet d'avoir un rendu visuel sur la carte d'Haiti de toutes les stations disponibles ainsi que leur état.<br/>
-        Un système de recherche  est disponible sur le côté gauche de la page pour que vous puissiez afficher les stations qui vous intéresse. <img src="../../../assets/img/sytemrecherche.PNG"> <br/>
+        L'interface Carte permet d'avoir un rendu visuel sur la carte d'Haiti de toutes les stations disponibles ainsi que leur état.<br />
+        Un système de recherche est disponible sur le côté gauche de la page pour que vous puissiez afficher les stations qui vous intéresse. <img src="../../../assets/img/sytemrecherche.PNG"> <br />
         Vous pouvez les filtrer selon:
         <ul>
           <li>Le nom de la station</li>
           <li>La commune de la station</li>
           <li>Le bassin versant de la station</li>
         </ul>
-        En dessous du système de recherche, une liste de stations vous est fournie. <br/>
-        En cliquant sur une des stations, la map n'affichera que celle-ci et se centrera aussi. <br/>
-        Le bouton <i class="fas fa-external-link-alt"></i> permet d'accéder au détail d'une station. <br/>
-        <br/>
+        En dessous du système de recherche, une liste de stations vous est fournie. <br />
+        En cliquant sur une des stations, la map n'affichera que celle-ci et se centrera aussi. <br />
+        Le bouton <i class="fas fa-external-link-alt"></i> permet d'accéder au détail d'une station. <br />
+        <br />
         La carte propose quelques fonctionnalités. Vous pouvez:
         <ul>
           <li>Cliquer sur un des marqueurs <img src="../../../assets/img/Marqueur.PNG"> et accéder au détail de la station</li>
@@ -101,19 +101,19 @@
 </div>
 
 
-<h3 >Station</h3>
+<h3>Station</h3>
 <div id="accordion-station">
   <div class="card">
     <div class="card-header" id="detailStation" data-toggle="collapse" data-target="#child_detailStation" aria-expanded="true" aria-controls="collapseOne">
       <h5 class="mb-0">
-        <button class="btn btn-link" >
+        <button class="btn btn-link">
           Comment afficher le détail d'une station ?
         </button>
       </h5>
     </div>
     <div id="child_detailStation" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-station">
       <div class="card-body">
-        Rendez-vous à la page  <a [routerLink]="['/map']">Carte</a> ou <a [routerLink]="['/stations']">Mes stations</a> et recherchez votre station.
+        Rendez-vous à la page <a [routerLink]="['/map']">Carte</a> ou <a [routerLink]="['/stations']">Mes stations</a> et recherchez votre station.
         Pour afficher son détail, appuyer sur le bouton: <i class="fas fa-external-link-alt"></i>
       </div>
     </div>
@@ -122,14 +122,14 @@
 
     <div class="card-header" id="addStation" data-toggle="collapse" data-target="#child_addStation" aria-expanded="true" aria-controls="collapseOne">
       <h5 class="mb-0">
-        <button class="btn btn-link" >
+        <button class="btn btn-link">
           Comment ajouter une station ?
         </button>
       </h5>
     </div>
     <div id="child_addStation" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-station">
       <div class="card-body">
-        <p>Rendez-vous à la page <a [routerLink]="['/stations']">Mes stations</a> et cliquez sur le bouton <button class="btn btn-primary"> Ajouter une station <i class="fas fa-plus-circle" ></i> </button></p>
+        <p>Rendez-vous à la page <a [routerLink]="['/stations']">Mes stations</a> et cliquez sur le bouton <button class="btn btn-primary"> Ajouter une station <i class="fas fa-plus-circle"></i> </button></p>
         Pour ajouter une station il faut obligatoirement:
         <ul>
           <li>Un nom</li>
@@ -163,17 +163,17 @@
     <div id="child_updateStation" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-station">
       <div class="card-body">
         <ul>
-          <li>Rendez-vous à la page <a [routerLink]="['/stations']">Mes stations</a> et cliquez sur le bouton: <i class="fas fa-edit fa-fw fa-1x"></i> de la station à modifier.</li>
+          <li>Rendez-vous à la page <a [routerLink]="['/stations']">Mes stations</a> et cliquez sur le bouton: <i class="fas fa-pencil-alt fa-fw fa-1x"></i> de la station à modifier.</li>
           <li>Rendez-vous sur le détail de la station et cliquez sur le bouton
             <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#updateStationModal">
-            Modifier la station
-            <i class="fas fa-edit white"></i>
-          </button></li>
+              Modifier la station
+              <i class="fas fa-pencil-alt white"></i>
+            </button></li>
         </ul>
-        <p class="text-danger">Vous n'avez pas le droit de modifier l'intervalle d'une station. <br/>
-        Cette fonctionnalité est réservée à l'adminstrateur.</p>
-        </div>
+        <p class="text-danger">Vous n'avez pas le droit de modifier l'intervalle d'une station. <br />
+          Cette fonctionnalité est réservée à l'adminstrateur.</p>
       </div>
+    </div>
 
 
     <div class="card-header" id="noteStation" data-toggle="collapse" data-target="#child_noteStation" aria-expanded="true" aria-controls="collapseOne">
@@ -186,13 +186,13 @@
     <div id="child_noteStation" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-station">
       <div class="card-body">
         <ul>
-          <li>Rendez-vous à la page  <a [routerLink]="['/stations']">Mes stations</a> et cliquez sur le bouton: <i class="fas fa-sticky-note fa-fw fa-lx"></i></li>
+          <li>Rendez-vous à la page <a [routerLink]="['/stations']">Mes stations</a> et cliquez sur le bouton: <i class="fas fa-sticky-note fa-fw fa-lx"></i></li>
           <li>Rendez-vous sur le détail de la station et cliquez sur l'onglet "notes".</li>
         </ul>
       </div>
     </div>
-    
-    
+
+
   </div>
 </div>
 
@@ -203,14 +203,14 @@
 
     <div class="card-header" id="view-data" data-toggle="collapse" data-target="#child_view-data" aria-expanded="true" aria-controls="collapseOne">
       <h5 class="mb-0">
-        <button class="btn btn-link" >
+        <button class="btn btn-link">
           Comment visualiser les données d'une station ?
         </button>
       </h5>
     </div>
     <div id="child_view-data" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-data">
       <div class="card-body">
-        Trouvez votre station via l'interface  <a [routerLink]="['/map']"> carte</a> ou  <a [routerLink]="['/stations']"> mes stations</a> et accéder à son détail <i class="fas fa-external-link-alt"></i>. <br/>
+        Trouvez votre station via l'interface <a [routerLink]="['/map']"> carte</a> ou <a [routerLink]="['/stations']"> mes stations</a> et accéder à son détail <i class="fas fa-external-link-alt"></i>. <br />
         Vous pouvez visualiser les données via:
         <ul>
           <li>Un tableau</li>
@@ -223,14 +223,14 @@
 
     <div class="card-header" id="tab-data" data-toggle="collapse" data-target="#child_tab-data" aria-expanded="true" aria-controls="collapseOne">
       <h5 class="mb-0">
-        <button class="btn btn-link" >
+        <button class="btn btn-link">
           Comment utiliser l'interface Tableau ?
         </button>
       </h5>
     </div>
     <div id="child_tab-data" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-data">
       <div class="card-body">
-        Vous devez commencer par sélectionner une intervalle et une date contenant des données. Si celle-ci ne contient pas de données, un message vous sera affiché pour vous en informer.<br/>
+        Vous devez commencer par sélectionner un intervalle et une date contenant des données. Si celle-ci ne contient pas de données, un message vous sera affiché pour vous en informer.<br />
         <ul>
           <li>Les colonnes représentent les heures/jours et les lignes les minutes/heures en fonction de l'intervalle choisi/</li>
           <li>Le tableau se lit donc de haut en bas</li>
@@ -244,15 +244,15 @@
 
     <div class="card-header" id="graphic-data" data-toggle="collapse" data-target="#child_graphic-data" aria-expanded="true" aria-controls="collapseOne">
       <h5 class="mb-0">
-        <button class="btn btn-link" >
+        <button class="btn btn-link">
           Comment utiliser l'interface Graphique ?
         </button>
       </h5>
     </div>
     <div id="child_graphic-data" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-data">
       <div class="card-body">
-        Sélection une option pour afficher les données via le select box. <br/>
-        Vous pouvez sélectionner les données en fonction de: <br/>
+        Sélection une option pour afficher les données via le select box. <br />
+        Vous pouvez sélectionner les données en fonction de: <br />
         <ul>
           <li>L'année </li>
           <li>Un mois et une année</li>
@@ -271,7 +271,7 @@
 
     <div class="card-header" id="add-data" data-toggle="collapse" data-target="#child_add-data" aria-expanded="true" aria-controls="collapseOne">
       <h5 class="mb-0">
-        <button class="btn btn-link" >
+        <button class="btn btn-link">
           Comment ajouter des données pour une station ?
         </button>
       </h5>
@@ -279,7 +279,7 @@
     <div id="child_add-data" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-data">
       <div class="card-body">
         <ul>
-          <li>Rendez à l'interface import des données via  <a [routerLink]="['/stations']"> mes stations</a> et cliquez sur le bouton: <i class="fas fa-file-download fa-fw fa-1x"></i></li>
+          <li>Rendez à l'interface import des données via <a [routerLink]="['/stations']"> mes stations</a> et cliquez sur le bouton: <i class="fas fa-file-download fa-fw fa-1x"></i></li>
           <li>Rendez vous sur l'interface détail, tableau ou graphique et cliquez sur le bouton:
             <a class="btn btn-success btn-sm" style="color:white">Importer des données <i class="fas fa-file-download white"></i></a></li>
 

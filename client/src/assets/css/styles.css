@@ -3,6 +3,12 @@
  * Copyright 2013-2018 Start Bootstrap
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-freelancer/blob/master/LICENSE)
  */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+.cdk-overlay-container {
+  z-index: 1200;
+}
+
 body {
   font-family: Lato
 }
@@ -440,15 +446,15 @@ i:hover {
   color: darkRed;
 }
 
-.fa-edit {
+.fa-pencil-alt {
   color: blue;
 }
 
-.fa-edit:hover {
+.fa-pencil-alt:hover {
   color: DarkTurquoise;
 }
 
-.fa-edit:active {
+.fa-pencil-alt:active {
   color: darkBlue;
 }
 

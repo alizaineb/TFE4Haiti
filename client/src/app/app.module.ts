@@ -40,10 +40,19 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {GraphLineComponent} from './_components/simple-station/graph-line/graph-line.component';
 import {TableComponent} from './_components/simple-station/table/table.component';
 import {UpdateDataModalComponent} from './_components/simple-station/table/update-data-modal/update-data-modal.component';
-import {DownloadDataModalComponent} from './_components/simple-station/download-data-modal/download-data-modal.component'
-;
-import { NotFoundComponent } from './_components/not-found/not-found.component'
-import {CanDeactivateGuard} from "./_guards/CanDeactivate";
+import {DownloadDataModalComponent} from './_components/simple-station/download-data-modal/download-data-modal.component';
+import { NotFoundComponent } from './_components/not-found/not-found.component';
+import {CanDeactivateGuard} from './_guards/CanDeactivate';
+
+// Material Angular
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material';
+import {MatInputModule} from '@angular/material';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatBadgeModule} from '@angular/material/badge';;
+import { DatePickerMonthComponent } from './_components/simple-station/graph-line/date-picker-month/date-picker-month.component'
+
 
 @NgModule({
   imports: [
@@ -55,7 +64,13 @@ import {CanDeactivateGuard} from "./_guards/CanDeactivate";
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     NgxPaginationModule,
-    NgbModule
+    NgbModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatNativeDateModule,
+    MatInputModule,
+    MatTooltipModule,
+    MatBadgeModule
   ],
   declarations: [
     AppComponent,
@@ -87,8 +102,8 @@ import {CanDeactivateGuard} from "./_guards/CanDeactivate";
     UpdateDataModalComponent,
     DownloadDataModalComponent,
     NotFoundComponent
-  ],
-
+,
+    DatePickerMonthComponent  ],
   providers: [
     AuthGuard,
     CanDeactivateGuard,
@@ -98,7 +113,7 @@ import {CanDeactivateGuard} from "./_guards/CanDeactivate";
     StationsService,
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
-
+    {provide: MAT_DATE_LOCALE, useValue: 'fr-BE'},
     MenuService
   ],
   bootstrap: [AppComponent]

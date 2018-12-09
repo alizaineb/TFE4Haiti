@@ -84,5 +84,13 @@
 
       </div>
     </form>
+
+    <div class="alert alert-info" role="alert" *ngIf="r.role.value===roleViewer">
+      Un <b>{{roleViewer}}</b> pourra consulter l'ensemble des données et les télécharger.
+    </div>
+
+    <div class="alert alert-info" role="alert" *ngIf="r.role.value===roleWorker">
+      Un <b>{{roleWorker}}</b> pourra accèder aux fonctionnalités avancées, tel que l'ajout d'une station, l'import de données pour une station, ...
+    </div>
   </div>
 </div>

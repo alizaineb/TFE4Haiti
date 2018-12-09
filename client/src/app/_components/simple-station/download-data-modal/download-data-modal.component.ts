@@ -8,6 +8,7 @@ import {
 import flatpickr from 'flatpickr';
 import { French } from 'flatpickr/dist/l10n/fr';
 import { Constantes } from "../../../_helpers/constantes";
+import {AlertService} from "../../../_services";
 
 @Component({
   selector: 'app-download-data-modal',
@@ -22,13 +23,15 @@ export class DownloadDataModalComponent implements OnInit {
   updated = new EventEmitter<any>();
 
   intervals: string[] = [];
-  datePicker;
+  dateStart: Date;
+  dateEnd: Date;
   datesSelected;
   selectedInterval: string;
 
+
   mark;
 
-  constructor() {
+  constructor(private alertService: AlertService) {
   }
 
   ngOnInit(): void {
@@ -43,62 +46,26 @@ export class DownloadDataModalComponent implements OnInit {
       this.intervals.push(Constantes.DownloadIntervals[i]);
     }
 
-    if (!this.datePicker) {
-      this.datePicker = flatpickr('#datePickerDownload', {
-        locale: French,
-        mode: 'range',
-        altInput: true,
-        dateFormat: 'Y-m-d',
-        altFormat: 'd-m-Y',
-        onChange: function(selectedDates, dateStr, instance) {
-          self.dateChanged(selectedDates, dateStr, instance);
-        }
-      });
-    }
-
-
   }
 
   sendStation() {
+    if(!(this.dateStart && this.dateEnd)){
+      this.alertService.error('Veuillez sélectionner une date de début et de fin.');
+      return;
+    }
+    const dStart = new Date(Date.UTC(this.dateStart.getFullYear(), this.dateStart.getMonth(), this.dateStart.getDate()));
+    const dEnd = new Date(Date.UTC(this.dateEnd.getFullYear(), this.dateEnd.getMonth(), this.dateEnd.getDate()));
 
+    this.datesSelected.from = dStart;
+    this.datesSelected.to = dEnd;
     let obj = {
       dates: this.datesSelected,
       interval: this.selectedInterval
     }
     //console.log(obj);
     this.updated.emit(obj);
-    // this.stationService.update(s)
-    //   .subscribe(
-    //     result => {
-    //       // trigger sent
-    //
-    //       this.alertService.success('La station a été modifiée');
-    //     },
-    //     error => {
-    //       this.alertService.error(error);
-    //     });
+    this.dateStart = undefined;
+    this.dateEnd = undefined;
   }
 
-  initDatePicker() {
-    const self = this;
-    this.datePicker = flatpickr('#datePickerDownload', {
-      locale: French,
-      mode: 'range',
-      altInput: true,
-      dateFormat: 'Y-m-d',
-      altFormat: 'd-m-Y',
-      onChange: function(selectedDates, dateStr, instance) {
-        self.dateChanged(selectedDates, dateStr, instance);
-      }
-    });
-  }
-
-  dateChanged(selectedDates, dateStr, instance) {
-    if (selectedDates.length === 2) {
-      const dateMin: Date = selectedDates[0];
-      const dateMax: Date = selectedDates[1];
-      this.datesSelected.from = dateMin;
-      this.datesSelected.to = dateMax;
-    }
-  }
 }

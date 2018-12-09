@@ -22,7 +22,7 @@
 <div class="col-md-6">
   <div class="form-row">
     <label class="col-form-label">
-      Données
+      Données pluviométriques
     </label>
     <select class="form-control col-sm-6" (change)="rangeDataChange($event.target.value)">
       <option>Sélectionner une option</option>
@@ -49,7 +49,7 @@
     </label>
     <label class="col-form-label spaceRight">Colonnes</label>
     <label class="switch">
-      <input [(ngModel)]="typeGraph" (change)="getValue()" type="checkbox">
+      <input [(ngModel)]="typeGraph" type="checkbox">
       <span class="slider round"></span>
     </label>
     <label class=" col-form-label spaceLeft">Lignes</label>
@@ -59,13 +59,7 @@
 
 <div class="row col-md-8" *ngIf="'Mensuelles'===rangeSelected">
   <div class="col-sm-5 form-row">
-    <label class="col-form-label">
-      Mois/Année
-    </label>
-    <!--<i (click)="updateMonthSelected('add')" class="fas fa-arrow-circle-left"></i>-->
-    <input class="form-control col-sm-2" (change)="changeMonth($event.target.value)" size="2" type="number" min="1" max="12" [ngModel]="monthSelected"> &nbsp; / &nbsp;
-    <input class="form-control col-sm-3" (change)="changeYear($event.target.value)" size="4" type="number" min="1900" max="{{currentYear}}" [ngModel]="yearSelected">
-    <!--<i *ngIf="!(monthSelected === currentMonth && yearSelected === currentYear)" (click)="updateMonthSelected('sub')" class="fas fa-arrow-circle-right"></i>-->
+    <app-date-picker-month (selectedDate)="getMonthValue($event)"></app-date-picker-month>
   </div>
   <div class="col-sm-6 form-row">
     <label class="col-form-label spaceRight">
@@ -73,17 +67,28 @@
     </label>
     <label class="col-form-label spaceRight">Colonnes</label>
     <label class="switch">
-      <input [(ngModel)]="typeGraph" (change)="getValue()" type="checkbox">
+      <input [(ngModel)]="typeGraph" type="checkbox">
       <span class="slider round"></span>
     </label>
     <label class=" col-form-label spaceLeft">Lignes</label>
   </div>
 </div>
 
+<div class="row col-md-12" [hidden]="'Quotidiennes'!==rangeSelected">
+  <div class="col-sm-6 form-row">
+    <mat-form-field>
+      <input matInput (dateChange)="getData('from',$event)" id="fromDate" [matDatepicker]="pickerFromDate" placeholder="Date de début">
+      <mat-datepicker-toggle matSuffix [for]="pickerFromDate"></mat-datepicker-toggle>
+      <mat-datepicker #pickerFromDate></mat-datepicker>
+    </mat-form-field>
 
-<div class="row col-md-8" [hidden]="'Quotidiennes'!==rangeSelected">
+    <mat-form-field class="offset-sm-1">
+      <input matInput (dateChange)="getData('end',$event)" id="toDate" [matDatepicker]="pickerToDate" placeholder="Date de fin">
+      <mat-datepicker-toggle matSuffix [for]="pickerToDate"></mat-datepicker-toggle>
+      <mat-datepicker #pickerToDate></mat-datepicker>
+    </mat-form-field>
+  </div>
 
-  <input id="datePicker" placeholder="Sélectionner une range de date" type="text" class="flatpickr flatpickr-input col-sm-5 form-control">
 
   <div class="col-sm-6 form-row">
     <label class="col-form-label spaceRight">
@@ -91,7 +96,7 @@
     </label>
     <label class="col-form-label spaceRight">Colonnes</label>
     <label class="switch">
-      <input [(ngModel)]="typeGraph" (change)="getValue()" type="checkbox">
+      <input [(ngModel)]="typeGraph" type="checkbox">
       <span class="slider round"></span>
     </label>
     <label class=" col-form-label spaceLeft">Lignes</label>

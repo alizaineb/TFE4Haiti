@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuService } from '../../_services/menu.service';
-import { Router } from '@angular/router';
+import {NavigationStart, Router} from '@angular/router';
 import { LocalstorageService } from '../../_services/localstorage.service';
-import { AuthenticationService } from '../../_services';
-import { Constantes } from "../../_helpers/constantes";
+import {AuthenticationService, DataService, StationsService, UserService} from '../../_services';
+import { Constantes } from '../../_helpers/constantes';
+
+import { forkJoin } from 'rxjs';
+
+
 
 @Component({
   selector: 'app-menu',
@@ -11,24 +15,47 @@ import { Constantes } from "../../_helpers/constantes";
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit {
+
+
   public menu = { right: [], left: [] };
+  numberToValidate;
 
   constructor(
     private menuService: MenuService,
     private router: Router,
     private localStorageService: LocalstorageService,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private userService: UserService,
+    private stationsService: StationsService,
+    private dataService: DataService,
   ) {
 
+  }
+
+  getCounts() {
+    return forkJoin(
+      this.dataService.getStats(),
+      this.userService.getCountAllAwaiting(),
+      this.stationsService.getStats()
+    );
   }
 
   ngOnInit() {
     this.menu.left = this.menuService.getMenuLeft();
     this.menu.right = this.menuService.getMenuRight();
-    let self = this;
+    const self = this;
     this.localStorageService.storage$.subscribe(storage => {
       self.updateMenu(storage);
     });
+
+    this.router.events.subscribe( e => {
+      if (e.toString().includes('NavigationStart')) {
+        this.getCounts().subscribe(result => {
+          this.numberToValidate = Number(result[0].awaiting) + Number(result[1]) + Number(result[2].awaiting);
+        });
+      }
+    });
+
     this.updateMenu(this.localStorageService.getStorage());
     this.authenticationService.isLogged().subscribe(
       value => {

@@ -95,8 +95,9 @@ exports.create = function(req, res) {
     sTmp.latitude = station.latitude;
     sTmp.longitude = station.longitude;
     sTmp.altitude = station.altitude;
-    sTmp.createdAt = new Date(station.createdAt);
-    const d = new Date();
+    let d = new Date(station.createdAt);
+    sTmp.createdAt  = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0));
+    d = new Date();
     sTmp.updatedAt = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes()));
     sTmp.state = states.AWAITING;
     sTmp.interval = station.interval;
@@ -149,12 +150,14 @@ exports.update = function(req, res) {
     if (!station) {
       return res.status(404).send("La station n'existe pas");
     }
+
     // Les || permettent de reprendre les anciens champs.
     station.name = req.body.name || station.name;
     station.latitude = req.body.latitude || station.latitude;
     station.longitude = req.body.longitude || station.longitude;
     station.altitude = req.body.altitude || station.altitude;
-    station.createdAt = req.body.createdAt || station.createdAt; // TODO RETIRER
+    let d = new Date(req.body.createdAt || station.createdAt);
+    station.createdAt  = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0));
     station.state = req.body.state || station.state; // TODO RETIRER
     station.bassin_versant = req.body.bassin_versant || station.bassin_versant; // TODO RETIRER
     station.commune = req.body.commune || station.commune; // TODO RETIRER

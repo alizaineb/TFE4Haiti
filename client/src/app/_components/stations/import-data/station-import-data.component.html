@@ -20,7 +20,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-6" >
+    <div class="col-md-7" >
       <h2>Ajout manuel</h2>
       <table class="table ">
         <thead>
@@ -39,7 +39,12 @@
         <tbody>
           <tr *ngFor="let d of data;">
             <td class="align-middle pointer">
-              <input class="pointer" placeholder="Date" type="date" [(ngModel)]="d.date" />
+              <!--<input class="pointer" placeholder="Date" type="date" [(ngModel)]="d.date" /> -->
+              <mat-form-field>
+                <input matInput id="createdAt" [matDatepicker]="pickercreatedAt" [(ngModel)]="d.date" placeholder="Date" disabled>
+                <mat-datepicker-toggle matSuffix [for]="pickercreatedAt"></mat-datepicker-toggle>
+                <mat-datepicker #pickercreatedAt disabled="false"></mat-datepicker>
+              </mat-form-field>
             </td>
             <td>
               <ngb-timepicker [(ngModel)]="d.time"></ngb-timepicker>
@@ -63,7 +68,7 @@
     <div class="col-md-1">
       <h3>OU</h3>
     </div>
-    <div class="col-md-5" >
+    <div class="col-md-4" >
       <h2>Ajout par fichier</h2>
       <div class="input-group mb3">
         <div class="custom-file pointer">

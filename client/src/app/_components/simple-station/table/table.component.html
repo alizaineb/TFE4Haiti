@@ -21,15 +21,28 @@
   <div class="col-md-2">
     <div class="form-group">
       <select class="form-control" (change)="intervalleChanged($event.target.value)">
-        <option *ngFor="let i of intervalsFiltered; let first= first;" [value]="i" [selected]="first">{{i}}</option>
+        <optgroup *ngIf="intervalsFiltered && intervalsFilteredMn.length > 0" label="Affichage journalier">
+          <option *ngFor="let i of intervalsFilteredMn; let first= first;" [value]="i" [selected]="first">{{i}}</option>
+        </optgroup>
+        <optgroup label="Affichage Mensuel">
+          <option *ngFor="let i of intervalsFilteredH;" [value]="i">{{i}}</option>
+        </optgroup>
       </select>
     </div>
   </div>
   <div [hidden]="!intervalDay" class="col-md-2">
-    <input id="datePicker" placeholder="Date" type="text" class="flatpickr flatpickr-input form-control" required>
+    <mat-form-field>
+      <input matInput id="datePicker" [matDatepicker]="datePickerDay" (dateChange)="dateChanged($event.value);" placeholder="Choisissez une date">
+      <mat-datepicker-toggle matSuffix [for]="datePickerDay"></mat-datepicker-toggle>
+      <mat-datepicker #datePickerDay></mat-datepicker>
+    </mat-form-field>
   </div>
   <div [hidden]="intervalDay" class="col-md-4">
-    <input type="month" id="monthSelector" min="1990-01" (change)="monthPicked($event)">
+    <mat-form-field>
+      <input matInput id="monthSelector" [matDatepicker]="datePickerMonth" md-mode="month" placeholder="Choisissez un mois">
+      <mat-datepicker-toggle matSuffix [for]="datePickerMonth"></mat-datepicker-toggle>
+      <mat-datepicker #datePickerMonth startView="year" (monthSelected)="monthPicked($event,datePickerMonth);"></mat-datepicker>
+    </mat-form-field>
   </div>
 
 </div>

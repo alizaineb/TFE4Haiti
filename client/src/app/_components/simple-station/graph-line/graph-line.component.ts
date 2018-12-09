@@ -3,15 +3,16 @@ import { DataService } from '../../../_services/data.service';
 import * as Highcharts from 'highcharts/highstock';
 import { Station } from '../../../_models';
 import { StationsService } from '../../../_services/stations.service';
-import flatpickr from 'flatpickr';
-import { French } from 'flatpickr/dist/l10n/fr';
-import { AuthenticationService } from "../../../_services";
+import {MatDatepickerInputEvent} from '@angular/material';
+import {AlertService} from '../../../_services';
+
 
 @Component({
   selector: 'app-graph-line',
   templateUrl: './graph-line.component.html',
-  styleUrls: ['./graph-line.component.css']
+  styleUrls: ['./graph-line.component.css'],
 })
+
 export class GraphLineComponent implements OnInit {
 
   @Input()
@@ -22,7 +23,6 @@ export class GraphLineComponent implements OnInit {
 
   highChartLine;
   highChartBar;
-  datePicker;
   rangeData: string[];
   rangeSelected: string;
 
@@ -33,7 +33,6 @@ export class GraphLineComponent implements OnInit {
   monthSelected: number;
   currentMonth: number;
 
-  datepicker;
   hide;
 
   groupPixelWidth = 50;
@@ -41,10 +40,12 @@ export class GraphLineComponent implements OnInit {
 
   typeGraph;
 
-  constructor(private dataService: DataService, private stationService: StationsService) { }
+  fromDate: Date;
+  endDate: Date;
+
+  constructor(private dataService: DataService, private stationService: StationsService, private alertService: AlertService) { }
 
   ngOnInit() {
-    const self = this;
 
     this.rangeData = ['Annuelles', 'Mensuelles', 'Quotidiennes'];
     this.rangeSelected = '';
@@ -58,27 +59,35 @@ export class GraphLineComponent implements OnInit {
 
     this.hide = false;
 
-    this.datePicker = flatpickr('#datePicker', {
-      locale: French,
-      mode: 'range',
-      altInput: true,
-      dateFormat: 'Y-m-d',
-      altFormat: 'd-m-Y',
-      onChange: function(selectedDates, dateStr, instance) {
-        self.dateChanged(selectedDates, dateStr, instance);
-      }
-    });
-
     this.loadStation();
     this.loadOptionsHighCharts();
+
   }
 
-  dateChanged(selectedDates, dateStr, instance) {
-    if (selectedDates.length === 2) {
-      const dateMin: Date = selectedDates[0];
-      const dateMax: Date = selectedDates[1];
-      this.loadRangeDate(dateMin.getDate(), dateMin.getMonth(), dateMin.getFullYear(), dateMax.getDate(), dateMax.getMonth(), dateMax.getFullYear());
+  getData(type: string, event: MatDatepickerInputEvent<Date>) {
+    if (type === 'from') {
+      this.fromDate = event.value;
+    } else {
+      this.endDate = event.value;
     }
+
+    if (this.fromDate !== undefined  && this.fromDate !== null && this.endDate !== undefined && this.endDate !== null) {
+      if (this.endDate < this.fromDate) {
+        this.alertService.error('La date de fin est plus petite que celle de début');
+      } else {
+        this.loadRangeDate(
+          this.fromDate.getDate(),
+          this.fromDate.getMonth(),
+          this.fromDate.getFullYear(),
+          this.endDate.getDate(),
+          this.endDate.getMonth(),
+          this.endDate.getFullYear());
+      }
+    }
+  }
+
+  getMonthValue(event) {
+    this.loadOneMonth(event.value.format('MM'), event.value.format('YYYY'));
   }
 
   hasAccessToStation(station) {
@@ -90,15 +99,6 @@ export class GraphLineComponent implements OnInit {
     this.rangeDataChange(this.rangeSelected);
   }
 
-  getValue() {
-    //console.log(this.typeGraph);
-  }
-
-  changeMonth(newMonth) {
-    this.monthSelected = parseInt(newMonth, 10);
-    this.rangeDataChange(this.rangeSelected);
-  }
-
   loadStation() {
     this.stationService.getById(this.stationId).subscribe(s => { this.station = s; });
   }
@@ -107,32 +107,13 @@ export class GraphLineComponent implements OnInit {
     this.hide = false;
     this.rangeSelected = val;
     if (val === 'Mensuelles') {
-      this.loadOneMonth();
+      const d = new Date();
+      this.loadOneMonth(d.getMonth().valueOf() + 1, d.getFullYear());
     } else if (val === 'Annuelles') {
       this.loadOneYear();
     } else {
       this.hide = true;
-      this.datePicker.setDate(null);
-
     }
-  }
-
-  updateYearSelected(op) {
-    if (op === 'add') {
-      this.yearSelected = this.yearSelected - 1;
-    } else {
-      this.yearSelected = this.yearSelected + 1;
-    }
-    this.loadOneYear();
-  }
-
-  updateMonthSelected(op) {
-    if (op === 'add') {
-      this.monthSelected = this.monthSelected - 1;
-    } else {
-      this.monthSelected = this.monthSelected + 1;
-    }
-    this.loadOneMonth();
   }
 
   showNoData() {
@@ -154,7 +135,6 @@ export class GraphLineComponent implements OnInit {
   loadRangeDate(minDate, minMonth, minYear, maxDate, maxMonth, maxYear) {
     this.dataLoading = true;
     this.dataService.getAllRainDataGraphLineRangeDate(this.stationId, minDate, minMonth, minYear, maxDate, maxMonth, maxYear).subscribe(data => {
-      //console.log(data);
       const self = this;
       this.hide = false;
       // Create the chart
@@ -199,9 +179,9 @@ export class GraphLineComponent implements OnInit {
     });
   }
 
-  loadOneMonth() {
+  loadOneMonth(month, year) {
     this.dataLoading = true;
-    this.dataService.getAllRainDataGraphLineOneMonth(this.stationId, this.monthSelected, this.yearSelected).subscribe(data => {
+    this.dataService.getAllRainDataGraphLineOneMonth(this.stationId, month, year).subscribe(data => {
       const self = this;
       // Create the chart
       this.highChartLine = Highcharts.stockChart('containerLine', {

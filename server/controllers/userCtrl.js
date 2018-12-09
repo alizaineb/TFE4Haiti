@@ -295,11 +295,6 @@ exports.delete = function(req, res) {
     });
 };
 
-// TODO ?????
-exports.logout = function(req, res) {
-  //TODO connect to mongodb
-  return res.status(200).send("Method to implements");
-};
 
 /**
  * getAllAwaiting - Permet de récupérer tous les utilisateurs en attente
@@ -308,7 +303,7 @@ exports.logout = function(req, res) {
  * @param {request} req Requête du client
  * @param {response} res Réponse renvoyée au client
  *                       500 : Erreur serveur
- * @return {string[]}    200 : Les stations dont l'état est en attente
+ * @return {string[]}    200 : Les utilisateurs dont l'état est en attente
  */
 
 exports.getAllAwaiting = function(req, res) {
@@ -321,7 +316,27 @@ exports.getAllAwaiting = function(req, res) {
       }
       return res.status(200).send(users);
     });
-}
+};
+
+/**
+ * getCountAllAwaiting - Permet le nombre d'utilisateur en attente
+ *
+ * @param {request} req Requête du client
+ * @param {response} res Réponse renvoyée au client
+ *                       500 : Erreur serveur
+ * @return {string[]}    200 : Le nombre d'utilisateur en attente
+ */
+exports.getCountAllAwaiting = function(req, res) {
+  UsersModel.userModel.countDocuments({ state: userState.AWAITING }, (err, count) => {
+      if (err) {
+        logger.error("[userCtrl] getCountAllAwaiting :", err);
+        return res.status(500).send("Erreur lors de la récupération des utilisateurs en attente.");
+      }
+      console.log(count);
+      return res.status(200).send(count.toString());
+    });
+};
+
 /**
  * acceptUser - Permet de passer un utilisateur de l'état awaiting à l'état ok, va envoyer à l'utilisateur un mail
  *

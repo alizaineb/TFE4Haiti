@@ -31,7 +31,7 @@ export class SimpleStationComponent implements OnInit, OnDestroy {
     const self = this;
 
     self.stationId = '';
-    self.tabList = ['Details', 'Tableaux', 'Graphiques'];
+    self.tabList = ['Détails', 'Graphiques', 'Tableaux'];
     self.activeTab = self.tabList[0];
 
     self.sub = self.route.params.subscribe((params) => {
@@ -45,10 +45,10 @@ export class SimpleStationComponent implements OnInit, OnDestroy {
           station => {
             this.currentStation = station;
             if (this.hasViewerAccess()) {
-              this.tabList = ['Details', 'Tableaux', 'Graphiques', 'Notes'];
+              this.tabList = ['Détails', 'Graphiques', 'Tableaux', 'Notes'];
             }
             if (this.hasAdminAccess()) {
-              this.tabList = ['Details', 'Tableaux', 'Graphiques', 'Notes', 'Utilisateurs'];
+              this.tabList = ['Détails', 'Graphiques', 'Tableaux', 'Notes', 'Utilisateurs'];
             }
           },
           err => {

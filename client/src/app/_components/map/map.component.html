@@ -1,6 +1,15 @@
 <h1>Carte</h1>
+<div class="alert alert-info">
+  En cliquant sur le bouton
+  <a class="details"> <i class="fas fa-external-link-alt"></i> </a> vous accéderez au détail de la station et à ses données. <br />
+  Vous pouvez aussi accéder au détail de la station et ses données en cliquant directement sur les marqueurs
+  <i class="fas fa-map-marker-alt fa-1x" style="color: green"></i>
+  qui représentent les stations.
+</div>
+
 <div class="row">
   <div class="col-md-3">
+    <h2> Liste des stations </h2>
     <div class="input-group mb-3">
       <div class="input-group-prepend">
         <span class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
@@ -32,7 +41,6 @@
         </div>
       </div>
     </div>
-
     <ul class="list-group">
       <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let station of filteredStation" [ngClass]="{
           'list-group-item':true,
@@ -43,23 +51,12 @@
         <div>
           <i *ngIf="getSelectedClass(station)" class="fas fa-check-circle "></i>
           <i *ngIf="!getSelectedClass(station)" class="far fa-circle "></i>
-          <a class="details" [routerLink]="['/stations', station._id, 'Details']"> <i class="fas fa-external-link-alt"></i> </a>
+          <a class="details" matTooltip="Détail de la station" [routerLink]="['/stations', station._id, 'Details']">
+            <i class="fas fa-external-link-alt"></i>
+          </a>
         </div>
       </li>
     </ul>
-
-    <div class="card bg-light spacetop">
-      <div class="card-body">
-        <div class="card-text">
-          <div class="row">
-            <i class="fas fa-external-link-alt spaceRight"></i> Ouvrir les détails d'une station
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-
   </div>
   <div class="col-md-9 ">
     <div id="mapid">

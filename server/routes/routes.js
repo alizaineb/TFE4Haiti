@@ -33,11 +33,6 @@ exports.routes = [
     middleWare: [controllers.users.login]
   },
   {
-    path: "/api/users/logout",
-    httpMethod: "GET",
-    middleWare: [controllers.users.logout]
-  },
-  {
     path: "/api/users/roles",
     httpMethod: "GET",
     middleWare: [controllers.users.roles]
@@ -66,6 +61,12 @@ exports.routes = [
     path: "/api/users/getAllAwaiting",
     httpMethod: "GET",
     middleWare: [controllers.users.getAllAwaiting],
+    access: [roles.ADMIN]
+  },
+  {
+    path: "/api/users/getCountAllAwaiting",
+    httpMethod: "GET",
+    middleWare: [controllers.users.getCountAllAwaiting],
     access: [roles.ADMIN]
   },
   {

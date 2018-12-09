@@ -1,5 +1,5 @@
 .navbar {
-  height: 50px;
+  height: 70px;
   font-size: 1.2em;
 }
 
@@ -10,5 +10,12 @@
 li {
   padding: 1px;
   background-color: #343a40;
-  ;
+}
+
+.someSpaceRight {
+  margin-right: 8px;
+}
+
+a {
+  font-size: 1.1em;
 }
