@@ -148,18 +148,7 @@ exports.acceptAwaiting = function (req, res) {
                                         return res.status(500).send("L'intervalle de la donnée ne correspond pas celui de la station.")
                                     }
                                 });
-
-                                rainData.save().then(() => {
-                                    dataModel.RainDataAwaitingModel.deleteOne({_id: rainDataAwaiting._id}).then(() => {
-                                        return res.status(200).send();
-                                    }).catch((err) => {
-                                        return res.status(500).send(err);
-                                    });
-                                }).catch(function (err) {
-                                    logger.error(err);
-                                    let tmp = errors(err);
-                                    return res.status(tmp.error).send("Certaines données existent déjà pour cette date.");
-                                });
+                                
                             });
 
                         }
