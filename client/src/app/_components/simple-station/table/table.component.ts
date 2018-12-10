@@ -125,7 +125,6 @@ export class TableComponent implements OnInit, OnChanges {
     for (let i = 0; i < 24; i++) {
       this.cols[i] = this.minTwoDigits(i);
     }
-    console.log(this.cols);
     if (!value) {
       return;
     }

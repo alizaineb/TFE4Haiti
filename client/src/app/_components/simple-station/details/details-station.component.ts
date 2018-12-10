@@ -41,7 +41,7 @@ export class DetailsStationComponent implements OnInit {
     this.stationService.getById(this.stationId).subscribe(
       station => {
         this.currentStation = station;
-        console.log(this.currentStation);
+        //console.log(this.currentStation);
         this.generateMap();
       },
       err => {
