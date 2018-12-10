@@ -121,9 +121,11 @@ export class TableComponent implements OnInit, OnChanges {
   dateChanged(value) {
     value = new Date(Date.UTC(value.getFullYear(), value.getMonth(), value.getDate()));
     let self = this;
+    this.cols = [];
     for (let i = 0; i < 24; i++) {
       this.cols[i] = this.minTwoDigits(i);
     }
+    console.log(this.cols);
     if (!value) {
       return;
     }
