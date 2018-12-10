@@ -498,6 +498,7 @@ exports.resetPwd = function(req, res) {
             });
           }
           // Expiré : retirer l'objet de la DB
+          // TODO Ici changer et repasser en état validation ?
           else {
             urlObj.remove(function(err, userUpdt) {
               if (err) {
