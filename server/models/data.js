@@ -27,16 +27,6 @@ const RainData = new Schema({
   }
 });
 
-RainData.methods.toDto = function() {
-  return {
-    _id: this._id,
-    id_station: this.id_station,
-    id_user: this.id_user,
-    date: this.date,
-    value: this.value
-  };
-};
-
 /**
  * Méthode qui transforme un objet data en un tableau [date, value] compatible pour les graphs Highstocks
  * @param this

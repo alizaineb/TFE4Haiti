@@ -18,7 +18,6 @@ const tokenManager = require('./../config/tokenManager');
 // états
 const roles = require('../config/constants').roles;
 const userState = require('../config/constants').userState;
-const checkParam = require('./utils').checkParam;
 const errors = require('./utils').errors;
 // gestion des mails
 const mailTransporter = require('./mailer');
@@ -328,13 +327,13 @@ exports.getAllAwaiting = function(req, res) {
  */
 exports.getCountAllAwaiting = function(req, res) {
   UsersModel.userModel.countDocuments({ state: userState.AWAITING }, (err, count) => {
-      if (err) {
-        logger.error("[userCtrl] getCountAllAwaiting :", err);
-        return res.status(500).send("Erreur lors de la récupération des utilisateurs en attente.");
-      }
-      console.log(count);
-      return res.status(200).send(count.toString());
-    });
+    if (err) {
+      logger.error("[userCtrl] getCountAllAwaiting :", err);
+      return res.status(500).send("Erreur lors de la récupération des utilisateurs en attente.");
+    }
+    console.log(count);
+    return res.status(200).send(count.toString());
+  });
 };
 
 /**

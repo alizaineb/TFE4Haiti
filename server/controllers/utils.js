@@ -40,31 +40,6 @@ exports.errors = function(err) {
 };
 
 /**
- * checkParam - Cette méthode va vérifier que chaque paramètre soit bien présent dans le body de la requête
- *              Si il manque un paramètre, elle va renvoyer un status 400 en indiquant que des inforamtions son manquantes
- *
- * @param  req      requete du client
- * @param  res      réponse concernant le client
- * @param {string[]} params   Tableau reprenant les paramètres requis
- * @param  callback Méthode qui va être appelée si tout se passe bien
- * @return          Si tout se passe bien appel du callback
- */
-exports.checkParam = function(req, res, params, callback) {
-  for (let i = 0; i < params.length; i++) {
-    if (req.body.hasOwnProperty(params[i])) {
-      if (!req.body[params[i]]) {
-        return res.status(400).send("Information manquante(s)");
-      } else if (typeof(req.body[params[i]]) === 'string' && req.body[params[i]].trim().length === 0) {
-        return res.status(400).send("Information manquante(s)");
-      }
-    } else {
-      return res.status(400).send("Information manquante(s)");
-    }
-  }
-  return callback();
-};
-
-/**
  * hasAccesToStation {Middleware} - Cette métthode va vérifier que l'utilisateur présent dans le token a accès à la station
  *                                  Cette station doit être dans req.param ou req.body sous le nom id_station (voir dans fichier routes/routes.js)
  *

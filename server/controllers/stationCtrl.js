@@ -10,7 +10,6 @@ const UsersModel = require('../models/user');
 // états
 const states = require('../config/constants').stationState;
 const userRole = require('../config/constants').roles;
-const checkParam = require('./utils').checkParam;
 const errors = require('./utils').errors;
 
 
@@ -96,13 +95,13 @@ exports.create = function(req, res) {
     sTmp.longitude = station.longitude;
     sTmp.altitude = station.altitude;
     let d = new Date(station.createdAt);
-    sTmp.createdAt  = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0));
+    sTmp.createdAt = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0));
     d = new Date();
     sTmp.updatedAt = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes()));
     sTmp.state = states.AWAITING;
     sTmp.interval = station.interval;
     sTmp.user_creator_id = req.token_decoded.id;
-    if(user.role === userRole.ADMIN) {
+    if (user.role === userRole.ADMIN) {
       sTmp.users = [];
     } else {
       sTmp.users = [req.token_decoded.id];
@@ -157,7 +156,7 @@ exports.update = function(req, res) {
     station.longitude = req.body.longitude || station.longitude;
     station.altitude = req.body.altitude || station.altitude;
     let d = new Date(req.body.createdAt || station.createdAt);
-    station.createdAt  = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0));
+    station.createdAt = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0));
     station.state = req.body.state || station.state; // TODO RETIRER
     station.bassin_versant = req.body.bassin_versant || station.bassin_versant; // TODO RETIRER
     station.commune = req.body.commune || station.commune; // TODO RETIRER
