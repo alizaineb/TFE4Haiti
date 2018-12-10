@@ -116,21 +116,21 @@ exports.routes = [
 
   },
   { //      /api/stations/5bbdb51dd7aec61a195afc9b/import
-    path: "/api/stations/:id/import",
+    path: "/api/stations/:station_id/import",
     httpMethod: "POST",
     middleWare: [controllers.data.importManualData],
     access: [roles.WORKER, roles.ADMIN]
 
   },
   { //      /api/stations/5bbdb51dd7aec61a195afc9b/import
-    path: "/api/stations/:id/download",
+    path: "/api/stations/:station_id/download",
     httpMethod: "GET",
     middleWare: [controllers.data.downloadData],
     access: [roles.VIEWER, roles.WORKER, roles.ADMIN]
 
   },
   { //      /api/stations/5bbdb51dd7aec61a195afc9b/import
-    path: "/api/stations/:id/importFile",
+    path: "/api/stations/:station_id/importFile",
     httpMethod: "POST",
     middleWare: [controllers.data.importFileData],
     access: [roles.WORKER, roles.ADMIN]
@@ -219,11 +219,11 @@ exports.routes = [
   },
 
   // Méthodes liées aux data
-    {
-        path: "/api/rainData/stats",
-        httpMethod: "GET",
-        middleWare: [controllers.data.getStats]
-    },
+  {
+    path: "/api/rainData/stats",
+    httpMethod: "GET",
+    middleWare: [controllers.data.getStats]
+  },
   {
     path: "/api/rainData/:station_id/updateData",
     httpMethod: "POST",
@@ -243,41 +243,41 @@ exports.routes = [
     access: [roles.ADMIN]
   },
   {
-    path: "/api/rainData/refuse/:id",
+    path: "/api/rainData/refuse/:station_id",
     httpMethod: "DELETE",
     middleWare: [controllers.data.refuseAwaiting],
     access: [roles.ADMIN]
   },
   {
-    path: "/api/rainData/:stationId",
+    path: "/api/rainData/:station_id",
     httpMethod: "GET",
     middleWare: [controllers.data.get],
     access: [roles.ADMIN, roles.WORKER]
   },
   {
-    path: "/api/rainDataGraphLineOneYear/:stationId/:year",
+    path: "/api/rainDataGraphLineOneYear/:station_id/:year",
     httpMethod: "GET",
     middleWare: [controllers.data.getRainDataGraphLineOneYear],
   },
   {
-    path: "/api/rainDataGraphLineOneMonth/:stationId/:month/:year",
+    path: "/api/rainDataGraphLineOneMonth/:station_id/:month/:year",
     httpMethod: "GET",
     middleWare: [controllers.data.getRainDataGraphLineOneMonth],
   },
   {
-    path: "/api/rainDataGraphLineRangeDate/:stationId/:minDate/:minMonth/:minYear/:maxDate/:maxMonth/:maxYear",
+    path: "/api/rainDataGraphLineRangeDate/:station_id/:minDate/:minMonth/:minYear/:maxDate/:maxMonth/:maxYear",
     httpMethod: "GET",
     middleWare: [controllers.data.rainDataGraphLineRangeDate],
   },
 
 
   {
-    path: "/api/data/:stationId/:date",
+    path: "/api/data/:station_id/:date",
     httpMethod: "GET",
     middleWare: [controllers.data.getForDay]
   },
   {
-    path: "/api/data/:stationId/:year/:month",
+    path: "/api/data/:station_id/:year/:month",
     httpMethod: "GET",
     middleWare: [controllers.data.getForMonth]
   },

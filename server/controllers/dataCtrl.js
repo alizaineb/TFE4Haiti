@@ -289,7 +289,7 @@ function dateRegex2(dateStr) {
  * @return           204
  */
 exports.refuseAwaiting = function(req, res) {
-  let id = req.params.id || '';
+  let id = req.params.station_id || '';
   if (!id) {
     return res.status(400).send("Information manquante(s)");
   }
@@ -324,7 +324,7 @@ exports.refuseAwaiting = function(req, res) {
  * @return {data[]}  200 : Toutes les données
  */
 exports.get = function(req, res) {
-  DataModel.rainDataModel.find({ id_station: req.params.stationId },
+  DataModel.rainDataModel.find({ id_station: req.params.station_id },
     '_id id_station id_user date value',
     function(err, datas) {
       if (err) {
@@ -353,7 +353,7 @@ exports.get = function(req, res) {
  * @return {station}     201 : Un tableau vide ou avec des données formatées pour Highstock
  */
 exports.rainDataGraphLineRangeDate = function(req, res) {
-  StationModel.stationModel.findById(req.params.stationId, (err, station) => {
+  StationModel.stationModel.findById(req.params.station_id, (err, station) => {
     if (err) {
       logger.error("[DATACTRL] rainDataGraphLineRangeDate : ", err);
       return res.status(500).send("Erreur lors de la récupération de la station.");
@@ -372,7 +372,7 @@ exports.rainDataGraphLineRangeDate = function(req, res) {
     let dateMin = new Date(Date.UTC(minYear, minMonth, minDate, 0, 0, 0, 0));
     let dateMax = new Date(Date.UTC(maxYear, maxMonth, maxDate, 23, 59, 59, 0));
 
-    DataModel.rainDataModel.find({ id_station: req.params.stationId, date: { "$gte": dateMin, "$lt": dateMax } },
+    DataModel.rainDataModel.find({ id_station: req.params.station_id, date: { "$gte": dateMin, "$lt": dateMax } },
       'date value', { sort: { date: 1 } },
       function(err, data) {
         if (err) {
@@ -382,7 +382,7 @@ exports.rainDataGraphLineRangeDate = function(req, res) {
         if (data.length === 0) {
           return res.status(201).send([]);
         } else {
-          data = preprocessData(data, req.params.stationId, station.interval, dateMin, dateMax);
+          data = preprocessData(data, req.params.station_id, station.interval, dateMin, dateMax);
           let tabD = [];
           data.forEach(data => tabD.push(DataModel.rainDataModel.toDtoGraphLine(data)));
           return res.status(201).send(tabD);
@@ -396,7 +396,7 @@ exports.rainDataGraphLineRangeDate = function(req, res) {
  * getRainDataGraphLineOneMonth - Méthode qui permet de récupérer les données d'une station pour une période d'un mois
  *
  * @param {request} req Requête du client
- * @param {string} req.params.stationId L'id de la station à mettre à jour
+ * @param {string} req.params.station_id L'id de la station à mettre à jour
  * @param {string} req.params.year Année
  * @param {string} req.params.month Mois
  * @param {response} res Réponse renvoyée au client
@@ -405,7 +405,7 @@ exports.rainDataGraphLineRangeDate = function(req, res) {
  * @return {station}     201 : Un tableau vide ou avec des données formatées pour Highstock
  */
 exports.getRainDataGraphLineOneMonth = function(req, res) {
-  StationModel.stationModel.findById(req.params.stationId, (err, station) => {
+  StationModel.stationModel.findById(req.params.station_id, (err, station) => {
     if (err) {
       logger.error("[DATACTRL] getRainDataGraphLineOneMonth : ", err);
       return res.status(500).send("Erreur lors de la récupération de la station.");
@@ -425,7 +425,7 @@ exports.getRainDataGraphLineOneMonth = function(req, res) {
     let dateMax = new Date(Date.UTC(year, dateMin.getMonth() + 1, 0, 23, 23, 59, 0));
 
 
-    DataModel.rainDataModel.find({ id_station: req.params.stationId, date: { "$gte": dateMin, "$lt": dateMax } },
+    DataModel.rainDataModel.find({ id_station: req.params.station_id, date: { "$gte": dateMin, "$lt": dateMax } },
       'date value', { sort: { date: 1 } },
       function(err, data) {
         if (err) {
@@ -435,7 +435,7 @@ exports.getRainDataGraphLineOneMonth = function(req, res) {
         if (data.length === 0) {
           return res.status(201).send([]);
         } else {
-          data = preprocessData(data, req.params.stationId, station.interval, dateMin, dateMax);
+          data = preprocessData(data, req.params.station_id, station.interval, dateMin, dateMax);
           let tabD = [];
           data.forEach(data => tabD.push(DataModel.rainDataModel.toDtoGraphLine(data)));
           return res.status(201).send(tabD);
@@ -448,7 +448,7 @@ exports.getRainDataGraphLineOneMonth = function(req, res) {
  * getRainDataGraphLineOneYear - Méthode qui permet de récupérer les données d'une station pour une période d'un an
  *
  * @param {request} req Requête du client
- * @param {string} req.params.stationId L'id de la station à mettre à jour
+ * @param {string} req.params.station_id L'id de la station à mettre à jour
  * @param {string} req.params.year Année
  * @param {response} res Réponse renvoyée au client
  *                       404 : Station inexistante
@@ -456,7 +456,7 @@ exports.getRainDataGraphLineOneMonth = function(req, res) {
  * @return {station}     201 : Un tableau vide ou avec des données formatées pour Highstock
  */
 exports.getRainDataGraphLineOneYear = function(req, res) {
-  StationModel.stationModel.findById(req.params.stationId, (err, station) => {
+  StationModel.stationModel.findById(req.params.station_id, (err, station) => {
     if (err) {
       logger.error("[DATACTRL] getRainDataGraphLineOneYear : ", err);
       return res.status(500).send("Erreur lors de la récupération de la station.");
@@ -471,7 +471,7 @@ exports.getRainDataGraphLineOneYear = function(req, res) {
     let dateMax = new Date(Date.UTC(year, 11, 31, 23, 59, 59, 0));
 
     DataModel.rainDataModel.find({
-      id_station: req.params.stationId,
+      id_station: req.params.station_id,
       date: { "$gte": dateMin, "$lt": dateMax }
     }, 'date value', { sort: { date: 1 } }, function(err, data) {
       if (err) {
@@ -618,7 +618,7 @@ function groupByInterval(RainData) {
  * @return {data[]}  200 : Toutes les données pour le jour passé en paramètre
  */
 exports.getForDay = function(req, res) {
-  StationModel.stationModel.findById(req.params.stationId, (err, station) => {
+  StationModel.stationModel.findById(req.params.station_id, (err, station) => {
     if (err) {
       return res.status(500).send("Erreur lors de la station liée .");
     }
@@ -631,19 +631,19 @@ exports.getForDay = function(req, res) {
     let dateMax = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
 
     dateMax.setHours(dateMax.getHours() + 24);
-    StationModel.stationModel.findById(req.params.stationId, (err, station) => {
+    StationModel.stationModel.findById(req.params.station_id, (err, station) => {
       if (err) {
         return res.status(500).send("Erreur lors de la station liée .");
       }
       DataModel.rainDataModel.find({
-        id_station: req.params.stationId,
+        id_station: req.params.station_id,
         date: { "$gte": dateMin, "$lt": dateMax }
       }, '_id id_station id_user date value', { sort: { date: 1 } }, function(err, data) {
         if (err) {
           logger.error("[dataCtrl] getForDay : ", err);
           return res.status(500).send("Erreur lors de la récupération des données.");
         }
-        data = preprocessData(data, req.params.stationId, station.interval, dateMin, dateMax);
+        data = preprocessData(data, req.params.station_id, station.interval, dateMin, dateMax);
         return res.status(200).send(data);
       });
     });
@@ -670,7 +670,7 @@ exports.getForMonth = function(req, res) {
   if (month === NaN || month < 1 || month > 12) {
     return res.status(400).send("Le mois que vous avez entré est incorrecte (1-12).");
   }
-  StationModel.stationModel.findById(req.params.stationId, (err, station) => {
+  StationModel.stationModel.findById(req.params.station_id, (err, station) => {
     if (err) {
       return res.status(500).send("Erreur lors de la station liée .");
     }
@@ -681,19 +681,19 @@ exports.getForMonth = function(req, res) {
     let dateMin = new Date(year + "-" + month + "-01T00:00:00Z");
     let dateMax = new Date(year + "-" + month + "-01T00:00:00Z");
     dateMax.setMonth(dateMax.getMonth() + 1);
-    StationModel.stationModel.findById(req.params.stationId, (err, station) => {
+    StationModel.stationModel.findById(req.params.station_id, (err, station) => {
       if (err) {
         return res.status(500).send("Erreur lors de la station liée .");
       }
       DataModel.rainDataModel.find({
-        id_station: req.params.stationId,
+        id_station: req.params.station_id,
         date: { "$gte": dateMin, "$lt": dateMax }
       }, '_id id_station id_user date value', { sort: { date: 1 } }, function(err, data) {
         if (err) {
           logger.error("[dataCtrl] getForMonth : ", err);
           return res.status(500).send("Erreur lors de la récupération des données.");
         }
-        data = preprocessData(data, req.params.stationId, station.interval, dateMin, dateMax);
+        data = preprocessData(data, req.params.station_id, station.interval, dateMin, dateMax);
         // Ici on vérifie si l'intervalle de la station est en mn, il faut condenser, sinon on renvoie brut.
         if (station.interval.indexOf("h") >= 0) {
           return res.status(200).send(data);
@@ -834,7 +834,7 @@ function getIntervalInMinute(interval) {
 /**
  * importManualData - Méthode d'importation des données manuelles envoyées .
  * @param {request} req Requête du client
- * @param {string} req.params.id l'id de la station
+ * @param {string} req.params.station_id l'id de la station
  * @param {string} req.body les données
  * @param {response} res Réponse renvoyée au client
  * @return TODO
@@ -843,7 +843,7 @@ exports.importManualData = function(req, res) {
 
   const datas = req.body;
   const userId = req.token_decoded.id;
-  const stationId = req.params.id || '';
+  const stationId = req.params.station_id || '';
   const self = this;
   let tmp = [];
 
@@ -884,7 +884,7 @@ exports.importManualData = function(req, res) {
 /**
  * importFileData - Méthode d'importation des données envoyées dans un fichier.
  * @param {request} req Requête du client
- * @param {string} req.params.id l'id de la station
+ * @param {string} req.params.station_id l'id de la station
  * @param {response} res Réponse renvoyée au client
  *                   404 : L'utilisateur n'existe pas
  *                   500 : Erreur serveur
@@ -899,7 +899,7 @@ exports.importFileData = function(req, res) {
   } else {
 
     const userId = req.token_decoded.id;
-    const stationId = req.params.id || '';
+    const stationId = req.params.station_id || '';
     const self = this;
 
     StationModel.stationModel.findById({ _id: stationId }, (err, station) => {
@@ -1001,7 +1001,7 @@ exports.importFileData = function(req, res) {
  * @return TODO
  */
 exports.downloadData = function(req, res) {
-  const id_station = req.params.id;
+  const id_station = req.params.station_id;
   const from = new Date(req.query.from),
     to = new Date(req.query.to),
     interval = req.query.interval;
