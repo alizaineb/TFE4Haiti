@@ -96,7 +96,6 @@ exports.acceptAwaiting = function(req, res) {
         case state.INDIVIDUAL:
           const rainData = DataModel.RainDataAwaitinToAccepted(rainDataAwaiting);
           StationModel.stationModel.findById(rainData.id_station, (err, station) => {
-
             if (checkInterval(rainData.date, station.interval)) {
               rainData.save().then(() => {
                 DataModel.RainDataAwaitingModel.deleteOne({ _id: rainDataAwaiting._id }).then(() => {
@@ -104,7 +103,7 @@ exports.acceptAwaiting = function(req, res) {
                 });
 
               }).catch((err) => {
-                logger.error(err);
+                logger.error("[DATACTRL] acceptAwaiting1 : ", err)
                 let tmp = errors(err);
                 return res.status(tmp.error).send("Certaines données existent déjà pour cette date.");
               });
@@ -141,7 +140,7 @@ exports.acceptAwaiting = function(req, res) {
                       return res.status(500).send(err);
                     });
                   }).catch(function(err) {
-                    logger.error(err);
+                    logger.error("[DATACTRL] acceptAwaiting2 : ", err)
                     let tmp = errors(err);
                     return res.status(tmp.error).send("Certaines données existent déjà pour cette date.");
                   });
@@ -164,12 +163,12 @@ exports.acceptAwaiting = function(req, res) {
 
             StationModel.stationModel.findById({ _id: rainDataAwaiting.id_station }, (err, station) => {
               if (err) {
-                logger.error(err);
+                logger.error("[DATACTRL] acceptAwaiting3 : ", err)
                 return res.status(500).send(`erreur lors de la recupération de la station ${rainDataAwaiting.id_station}`)
               } else {
                 UsersModel.userModel.findById({ _id: rainDataAwaiting.id_user }, (err, user) => {
                   if (err) {
-                    logger.error(err);
+                    logger.error("[DATACTRL] acceptAwaiting4 : ", err)
                     return res.status(500).send(`erreur lors de la recupération de l'utilisateur ${rainDataAwaiting.id_user}`)
                   } else {
                     let datas = [];
@@ -227,11 +226,9 @@ exports.acceptAwaiting = function(req, res) {
                       }
                     })
                   }
-
                 });
               }
             });
-
           });
           return;
         default:
@@ -263,7 +260,7 @@ function dateRegex1(dateStr) {
 }
 
 /**
- * dateRegex1 - Regex pour une date si la date est divisée via  '/'
+ * dateRegex2 - Regex pour une date si la date est divisée via  '/'
  *
  * @param  {string} dateStr la date au format string
  * @return {Date}           La date au format UTC
@@ -306,7 +303,6 @@ exports.refuseAwaiting = function(req, res) {
             logger.error('[IMPORTFILE] remove : ', err);
           });
         }
-
         return res.status(204).send();
       }).catch(function(err) {
         logger.error("[DATACTRL] refuseAwaiting.deleteone : ", err);
@@ -424,7 +420,6 @@ exports.getRainDataGraphLineOneMonth = function(req, res) {
     let dateMin = new Date(Date.UTC(year, month, 1, 0, 0, 0, 0));
     let dateMax = new Date(Date.UTC(year, dateMin.getMonth() + 1, 0, 23, 23, 59, 0));
 
-
     DataModel.rainDataModel.find({ id_station: req.params.station_id, date: { "$gte": dateMin, "$lt": dateMax } },
       'date value', { sort: { date: 1 } },
       function(err, data) {
@@ -464,9 +459,7 @@ exports.getRainDataGraphLineOneYear = function(req, res) {
     if (!station) {
       return res.status(404).send("La station n'existe pas");
     }
-
     let year = req.params.year;
-
     let dateMin = new Date(Date.UTC(year, 0, 1, 0, 0, 0, 0));
     let dateMax = new Date(Date.UTC(year, 11, 31, 23, 59, 59, 0));
 
@@ -512,7 +505,6 @@ exports.getRainDataGraphLineOneYear = function(req, res) {
   });
 };
 
-
 /**
  * groupByYear - Fonction qui regroupe les données d'une stations par années.
  * @param RainData Tableau de RainData.
@@ -530,7 +522,6 @@ function groupByYear(RainData) {
     }
     mapValue[year] = (oldVal + value);
   }
-
   return mapValue;
 }
 
@@ -541,7 +532,6 @@ function groupByYear(RainData) {
  */
 function groupByMonth(RainData) {
   let mapValue = {};
-
   for (let i = 0; i < RainData.length; i++) {
     let year = RainData[i].date.getUTCFullYear();
     let month = RainData[i].date.getUTCMonth();
@@ -553,7 +543,6 @@ function groupByMonth(RainData) {
     }
     mapValue[key] = (oldVal + value);
   }
-
   return mapValue;
 }
 
@@ -564,7 +553,6 @@ function groupByMonth(RainData) {
  */
 function groupByDay(RainData) {
   let mapValue = {};
-
   for (let i = 0; i < RainData.length; i++) {
     let year = RainData[i].date.getUTCFullYear();
     let month = RainData[i].date.getUTCMonth();
@@ -577,7 +565,6 @@ function groupByDay(RainData) {
     }
     mapValue[key] = (oldVal + value);
   }
-
   return mapValue;
 }
 
@@ -588,7 +575,6 @@ function groupByDay(RainData) {
  */
 function groupByInterval(RainData) {
   let mapValue = {};
-
   for (let i = 0; i < RainData.length; i++) {
     let year = RainData[i].date.getUTCFullYear();
     let month = RainData[i].date.getUTCMonth();
@@ -626,7 +612,6 @@ exports.getForDay = function(req, res) {
       return res.status(400).send("Erreur : station inexistante.");
     }
     let date = new Date(req.params.date);
-
     let dateMin = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
     let dateMax = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
 
@@ -651,7 +636,7 @@ exports.getForDay = function(req, res) {
 };
 
 /**
- * getForDay - Méthode permettant de récupérer toutes les données pour un mois
+ * getForMonth - Méthode permettant de récupérer toutes les données pour un mois
  *
  * @param {request} req Requête du client
  * @param {string} req.params.year L'année pour laquelle les données doivent être récupérées
@@ -706,7 +691,6 @@ exports.getForMonth = function(req, res) {
   });
 }
 
-
 /**
  * condensData - Permet de condenser les données en fonction de l'intervalle ciblée
  *
@@ -741,7 +725,6 @@ function condensData(datas, interval) {
   }
   return tableToReturn;
 }
-
 
 /**
  * preprocessData - Méthode qui va remplire les trous de données potentiels en créant une structure de données avec la value à -1
@@ -849,12 +832,12 @@ exports.importManualData = function(req, res) {
 
   StationModel.stationModel.findById({ _id: stationId }, (err, station) => {
     if (err) {
-      logger.error(err);
+      logger.error("[DATACTRL] importManualData : ", err);
       return res.status(500).send(`erreur lors de la récupération de la station ${stationId}`)
     } else {
       UsersModel.userModel.findById({ _id: userId }, (err, user) => {
         if (err) {
-          logger.error(err);
+          logger.error("[DATACTRL] importManualData1 : ", err);
           return res.status(500).send(`erreur lors de la récupération de l'utilisateur ${userId}`)
         } else {
           for (let i = 0; i < datas.length; i++) {
@@ -873,7 +856,6 @@ exports.importManualData = function(req, res) {
               return res.status(500).send(`L'intervalle de la donnée ${i+1} ne correspond pas celui de la station.`)
             }
           }
-
           insertData(req, res, tmp, station, user);
         }
       });
@@ -891,7 +873,6 @@ exports.importManualData = function(req, res) {
  * @return TODO
  */
 exports.importFileData = function(req, res) {
-
   const pathDir = nconf.get('uploadFolder');
   if (!fs.existsSync(pathDir)) {
     fs.mkdirSync(pathDir);
@@ -904,7 +885,7 @@ exports.importFileData = function(req, res) {
 
     StationModel.stationModel.findById({ _id: stationId }, (err, station) => {
       if (err) {
-        logger.error(err);
+        logger.error("[DATACTRL] importFileData : ", err);
         return res.status(500).send(`erreur lors de la récupération de la station ${stationId}`)
       } else {
         let form = new formidable.IncomingForm();
@@ -915,16 +896,16 @@ exports.importFileData = function(req, res) {
           fs.rename(files['CsvFile'].path, newPath, (err) => {
 
             if (err) {
-              logger.error('[IMPORTFILE] Rename :  ', err);
+              logger.error('[DATACTRL] importFileData1 :  ', err);
               fs.unlink(files['CsvFile'].path, (err) => {
-                logger.error('[IMPORTFILE] remove : ', err);
+                logger.error('[DATACTRL] importFileData2 : ', err);
               });
               return res.status(500).send("Le fichier n'a pas pu etre importé.");
             } else {
               let tmp = [];
               UsersModel.userModel.findById({ _id: userId }, (err, user) => {
                 if (err) {
-                  logger.error(err);
+                  logger.error('[DATACTRL] importFileData3 :  ', err);
                   return res.status(500).send(`erreur lors de la récupération de l'utilisateur ${userId}`)
                 } else {
                   let data = new DataModel.RainDataAwaitingModel();
@@ -942,7 +923,7 @@ exports.importFileData = function(req, res) {
 
                     UsersModel.userModel.findById({ _id: data.id_user }, (err, user) => {
                       if (err) {
-                        logger.error(err);
+                        logger.error('[DATACTRL] importFileData4 :  ', err);
                         return res.status(500).send(`erreur lors de la recupération de l'utilisateur ${data.id_user}`)
                       } else {
                         let lines = fileData.split('\n');
@@ -988,8 +969,6 @@ exports.importFileData = function(req, res) {
       } // end if station err
     }); // en station
   }
-
-
 };
 
 /**
@@ -1012,7 +991,7 @@ exports.downloadData = function(req, res) {
       date: { "$gte": from, "$lt": to }
     }, 'date value', (err, rainDatas) => {
       if (err) {
-        logger.error(err);
+        logger.error('[DATACTRL] downloadData :  ', err);
         return res.status(500).send(err);
       } else {
         if (rainDatas.length == 0) {
@@ -1059,11 +1038,8 @@ exports.downloadData = function(req, res) {
             });
 
           });
-
-
           return;
         }
-
       }
     });
   });
@@ -1113,7 +1089,7 @@ exports.updateData = function(req, res) {
     if (id_data) {
       DataModel.rainDataModel.findById(id_data, (err, rainData) => {
         if (err) {
-          logger.error("[UTILS] updateData req.body.data : ", err);
+          logger.error("[dataCtrl] updateData : ", err);
           return res.status(500).send("Erreur lors de la récupération de la donnée.");
         }
         if (!rainData) {
@@ -1129,7 +1105,7 @@ exports.updateData = function(req, res) {
           dataToSend.save().then(() => {
             return res.status(201).send();
           }).catch(function(err) {
-            logger.error(err);
+            logger.error("[dataCtrl] updateData1 : ", err);
             return res.status(500).send("Une erreur est survenue lors de la création de la donnée en attente");
           });
         }
@@ -1161,7 +1137,7 @@ exports.updateData = function(req, res) {
     // Si il manque la data à laquelle if faut update
     DataModel.rainDataModel.findById(id_data, (err, rainData) => {
       if (err) {
-        logger.error("[UTILS] updateData req.body.data : ", err);
+        logger.error("[dataCtrl] updateData1 : ", err);
         return res.status(500).send("Erreur lors de la récupération de la donnée.");
       }
       if (!rainData) {
@@ -1176,7 +1152,7 @@ exports.updateData = function(req, res) {
         dataToSend.save().then(() => {
           return res.status(201).send();
         }).catch(function(err) {
-          logger.error(err);
+          logger.error("[dataCtrl] updateData2 : ", err);
           return res.status(500).send("Une erreur est survenue lors de la création de la donnée en attente");
         });
       }
@@ -1198,8 +1174,6 @@ exports.updateData = function(req, res) {
  * @returns {json}   200 : {awaiting : le nombre de données en attente, data : le nombre total de données}
  */
 exports.getStats = function(req, res) {
-
-
   DataModel.rainDataModel.countDocuments({}, function(err, countOK) {
     if (err) {
       return res.status(500).send();
@@ -1209,11 +1183,8 @@ exports.getStats = function(req, res) {
         return res.status(500).send();
       }
       return res.status(200).send({ awaiting: countAwait, data: countOK });
-
     });
-
   });
-
 }
 
 /**
