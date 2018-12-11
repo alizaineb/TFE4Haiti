@@ -1,4 +1,4 @@
-const host = 'https://client-d4rk694.c9users.io';
+const host = 'http://pluviometriehaiti.sipr.ucl.ac.be:8080/app';
 const url = '/api';
 export const environment = {
   production: true,
