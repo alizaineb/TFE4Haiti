@@ -6,14 +6,14 @@ import {
   OnInit,
   Output, SimpleChanges
 } from '@angular/core';
-import {Station} from '../../../_models';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {AlertService} from '../../../_services';
-import {StationsService} from '../../../_services/stations.service';
+import { Station } from '../../../_models';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AlertService } from '../../../_services';
+import { StationsService } from '../../../_services/stations.service';
 import * as L from 'leaflet';
-import {LatLng} from 'leaflet';
-import {Constantes} from "../../../_helpers/constantes";
-import {MatDatepickerInputEvent} from "@angular/material";
+import { LatLng } from 'leaflet';
+import { Constantes } from "../../../_helpers/constantes";
+import { MatDatepickerInputEvent } from "@angular/material";
 
 @Component({
   selector: 'app-update-sation-modal',
@@ -39,12 +39,12 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
   mark;
 
   constructor(private alertService: AlertService,
-              private stationService: StationsService) {
+    private stationService: StationsService) {
   }
 
   ngOnInit(): void {
-    this.stationService.getCommunes().subscribe(communes => {this.communes = communes; });
-    this.stationService.getBassin_versants().subscribe(bassin_versants => {this.bassin_versants = bassin_versants; });
+    this.stationService.getCommunes().subscribe(communes => { this.communes = communes; });
+    this.stationService.getBassin_versants().subscribe(bassin_versants => { this.bassin_versants = bassin_versants; });
     this.initForm();
     this.initDatePickerAndMap();
     this.states = [Constantes.stationState.AWAITING, Constantes.stationState.BROKEN, Constantes.stationState.DELETED, Constantes.stationState.WORKING];
@@ -92,10 +92,10 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
   get latitude() { return this.updateStationForm.get('latitude'); }
   get longitude() { return this.updateStationForm.get('longitude'); }
   get state() { return this.updateStationForm.get('state'); }
-  get createdAt() {return this.updateStationForm.get('createdAt'); }
-  get altitude() {return this.updateStationForm.get('altitude'); }
-  get bassin_versant() {return this.updateStationForm.get('bassin_versant'); }
-  get commune() {return this.updateStationForm.get('commune'); }
+  get createdAt() { return this.updateStationForm.get('createdAt'); }
+  get altitude() { return this.updateStationForm.get('altitude'); }
+  get bassin_versant() { return this.updateStationForm.get('bassin_versant'); }
+  get commune() { return this.updateStationForm.get('commune'); }
 
 
   ngAfterViewChecked(): void {
@@ -163,12 +163,9 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
     // Maps usage : OpenStreetMap, OpenSurferMaps
 
     const mapLayerOSMGrayScale = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
-        attribution: mbAttr
-      }),
+      attribution: mbAttr
+    }),
       mapLayerOpenStreetMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
-      }),
-      mapLayerErsiWorlStreetMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
         attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
       }),
       mapLayerErsiSatelite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
@@ -182,7 +179,6 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
     const baseLayers = {
       'OSM - Grayscale': mapLayerOSMGrayScale,
       'OSM - TopoMap': mapLayerOpenStreetMap,
-      'Ersi - WorldStreetMap': mapLayerErsiWorlStreetMap,
       'Ersi - Satelite': mapLayerErsiSatelite,
       'Hydda - Full': mapLayerHyddaFull
     };
@@ -198,7 +194,7 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
     L.control.scale().addTo(this.map);
     L.control.layers(baseLayers).addTo(this.map);
 
-    self.mark = L.marker([self.stationToUpdate.latitude, self.stationToUpdate.longitude], {icon: icon1}).addTo(self.map);
+    self.mark = L.marker([self.stationToUpdate.latitude, self.stationToUpdate.longitude], { icon: icon1 }).addTo(self.map);
 
     this.map.on('click', function(e) {
       // @ts-ignore
@@ -209,5 +205,3 @@ export class UpdateSationModalComponent implements OnInit, AfterViewChecked, OnC
     });
   }
 }
-
-

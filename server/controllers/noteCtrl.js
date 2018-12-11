@@ -54,7 +54,7 @@ exports.create = function(req, res) {
  * @param {string} req.params.station_id L'id de la station pour laquelle il faut récupérer ses notes
  * @param {response} res Réponse renvoyée au client
  *                       500 : Erreur serveur
- * @return {type}    200 :  les notes de la station
+ * @return               200 :  les notes de la station
  */
 exports.get = function(req, res) {
   NoteModel.noteModel.find({ station_id: req.params.station_id },

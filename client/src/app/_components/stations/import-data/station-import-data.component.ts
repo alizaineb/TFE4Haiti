@@ -130,7 +130,7 @@ export class StationImportDataComponent implements OnInit {
       // console.log(Number(this.data[i].time.minute));
 
       tmp.date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), Number(this.data[i].time.hour), Number(this.data[i].time.minute))); // new Date(`${this.data[i].date}T${this.minTwoDigits(this.data[i].time.hour)}:${this.minTwoDigits(this.data[i].time['minute'])}:00Z`);
-      console.log(tmp.date);
+      // console.log(tmp.date);
       if (tmp.date.getFullYear() != 1970 && !isNaN(tmp.date.getFullYear())) {
 
         dataToSend.push(tmp);

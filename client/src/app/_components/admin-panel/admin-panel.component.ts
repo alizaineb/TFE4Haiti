@@ -243,7 +243,6 @@ export class AdminPanelComponent implements OnInit {
     if (this.stations.length <= 1) {
       return;
     }
-    // TODO gérer intervalle sort propre
     const key = this.map.get(head);
     let i = 1;
     while (i < this.stations.length && this.stations[0][key] == this.stations[i][key]) {
@@ -274,7 +273,6 @@ export class AdminPanelComponent implements OnInit {
     if (this.users.length <= 1) {
       return;
     }
-    // TODO gérer intervalle sort propre
     const key = this.mapUserFilter.get(head);
     let i = 1;
     while (i < this.users.length && this.users[0][key] == this.users[i][key]) {

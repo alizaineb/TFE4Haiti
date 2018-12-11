@@ -119,8 +119,7 @@
                       <mat-datepicker-toggle matSuffix [for]="pickercreatedAt2"></mat-datepicker-toggle>
                       <mat-datepicker #pickercreatedAt2></mat-datepicker>
                     </mat-form-field>
-                    <div *ngIf="createdAt.invalid && (createdAt.dirty || createdAt.touched)"
-                         class="alert alert-danger">
+                    <div *ngIf="createdAt.invalid && (createdAt.dirty || createdAt.touched)" class="alert alert-danger">
                       <div *ngIf="createdAt.errors.required">
                         La date de création est requise
                       </div>
@@ -128,21 +127,21 @@
 
                   </div>
                 </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
+                <div class="col-md-6">
+                  <div class="form-group">
 
-                      <select class="form-control" id="state" formControlName="state" required>
-                        <option value="" disabled selected>Etat</option>
-                        <option *ngFor="let i of states" [value]="i">{{i}}</option>
-                      </select>
+                    <select class="form-control" id="state" formControlName="state" required>
+                      <option value="" disabled selected>Etat</option>
+                      <option *ngFor="let i of states" [value]="i">{{i}}</option>
+                    </select>
 
-                      <div *ngIf="state.invalid && (state.dirty || state.touched)" class="alert alert-danger">
-                        <div *ngIf="state.errorsrequired">
-                          Un état est requis
-                        </div>
+                    <div *ngIf="state.invalid && (state.dirty || state.touched)" class="alert alert-danger">
+                      <div *ngIf="state.errorsrequired">
+                        Un état est requis
                       </div>
                     </div>
                   </div>
+                </div>
               </div>
 
             </div>
@@ -154,18 +153,6 @@
               </div>
             </div>
           </div>
-
-          <!--<div class="row">
-            <div class="col-sm">
-              <div class="form-group">
-                &lt;!&ndash;TODO make your business here!! &ndash;&gt;
-                <label for="longitude">Note</label>
-                <textarea rows="6" class="form-control" id="longitude"
-                          formControlName="longitude" required"></textarea>
-
-              </div>
-            </div>
-          </div>-->
 
           <div class="modal-footer">
             <button type="button" class="btn btn-primary" (click)="resetStation()">Réinitialiser</button>
