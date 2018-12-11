@@ -1,14 +1,14 @@
-import {AfterViewChecked, Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {AlertService} from '../../../_services';
-import {StationsService} from '../../../_services/stations.service';
-import {NoteService} from '../../../_services/note.service';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {Note, Station} from '../../../_models';
+import { AfterViewChecked, Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { AlertService } from '../../../_services';
+import { StationsService } from '../../../_services/stations.service';
+import { NoteService } from '../../../_services/note.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Note, Station } from '../../../_models';
 import flatpickr from 'flatpickr';
-import { French} from 'flatpickr/dist/l10n/fr';
+import { French } from 'flatpickr/dist/l10n/fr';
 import * as L from 'leaflet';
-import {LatLng} from 'leaflet';
-import {MatDatepickerInputEvent} from "@angular/material";
+import { LatLng } from 'leaflet';
+import { MatDatepickerInputEvent } from "@angular/material";
 
 
 @Component({
@@ -30,14 +30,14 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked {
   bassin_versants: string[];
 
   constructor(private alertService: AlertService,
-              private stationService: StationsService,
-              private noteService: NoteService) {
+    private stationService: StationsService,
+    private noteService: NoteService) {
   }
 
   ngOnInit(): void {
-    this.stationService.getIntervals().subscribe(intervals => {this.intervals = intervals; });
-    this.stationService.getCommunes().subscribe(communes => {this.communes = communes; });
-    this.stationService.getBassin_versants().subscribe(bassin_versants => {this.bassin_versants = bassin_versants; });
+    this.stationService.getIntervals().subscribe(intervals => { this.intervals = intervals; });
+    this.stationService.getCommunes().subscribe(communes => { this.communes = communes; });
+    this.stationService.getBassin_versants().subscribe(bassin_versants => { this.bassin_versants = bassin_versants; });
     this.addStationForm = new FormGroup({
 
       'name': new FormControl('', [
@@ -83,11 +83,11 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked {
   get latitude() { return this.addStationForm.get('latitude'); }
   get longitude() { return this.addStationForm.get('longitude'); }
   get interval() { return this.addStationForm.get('interval'); }
-  get createdAt() {return this.addStationForm.get('createdAt'); }
-  get altitude() {return this.addStationForm.get('altitude'); }
-  get note() {return this.addStationForm.get('note'); }
-  get bassin_versant() {return this.addStationForm.get('bassin_versant'); }
-  get commune() {return this.addStationForm.get('commune'); }
+  get createdAt() { return this.addStationForm.get('createdAt'); }
+  get altitude() { return this.addStationForm.get('altitude'); }
+  get note() { return this.addStationForm.get('note'); }
+  get bassin_versant() { return this.addStationForm.get('bassin_versant'); }
+  get commune() { return this.addStationForm.get('commune'); }
 
   ngAfterViewChecked(): void {
     this.map.invalidateSize();
@@ -120,17 +120,17 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked {
     this.stationService.register(s)
       .subscribe(
         newStation => {
-          if (this.addStationForm.controls['note'].value !== '' && this.addStationForm.controls['note'].value !== null ) {
+          if (this.addStationForm.controls['note'].value !== '' && this.addStationForm.controls['note'].value !== null) {
             const n = new Note();
             n.station_id = newStation._id;
             n.note = this.addStationForm.controls['note'].value;
             this.noteService.register(n)
               .subscribe(
                 newNote => {
-              },
-              error => {
-                this.alertService.error('La note n\'a pas été ajoutér\n' + error);
-              });
+                },
+                error => {
+                  this.alertService.error('La note n\'a pas été ajoutér\n' + error);
+                });
           }
           this.resetStation();
           // trigger sent
@@ -159,12 +159,9 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked {
     // Maps usage : OpenStreetMap, OpenSurferMaps
 
     const mapLayerOSMGrayScale = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
-        attribution: mbAttr
-      }),
+      attribution: mbAttr
+    }),
       mapLayerOpenStreetMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
-      }),
-      mapLayerErsiWorlStreetMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
         attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
       }),
       mapLayerErsiSatelite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
@@ -178,7 +175,6 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked {
     const baseLayers = {
       'OSM - Grayscale': mapLayerOSMGrayScale,
       'OSM - TopoMap': mapLayerOpenStreetMap,
-      'Ersi - WorldStreetMap': mapLayerErsiWorlStreetMap,
       'Ersi - Satelite': mapLayerErsiSatelite,
       'Hydda - Full': mapLayerHyddaFull
     };
@@ -194,13 +190,13 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked {
     L.control.scale().addTo(this.map);
     L.control.layers(baseLayers).addTo(this.map);
 
-/*    if (self.station.latitude != undefined && self.station.latitude != undefined) {
-      self.mark = L.marker([self.station.latitude, self.station.longitude], {icon: icon1}).addTo(self.map);
-    }else {
-      this.mark = L.marker([0, 0], {icon: icon1});
-    }*/
+    /*    if (self.station.latitude != undefined && self.station.latitude != undefined) {
+          self.mark = L.marker([self.station.latitude, self.station.longitude], {icon: icon1}).addTo(self.map);
+        }else {
+          this.mark = L.marker([0, 0], {icon: icon1});
+        }*/
 
-    this.mark = L.marker([0, 0], {icon: icon1});
+    this.mark = L.marker([0, 0], { icon: icon1 });
     this.map.on('click', function(e) {
       // @ts-ignore
       const latln: LatLng = e.latlng;
@@ -211,6 +207,3 @@ export class AddStationModalComponent implements OnInit, AfterViewChecked {
     });
   }
 }
-
-
-
