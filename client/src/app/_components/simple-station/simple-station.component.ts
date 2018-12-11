@@ -52,6 +52,8 @@ export class SimpleStationComponent implements OnInit, OnDestroy {
             }
           },
           err => {
+            this.router.navigate(['/not-found']);
+
             //console.log(err);
           }
         );
