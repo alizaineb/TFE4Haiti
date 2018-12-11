@@ -485,7 +485,7 @@ exports.resetPwd = function(req, res) {
             user.save((err) => {
               if (err) {
                 logger.error("[userCtrl] resetPwd3:", err);
-                return res.status(500).send("Une erreur est survenue lors de la mise à jour du mot de passe");
+                return res.status(500).send("Une erreur est survenue lors de la mise à jour de l'utilisateur");
               } else {
                 urlObj.remove(function(err, userUpdt) {
                   if (err) {
@@ -498,14 +498,28 @@ exports.resetPwd = function(req, res) {
             });
           }
           // Expiré : retirer l'objet de la DB
-          // TODO Ici changer et repasser en état validation ?
           else {
-            urlObj.remove(function(err, userUpdt) {
+            // Utilisateur souhaitant changer de mdp
+            if (user.pwd) {
+              user.state = userState.OK;
+            }
+            // Utilisateur dont le comtpe vietn d'être accepté
+            else {
+              user.state = userState.AWAITING;
+            }
+            user.save((err) => {
               if (err) {
-                logger.error("[userCtrl] resetPwd4:", err);
-                return res.status(500).send("Erreur lors de la suppression du lien d'utlisation");
+                logger.error("[userCtrl] resetPwd5:", err);
+                return res.status(500).send("Une erreur est survenue lors de la mise à jour del'utilisateur");
+              } else {
+                urlObj.remove(function(err, userUpdt) {
+                  if (err) {
+                    logger.error("[userCtrl] resetPwd6:", err);
+                    return res.status(500).send("Erreur lors de la suppression du lien d'utlisation");
+                  }
+                  return res.status(400).send("Malheureusement vous avez mis trop de temps pour mettre à jour votre mot de passe, le lien utilisé est écoulé.");
+                });
               }
-              return res.status(400).send("Malheureusement vous avez mis trop de temps pour changer votre mot de passe, le lien utilisé est écoulé.");
             });
           }
         }
