@@ -8,11 +8,11 @@ let statesEnum = [state.FILE, state.INDIVIDUAL, state.UPDATE];
 // schema concernant les données pluviométriques
 const Schema = mongoose.Schema;
 const RainData = new Schema({
-  id_station: {
+  station_id: {
     type: String,
     required: [true, 'Id de la station liée manquant, veuillez contactez un amdinistrateur']
   },
-  id_user: {
+  user_id: {
     type: String,
     required: [true, 'Id de l\'utilisateur lié manquant, veuillez contactez un amdinistrateur']
   },
@@ -40,7 +40,7 @@ RainData.statics.toDtoGraphLine = function toDtoGraphLine(data) {
 };
 
 //Definition du modèle
-RainData.index({ "id_station": 1, "date": 1 }, { "unique": true });
+RainData.index({ "station_id": 1, "date": 1 }, { "unique": true });
 const rainDataModel = mongoose.model("rainData", RainData);
 
 // Export du modèle
@@ -50,11 +50,11 @@ exports.rainDataModel = rainDataModel;
 
 // awaiting
 const RainDataAwaiting = new Schema({
-  id_station: {
+  station_id: {
     type: String,
     required: [true, 'Id de la station liée manquant, veuillez contactez un amdinistrateur']
   },
-  id_user: {
+  user_id: {
     type: String,
     required: [true, 'Id de l\'utilisateur lié manquant, veuillez contactez un amdinistrateur']
   },
@@ -76,7 +76,7 @@ const RainDataAwaiting = new Schema({
   }
 });
 
-// RainDataAwaiting.index({ "id_station": 1, "date": 1 }, { "unique": true });
+// RainDataAwaiting.index({ "station_id": 1, "date": 1 }, { "unique": true });
 const RainDataAwaitingModel = mongoose.model("rainDataAwaiting", RainDataAwaiting);
 
 // Export du modèle
@@ -90,8 +90,8 @@ exports.RainDataAwaitingModel = RainDataAwaitingModel;
 exports.RainDataAwaitinToAccepted = function(dataAwaiting) {
   let rainData = new rainDataModel();
   rainData.date = dataAwaiting.date;
-  rainData.id_user = dataAwaiting.id_user;
-  rainData.id_station = dataAwaiting.id_station;
+  rainData.user_id = dataAwaiting.user_id;
+  rainData.station_id = dataAwaiting.station_id;
   rainData.value = dataAwaiting.value;
   return rainData
 }

@@ -46,7 +46,7 @@ exports.errors = function(err) {
 
 /**
  * hasAccesToStation {Middleware} - Cette métthode va vérifier que l'utilisateur présent dans le token a accès à la station
- *                                  Cette station doit être dans req.param ou req.body sous le nom id_station (voir dans fichier routes/routes.js)
+ *                                  Cette station doit être dans req.param ou req.body sous le nom station_id (voir dans fichier routes/routes.js)
  *                                  Utilise la méthode sans état hasAccesToStationBoolean
  * Reste : Voir hasAccesToStationBoolean
  */

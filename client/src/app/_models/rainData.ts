@@ -1,7 +1,7 @@
 export class RainData {
   public _id: string;
-  public id_station: string;
-  public id_user: string;
+  public station_id: string;
+  public user_id: string;
   public date: Date;
   public value: number;
 
@@ -14,9 +14,9 @@ export class RainData {
 
 export class RainDataAwaiting {
   public _id: string;
-  public id_station: string;
+  public station_id: string;
   public station : string;
-  public id_user: string;
+  public user_id: string;
   public user: string;
   public date: Date;
   public value: number;

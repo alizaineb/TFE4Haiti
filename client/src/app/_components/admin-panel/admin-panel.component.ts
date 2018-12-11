@@ -111,7 +111,7 @@ export class AdminPanelComponent implements OnInit {
     self.rainDataService.getAllAwaiting()
       .pipe(map(datas => {
         for (const n of datas) {
-          this.stationsService.getById(n.id_station).pipe(first()).subscribe(station => {
+          this.stationsService.getById(n.station_id).pipe(first()).subscribe(station => {
             n.station = station.name;
           });
         }
@@ -120,7 +120,7 @@ export class AdminPanelComponent implements OnInit {
       )
       .pipe(map(datas => {
         for (const n of datas) {
-          this.userService.getById(n.id_user).pipe(first()).subscribe(user => {
+          this.userService.getById(n.user_id).pipe(first()).subscribe(user => {
             n.user = user.first_name + ' ' + user.last_name;
           });
         }

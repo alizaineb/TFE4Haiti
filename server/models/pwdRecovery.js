@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 // schema pour récupérer un mot de passe
 const Schema = mongoose.Schema;
 const PwdRecovery = new Schema({
-  user: {
+  user_id: {
     type: String,
     required: [true, 'Utilisateur lié manquant, veuillez contactez un amdinistrateur']
   },

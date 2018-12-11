@@ -95,7 +95,7 @@ exports.acceptAwaiting = function(req, res) {
       switch (rainDataAwaiting.type) {
         case state.INDIVIDUAL:
           const rainData = DataModel.RainDataAwaitinToAccepted(rainDataAwaiting);
-          StationModel.stationModel.findById(rainData.id_station, (err, station) => {
+          StationModel.stationModel.findById(rainData.station_id, (err, station) => {
             if (checkInterval(rainData.date, station.interval)) {
               rainData.save().then(() => {
                 DataModel.RainDataAwaitingModel.deleteOne({ _id: rainDataAwaiting._id }).then(() => {
@@ -130,7 +130,7 @@ exports.acceptAwaiting = function(req, res) {
             DataModel.rainDataModel.findById(rainDataAwaiting.id_old_data, (err, rainData) => {
               rainData.value = rainDataAwaiting.value;
 
-              StationModel.stationModel.findById(rainData.id_station, (err, station) => {
+              StationModel.stationModel.findById(rainData.station_id, (err, station) => {
 
                 if (checkInterval(rainData.date, station.interval)) {
                   rainData.save().then(() => {
@@ -161,15 +161,15 @@ exports.acceptAwaiting = function(req, res) {
               return res.status(500).send("Le fichier n'a pas pu etre lu.")
             }
 
-            StationModel.stationModel.findById({ _id: rainDataAwaiting.id_station }, (err, station) => {
+            StationModel.stationModel.findById({ _id: rainDataAwaiting.station_id }, (err, station) => {
               if (err) {
                 logger.error("[DATACTRL] acceptAwaiting3 : ", err)
-                return res.status(500).send(`erreur lors de la recupération de la station ${rainDataAwaiting.id_station}`)
+                return res.status(500).send(`erreur lors de la recupération de la station ${rainDataAwaiting.station_id}`)
               } else {
-                UsersModel.userModel.findById({ _id: rainDataAwaiting.id_user }, (err, user) => {
+                UsersModel.userModel.findById({ _id: rainDataAwaiting.user_id }, (err, user) => {
                   if (err) {
                     logger.error("[DATACTRL] acceptAwaiting4 : ", err)
-                    return res.status(500).send(`erreur lors de la recupération de l'utilisateur ${rainDataAwaiting.id_user}`)
+                    return res.status(500).send(`erreur lors de la recupération de l'utilisateur ${rainDataAwaiting.user_id}`)
                   } else {
                     let datas = [];
                     let lines = fileData.split('\n');
@@ -197,8 +197,8 @@ exports.acceptAwaiting = function(req, res) {
 
                       if (d.length > 1) {
                         let data = new DataModel.rainDataModel();
-                        data.id_station = station._id;
-                        data.id_user = user._id;
+                        data.station_id = station._id;
+                        data.user_id = user._id;
                         data.value = d[1].replace(',', '.');
                         data.date = datetmp;
                         if (checkInterval(data.date, station.interval)) {
@@ -320,8 +320,8 @@ exports.refuseAwaiting = function(req, res) {
  * @return {data[]}  200 : Toutes les données
  */
 exports.get = function(req, res) {
-  DataModel.rainDataModel.find({ id_station: req.params.station_id },
-    '_id id_station id_user date value',
+  DataModel.rainDataModel.find({ station_id: req.params.station_id },
+    '_id station_id user_id date value',
     function(err, datas) {
       if (err) {
         logger.error("[DATACTRL] get : ", err);
@@ -368,7 +368,7 @@ exports.rainDataGraphLineRangeDate = function(req, res) {
     let dateMin = new Date(Date.UTC(minYear, minMonth, minDate, 0, 0, 0, 0));
     let dateMax = new Date(Date.UTC(maxYear, maxMonth, maxDate, 23, 59, 59, 0));
 
-    DataModel.rainDataModel.find({ id_station: req.params.station_id, date: { "$gte": dateMin, "$lt": dateMax } },
+    DataModel.rainDataModel.find({ station_id: req.params.station_id, date: { "$gte": dateMin, "$lt": dateMax } },
       'date value', { sort: { date: 1 } },
       function(err, data) {
         if (err) {
@@ -420,7 +420,7 @@ exports.getRainDataGraphLineOneMonth = function(req, res) {
     let dateMin = new Date(Date.UTC(year, month, 1, 0, 0, 0, 0));
     let dateMax = new Date(Date.UTC(year, dateMin.getMonth() + 1, 0, 23, 23, 59, 0));
 
-    DataModel.rainDataModel.find({ id_station: req.params.station_id, date: { "$gte": dateMin, "$lt": dateMax } },
+    DataModel.rainDataModel.find({ station_id: req.params.station_id, date: { "$gte": dateMin, "$lt": dateMax } },
       'date value', { sort: { date: 1 } },
       function(err, data) {
         if (err) {
@@ -464,7 +464,7 @@ exports.getRainDataGraphLineOneYear = function(req, res) {
     let dateMax = new Date(Date.UTC(year, 11, 31, 23, 59, 59, 0));
 
     DataModel.rainDataModel.find({
-      id_station: req.params.station_id,
+      station_id: req.params.station_id,
       date: { "$gte": dateMin, "$lt": dateMax }
     }, 'date value', { sort: { date: 1 } }, function(err, data) {
       if (err) {
@@ -621,9 +621,9 @@ exports.getForDay = function(req, res) {
         return res.status(500).send("Erreur lors de la station liée .");
       }
       DataModel.rainDataModel.find({
-        id_station: req.params.station_id,
+        station_id: req.params.station_id,
         date: { "$gte": dateMin, "$lt": dateMax }
-      }, '_id id_station id_user date value', { sort: { date: 1 } }, function(err, data) {
+      }, '_id station_id user_id date value', { sort: { date: 1 } }, function(err, data) {
         if (err) {
           logger.error("[dataCtrl] getForDay : ", err);
           return res.status(500).send("Erreur lors de la récupération des données.");
@@ -671,9 +671,9 @@ exports.getForMonth = function(req, res) {
         return res.status(500).send("Erreur lors de la station liée .");
       }
       DataModel.rainDataModel.find({
-        id_station: req.params.station_id,
+        station_id: req.params.station_id,
         date: { "$gte": dateMin, "$lt": dateMax }
-      }, '_id id_station id_user date value', { sort: { date: 1 } }, function(err, data) {
+      }, '_id station_id user_id date value', { sort: { date: 1 } }, function(err, data) {
         if (err) {
           logger.error("[dataCtrl] getForMonth : ", err);
           return res.status(500).send("Erreur lors de la récupération des données.");
@@ -716,7 +716,7 @@ function condensData(datas, interval) {
       }
     }
     let cloneObj = {};
-    cloneObj.id_station = datas[h].id_station;
+    cloneObj.station_id = datas[h].station_id;
     cloneObj.date = datas[h].date;
     if (noData !== hopSize) {
       cloneObj.value = sum;
@@ -751,7 +751,7 @@ function preprocessData(dataToProcess, stationId, interval, dateDebut, dateFin) 
     if (currDateMilis < dataToProcess[idx].date.getTime()) {
       let correctedDate = new Date(currDateMilis);
       let tmp = {};
-      tmp.id_station = stationId;
+      tmp.station_id = stationId;
       tmp.date = correctedDate;
       tabToReturn.push(tmp);
     } else {
@@ -765,7 +765,7 @@ function preprocessData(dataToProcess, stationId, interval, dateDebut, dateFin) 
     let currDateMilis = currDate.getTime();
     let correctedDate = new Date(currDateMilis);
     let tmp = {};
-    tmp.id_station = stationId;
+    tmp.station_id = stationId;
     tmp.date = correctedDate;
     tabToReturn.push(tmp);
     currDate = new Date(currDateMilis + intervalInMs);
@@ -843,8 +843,8 @@ exports.importManualData = function(req, res) {
           for (let i = 0; i < datas.length; i++) {
             const d = datas[i];
             let data = new DataModel.RainDataAwaitingModel();
-            data.id_station = station._id;
-            data.id_user = user._id;
+            data.station_id = station._id;
+            data.user_id = user._id;
             data.date = new Date(d.date);
             //data.date = new Date(Date.UTC(data.date.getFullYear(), data.date.getMonth(), data.date.getDate(), data.date.getHours(), data.date.getMinutes(), data.date.getSeconds()));
             data.value = d.value;
@@ -909,8 +909,8 @@ exports.importFileData = function(req, res) {
                   return res.status(500).send(`erreur lors de la récupération de l'utilisateur ${userId}`)
                 } else {
                   let data = new DataModel.RainDataAwaitingModel();
-                  data.id_station = station._id;
-                  data.id_user = user._id;
+                  data.station_id = station._id;
+                  data.user_id = user._id;
                   data.date = Date.now();
                   data.value = newName; //todo
                   data.type = state.FILE;
@@ -921,10 +921,10 @@ exports.importFileData = function(req, res) {
                       return res.status(500).send("Le fichier n'a pas pu etre lu.")
                     }
 
-                    UsersModel.userModel.findById({ _id: data.id_user }, (err, user) => {
+                    UsersModel.userModel.findById({ _id: data.user_id }, (err, user) => {
                       if (err) {
                         logger.error('[DATACTRL] importFileData4 :  ', err);
-                        return res.status(500).send(`erreur lors de la recupération de l'utilisateur ${data.id_user}`)
+                        return res.status(500).send(`erreur lors de la recupération de l'utilisateur ${data.user_id}`)
                       } else {
                         let lines = fileData.split('\n');
                         for (var i = 0; i < lines.length; i++) {
@@ -947,8 +947,8 @@ exports.importFileData = function(req, res) {
 
                           if (d.length > 1) {
                             let data = new DataModel.rainDataModel();
-                            data.id_station = station._id;
-                            data.id_user = user._id;
+                            data.station_id = station._id;
+                            data.user_id = user._id;
                             data.value = d[1].replace(',', '.');
                             data.date = datetmp;
                             if (!checkInterval(data.date, station.interval)) {
@@ -980,14 +980,14 @@ exports.importFileData = function(req, res) {
  * @return TODO
  */
 exports.downloadData = function(req, res) {
-  const id_station = req.params.station_id;
+  const station_id = req.params.station_id;
   const from = new Date(req.query.from),
     to = new Date(req.query.to),
     interval = req.query.interval;
 
-  StationModel.stationModel.findById(id_station, (err, station) => {
+  StationModel.stationModel.findById(station_id, (err, station) => {
     DataModel.rainDataModel.find({
-      id_station: id_station,
+      station_id: station_id,
       date: { "$gte": from, "$lt": to }
     }, 'date value', (err, rainDatas) => {
       if (err) {
@@ -1096,8 +1096,8 @@ exports.updateData = function(req, res) {
           return res.status(404).send("Donnée inexistante.");
         } else {
           let dataToSend = new DataModel.RainDataAwaitingModel();
-          dataToSend.id_station = req.params.station_id;
-          dataToSend.id_user = req.token_decoded.id;
+          dataToSend.station_id = req.params.station_id;
+          dataToSend.user_id = req.token_decoded.id;
           dataToSend.id_old_data = id_data;
           dataToSend.date = rainData.date;
           dataToSend.type = state.UPDATE;
@@ -1119,8 +1119,8 @@ exports.updateData = function(req, res) {
       }
       date = new Date(date);
       let dataToSend = new DataModel.RainDataAwaitingModel();
-      dataToSend.id_station = req.params.station_id;
-      dataToSend.id_user = req.token_decoded.id;
+      dataToSend.station_id = req.params.station_id;
+      dataToSend.user_id = req.token_decoded.id;
       dataToSend.date = date;
       dataToSend.type = state.INDIVIDUAL;
       dataToSend.value = data;
@@ -1144,8 +1144,8 @@ exports.updateData = function(req, res) {
         return res.status(404).send("Donnée inexistante.");
       } else {
         let dataToSend = new DataModel.RainDataAwaitingModel();
-        dataToSend.id_station = req.params.station_id;
-        dataToSend.id_user = req.token_decoded.id;
+        dataToSend.station_id = req.params.station_id;
+        dataToSend.user_id = req.token_decoded.id;
         dataToSend.date = rainData.date;
         dataToSend.id_old_data = id_data;
         dataToSend.type = state.UPDATE;
@@ -1225,16 +1225,16 @@ function checkDateInterval(date1, date2, interval) {
  */
 function push() {
   const datas = [];
-  const id_user = "5bbdb325d7aec61a195afc96";
-  const id_station = "5be2bd09d80a8447302a0f05";
+  const user_id = "5bbdb325d7aec61a195afc96";
+  const station_id = "5be2bd09d80a8447302a0f05";
   let ptr = 0;
   let intervalle = 15;
   for (let jour = 1; jour < 6; jour++) {
     for (let i = 2; i <= 25; i++) {
       for (let j = 0; j < 60; j += intervalle) {
         let item = {};
-        item.id_station = id_station;
-        item.id_user = id_user;
+        item.station_id = station_id;
+        item.user_id = user_id;
         let date2 = new Date(2018, 10, jour, i, j);
         item.date = date2;
         item.value = getRandomInt(2);
@@ -1247,8 +1247,8 @@ function push() {
   for (let i = 0; i < datas.length; i++) {
     let d = datas[i];
     let data = new DataModel.rainDataModel();
-    data.id_station = d.id_station;
-    data.id_user = d.id_user;
+    data.station_id = d.station_id;
+    data.user_id = d.user_id;
     data.date = d.date;
     data.value = d.value;
     tmp.push(data);
@@ -1274,7 +1274,7 @@ function getRandomInt(max) {
 
 /**
  * isCorrect Méthode utilisée pour vérifier que la date passée corresponde à l'intervalle donnée.
- * @param {string} interval L'intervalle de la id_station
+ * @param {string} interval L'intervalle de la station_id
  * @param {Date} date La date d'entrée de la donnée
  */
 function isCorrect(interval, date) {

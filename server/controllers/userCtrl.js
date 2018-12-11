@@ -469,7 +469,7 @@ exports.resetPwd = function(req, res) {
       return res.status(200).send();
     } else {
       let urlObj = result;
-      UsersModel.userModel.findOne({ _id: urlObj.user, state: userState.PASSWORD_CREATION }, function(err, user) {
+      UsersModel.userModel.findOne({ _id: urlObj.user_id, state: userState.PASSWORD_CREATION }, function(err, user) {
         if (err) {
           logger.error("[userCtrl] resetPwd2:", err);
           return res.status(500).send("Erreur lors de la récupération de l'utilisateur concerné.");
@@ -542,7 +542,7 @@ function sendEmailReset(req, res, user, isUserRequest) {
   // Création de l'objet permettant de reset le mdp
   let pwdTmp = new PwdRecoveryModel.pwdRecoveryModel();
   let url = crypto.randomBytes(32).toString('hex');
-  pwdTmp.user = user._id;
+  pwdTmp.user_id = user._id;
   pwdTmp.url = url
   if (isUserRequest) {
     pwdTmp.duration = nconf.get("user").changePwdTime;

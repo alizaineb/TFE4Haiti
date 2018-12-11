@@ -32,8 +32,8 @@ export class DataService {
     return this.http.get<any[]>(environment.apiUrl + '/rainDataGraphLineRangeDate/' + stationId + '/' + minDate + '/' + minMonth + '/' + minYear + '/' + maxDate + '/' + maxMonth + '/' + maxYear);
   }
 
-  updateData(id_station: string, id: string, newData: string, date: Date) {
-    return this.http.post(environment.apiUrl + '/rainData/' + id_station + '/updateData', {
+  updateData(station_id: string, id: string, newData: string, date: Date) {
+    return this.http.post(environment.apiUrl + '/rainData/' + station_id + '/updateData', {
       id_curr_data: id,
       data: newData,
       date: date
@@ -52,8 +52,8 @@ export class DataService {
     return this.http.delete<RainDataAwaiting[]>(environment.apiUrl + '/rainData/refuse/' + id);
   }
 
-  getDataForMonth(id_station: string, year: number, month: number) {
-    return this.http.get<RainData[]>(environment.apiUrl + `/data/${id_station}/${year}/${month}`);
+  getDataForMonth(station_id: string, year: number, month: number) {
+    return this.http.get<RainData[]>(environment.apiUrl + `/data/${station_id}/${year}/${month}`);
   }
 
   getStats() {
