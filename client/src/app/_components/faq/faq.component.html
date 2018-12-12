@@ -256,7 +256,7 @@
         <ul>
           <li>L'année </li>
           <li>Un mois et une année</li>
-          <li>Une range de date: <img height="200" width="200" src="../../../assets/img/range_date.png"> </li>
+          <li>Une range de date </li>
         </ul>
 
         <img width="1000" src="../../../assets/img/graph.png">
@@ -278,17 +278,40 @@
     </div>
     <div id="child_add-data" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-data">
       <div class="card-body">
+        <p class="text-danger">Cette fonctionnalité est réservée aux employés et aux administrateurs</p>
         <ul>
           <li>Rendez à l'interface import des données via <a [routerLink]="['/stations']"> mes stations</a> et cliquez sur le bouton: <i class="fas fa-file-download fa-fw fa-1x"></i></li>
           <li>Rendez vous sur l'interface détail, tableau ou graphique et cliquez sur le bouton:
             <a class="btn btn-success btn-sm" style="color:white">Importer des données <i class="fas fa-file-download white"></i></a></li>
-
         </ul>
 
+        L'interface se divise en deux parties:
+        <ul>
+          <li>Vous pouvez ajouter des données manuellement: <img width="1000" src="../../../assets/img/upload_manu.png"></li>
+          <li>Vous pouvez ajouter des données via un fichier en suivant un template bien précis: <img width="300" src="../../../assets/img/template.png"></li>
+        </ul>
       </div>
     </div>
 
-
+    <div class="card-header" id="update-data" data-toggle="collapse" data-target="#child_update-data" aria-expanded="true" aria-controls="collapseOne">
+      <h5 class="mb-0">
+        <button class="btn btn-link">
+          Comment modifier les données pour une station ?
+        </button>
+      </h5>
+    </div>
+    <div id="child_update-data" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-data">
+      <div class="card-body">
+        <p class="text-danger">Cette fonctionnalité est réservée aux employés et aux administrateurs</p>
+        Pour modifier une donnée:
+        <ol>
+          <li>Vous devez accéder au tableau des données et afficher celles-ci dans l'intervalle station</li>
+          <li>Sélectionner l'affichage selon l'intervalle de la station</li>
+          <li>Double-cliquer sur la donnée que vous souhaitez modifier et une fénêtre s'ouvrira: <img width="1000" src="../../../assets/img/update.png"></li>
+          <li>Un admin devra valider la modification</li>
+        </ol>
+      </div>
+    </div>
 
   </div>
 </div>
@@ -299,3 +322,19 @@
 
 
 <h3>Gestion des utilisateurs</h3>
+<div id="accordion-users">
+  <div class="card">
+    <div class="card-header" id="manage-user" data-toggle="collapse" data-target="#child_manage-user" aria-expanded="true" aria-controls="collapseOne">
+      <h5 class="mb-0">
+        <button class="btn btn-link">
+          Comment gérer les utilisateurs ?
+        </button>
+      </h5>
+    </div>
+    <div id="child_manage-user" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-data">
+      <div class="card-body">
+        <p>Rendez vous à la page <a [routerLink]="['/users']">Gestions des utilisateurs</a></p>
+      </div>
+    </div>
+  </div>
+</div>
