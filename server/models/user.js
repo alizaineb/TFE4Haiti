@@ -46,7 +46,6 @@ const User = new Schema({
   },
   created_at: {
     type: Date,
-    default: Date.now,
     required: [true, 'Veuillez spécifier une date de création, veuillez contactez un amdinistrateur']
   },
   commune: {

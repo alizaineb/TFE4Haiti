@@ -181,6 +181,8 @@ exports.create = function(req, res) {
   uTmp.last_name = user.last_name;
   uTmp.mail = user.mail;
   uTmp.role = user.role;
+  let dateTmp = new Date(Date.now());
+  uTmp.created_at = new Date(Date.UTC(dateTmp.getFullYear(), dateTmp.getMonth(), dateTmp.getDate(), dateTmp.getHours(), dateTmp.getMinutes()));
   uTmp.state = userState.AWAITING;
   if (user.role == roles.WORKER) {
     if (user.commune) {
