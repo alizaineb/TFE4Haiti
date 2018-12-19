@@ -39,9 +39,7 @@
     <label class="col-form-label">
       Année
     </label>
-    <!--<i (click)="updateYearSelected('add')" class="fas fa-arrow-circle-left"></i>-->
-    <input class="form-control col-sm-3" (change)="changeYear($event.target.value)" min="1900" max="{{currentYear}}" size="4" type="number" [ngModel]="yearSelected">
-    <!--<i *ngIf="yearSelected !== currentYear" (click)="updateYearSelected('sub')" class="fas fa-arrow-circle-right"></i>-->
+    <input class="form-control col-sm-3" [disabled]="dataLoading" (change)="changeYear($event.target.value)" min="1900" max="{{currentYear}}" size="4" type="number" [ngModel]="yearSelected">
   </div>
   <div class="col-sm-6 form-row">
     <label class="col-form-label spaceRight">
@@ -74,7 +72,7 @@
   </div>
 </div>
 
-<div class="row col-md-12" [hidden]="'Quotidiennes'!==rangeSelected">
+<div class="row col-md-12" [hidden]="'Journalières'!==rangeSelected">
   <div class="col-sm-6 form-row">
     <mat-form-field>
       <input matInput (dateChange)="getData('from',$event)" id="fromDate" [matDatepicker]="pickerFromDate" placeholder="Date de début">
