@@ -336,7 +336,7 @@ export class TableComponent implements OnInit, OnChanges {
     }
     this.totMin = 0;
     this.totMax = 0;
-    // calcul minimum aboslu et max absolu
+    // calcul minimum absolu et max absolu
     let min = Number.MAX_SAFE_INTEGER;
     for (let i = 0; i < this.mins.length; i++) {
       if (this.mins[i].value < min) {
