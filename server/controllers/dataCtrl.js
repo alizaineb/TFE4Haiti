@@ -997,7 +997,7 @@ exports.downloadData = function(req, res) {
         if (rainDatas.length == 0) {
           return res.status(404).send("Pas de données trouvées pour la périodes souhaitée.");
         } else {
-          return res.status(200).send()
+          res.status(200).send()
           let dataGrouped = rainDatas;
 
           switch (interval) {
