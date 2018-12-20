@@ -42,12 +42,12 @@ export class GraphLineComponent implements OnInit {
 
   fromDate: Date;
   endDate: Date;
-
+  
   constructor(private dataService: DataService, private stationService: StationsService, private alertService: AlertService) { }
 
   ngOnInit() {
 
-    this.rangeData = ['Annuelles', 'Mensuelles', 'Quotidiennes'];
+    this.rangeData = ['Annuelles', 'Mensuelles', 'Journalières'];
     this.rangeSelected = '';
 
     this.currentDate = new Date();
