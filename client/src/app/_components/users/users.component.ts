@@ -63,7 +63,7 @@ export class UsersComponent implements OnInit {
       let tmp = [];
       // On n'affiche par les utilisateurs en attente
       for (let i = 0; i < result.length; i++) {
-        if (result[i].state != Constantes.userState.AWAITING) {
+        if (result[i].state != Constantes.userState.AWAITING && result[i].state != Constantes.userState.PASSWORD_CREATION) {
           tmp.push(result[i]);
         }
       }
