@@ -5,6 +5,7 @@ import { User } from '../../_models';
 import { UserService } from '../../_services';
 import { LocalstorageService } from "../../_services/localstorage.service";
 import { AlertService } from '../../_services/index';
+import { Constantes } from '../../_helpers/constantes';
 
 @Component({
   templateUrl: 'users.component.html',
@@ -58,9 +59,16 @@ export class UsersComponent implements OnInit {
 
   private loadAllUsers() {
     let self = this;
-    this.userService.getAll().pipe(first()).subscribe(result => {
-      self.users = result.slice(0);
-      this.usersFiltered = result.slice(0);
+    this.userService.getAll().pipe().subscribe(result => {
+      let tmp = [];
+      // On n'affiche par les utilisateurs en attente
+      for (let i = 0; i < result.length; i++) {
+        if (result[i].state != Constantes.userState.AWAITING) {
+          tmp.push(result[i]);
+        }
+      }
+      self.users = tmp;
+      this.usersFiltered = tmp.slice(0);
       this.filterUser();
     });
   }
