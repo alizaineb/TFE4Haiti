@@ -50,14 +50,14 @@
     <mat-form-field>
       <input matInput id="datePicker" [matDatepicker]="datePickerDay" (dateChange)="dateChanged($event.value);" placeholder="Choisissez une date">
       <mat-datepicker-toggle matSuffix [for]="datePickerDay"></mat-datepicker-toggle>
-      <mat-datepicker #datePickerDay></mat-datepicker>
+      <mat-datepicker #datePickerDay startView="multi-year"></mat-datepicker>
     </mat-form-field>
   </div>
   <div [hidden]="affichageSelected != affMens" class="col-md-4">
     <mat-form-field>
       <input matInput id="monthSelector" [matDatepicker]="datePickerMonth" md-mode="month" placeholder="Choisissez un mois">
       <mat-datepicker-toggle matSuffix [for]="datePickerMonth"></mat-datepicker-toggle>
-      <mat-datepicker #datePickerMonth startView="year" (monthSelected)="monthPicked($event,datePickerMonth);"></mat-datepicker>
+      <mat-datepicker #datePickerMonth startView="multi-year" (monthSelected)="monthPicked($event,datePickerMonth);"></mat-datepicker>
     </mat-form-field>
   </div>
 

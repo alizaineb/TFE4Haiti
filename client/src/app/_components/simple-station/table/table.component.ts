@@ -289,7 +289,6 @@ export class TableComponent implements OnInit, OnChanges {
     this.totSum = 0;
     // Ici va falloir changer this.currentStation.interval
     let currentIntervalTmp = this.currentStation.interval;
-    console.log(this.intervalSelected);
     if (this.intervalSelected.indexOf('h') >= 0) {
       currentIntervalTmp = this.intervalsFilteredH[0];
     }
