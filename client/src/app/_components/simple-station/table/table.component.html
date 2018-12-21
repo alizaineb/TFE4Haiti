@@ -21,29 +21,39 @@
 
   <div class="col-md-2">
     <div class="form-group">
-    </div>
-  </div>
-
-  <div class="col-md-2">
-    <div class="form-group">
-      <select class="form-control" (change)="intervalleChanged($event.target.value)">
-        <optgroup *ngIf="intervalsFiltered && intervalsFilteredMn.length > 0" label="Affichage journalier">
-          <option *ngFor="let i of intervalsFilteredMn; let first= first;" [value]="i" [selected]="first">{{i}}</option>
-        </optgroup>
-        <optgroup label="Affichage Mensuel">
-          <option *ngFor="let i of intervalsFilteredH;" [value]="i">{{i}}</option>
-        </optgroup>
+      <select class="form-control" (change)="affichageDispoFunc($event.target.value)">
+        <option selected disabled>Type d'affichage</option>
+        <option *ngIf="intervalsFiltered && intervalsFilteredMn.length > 0">{{affJour}}</option>
+        <option>{{affMens}}</option>
       </select>
     </div>
   </div>
-  <div [hidden]="!intervalDay" class="col-md-2">
+
+  <div [hidden]="affichageSelected != affJour" class="col-md-2">
+    <div class="form-group">
+      <select class="form-control" (change)="intervalleChanged($event.target.value)">
+        <option selected disabled>Intervalle</option>
+        <option *ngFor="let i of intervalsFilteredMn;let first= first;" [value]="i" [selected]="first">{{i}}</option>
+      </select>
+    </div>
+  </div>
+
+  <div [hidden]="affichageSelected != affMens" class="col-md-2">
+    <div class="form-group">
+      <select class="form-control" (change)="intervalleChanged($event.target.value)">
+        <option selected disabled>Intervalle</option>
+        <option *ngFor="let i of intervalsFilteredH; let first= first;" [value]="i" [selected]="first">{{i}}</option>
+      </select>
+    </div>
+  </div>
+  <div [hidden]="affichageSelected != affJour" class="col-md-2">
     <mat-form-field>
       <input matInput id="datePicker" [matDatepicker]="datePickerDay" (dateChange)="dateChanged($event.value);" placeholder="Choisissez une date">
       <mat-datepicker-toggle matSuffix [for]="datePickerDay"></mat-datepicker-toggle>
       <mat-datepicker #datePickerDay></mat-datepicker>
     </mat-form-field>
   </div>
-  <div [hidden]="intervalDay" class="col-md-4">
+  <div [hidden]="affichageSelected != affMens" class="col-md-4">
     <mat-form-field>
       <input matInput id="monthSelector" [matDatepicker]="datePickerMonth" md-mode="month" placeholder="Choisissez un mois">
       <mat-datepicker-toggle matSuffix [for]="datePickerMonth"></mat-datepicker-toggle>
@@ -64,8 +74,6 @@
 </div>
 
 <div *ngIf="dataToShow" class="someSpace">
-
-
   <div class="alert alert-info col-md-9">
     <h5><i class="far fa-question-circle"></i> Les colonnes représentent les heures/jours et les lignes les minutes/heures en fonction de l'intervalle choisi</h5>
     <h5><i class="far fa-question-circle"></i> Le tableau se lit donc de haut en bas</h5>
@@ -73,8 +81,8 @@
     <h5 *ngIf="hasWorkerAccess() && !sameIntervalAsStation"><i class="far fa-question-circle"></i> Pour éditer une donnée, mettez-vous dans l'intervalle disponible la plus petite et cliquer sur la case que vous souhaitez éditer</h5>
     <h5 *ngIf="hasWorkerAccess() && sameIntervalAsStation"><i class="far fa-question-circle"></i> En cliquant sur une case vous pourrez en éditer le contenu</h5>
   </div>
-  <h1>Affichage mensuel ({{intervalSelected}}) pour le mois : </h1>
-  <h1>Affichage journalier ({{intervalSelected}}) pour le jour : </h1>
+  <h1 *ngIf="affichageSelected == affJour">Affichage journalier ({{intervalSelected}}) pour le jour : </h1>
+  <h1 *ngIf="affichageSelected == affMens">Affichage mensuel ({{intervalSelected}}) pour le mois : </h1>
   <table class="table table-bordered">
     <thead>
       <tr>

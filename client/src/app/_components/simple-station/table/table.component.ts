@@ -18,6 +18,8 @@ export class TableComponent implements OnInit, OnChanges {
   @Input()
   private stationId: string;
 
+  private readonly affJour = "Journalier";
+  private readonly affMens = "Mensuel";
   currentStation: Station;
   datePicker;
 
@@ -26,6 +28,7 @@ export class TableComponent implements OnInit, OnChanges {
 
   private oldInterval: string;
 
+  private affichageSelected: string;
   private allIntervals: string[];
   intervalsFiltered: string[];
   intervalsFilteredMn: string[];
@@ -64,7 +67,6 @@ export class TableComponent implements OnInit, OnChanges {
     this.oldInterval = "";
     this.hourOfDate = "heure";
     this.splitHourOfDate = ":";
-
     window.onresize = () => {
       this.computeWidth();
     };
@@ -160,6 +162,15 @@ export class TableComponent implements OnInit, OnChanges {
     return this.authenticationService.hasWorkerAccess();
   }
 
+  affichageDispoFunc(val) {
+    this.dataToShow = false;
+    if (val == this.affJour && this.intervalsFilteredMn) {
+      this.intervalleChanged(this.intervalsFilteredMn[0]);
+    } else if (val == this.affMens) {
+      this.intervalleChanged(this.intervalsFilteredH[0]);
+    }
+    this.affichageSelected = val;
+  }
   intervalleChanged(val) {
     this.sameIntervalAsStation = false;
     let intervalIdx = this.intervalsFiltered.indexOf(val);
@@ -274,6 +285,7 @@ export class TableComponent implements OnInit, OnChanges {
     this.totSum = 0;
     // Ici va falloir changer this.currentStation.interval
     let currentIntervalTmp = this.currentStation.interval;
+    console.log(this.intervalSelected);
     if (this.intervalSelected.indexOf('h') >= 0) {
       currentIntervalTmp = this.intervalsFilteredH[0];
     }
