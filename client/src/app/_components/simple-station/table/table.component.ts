@@ -35,6 +35,9 @@ export class TableComponent implements OnInit, OnChanges {
   intervalsFilteredH: string[];
   private allDatas: RainData[];
   private aggregatedDatas: RainData[][];
+  private monthPickedMem: string;
+  private datePickedMem: string;
+
 
   private sums: number[];
   private mins: RainData[];
@@ -144,7 +147,7 @@ export class TableComponent implements OnInit, OnChanges {
         self.dataToShow = true;
         self.allDatas = rainDatas;
         self.computeDataToShow();
-
+        this.datePickedMem = value;
       }
     }, error => {
       self.dataLoading = false;
@@ -263,6 +266,7 @@ export class TableComponent implements OnInit, OnChanges {
         self.dataToShow = true;
         self.allDatas = rainDatas;
         self.computeDataToShow();
+        this.monthPickedMem = val;
 
       }
     }, error => {

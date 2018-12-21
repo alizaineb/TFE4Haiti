@@ -81,8 +81,8 @@
     <h5 *ngIf="hasWorkerAccess() && !sameIntervalAsStation"><i class="far fa-question-circle"></i> Pour éditer une donnée, mettez-vous dans l'intervalle disponible la plus petite et cliquer sur la case que vous souhaitez éditer</h5>
     <h5 *ngIf="hasWorkerAccess() && sameIntervalAsStation"><i class="far fa-question-circle"></i> En cliquant sur une case vous pourrez en éditer le contenu</h5>
   </div>
-  <h1 *ngIf="affichageSelected == affJour">Affichage journalier ({{intervalSelected}}) pour le jour : </h1>
-  <h1 *ngIf="affichageSelected == affMens">Affichage mensuel ({{intervalSelected}}) pour le mois : </h1>
+  <h1 *ngIf="affichageSelected == affJour">Affichage journalier ({{intervalSelected}}) pour le jour : {{datePickedMem.getDate()}}/{{datePickedMem.getMonth()+1}}/{{datePickedMem.getFullYear()}} </h1>
+  <h1 *ngIf="affichageSelected == affMens">Affichage mensuel ({{intervalSelected}}) pour le mois : {{datePickedMem.getMonth()+1}}/{{datePickedMem.getFullYear()}}</h1>
   <table class="table table-bordered">
     <thead>
       <tr>
