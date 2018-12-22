@@ -1029,6 +1029,7 @@ exports.downloadData = function(req, res) {
           fs.writeFile(filePath, result, 'utf-8', (err) => {
             if (err) throw err; // TODO ???? DAFUQ ???
             UsersModel.userModel.findById(req.token_decoded.id, (err, user) => {
+              console.log(user);
               const url = `${URL}/download/${fileName}`; //TODO CHANGE AND GET HOST URL NOT LOCALHOST
               mailer.sendMailAndIgnoreIfMailInvalid(undefined, undefined, "Données à télécharger", user.mail, url, (err) => {
                 if (err) {
