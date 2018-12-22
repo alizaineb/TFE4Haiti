@@ -18,8 +18,8 @@ export class TableComponent implements OnInit, OnChanges {
   @Input()
   private stationId: string;
 
-  private readonly affJour = "Journalier";
-  private readonly affMens = "Mensuel";
+  readonly affJour = "Journalier";
+  readonly affMens = "Mensuel";
   currentStation: Station;
   datePicker;
 
@@ -28,7 +28,7 @@ export class TableComponent implements OnInit, OnChanges {
 
   private oldInterval: string;
 
-  private affichageSelected: string;
+  affichageSelected: string;
   private allIntervals: string[];
   intervalsFiltered: string[];
   intervalsFilteredMn: string[];
