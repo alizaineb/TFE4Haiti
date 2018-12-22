@@ -1034,6 +1034,7 @@ exports.downloadData = function(req, res) {
                 if (err) {
                   logger.error("[DATACTRL] downloadData : ", err);
                 }
+                ogger.info("[DATACTRL] downloadData : email send to : ", user.mail);
               })
             });
 
