@@ -18,6 +18,8 @@ export class TableComponent implements OnInit, OnChanges {
   @Input()
   private stationId: string;
 
+  readonly affJour = "Journalier";
+  readonly affMens = "Mensuel";
   currentStation: Station;
   datePicker;
 
@@ -26,12 +28,16 @@ export class TableComponent implements OnInit, OnChanges {
 
   private oldInterval: string;
 
+  affichageSelected: string;
   private allIntervals: string[];
   intervalsFiltered: string[];
   intervalsFilteredMn: string[];
   intervalsFilteredH: string[];
   private allDatas: RainData[];
   private aggregatedDatas: RainData[][];
+  private monthPickedMem: string;
+  private datePickedMem: string;
+
 
   private sums: number[];
   private mins: RainData[];
@@ -64,7 +70,6 @@ export class TableComponent implements OnInit, OnChanges {
     this.oldInterval = "";
     this.hourOfDate = "heure";
     this.splitHourOfDate = ":";
-
     window.onresize = () => {
       this.computeWidth();
     };
@@ -142,7 +147,7 @@ export class TableComponent implements OnInit, OnChanges {
         self.dataToShow = true;
         self.allDatas = rainDatas;
         self.computeDataToShow();
-
+        this.datePickedMem = value;
       }
     }, error => {
       self.dataLoading = false;
@@ -160,6 +165,15 @@ export class TableComponent implements OnInit, OnChanges {
     return this.authenticationService.hasWorkerAccess();
   }
 
+  affichageDispoFunc(val) {
+    this.dataToShow = false;
+    if (val == this.affJour && this.intervalsFilteredMn) {
+      this.intervalleChanged(this.intervalsFilteredMn[0]);
+    } else if (val == this.affMens) {
+      this.intervalleChanged(this.intervalsFilteredH[0]);
+    }
+    this.affichageSelected = val;
+  }
   intervalleChanged(val) {
     this.sameIntervalAsStation = false;
     let intervalIdx = this.intervalsFiltered.indexOf(val);
@@ -252,6 +266,7 @@ export class TableComponent implements OnInit, OnChanges {
         self.dataToShow = true;
         self.allDatas = rainDatas;
         self.computeDataToShow();
+        this.monthPickedMem = val;
 
       }
     }, error => {
@@ -336,7 +351,7 @@ export class TableComponent implements OnInit, OnChanges {
     }
     this.totMin = 0;
     this.totMax = 0;
-    // calcul minimum aboslu et max absolu
+    // calcul minimum absolu et max absolu
     let min = Number.MAX_SAFE_INTEGER;
     for (let i = 0; i < this.mins.length; i++) {
       if (this.mins[i].value < min) {
