@@ -82,7 +82,7 @@
     <h5 *ngIf="hasWorkerAccess() && sameIntervalAsStation"><i class="far fa-question-circle"></i> En cliquant sur une case vous pourrez en éditer le contenu</h5>
   </div>
   <h1 *ngIf="affichageSelected == affJour">Affichage journalier ({{intervalSelected}}) pour le jour : {{datePickedMem.getDate()}}/{{datePickedMem.getMonth()+1}}/{{datePickedMem.getFullYear()}} </h1>
-  <h1 *ngIf="affichageSelected == affMens">Affichage mensuel ({{intervalSelected}}) pour le mois : {{datePickedMem.getMonth()+1}}/{{datePickedMem.getFullYear()}}</h1>
+  <h1 *ngIf="affichageSelected == affMens">Affichage mensuel ({{intervalSelected}}) pour le mois : {{monthPickedMem.getMonth()+1}}/{{monthPickedMem.getFullYear()}}</h1>
   <table class="table table-bordered">
     <thead>
       <tr>
@@ -95,8 +95,8 @@
         <th scope="row" class="solidBorderRight">{{rowName}}</th>
         <th *ngFor="let tmp of getRange(aggregatedDatas.length); let idx = index">
           <div *ngIf="aggregatedDatas[idx][i].value || aggregatedDatas[idx][i].value == 0 ; else has_no_data" title="{{cols[idx]}}{{splitHourOfDate}}{{rowName}}">
-            <div *ngIf="sameIntervalAsStation; else no_interval_with_data" (click)="editData(aggregatedDatas[idx][i])" data-toggle="modal" data-target="#updateDataModal">{{aggregatedDatas[idx][i].value}}</div>
-            <ng-template #no_interval_with_data> {{aggregatedDatas[idx][i].value}}</ng-template>
+            <div *ngIf="sameIntervalAsStation; else no_interval_with_data" (click)="editData(aggregatedDatas[idx][i])" data-toggle="modal" data-target="#updateDataModal">{{aggregatedDatas[idx][i].value | number:'1.1-2'}}</div>
+            <ng-template #no_interval_with_data> {{aggregatedDatas[idx][i].value | number:'1.1-2'}}</ng-template>
           </div>
           <ng-template #has_no_data>
             <div title="{{cols[idx]}}{{splitHourOfDate}}{{rowName}}">
@@ -134,14 +134,14 @@
       <tr>
         <th scope="row" class="solidBorderRight">Min ({{hourOfDate}})</th>
         <th *ngFor="let tmp of mins; index as i">
-          <div *ngIf="tmp && tmp.value != 9007199254740991; else has_data">{{tmp.value}} <br /> {{cols[i]}}{{splitHourOfDate}}{{tmp.date}}</div>
+          <div *ngIf="tmp && tmp.value != 9007199254740991; else has_data">{{tmp.value | number:'1.1-2'}} <br /> {{cols[i]}}{{splitHourOfDate}}{{tmp.date}}</div>
           <ng-template #has_data> - </ng-template>
         </th>
       </tr>
       <tr>
         <th scope="row" class="solidBorderRight">Max ({{hourOfDate}})</th>
         <th *ngFor="let tmp of maxs; index as i">
-          <div *ngIf="tmp && tmp.value !=-1; else has_data">{{tmp.value}} <br /> {{cols[i]}}{{splitHourOfDate}}{{tmp.date}}</div>
+          <div *ngIf="tmp && tmp.value !=-1; else has_data">{{tmp.value | number:'1.1-2'}} <br /> {{cols[i]}}{{splitHourOfDate}}{{tmp.date}}</div>
           <ng-template #has_data> - </ng-template>
         </th>
       </tr>
@@ -150,10 +150,10 @@
   <div class="someSpace">
     <div class="row">
       <div class="col-md-3">
-        Minimum absolu : {{totMin}}
+        Minimum absolu : {{totMin | number:'1.1-2'}}
       </div>
       <div class="col-md-3">
-        Maximum absolu : {{totMax}}
+        Maximum absolu : {{totMax | number:'1.1-2'}}
       </div>
       <div class="col-md-3">
         Somme : {{totSum | number:'1.1-2'}}
