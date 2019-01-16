@@ -1,0 +1,1454 @@
+{
+  "id": "548bfece-bcbe-4b71-8af7-b2eecc02aa95",
+  "version": "1.1",
+  "name": "TFE4haiti",
+  "url": "https://client-d4rk694.c9users.io",
+  "tests": [{
+    "id": "78ed66c7-22c6-417e-98d7-12db6b58dd3c",
+    "name": "1. Login",
+    "commands": [{
+      "id": "6ff134e7-252c-4899-8500-41b012fb5e6e",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "bd63b440-d46e-41a0-8c76-6e9386aebe90",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Se connecter",
+      "targets": [
+        ["linkText=Se connecter", "linkText"],
+        ["css=.navbar-nav:nth-child(2) > .nav-item:nth-child(1) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Se connecter')]", "xpath:link"],
+        ["xpath=//div[@id='navbarNavDropdown']/ul[2]/li/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/login')]", "xpath:href"],
+        ["xpath=//ul[2]/li/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "9830fe6b-01cc-4227-adfc-9b1653af3439",
+      "comment": "",
+      "command": "click",
+      "target": "css=.col-md-4:nth-child(1) .form-group:nth-child(1) > .form-control",
+      "targets": [
+        ["css=.col-md-4:nth-child(1) .form-group:nth-child(1) > .form-control", "css:finder"],
+        ["xpath=//input[@type='text']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8ecd9611-dbd7-4bdf-a9d7-458f27d5311b",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Se connecter",
+      "targets": [
+        ["linkText=Se connecter", "linkText"],
+        ["css=.navbar-nav:nth-child(2) > .nav-item:nth-child(1) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Se connecter')]", "xpath:link"],
+        ["xpath=//div[@id='navbarNavDropdown']/ul[2]/li/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/login')]", "xpath:href"],
+        ["xpath=//ul[2]/li/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "fd82b506-ade3-4037-8a86-15c54c16046d",
+      "comment": "",
+      "command": "type",
+      "target": "css=.col-md-4:nth-child(1) .form-group:nth-child(1) > .form-control",
+      "targets": [
+        ["css=.col-md-4:nth-child(1) .form-group:nth-child(1) > .form-control", "css:finder"],
+        ["xpath=//input[@type='text']", "xpath:attributes"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "admin@mail.com"
+    }, {
+      "id": "abb2714c-5fef-46b1-89d4-b673a2d2a37d",
+      "comment": "",
+      "command": "type",
+      "target": "css=.col-md-4:nth-child(1) .form-group:nth-child(2) > .form-control",
+      "targets": [
+        ["css=.ng-touched .ng-untouched", "css:finder"],
+        ["xpath=//input[@type='password']", "xpath:attributes"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": "mdp"
+    }, {
+      "id": "1399b9e5-c941-4156-9844-a806d5398961",
+      "comment": "",
+      "command": "click",
+      "target": "css=button.btn.btn-primary",
+      "targets": [
+        ["css=button.btn.btn-primary", "css"],
+        ["css=.form-group:nth-child(4) > .btn", "css:finder"],
+        ["xpath=//div[4]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a5e37bc3-a322-444c-9903-67862d39cea8",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Mes stations",
+      "targets": [
+        ["linkText=Mes stations", "linkText"],
+        ["css=.mr-auto > .nav-item:nth-child(2) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Mes stations')]", "xpath:link"],
+        ["xpath=//div[@id='navbarNavDropdown']/ul/li[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/stations')]", "xpath:href"],
+        ["xpath=//li[2]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5e953488-47b1-42c3-9183-33a1696b9d09",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Gestion des Utilisateurs",
+      "targets": [
+        ["linkText=Gestion des Utilisateurs", "linkText"],
+        ["css=.mr-auto > .nav-item:nth-child(3) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Gestion des Utilisateurs')]", "xpath:link"],
+        ["xpath=//div[@id='navbarNavDropdown']/ul/li[3]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/users')]", "xpath:href"],
+        ["xpath=//li[3]/a", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "bf7436ac-59e5-4cc1-a2c4-9901190358a0",
+    "name": "2. Create station",
+    "commands": [{
+      "id": "17e2650b-a6bb-4fdf-a2b6-18dfc8065646",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "de350f97-ad6c-4392-9e47-2a1845c258dd",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Mes stations",
+      "targets": [
+        ["linkText=Mes stations", "linkText"],
+        ["css=.mr-auto > .nav-item:nth-child(2) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Mes stations')]", "xpath:link"],
+        ["xpath=//div[@id='navbarNavDropdown']/ul/li[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/stations')]", "xpath:href"],
+        ["xpath=//li[2]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "095c6db2-e93d-4aa1-bee7-b8e4a70bba28",
+      "comment": "",
+      "command": "click",
+      "target": "css=button.btn.btn-primary",
+      "targets": [
+        ["css=button.btn.btn-primary", "css"],
+        ["css=.offset-1 > .btn", "css:finder"],
+        ["xpath=//div[2]/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "1f528c61-c8e5-4191-bfc4-723d34106321",
+      "comment": "",
+      "command": "click",
+      "target": "id=name",
+      "targets": [
+        ["id=name", "id"],
+        ["css=#name", "css"],
+        ["css=#name", "css:finder"],
+        ["xpath=//input[@id='name']", "xpath:attributes"],
+        ["xpath=//div[@id='addStationModal']/app-add-station-modal/div/div/div[2]/div/form/div/div/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "41ff9cf5-351b-4dac-8971-3abd3656044d",
+      "comment": "",
+      "command": "type",
+      "target": "id=name",
+      "targets": [
+        ["id=name", "id"],
+        ["css=#name", "css"],
+        ["css=#name", "css:finder"],
+        ["xpath=//input[@id='name']", "xpath:attributes"],
+        ["xpath=//div[@id='addStationModal']/app-add-station-modal/div/div/div[2]/div/form/div/div/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": "Selenium 1min"
+    }, {
+      "id": "920cd9f8-bc28-4825-93a6-27f74a34b75f",
+      "comment": "",
+      "command": "click",
+      "target": "id=interval",
+      "targets": [
+        ["id=interval", "id"],
+        ["css=#interval", "css"],
+        ["css=#interval", "css:finder"],
+        ["xpath=//select[@id='interval']", "xpath:attributes"],
+        ["xpath=//div[@id='addStationModal']/app-add-station-modal/div/div/div[2]/div/form/div/div/div[3]/div/div/select", "xpath:idRelative"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "37ccc4ae-ebf6-4499-ba92-809b1f26fbd0",
+      "comment": "",
+      "command": "select",
+      "target": "id=interval",
+      "targets": [],
+      "value": "label=1min"
+    }, {
+      "id": "328b2615-e6ab-487d-a5d7-8e4b50352f44",
+      "comment": "",
+      "command": "click",
+      "target": "css=option.ng-star-inserted",
+      "targets": [
+        ["css=option.ng-star-inserted", "css"],
+        ["css=#interval > .ng-star-inserted:nth-child(2)", "css:finder"],
+        ["xpath=//option[@value='1min']", "xpath:attributes"],
+        ["xpath=//select[@id='interval']/option[2]", "xpath:idRelative"],
+        ["xpath=//option[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4019bf1d-d518-4d2e-b98a-003a8d30a653",
+      "comment": "",
+      "command": "click",
+      "target": "id=commune",
+      "targets": [
+        ["id=commune", "id"],
+        ["css=#commune", "css"],
+        ["css=#commune", "css:finder"],
+        ["xpath=//input[@id='commune']", "xpath:attributes"],
+        ["xpath=//div[@id='addStationModal']/app-add-station-modal/div/div/div[2]/div/form/div/div/div[4]/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[4]/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2b97b9b9-fff8-4869-874c-1377dc5e9195",
+      "comment": "",
+      "command": "type",
+      "target": "id=commune",
+      "targets": [
+        ["id=commune", "id"],
+        ["css=#commune", "css"],
+        ["css=#commune", "css:finder"],
+        ["xpath=//input[@id='commune']", "xpath:attributes"],
+        ["xpath=//div[@id='addStationModal']/app-add-station-modal/div/div/div[2]/div/form/div/div/div[4]/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[4]/div/div/input", "xpath:position"]
+      ],
+      "value": "Desdunes"
+    }, {
+      "id": "36b1c9d8-21a9-4177-a365-0b6be577b6e7",
+      "comment": "",
+      "command": "type",
+      "target": "id=bassin_versant",
+      "targets": [
+        ["id=bassin_versant", "id"],
+        ["css=#bassin_versant", "css"],
+        ["css=#bassin_versant", "css:finder"],
+        ["xpath=//input[@id='bassin_versant']", "xpath:attributes"],
+        ["xpath=//div[@id='addStationModal']/app-add-station-modal/div/div/div[2]/div/form/div/div/div[4]/div[2]/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "Grande Rivière du Nord"
+    }, {
+      "id": "c6b1395b-a8c1-4ed0-8f93-00212d80ec66",
+      "comment": "",
+      "command": "click",
+      "target": "id=latitude",
+      "targets": [
+        ["id=latitude", "id"],
+        ["css=#latitude", "css"],
+        ["css=#latitude", "css:finder"],
+        ["xpath=//input[@id='latitude']", "xpath:attributes"],
+        ["xpath=//div[@id='addStationModal']/app-add-station-modal/div/div/div[2]/div/form/div/div/div[5]/div/div/input", "xpath:idRelative"],
+        ["xpath=//div[5]/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "472b6d29-cdb3-43de-b7c1-07af35e527c9",
+      "comment": "",
+      "command": "click",
+      "target": "id=mapid",
+      "targets": [
+        ["id=mapid", "id"],
+        ["css=#mapid", "css"],
+        ["css=#mapid", "css:finder"],
+        ["xpath=//div[@id='mapid']", "xpath:attributes"],
+        ["xpath=//div[@id='addStationModal']/app-add-station-modal/div/div/div[2]/div/form/div/div[2]/div[2]", "xpath:idRelative"],
+        ["xpath=//form/div/div[2]/div[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5f96d6cf-f11a-449c-be92-be19f0fefc6b",
+      "comment": "",
+      "command": "click",
+      "target": "id=altitude",
+      "targets": [
+        ["id=altitude", "id"],
+        ["css=#altitude", "css"],
+        ["css=#altitude", "css:finder"],
+        ["xpath=//input[@id='altitude']", "xpath:attributes"],
+        ["xpath=//div[@id='addStationModal']/app-add-station-modal/div/div/div[2]/div/form/div/div/div[5]/div[3]/div/input", "xpath:idRelative"],
+        ["xpath=//div[3]/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "86067e83-a1f1-441a-b970-6879e7fa3bf3",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=button.mat-icon-button",
+      "targets": [
+        ["css=button.mat-icon-button", "css"],
+        ["css=.mat-icon-button", "css:finder"],
+        ["xpath=(//button[@type='button'])[3]", "xpath:attributes"],
+        ["xpath=//div[@id='addStationModal']/app-add-station-modal/div/div/div[2]/div/form/div/div/div[6]/div/div/mat-form-field/div/div/div[2]/mat-datepicker-toggle/button", "xpath:idRelative"],
+        ["xpath=//mat-datepicker-toggle/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b4bef4d5-3ab7-4188-aa99-565d64c9e8c7",
+      "comment": "",
+      "command": "type",
+      "target": "id=altitude",
+      "targets": [
+        ["id=altitude", "id"],
+        ["css=#altitude", "css"],
+        ["css=#altitude", "css:finder"],
+        ["xpath=//input[@id='altitude']", "xpath:attributes"],
+        ["xpath=//div[@id='addStationModal']/app-add-station-modal/div/div/div[2]/div/form/div/div/div[5]/div[3]/div/input", "xpath:idRelative"],
+        ["xpath=//div[3]/div/input", "xpath:position"]
+      ],
+      "value": "50"
+    }, {
+      "id": "a2e328f1-42a1-47a0-bca3-1b7278d4d8c1",
+      "comment": "",
+      "command": "click",
+      "target": "css=.mat-icon-button",
+      "targets": [
+        ["css=.mat-icon-button", "css:finder"],
+        ["xpath=(//button[@type='button'])[3]", "xpath:attributes"],
+        ["xpath=//div[@id='addStationModal']/app-add-station-modal/div/div/div[2]/div/form/div/div/div[6]/div/div/mat-form-field/div/div/div[2]/mat-datepicker-toggle/button", "xpath:idRelative"],
+        ["xpath=//mat-datepicker-toggle/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "61ca4d0d-a10b-4153-8d10-20a4d2b51adc",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=button.mat-icon-button",
+      "targets": [
+        ["css=button.mat-icon-button", "css"],
+        ["css=.mat-icon-button:nth-child(1)", "css:finder"],
+        ["xpath=(//button[@type='button'])[3]", "xpath:attributes"],
+        ["xpath=//div[@id='addStationModal']/app-add-station-modal/div/div/div[2]/div/form/div/div/div[6]/div/div/mat-form-field/div/div/div[2]/mat-datepicker-toggle/button", "xpath:idRelative"],
+        ["xpath=//mat-datepicker-toggle/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "35fcf4c6-e3ab-4f29-915c-855537ed5bc5",
+      "comment": "",
+      "command": "click",
+      "target": "css=.ng-star-inserted:nth-child(3) > .mat-calendar-body-cell:nth-child(3) > .mat-calendar-body-cell-content",
+      "targets": [
+        ["css=.ng-star-inserted:nth-child(3) > .mat-calendar-body-cell:nth-child(3) > .mat-calendar-body-cell-content", "css:finder"],
+        ["xpath=//mat-calendar[@id='mat-datepicker-0']/div/mat-month-view/table/tbody/tr[3]/td[3]/div", "xpath:idRelative"],
+        ["xpath=//tr[3]/td[3]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "346779a9-dc0a-4eb4-9540-5e84e600e476",
+      "comment": "",
+      "command": "click",
+      "target": "css=button.btn.btn-success",
+      "targets": [
+        ["css=button.btn.btn-success", "css"],
+        ["css=.btn-success", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//div[@id='addStationModal']/app-add-station-modal/div/div/div[2]/div/form/div[3]/button[3]", "xpath:idRelative"],
+        ["xpath=//button[3]", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "6143169a-5c2f-4a6c-af50-adc164aa0bad",
+    "name": "3. View all stations",
+    "commands": [{
+      "id": "23b141ae-7f33-4e22-9de0-33c83c4e8a89",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "06d3d339-b2b0-435e-9c9c-436747035959",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1753x943",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "8f67287d-ad67-4da2-babe-ccb4db1509af",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Carte",
+      "targets": [
+        ["linkText=Carte", "linkText"],
+        ["css=a.nav-link", "css"],
+        ["css=.mr-auto > .nav-item:nth-child(1) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Carte')]", "xpath:link"],
+        ["xpath=//div[@id='navbarNavDropdown']/ul/li/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/map')]", "xpath:href"],
+        ["xpath=//li/a", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "d68b2749-6ad5-4ef4-a1ff-e2d42e767a0b",
+    "name": "4. View station details",
+    "commands": [{
+      "id": "3ede77ee-9d51-4c8e-832c-e4fbeea83f17",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "5adede04-1715-44c4-a180-7b7dcd2013e3",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1753x943",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c0a0f4f6-1151-43cf-8009-25eb4e5988d7",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Carte",
+      "targets": [
+        ["linkText=Carte", "linkText"],
+        ["css=a.nav-link", "css"],
+        ["css=.mr-auto > .nav-item:nth-child(1) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Carte')]", "xpath:link"],
+        ["xpath=//div[@id='navbarNavDropdown']/ul/li/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/map')]", "xpath:href"],
+        ["xpath=//li/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6ffcdd35-9358-4837-a268-29372c3c15dd",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "xpath=//li[1]",
+      "targets": [
+        ["css=.list-group-item:nth-child(5)", "css:finder"],
+        ["xpath=//li[5]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "99a2c965-8d4c-42d0-8a0c-d17242aa85cb",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=//li[1]",
+      "targets": [
+        ["css=.cdk-focused > .fas", "css:finder"],
+        ["xpath=//li[4]/div/a/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "1d39df1e-105c-45a1-81ca-df05f6ef83b3",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=//li[1]/div/a/i",
+      "targets": [
+        ["css=.cdk-focused > .fas", "css:finder"],
+        ["xpath=//li[5]/div/a/i", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "3ff78841-1758-4196-8f38-124d9cf715da",
+    "name": "5. View graph",
+    "commands": [{
+      "id": "7f8a24d4-2629-4bf9-9597-a94cafcd76c0",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c75c70b1-cbeb-498a-872a-c5279e4d5dfe",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Carte",
+      "targets": [
+        ["linkText=Carte", "linkText"],
+        ["css=a.nav-link", "css"],
+        ["css=.mr-auto .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Carte')]", "xpath:link"],
+        ["xpath=//div[@id='navbarNavDropdown']/ul/li/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/map')]", "xpath:href"],
+        ["xpath=//li/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "bfcc790b-57cf-488d-b52d-655a22e3a84d",
+      "comment": "",
+      "command": "click",
+      "target": "css=.list-group-item:nth-child(1)",
+      "targets": [
+        ["css=.list-group-item:nth-child(6)", "css:finder"],
+        ["xpath=//li[6]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "531795e9-35aa-4001-a6cf-55b26b9b7b13",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.list-group-item-primary .details",
+      "targets": [
+        ["css=.list-group-item-primary .details", "css:finder"],
+        ["xpath=//a[contains(@href, '/stations/5c37077bbc634ec788070cc5/Details')]", "xpath:href"],
+        ["xpath=//li[6]/div/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3b745857-2115-4b82-8262-7d697cd157fb",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.list-group-item-primary .details",
+      "targets": [
+        ["css=.list-group-item-primary .details", "css:finder"],
+        ["xpath=//a[contains(@href, '/stations/5c37077bbc634ec788070cc5/Details')]", "xpath:href"],
+        ["xpath=//li[6]/div/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "ee691260-1631-4ef7-9586-092d4e1b1cf0",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=//li[1]/div/a/i",
+      "targets": [
+        ["css=.cdk-focused > .fas", "css:finder"],
+        ["xpath=//li[6]/div/a/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6fb42670-419d-4645-ae07-34bb48399e7a",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Graphiques",
+      "targets": [
+        ["linkText=Graphiques", "linkText"],
+        ["css=.ng-star-inserted:nth-child(2) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Graphiques')]", "xpath:link"],
+        ["xpath=//ul[@id='switchNav']/li[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/stations/5c37077bbc634ec788070cc5/Graphiques')]", "xpath:href"],
+        ["xpath=//app-simple-station/ul/li[2]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "bd9c96a4-ef6e-44dc-80ff-a11b9e16274f",
+      "comment": "",
+      "command": "click",
+      "target": "css=select.form-control.col-sm-6",
+      "targets": [
+        ["css=select.form-control.col-sm-6", "css"],
+        ["css=.form-control", "css:finder"],
+        ["xpath=//div[@id='switchDivs']/div/app-graph-line/div[2]/div/select", "xpath:idRelative"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4681b56b-9d66-4eb4-90cb-f0ac8c0c9d47",
+      "comment": "",
+      "command": "select",
+      "target": "css=select.form-control.col-sm-6",
+      "targets": [],
+      "value": "label=Annuelles"
+    }, {
+      "id": "6234d2fd-7bdb-4144-90d1-ee5fcbce202a",
+      "comment": "",
+      "command": "click",
+      "target": "css=option.ng-star-inserted",
+      "targets": [
+        ["css=option.ng-star-inserted", "css"],
+        ["css=.form-control > .ng-star-inserted:nth-child(2)", "css:finder"],
+        ["xpath=//option[@value='Annuelles']", "xpath:attributes"],
+        ["xpath=//div[@id='switchDivs']/div/app-graph-line/div[2]/div/select/option[2]", "xpath:idRelative"],
+        ["xpath=//option[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e588f4e8-c4ec-4210-b07a-90795490fd25",
+      "comment": "",
+      "command": "runScript",
+      "target": "window.scrollTo(0,0)",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "598fa8d6-80b5-4d31-b55e-c3b65dedf87d",
+      "comment": "",
+      "command": "click",
+      "target": "css=select.form-control.col-sm-6",
+      "targets": [
+        ["css=select.form-control.col-sm-6", "css"],
+        ["css=.form-row > .col-sm-6", "css:finder"],
+        ["xpath=//div[@id='switchDivs']/div/app-graph-line/div[2]/div/select", "xpath:idRelative"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "22c411ed-40f0-4404-ad96-c9616255de69",
+      "comment": "",
+      "command": "select",
+      "target": "css=select.form-control.col-sm-6",
+      "targets": [],
+      "value": "label=Mensuelles"
+    }, {
+      "id": "2d9aaa54-65d5-43d6-98cd-3da538d3635a",
+      "comment": "",
+      "command": "click",
+      "target": "css=.form-control > .ng-star-inserted:nth-child(3)",
+      "targets": [
+        ["css=.form-control > .ng-star-inserted:nth-child(3)", "css:finder"],
+        ["xpath=//option[@value='Mensuelles']", "xpath:attributes"],
+        ["xpath=//div[@id='switchDivs']/div/app-graph-line/div[2]/div/select/option[3]", "xpath:idRelative"],
+        ["xpath=//option[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d7ffea48-1676-4576-bd53-dad0e8fa784b",
+      "comment": "",
+      "command": "click",
+      "target": "css=select.form-control.col-sm-6",
+      "targets": [
+        ["css=select.form-control.col-sm-6", "css"],
+        ["css=.form-control", "css:finder"],
+        ["xpath=//div[@id='switchDivs']/div/app-graph-line/div[2]/div/select", "xpath:idRelative"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d46fdbcd-4eea-4331-aaa9-67087644298a",
+      "comment": "",
+      "command": "select",
+      "target": "css=select.form-control.col-sm-6",
+      "targets": [],
+      "value": "label=Journalières"
+    }, {
+      "id": "2c629eef-ff39-4ac6-a602-cb6eee2d8c65",
+      "comment": "",
+      "command": "click",
+      "target": "css=.ng-star-inserted:nth-child(4)",
+      "targets": [
+        ["css=.ng-star-inserted:nth-child(4)", "css:finder"],
+        ["xpath=//option[@value='Journalières']", "xpath:attributes"],
+        ["xpath=//div[@id='switchDivs']/div/app-graph-line/div[2]/div/select/option[4]", "xpath:idRelative"],
+        ["xpath=//option[4]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "58fd3ca9-ab2c-4b29-a0f4-cbc9b9a68891",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=button.mat-icon-button",
+      "targets": [
+        ["css=button.mat-icon-button", "css"],
+        ["css=.ng-tns-c14-4 .mat-icon-button", "css:finder"],
+        ["xpath=(//button[@type='button'])[2]", "xpath:attributes"],
+        ["xpath=//div[@id='switchDivs']/div/app-graph-line/div[3]/div/mat-form-field/div/div/div[2]/mat-datepicker-toggle/button", "xpath:idRelative"],
+        ["xpath=//mat-datepicker-toggle/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2e1837bc-0f15-40b4-86bd-ba054dab140e",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=(//button[@type='button'])[2]",
+      "targets": [
+        ["css=.cdk-focused", "css:finder"],
+        ["xpath=(//button[@type='button'])[2]", "xpath:attributes"],
+        ["xpath=//div[@id='switchDivs']/div/app-graph-line/div[3]/div/mat-form-field/div/div/div[2]/mat-datepicker-toggle/button", "xpath:idRelative"],
+        ["xpath=//mat-datepicker-toggle/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a4d602b4-b7e4-43ea-815e-3c3f227c896d",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=button.mat-icon-button",
+      "targets": [
+        ["css=button.mat-icon-button", "css"],
+        ["css=.mat-datepicker-toggle-active > .mat-icon-button", "css:finder"],
+        ["xpath=(//button[@type='button'])[2]", "xpath:attributes"],
+        ["xpath=//div[@id='switchDivs']/div/app-graph-line/div[3]/div/mat-form-field/div/div/div[2]/mat-datepicker-toggle/button", "xpath:idRelative"],
+        ["xpath=//mat-datepicker-toggle/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "04267474-db29-4cf3-b2a0-23a61245c5b9",
+      "comment": "",
+      "command": "click",
+      "target": "css=.ng-star-inserted:nth-child(3) > .mat-calendar-body-cell:nth-child(4) > .mat-calendar-body-cell-content",
+      "targets": [
+        ["css=.ng-star-inserted:nth-child(3) > .mat-calendar-body-cell:nth-child(4) > .mat-calendar-body-cell-content", "css:finder"],
+        ["xpath=//mat-calendar[@id='mat-datepicker-3']/div/mat-month-view/table/tbody/tr[3]/td[4]/div", "xpath:idRelative"],
+        ["xpath=//tr[3]/td[4]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "9493baf8-221c-4553-ad65-98fe4f9c33d2",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "xpath=(//button[@type='button'])[3]",
+      "targets": [
+        ["css=.ng-tns-c14-5 .mat-icon-button", "css:finder"],
+        ["xpath=(//button[@type='button'])[3]", "xpath:attributes"],
+        ["xpath=//div[@id='switchDivs']/div/app-graph-line/div[3]/div/mat-form-field[2]/div/div/div[2]/mat-datepicker-toggle/button", "xpath:idRelative"],
+        ["xpath=//mat-form-field[2]/div/div/div[2]/mat-datepicker-toggle/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "812abb51-45f9-4ef8-871c-812ea9fea743",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=(//button[@type='button'])[3]",
+      "targets": [
+        ["css=.cdk-focused", "css:finder"],
+        ["xpath=(//button[@type='button'])[3]", "xpath:attributes"],
+        ["xpath=//div[@id='switchDivs']/div/app-graph-line/div[3]/div/mat-form-field[2]/div/div/div[2]/mat-datepicker-toggle/button", "xpath:idRelative"],
+        ["xpath=//mat-form-field[2]/div/div/div[2]/mat-datepicker-toggle/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e1c80389-fc32-463c-94fa-db2d1d3dbb15",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=mat-datepicker-toggle.mat-datepicker-toggle.mat-datepicker-toggle-active > button.mat-icon-button",
+      "targets": [
+        ["css=mat-datepicker-toggle.mat-datepicker-toggle.mat-datepicker-toggle-active > button.mat-icon-button", "css"],
+        ["css=.mat-datepicker-toggle-active > .mat-icon-button", "css:finder"],
+        ["xpath=(//button[@type='button'])[3]", "xpath:attributes"],
+        ["xpath=//div[@id='switchDivs']/div/app-graph-line/div[3]/div/mat-form-field[2]/div/div/div[2]/mat-datepicker-toggle/button", "xpath:idRelative"],
+        ["xpath=//mat-form-field[2]/div/div/div[2]/mat-datepicker-toggle/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "de0c3a3a-7674-463f-94cb-bcc95eabde81",
+      "comment": "",
+      "command": "click",
+      "target": "css=div.mat-calendar-body-cell-content.mat-calendar-body-today",
+      "targets": [
+        ["css=div.mat-calendar-body-cell-content.mat-calendar-body-today", "css"],
+        ["css=.mat-calendar-body-today", "css:finder"],
+        ["xpath=//mat-calendar[@id='mat-datepicker-4']/div/mat-month-view/table/tbody/tr[3]/td[5]/div", "xpath:idRelative"],
+        ["xpath=//tr[3]/td[5]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "98f61be2-4355-4b25-81e4-c0f5a202c70d",
+      "comment": "",
+      "command": "click",
+      "target": "css=span.slider.round",
+      "targets": [
+        ["css=span.slider.round", "css"],
+        ["css=.slider", "css:finder"],
+        ["xpath=//div[@id='switchDivs']/div/app-graph-line/div[3]/div[2]/label[3]/span", "xpath:idRelative"],
+        ["xpath=//label[3]/span", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "31b9ef0a-c842-473b-bb46-7b7707ced56d",
+    "name": "logout",
+    "commands": [{
+      "id": "0f8d43a0-7a1f-49f8-97dc-c04bd29fdb7b",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "81721203-26a2-410b-ae12-d68837bfa568",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "linkText=Se déconnecter",
+      "targets": [
+        ["linkText=Se déconnecter", "linkText"],
+        ["css=.navbar-nav:nth-child(2) > .nav-item:nth-child(2) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Se déconnecter')]", "xpath:link"],
+        ["xpath=//div[@id='navbarNavDropdown']/ul[2]/li[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/logout')]", "xpath:href"],
+        ["xpath=//ul[2]/li[2]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "ed876d87-a93e-4101-85ca-117c56d5abb2",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "linkText=Se déconnecter",
+      "targets": [
+        ["linkText=Se déconnecter", "linkText"],
+        ["css=.navbar-nav:nth-child(2) > .nav-item:nth-child(2) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Se déconnecter')]", "xpath:link"],
+        ["xpath=//div[@id='navbarNavDropdown']/ul[2]/li[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/logout')]", "xpath:href"],
+        ["xpath=//ul[2]/li[2]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "7ed18a67-4067-4890-913b-683693027e0d",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Se déconnecter",
+      "targets": [
+        ["linkText=Se déconnecter", "linkText"],
+        ["css=.navbar-nav:nth-child(2) > .nav-item:nth-child(2) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Se déconnecter')]", "xpath:link"],
+        ["xpath=//div[@id='navbarNavDropdown']/ul[2]/li[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/logout')]", "xpath:href"],
+        ["xpath=//ul[2]/li[2]/a", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "8eba66be-f3cc-4c2e-bdad-840403ce3979",
+    "name": "6. View Table",
+    "commands": [{
+      "id": "588673f1-dcb4-4957-ad21-2fd745ce1914",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "01f81a85-5d2c-4b28-bf57-19608bbfe809",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Carte",
+      "targets": [
+        ["linkText=Carte", "linkText"],
+        ["css=a.nav-link", "css"],
+        ["css=.mr-auto > .nav-item:nth-child(1) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Carte')]", "xpath:link"],
+        ["xpath=//div[@id='navbarNavDropdown']/ul/li/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/map')]", "xpath:href"],
+        ["xpath=//li/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "1f8b2d55-aee1-4b97-90aa-e34382305224",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=//li/div/a/i",
+      "targets": [
+        ["css=.cdk-focused > .fas", "css:finder"],
+        ["xpath=//li/div/a/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "fd29204a-0e53-41e6-9d83-a4a847662364",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Tableaux",
+      "targets": [
+        ["linkText=Tableaux", "linkText"],
+        ["css=.ng-star-inserted:nth-child(3) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Tableaux')]", "xpath:link"],
+        ["xpath=//ul[@id='switchNav']/li[3]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/stations/5c3b7c89bc634ec788070ccb/Tableaux')]", "xpath:href"],
+        ["xpath=//app-simple-station/ul/li[3]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "96eeaf21-7377-4f7c-bfdb-de68ff1df5f8",
+      "comment": "",
+      "command": "click",
+      "target": "css=.col-md-2:nth-child(1) .form-control",
+      "targets": [
+        ["css=select.form-control", "css"],
+        ["css=.col-md-2:nth-child(1) .form-control", "css:finder"],
+        ["xpath=//div[@id='switchDivs']/div/app-table/div[2]/div/div/select", "xpath:idRelative"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "de46a2fa-c3f8-40c9-9b01-2fdabd48af3b",
+      "comment": "",
+      "command": "select",
+      "target": "css=select.form-control",
+      "targets": [],
+      "value": "label=Journalier"
+    }, {
+      "id": "479edb13-f090-4090-af0c-28a409e4578d",
+      "comment": "",
+      "command": "click",
+      "target": "css=option.ng-star-inserted",
+      "targets": [
+        ["css=option.ng-star-inserted", "css"],
+        ["css=.col-md-2:nth-child(1) .ng-star-inserted", "css:finder"],
+        ["xpath=//div[@id='switchDivs']/div/app-table/div[2]/div/div/select/option[2]", "xpath:idRelative"],
+        ["xpath=//option[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a009d5a4-7566-4a9b-b03e-5cb8728f5b50",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=(//button[@type='button'])[2]",
+      "targets": [
+        ["css=.cdk-focused", "css:finder"],
+        ["xpath=(//button[@type='button'])[2]", "xpath:attributes"],
+        ["xpath=//div[@id='switchDivs']/div/app-table/div[2]/div[4]/mat-form-field/div/div/div[2]/mat-datepicker-toggle/button", "xpath:idRelative"],
+        ["xpath=//mat-datepicker-toggle/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "84f9a0de-5521-4f27-92c3-6a804d2401ad",
+      "comment": "",
+      "command": "click",
+      "target": "css=div.mat-calendar-body-cell-content.mat-calendar-body-today",
+      "targets": [
+        ["css=div.mat-calendar-body-cell-content.mat-calendar-body-today", "css"],
+        ["css=.mat-calendar-body-today", "css:finder"],
+        ["xpath=//mat-calendar[@id='mat-datepicker-3']/div/mat-multi-year-view/table/tbody/tr/td[4]/div", "xpath:idRelative"],
+        ["xpath=//td[4]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b7774c42-cd43-4e67-8275-ce73dc0b37f9",
+      "comment": "",
+      "command": "click",
+      "target": "css=div.mat-calendar-body-cell-content.mat-calendar-body-today",
+      "targets": [
+        ["css=div.mat-calendar-body-cell-content.mat-calendar-body-today", "css"],
+        ["css=.mat-calendar-body-today", "css:finder"],
+        ["xpath=//mat-calendar[@id='mat-datepicker-3']/div/mat-year-view/table/tbody/tr[2]/td/div", "xpath:idRelative"],
+        ["xpath=//td/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "12cfe611-16d4-4656-8e1b-175371689a7b",
+      "comment": "",
+      "command": "click",
+      "target": "css=div.mat-calendar-body-cell-content.mat-calendar-body-today",
+      "targets": [
+        ["css=div.mat-calendar-body-cell-content.mat-calendar-body-today", "css"],
+        ["css=.mat-calendar-body-today", "css:finder"],
+        ["xpath=//mat-calendar[@id='mat-datepicker-3']/div/mat-month-view/table/tbody/tr[4]/td/div", "xpath:idRelative"],
+        ["xpath=//tr[4]/td/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "842a3154-3062-4cd1-a643-a70c65f3661d",
+      "comment": "",
+      "command": "click",
+      "target": "css=select.form-control",
+      "targets": [
+        ["css=select.form-control", "css"],
+        ["css=.col-md-2:nth-child(1) .form-control", "css:finder"],
+        ["xpath=//div[@id='switchDivs']/div/app-table/div[2]/div/div/select", "xpath:idRelative"],
+        ["xpath=//select", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8b04ad0b-12ba-4c9a-8e32-4880d99aac72",
+      "comment": "",
+      "command": "select",
+      "target": "css=select.form-control",
+      "targets": [],
+      "value": "label=Mensuel"
+    }, {
+      "id": "091888c5-e56f-48b0-b306-11b358b5254c",
+      "comment": "",
+      "command": "click",
+      "target": "css=.col-md-2:nth-child(1) option:nth-child(3)",
+      "targets": [
+        ["css=.col-md-2:nth-child(1) option:nth-child(3)", "css:finder"],
+        ["xpath=//div[@id='switchDivs']/div/app-table/div[2]/div/div/select/option[3]", "xpath:idRelative"],
+        ["xpath=//option[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "212b9ab2-cf64-433f-8a4e-9f861f7e03e5",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=(//button[@type='button'])[3]",
+      "targets": [
+        ["css=.cdk-focused", "css:finder"],
+        ["xpath=(//button[@type='button'])[3]", "xpath:attributes"],
+        ["xpath=//div[@id='switchDivs']/div/app-table/div[2]/div[5]/mat-form-field/div/div/div[2]/mat-datepicker-toggle/button", "xpath:idRelative"],
+        ["xpath=//div[5]/mat-form-field/div/div/div[2]/mat-datepicker-toggle/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e2e5b47d-c9d7-4416-895d-eefeeddb98ea",
+      "comment": "",
+      "command": "click",
+      "target": "css=div.mat-calendar-body-cell-content.mat-calendar-body-today",
+      "targets": [
+        ["css=div.mat-calendar-body-cell-content.mat-calendar-body-today", "css"],
+        ["css=.mat-calendar-body-today", "css:finder"],
+        ["xpath=//mat-calendar[@id='mat-datepicker-4']/div/mat-multi-year-view/table/tbody/tr/td[4]/div", "xpath:idRelative"],
+        ["xpath=//td[4]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8e107801-ea93-4901-95d3-c9b281aa6cb8",
+      "comment": "",
+      "command": "click",
+      "target": "css=div.mat-calendar-body-cell-content.mat-calendar-body-today",
+      "targets": [
+        ["css=div.mat-calendar-body-cell-content.mat-calendar-body-today", "css"],
+        ["css=.mat-calendar-body-today", "css:finder"],
+        ["xpath=//mat-calendar[@id='mat-datepicker-4']/div/mat-year-view/table/tbody/tr[2]/td/div", "xpath:idRelative"],
+        ["xpath=//td/div", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "eddc7db3-9729-4016-a323-de6a562ca5f8",
+    "name": "7. View Notes",
+    "commands": [{
+      "id": "f1c628e0-15d8-40de-b9d2-edfabd7fdf82",
+      "comment": "",
+      "command": "open",
+      "target": "/map",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "1311373d-be24-4cc2-abb6-f98633b160c4",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Carte",
+      "targets": [
+        ["linkText=Carte", "linkText"],
+        ["css=a.nav-link", "css"],
+        ["css=.mr-auto > .nav-item:nth-child(1) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Carte')]", "xpath:link"],
+        ["xpath=//div[@id='navbarNavDropdown']/ul/li/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/map')]", "xpath:href"],
+        ["xpath=//li/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b7c0c982-8155-4704-8099-6c4c652a6939",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=//li/div/a/i",
+      "targets": [
+        ["css=.cdk-focused > .fas", "css:finder"],
+        ["xpath=//li/div/a/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "256f62b4-8966-4048-81cf-05c02414feed",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Notes",
+      "targets": [
+        ["linkText=Notes", "linkText"],
+        ["css=.nav-item:nth-child(4) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Notes')]", "xpath:link"],
+        ["xpath=//ul[@id='switchNav']/li[4]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/stations/5c3b7c89bc634ec788070ccb/Notes')]", "xpath:href"],
+        ["xpath=//li[4]/a", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "2fbbcf7b-9ec6-4006-be0f-8369ce41847e",
+    "name": "8. Import Manual Data",
+    "commands": [{
+      "id": "c6c07d90-4a63-4142-aeb8-a31a0947f2b8",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "294c5dd0-1867-46c8-a1fd-2eae642d1a84",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Carte",
+      "targets": [
+        ["linkText=Carte", "linkText"],
+        ["css=a.nav-link", "css"],
+        ["css=.mr-auto > .nav-item:nth-child(1) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Carte')]", "xpath:link"],
+        ["xpath=//div[@id='navbarNavDropdown']/ul/li/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/map')]", "xpath:href"],
+        ["xpath=//li/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0a3772ef-80f9-4ff9-8554-3039aedb1a04",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.list-group-item:nth-child(1) .fas",
+      "targets": [
+        ["css=.list-group-item:nth-child(1) .fas", "css:finder"],
+        ["xpath=//li/div/a/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "78a91d66-a5ad-4ddc-ad22-716af9698b83",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=//li/div/a/i",
+      "targets": [
+        ["css=.cdk-focused > .fas", "css:finder"],
+        ["xpath=//li/div/a/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "ff2395d6-897c-49b0-988b-0ba8b8bea3cf",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=//a[contains(text(),'Importer des données')]",
+      "targets": [
+        ["linkText=Importer des données", "linkText"],
+        ["css=.btn-success:nth-child(1)", "css:finder"],
+        ["xpath=//a[contains(text(),'Importer des données')]", "xpath:link"],
+        ["xpath=//div[@id='switchDivs']/div/app-simple-station-details/div/div[2]/div/div[3]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/stations/5c3cc5495d9489dfee1cadb6/import')]", "xpath:href"],
+        ["xpath=//div[3]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4b37bf2a-c454-4af8-b1e5-f94a93b57399",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=button.mat-icon-button",
+      "targets": [
+        ["css=button.mat-icon-button", "css"],
+        ["css=.mat-icon-button", "css:finder"],
+        ["xpath=(//button[@type='button'])[2]", "xpath:attributes"],
+        ["xpath=//mat-datepicker-toggle/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6a023568-9073-4f92-b007-abc76073305e",
+      "comment": "",
+      "command": "click",
+      "target": "css=.mat-icon-button",
+      "targets": [
+        ["css=.mat-icon-button", "css:finder"],
+        ["xpath=(//button[@type='button'])[2]", "xpath:attributes"],
+        ["xpath=//mat-datepicker-toggle/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2f2f97d1-abea-4ad2-812e-d82de3f37ab9",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=button.mat-icon-button",
+      "targets": [
+        ["css=button.mat-icon-button", "css"],
+        ["css=.mat-icon-button:nth-child(1)", "css:finder"],
+        ["xpath=(//button[@type='button'])[2]", "xpath:attributes"],
+        ["xpath=//mat-datepicker-toggle/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e3088ef3-b545-413d-b4af-56844234c21f",
+      "comment": "",
+      "command": "click",
+      "target": "css=div.mat-calendar-body-cell-content.mat-calendar-body-today",
+      "targets": [
+        ["css=div.mat-calendar-body-cell-content.mat-calendar-body-today", "css"],
+        ["css=.mat-calendar-body-today", "css:finder"],
+        ["xpath=//mat-calendar[@id='mat-datepicker-3']/div/mat-month-view/table/tbody/tr[4]/td[2]/div", "xpath:idRelative"],
+        ["xpath=//tr[4]/td[2]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "156f1bd0-48a7-4b0f-8040-ca1b22439fc7",
+      "comment": "",
+      "command": "click",
+      "target": "css=input.form-control",
+      "targets": [
+        ["css=input.form-control", "css"],
+        ["css=.ngb-tp-hour > .form-control", "css:finder"],
+        ["xpath=//input[@type='text']", "xpath:attributes"],
+        ["xpath=//fieldset/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "9bc99f0d-ff8d-4258-9ecd-d916e6aafdb7",
+      "comment": "",
+      "command": "type",
+      "target": "css=input.form-control",
+      "targets": [
+        ["css=input.form-control", "css"],
+        ["css=.ngb-tp-hour > .form-control", "css:finder"],
+        ["xpath=//input[@type='text']", "xpath:attributes"],
+        ["xpath=//fieldset/div/div/input", "xpath:position"]
+      ],
+      "value": "12"
+    }, {
+      "id": "b8ab9f5b-0511-4c19-a3e1-6e3f3036b53b",
+      "comment": "",
+      "command": "type",
+      "target": "css=div.ngb-tp-input-container.ngb-tp-minute > input.form-control",
+      "targets": [
+        ["css=div.ngb-tp-input-container.ngb-tp-minute > input.form-control", "css"],
+        ["css=.ngb-tp-minute > .form-control", "css:finder"],
+        ["xpath=(//input[@type='text'])[2]", "xpath:attributes"],
+        ["xpath=//div[3]/input", "xpath:position"]
+      ],
+      "value": "15"
+    }, {
+      "id": "6d31669e-cc87-4e57-a32f-b06d2a7e9f27",
+      "comment": "",
+      "command": "type",
+      "target": "css=.ng-untouched",
+      "targets": [
+        ["css=.ng-untouched", "css:finder"],
+        ["xpath=//input[@type='number']", "xpath:attributes"],
+        ["xpath=//td[3]/input", "xpath:position"]
+      ],
+      "value": "5"
+    }, {
+      "id": "80146c01-cb1a-4606-b2be-b796a3c492a1",
+      "comment": "",
+      "command": "click",
+      "target": "css=div.col-md-1",
+      "targets": [
+        ["css=div.col-md-1", "css"],
+        ["css=.col-md-1", "css:finder"],
+        ["xpath=//div[3]/div[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "40f2128a-0d63-428c-9463-e64f6d0331ec",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn:nth-child(3)",
+      "targets": [
+        ["css=.btn:nth-child(3)", "css:finder"],
+        ["xpath=//div/button", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "6afd827c-6e8e-4ad3-82bc-d75a7d46af2f",
+    "name": "10. Validation Station",
+    "commands": [{
+      "id": "905fd29f-3a39-4721-8f16-890986614bb7",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "49fbf9b7-74ed-49b0-b41a-d204a40b4e86",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=//a[contains(@href, '/admin')]",
+      "targets": [
+        ["css=.someSpaceRight", "css:finder"],
+        ["xpath=//div[@id='navbarNavDropdown']/ul[2]/li/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/admin')]", "xpath:href"],
+        ["xpath=//ul[2]/li/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "0d5ed08d-54e8-4327-af79-49cd0ad9672d",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=//td[8]/i",
+      "targets": [
+        ["css=.fa-check", "css:finder"],
+        ["xpath=//td[8]/i", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "9867a124-7ebf-4f97-aa04-68f0fac28b91",
+    "name": "11. Insert one Note",
+    "commands": [{
+      "id": "cc7be3fd-9303-4c87-95c5-daf515086584",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "c61eb568-1758-4a46-a586-d8ece43a55ad",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Mes stations",
+      "targets": [
+        ["linkText=Mes stations", "linkText"],
+        ["css=.mr-auto > .nav-item:nth-child(2) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Mes stations')]", "xpath:link"],
+        ["xpath=//div[@id='navbarNavDropdown']/ul/li[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/stations')]", "xpath:href"],
+        ["xpath=//li[2]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3030358e-f905-4da7-a917-3ee2bfd82baf",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.ng-star-inserted:nth-child(3) > td > .details > .fas",
+      "targets": [
+        ["css=.ng-star-inserted:nth-child(3) > td > .details > .fas", "css:finder"],
+        ["xpath=//tr[3]/td/a/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "15cfde3d-9d7f-4c61-9d5e-9c4fda57224f",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.ng-star-inserted:nth-child(3) > td > .details > .fas",
+      "targets": [
+        ["css=.ng-star-inserted:nth-child(3) > td > .details > .fas", "css:finder"],
+        ["xpath=//tr[3]/td/a/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "1ecd5fd8-47e8-452c-8840-ed1a8114e005",
+      "comment": "",
+      "command": "click",
+      "target": "css=.ng-star-inserted:nth-child(3) > td > .fa-sticky-note",
+      "targets": [
+        ["css=.ng-star-inserted:nth-child(3) > td > .fa-sticky-note", "css:finder"],
+        ["xpath=//tr[3]/td[7]/i[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "1eb8aac0-50bc-4c4e-82c4-a4a5b2f41537",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=(//textarea[@id='note'])[2]",
+      "targets": [
+        ["css=.ng-untouched > #note", "css:finder"],
+        ["xpath=(//textarea[@id='note'])[2]", "xpath:attributes"],
+        ["xpath=//div[@id='noteStationModal']/div/div/div/div[2]/app-note/div/div/form/textarea", "xpath:idRelative"],
+        ["xpath=//form/textarea", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8704351c-e789-4fdc-85b7-27d3236e1e05",
+      "comment": "",
+      "command": "type",
+      "target": "xpath=(//textarea[@id='note'])[2]",
+      "targets": [
+        ["css=.ng-untouched > #note", "css:finder"],
+        ["xpath=(//textarea[@id='note'])[2]", "xpath:attributes"],
+        ["xpath=//div[@id='noteStationModal']/div/div/div/div[2]/app-note/div/div/form/textarea", "xpath:idRelative"],
+        ["xpath=//form/textarea", "xpath:position"]
+      ],
+      "value": "Ceci est le contenu de la note à importer"
+    }, {
+      "id": "d6389b4a-8cbf-46d8-8505-dd838cb439ef",
+      "comment": "",
+      "command": "click",
+      "target": "css=.float-right:nth-child(3)",
+      "targets": [
+        ["css=.float-right:nth-child(3)", "css:finder"],
+        ["xpath=//div[@id='noteStationModal']/div/div/div/div[2]/app-note/div/div/form/button", "xpath:idRelative"],
+        ["xpath=//form/button", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "33955a37-19c1-4699-92a9-54ce29cf4756",
+      "comment": "",
+      "command": "click",
+      "target": "css=.close:nth-child(1)",
+      "targets": [
+        ["css=.close:nth-child(1)", "css:finder"],
+        ["xpath=(//button[@type='button'])[13]", "xpath:attributes"],
+        ["xpath=//div[@id='noteStationModal']/div/div/div/div/button", "xpath:idRelative"],
+        ["xpath=//div[5]/div/div/div/div/button", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "5c8ecb29-8d0c-4937-bb72-30f7590dc6a4",
+    "name": "12. Update Station",
+    "commands": [{
+      "id": "af31a5a5-eb17-4902-9292-c8664cf2811c",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f4b1fc5a-eb61-4048-892d-f397ae5a8bc0",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Mes stations",
+      "targets": [
+        ["linkText=Mes stations", "linkText"],
+        ["css=.mr-auto > .nav-item:nth-child(2) > .nav-link", "css:finder"],
+        ["xpath=//a[contains(text(),'Mes stations')]", "xpath:link"],
+        ["xpath=//div[@id='navbarNavDropdown']/ul/li[2]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/stations')]", "xpath:href"],
+        ["xpath=//li[2]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "da164cea-d09a-40bf-97eb-920ec37713ca",
+      "comment": "",
+      "command": "click",
+      "target": "css=.ng-star-inserted:nth-child(3) > td > .fa-pencil-alt",
+      "targets": [
+        ["css=.ng-star-inserted:nth-child(3) > td > .fa-pencil-alt", "css:finder"],
+        ["xpath=//tr[3]/td[7]/i", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e701f9a9-2782-4766-86f3-45518adf22ea",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=(//input[@id='name'])[2]",
+      "targets": [
+        ["css=.ng-valid #name", "css:finder"],
+        ["xpath=(//input[@id='name'])[2]", "xpath:attributes"],
+        ["xpath=//div[@id='updateStationModal']/div/app-update-sation-modal/div/div/div[2]/div/form/div/div/div[2]/input", "xpath:idRelative"],
+        ["xpath=//app-update-sation-modal/div/div/div[2]/div/form/div/div/div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "4bee05f6-34cc-4b0d-bee1-c67093376c57",
+      "comment": "",
+      "command": "type",
+      "target": "xpath=(//input[@id='name'])[2]",
+      "targets": [
+        ["css=.ng-dirty #name", "css:finder"],
+        ["xpath=(//input[@id='name'])[2]", "xpath:attributes"],
+        ["xpath=//div[@id='updateStationModal']/div/app-update-sation-modal/div/div/div[2]/div/form/div/div/div[2]/input", "xpath:idRelative"],
+        ["xpath=//app-update-sation-modal/div/div/div[2]/div/form/div/div/div[2]/input", "xpath:position"]
+      ],
+      "value": "Selenium 1min Update"
+    }, {
+      "id": "a6f3fd0b-0526-4cfe-8ccc-fb67dd834903",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=(//button[@type='submit'])[2]",
+      "targets": [
+        ["css=.modal-footer:nth-child(2) > .btn-success", "css:finder"],
+        ["xpath=(//button[@type='submit'])[2]", "xpath:attributes"],
+        ["xpath=//div[@id='updateStationModal']/div/app-update-sation-modal/div/div/div[2]/div/form/div[2]/button[3]", "xpath:idRelative"],
+        ["xpath=//div[2]/button[3]", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "fa8a5df4-7d77-46e1-b327-8634346f6eb2",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": []
+  }],
+  "urls": ["https://client-d4rk694.c9users.io/"],
+  "plugins": []
+}
